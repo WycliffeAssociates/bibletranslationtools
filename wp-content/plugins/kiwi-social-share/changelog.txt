@@ -1,0 +1,14 @@
+*** Kiwi Pro Changelog ***
+= 2.0.4 =
+* Removed box shadow in the admin window
+* Changed how URLS are encoded for text
+* WhatsApp icon visibility is now handled with CSS ( wp_is_mobile function would not work on websites with cache )
+
+= 2.0.3 =
+* Saving settings would cause errors on some servers
+
+= 2.0.2 =
+* Ajax request failed on license activation
+
+= 2.0.1 =
+* Minor bugs

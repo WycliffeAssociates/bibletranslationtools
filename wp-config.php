@@ -36,6 +36,23 @@ foreach ($_SERVER as $key => $value) {
     $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
 }
 
+// (leongv) If connection string variables are still empty, check local config file for the info
+if (
+	empty($connectstr_dbhost) &&
+	empty($connectstr_dbname) &&
+	empty($connectstr_dbusername) &&
+	empty($connectstr_dbpassword)
+) {
+			$local_config = 'local.config.php';
+			if (file_exists($local_config) && is_readable($local_config)) {
+					require_once $local_config;
+					$connectstr_dbhost = $local_dbhost;
+					$connectstr_dbname = $local_dbname;
+					$connectstr_dbusername = $local_dbusername;
+					$connectstr_dbpassword = $local_dbpassword;
+			}
+}
+
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', $connectstr_dbname);

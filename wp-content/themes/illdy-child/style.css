@@ -1,13 +1,28 @@
 /*
- Theme Name:   Illdy Child
- Theme URI:    http://example.com/twenty-fifteen-child/
- Description:  Illdy Child Theme
- Author:       Vicky Leong
- Author URI:   http://vickyleong.com
- Template:     illdy
- Version:      1.0.0
- License:      GNU General Public License v2 or later
- License URI:  http://www.gnu.org/licenses/gpl-2.0.html
- Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
- Text Domain:  illdy-child
+Theme Name: Illdy Child
+Theme URI: http://example.com/twenty-fifteen-child/
+Template: illdy
+Author: Vicky Leong
+Author URI: http://vickyleong.com
+Description: Illdy Child Theme
+Tags: light,dark,two-columns,right-sidebar,responsive-layout,accessibility-ready
+Version: 1.0.0.1499975045
+Updated: 2017-07-13 19:44:05
+
 */
+
+#header {
+	position: relative;
+}
+#header::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+#testimonials {
+}

@@ -11,6 +11,7 @@
  *
  * @since 2.3.2
  */
+
 if ( ! defined( 'WP_ADMIN' ) ) {
 	define( 'WP_ADMIN', true );
 }

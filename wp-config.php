@@ -18,10 +18,14 @@
  * @package WordPress
  */
 
-$local_config = 'local.config.php';
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', dirname( __FILE__ ) . '/' );
+}
+
+$local_config = ABSPATH . 'local.config.php';
 $use_local_config = false;
 if (file_exists($local_config) && is_readable($local_config)) {
-		require_once $local_config;
+		include $local_config;
 		$use_local_config = true;
 }
 

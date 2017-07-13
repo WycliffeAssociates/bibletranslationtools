@@ -18,6 +18,13 @@
  * @package WordPress
  */
 
+$local_config = 'local.config.php';
+$use_local_config = false;
+if (file_exists($local_config) && is_readable($local_config)) {
+		require_once $local_config;
+		$use_local_config = true;
+}
+
 //Using environment variables for DB connection information
 
 $connectstr_dbhost = '';
@@ -25,32 +32,23 @@ $connectstr_dbname = '';
 $connectstr_dbusername = '';
 $connectstr_dbpassword = '';
 
-foreach ($_SERVER as $key => $value) {
-    if (strpos($key, "MYSQLCONNSTR_") !== 0) {
-        continue;
-    }
+// Decides whether to use local config file or $_SERVER variable to get database info
+if ($use_local_config) {
+		$connectstr_dbhost = $local_dbhost;
+		$connectstr_dbname = $local_dbname;
+		$connectstr_dbusername = $local_dbusername;
+		$connectstr_dbpassword = $local_dbpassword;
+} else {
+		foreach ($_SERVER as $key => $value) {
+		    if (strpos($key, "MYSQLCONNSTR_") !== 0) {
+		        continue;
+		    }
 
-    $connectstr_dbhost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
-    $connectstr_dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
-    $connectstr_dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
-    $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
-}
-
-// (leongv) If connection string variables are still empty, check local config file for the info
-if (
-	empty($connectstr_dbhost) &&
-	empty($connectstr_dbname) &&
-	empty($connectstr_dbusername) &&
-	empty($connectstr_dbpassword)
-) {
-			$local_config = 'local.config.php';
-			if (file_exists($local_config) && is_readable($local_config)) {
-					require_once $local_config;
-					$connectstr_dbhost = $local_dbhost;
-					$connectstr_dbname = $local_dbname;
-					$connectstr_dbusername = $local_dbusername;
-					$connectstr_dbpassword = $local_dbpassword;
-			}
+		    $connectstr_dbhost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+		    $connectstr_dbname = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+		    $connectstr_dbusername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+		    $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+		}
 }
 
 // ** MySQL settings - You can get this info from your web host ** //
@@ -112,7 +110,8 @@ $table_prefix  = 'wp_';
  *
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
-define('WP_DEBUG', true);
+$debug = $use_local_config ? $local_debug : false;
+define('WP_DEBUG', $debug);
 
 /* That's all, stop editing! Happy blogging. */
 

@@ -14,7 +14,8 @@ Updated: 2017-07-13 19:44:05
 #header {
 	position: relative;
 }
-#header::before {
+#header::before,
+#counter::before {
 	content: '';
 	display: block;
 	position: absolute;
@@ -22,7 +23,13 @@ Updated: 2017-07-13 19:44:05
 	bottom: 0;
 	left: 0;
 	right: 0;
+}
+#header::before {
 	background-color: rgba(0, 0, 0, 0.5);
 }
-#testimonials {
+#counter::before {
+	background-color: rgba(200, 200, 20, 0.8);
+}
+.sow-features-feature p {
+	margin: 0;
 }

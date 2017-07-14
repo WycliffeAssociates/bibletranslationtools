@@ -27,9 +27,44 @@ Updated: 2017-07-13 19:44:05
 #header::before {
 	background-color: rgba(0, 0, 0, 0.5);
 }
+.responsive-menu.active {
+	position: relative;
+	z-index: 999;
+}
 #counter::before {
 	background-color: rgba(200, 200, 20, 0.8);
 }
-.sow-features-feature p {
+/* Hide blog post title. We already have a big o'l title on the header */
+#blog .blog-post .blog-post-title {
+	display: none;
+}
+/* Remove the space above the first title in a section */
+.blog-post-entry .so-panel.panel-first-child .textwidget h3:first-child,
+.blog-post-entry .so-panel.panel-first-child .textwidget h4:first-child {
+	margin-top: 0;
+}
+/* Add more spacing to the bottom of post's body */
+.blog-post-entry .panel-layout {
+	padding-bottom: 6rem;
+}
+/* Remove spacing between MAST phase steps */
+.mast-phase .sow-features-feature .textwidget p {
 	margin: 0;
+}
+/* Remove bullets from list */
+.markup-format ul li {
+	list-style-type: none;
+}
+/* Make PC/MAC/Linux button for tS to look like the Google Play badge a bit more */
+.get-ts-desktop .ow-button-base a {
+	border: 2px solid #CCC !important;
+	font-weight: bold;
+}
+/* Remove underline from SO button's text */
+.so-widget-sow-button a {
+    text-decoration: none;
+}
+
+.card {
+	box-shadow: 0px 3px 22px -3px rgba(0,0,0,0.5);
 }

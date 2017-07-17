@@ -104,3 +104,45 @@ Updated: 2017-07-13 19:44:05
 #header .top-header .header-navigation ul.children li {
 	margin-left: 0;
 }
+
+/* Make sure responsive menu is not displayed when the screen is resized to wider screen */
+/* Had to use !important because there is an inline style of "display: block;" :( */
+.responsive-menu.active {
+	display: none !important;
+}
+
+@media only screen and (max-width: 992px) {
+	.responsive-menu {
+		position: absolute;
+		padding-left: 2rem;
+		padding-right: 2rem;
+		background-color: transparent;
+	}
+	.responsive-menu.active {
+		position: absolute;
+		/* Had to use !important to override the previous !important :( */
+		display: block !important;
+	}
+	.responsive-menu .page_item {
+		width: auto;
+		flex: 1 1 auto;
+		list-style: none;
+		font-weight: 700;
+	}
+	.responsive-menu .children {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.responsive-menu .page_item a {
+		background-color: rgba(255, 255, 255, 0.55);
+		color: black;
+	}
+	.responsive-menu .children .page_item {
+		background-color: transparent;
+	}
+	.responsive-menu .children .page_item a {
+		background-color: rgba(0, 0, 0, 0.55);
+		color: white;
+	}
+}

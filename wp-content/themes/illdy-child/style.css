@@ -11,6 +11,7 @@ Updated: 2017-07-13 19:44:05
 
 */
 
+/* Add color overlay on header and counter sections on the front page */
 #header {
 	position: relative;
 }
@@ -27,12 +28,13 @@ Updated: 2017-07-13 19:44:05
 #header::before {
 	background-color: rgba(0, 0, 0, 0.5);
 }
+#counter::before {
+	background-color: rgba(200, 200, 20, 0.8);
+}
+/* Make the responsive menu on top of everything else */
 .responsive-menu.active {
 	position: relative;
 	z-index: 999;
-}
-#counter::before {
-	background-color: rgba(200, 200, 20, 0.8);
 }
 /* Hide blog post title. We already have a big o'l title on the header */
 #blog .blog-post .blog-post-title {
@@ -64,17 +66,17 @@ Updated: 2017-07-13 19:44:05
 .so-widget-sow-button a {
     text-decoration: none;
 }
-
+/* Used for anything that wants to have a basic card material drop shadow */
 .card {
 	box-shadow: 0px 3px 22px -3px rgba(0,0,0,0.5);
 }
-
+/* Center the images of projects in projects section */
 .widget_illdy_project .project {
 	background-size: cover;
 	background-position: center;
 }
-
-/* Allow child/sub pages to be hidden on top menu, but appear when their parent is hovered over */
+/* Allow child/sub pages to be hidden on top menu, but appear when their */
+/* parent is hovered over */
 #header .top-header .page_item_has_children::after {
 	content: '+';
 	margin-left: 0.5rem;
@@ -115,13 +117,11 @@ Updated: 2017-07-13 19:44:05
 	z-index: 999;
 	position: relative;
 }
-
 /* Make sure responsive menu is not displayed when the screen is resized to wider screen */
 /* Had to use !important because there is an inline style of "display: block;" :( */
 .responsive-menu.active {
 	display: none !important;
 }
-
 @media only screen and (max-width: 992px) {
 	.responsive-menu {
 		position: absolute;

@@ -39,7 +39,7 @@ function illdy_child_enqueue_scripts()
     // jQuery's visible() doesn't fire correctly on Chrome, which results in the
     // counter numbers not showing even though it's visible on the screen.
     wp_enqueue_script( 'illdy-plugins',
-      get_stylesheet_directory_uri() . '/layout/js/plugins.min.js',
+      get_stylesheet_directory_uri() . '/layout/js/plugins.js',
       array( 'jquery' ),
       '1.0.16',
       true

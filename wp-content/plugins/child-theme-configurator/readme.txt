@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: child, theme, child theme, child themes, custom styles, customize styles, customize theme, css, responsive, css editor, child theme editor, child theme generator, child theme creator, style, stylesheet, customizer, childtheme, childthemes
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 2.2.8
+Stable tag: 2.2.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -287,6 +287,8 @@ https://www.youtube.com/watch?v=iBiiAgsK4G4
 7. Files tab
 
 == Changelog ==
+= 2.2.8.1 =
+Added support for General Sibling Selector (~)
 = 2.2.8 =
 * Fixed CSS class loading FALSE for dictionaries on fresh install
 * Fixed using wrong nonce for plugin mode preview (Pro)

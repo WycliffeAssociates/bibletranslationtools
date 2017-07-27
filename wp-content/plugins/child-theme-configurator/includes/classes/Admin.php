@@ -6,7 +6,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
     Class: ChildThemeConfiguratorAdmin
     Plugin URI: http://www.childthemeconfigurator.com/
     Description: Main Controller Class
-    Version: 2.2.8
+    Version: 2.2.8.1
     Author: Lilaea Media
     Author URI: http://www.lilaeamedia.com/
     Text Domain: child-theme-configurator

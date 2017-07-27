@@ -30,9 +30,15 @@ var ResourcesPage = ( function( window, $, undefined ) {
       var accordion = $(container).find('#accordion');
 
       JSON.parse(data).forEach(function(lang) {
-        // Section title
-        accordion.append('<h3 class="lang-code">' + lang.code + '</h3>');
+        // Section title (Language name)
+        var langName = lang.name;
+        if (lang.englishName) {
+          langName += '<span class="english-name">' + lang.englishName + '</span>';
+        }
+        langName += '<span class="lang-code">' + lang.code + '</span>';
+        accordion.append('<h3 class="lang-section">' + langName + '</h3>');
 
+        // Section body
         accordion.append('<div id="' + lang.code + '-container" class="resource-container"></div>');
         var langResourceContainer = accordion.find('#' + lang.code + '-container');
 
@@ -40,12 +46,15 @@ var ResourcesPage = ( function( window, $, undefined ) {
           langResourceContainer.append('<h4 class="resource-title">' + res.name + '</h4>');
 
           res.links && res.links.forEach(function(l) {
-            langResourceContainer.append('<a href="' + l.url + '">' + l.url + '</a>');
+            if (l) {
+              langResourceContainer.append('<a class="resource-link" href="' + l.url + '">' + l.format + '</a>');
+            }
           });
 
-          res.content.forEach(function(c, index) {
+          res.contents && res.contents.forEach(function(c, index) {
             if (c.links) {
-              langResourceContainer.append('<p id="' + lang.code + '-' + res.slug + '-' + c.slug + '" class="resource-content">' + c.title + '</p>');
+              var title = '<span class="content-title">' + c.title + '</span>';
+              langResourceContainer.append('<p id="' + lang.code + '-' + res.slug + '-' + c.slug + '" class="resource-content">' + title + '</p>');
 
               c.links.forEach(function(l) {
                 langResourceContainer.find('#' + lang.code + '-' + res.slug + '-' + c.slug).append('<span class="resource-link"><a href="' + l.url + '">' + l.format + '</a>');

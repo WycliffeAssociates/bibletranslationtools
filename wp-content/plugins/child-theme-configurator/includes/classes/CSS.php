@@ -6,7 +6,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
     Class: ChildThemeConfiguratorCSS
     Plugin URI: http://www.childthemeconfigurator.com/
     Description: Handles all CSS input, output, parsing, normalization and storage
-    Version: 2.2.8
+    Version: 2.2.8.1
     Author: Lilaea Media
     Author URI: http://www.lilaeamedia.com/
     Text Domain: chld_thm_cfg
@@ -167,7 +167,7 @@ class ChildThemeConfiguratorCSS {
         $this->parnt            = '';
         $this->ignoreparnt      = 0;
         $this->qpriority        = 10;
-        $this->version          = '2.2.8';
+        $this->version          = '2.2.8.1';
         
         // do not set enqueue, not being set is used to flag old versions
 
@@ -1154,7 +1154,7 @@ class ChildThemeConfiguratorCSS {
             // make sure there is semicolon before closing brace
             $segment = preg_replace( '#(\})#', ";$1", $segment );
             // parses selectors and corresponding rules
-            $regex = '#\n\s*([\[\.\#\:\w][\w\-\s\(\)\[\]\'\^\*\.\#\+:,"=>]+?)\s*\{(.*?)\}#s';  //
+            $regex = '#\n\s*([\[\.\#\:\w][\w\-\s\(\)\[\]\'\^\*\.\#\+\~:,"=>]+?)\s*\{(.*?)\}#s';  //[^\{] may be to expensive
             preg_match_all( $regex, $segment, $matches );
             foreach( $matches[ 1 ] as $sel ):
                 $stuff  = array_shift( $matches[ 2 ] );

@@ -25,11 +25,15 @@ var ResourcesPage = ( function( window, $, undefined ) {
     }
 
     this.renderResources = function(data) {
+      // Safe guard to make sure we don't parse the already-parsed data, which
+      // will throw an error.
+      var jsonData = typeof data === 'string' ? JSON.parse(data) : data;
+
       // Accordion root
       $(container).append('<div id="accordion"></div>');
       var accordion = $(container).find('#accordion');
 
-      JSON.parse(data).forEach(function(lang) {
+      jsonData.forEach(function(lang) {
         // Section title (Language name)
         var langName = lang.name;
         if (lang.englishName) {

@@ -161,7 +161,7 @@ Updated: 2017-07-13 19:44:05
 .ui-accordion .ui-state-active {
 	color: #FFF;
 }
-#resources-container .lang-section {
+/*#resources-container .lang-section {
 	display: flex;
 	flex-direction: row;
 }
@@ -177,9 +177,9 @@ Updated: 2017-07-13 19:44:05
 	flex: 1 1 auto;
 	margin-right: 1rem;
 	text-align: right;
-}
+}*/
 /* Add some space around resource links in resource page */
-#resources-container .resource-link:not(:first-of-type) {
+/*#resources-container .resource-link:not(:first-of-type) {
 	margin-left: 1rem;
 }
 #resources-container .resource-content {
@@ -188,4 +188,91 @@ Updated: 2017-07-13 19:44:05
 }
 #resources-container .content-title {
 	flex: 1 1 auto;
+}*/
+#resources-container {
+	display: flex;
+	flex-direction: row;
+}
+/* Sidebar */
+#resources-container .sidebar {
+	flex: 0 0 300px;
+	padding-left: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	border-left: none;
+}
+#resources-container .lang-list {
+	border-right: 1px solid #DDD;
+}
+#resources-container .lang-list-title {
+	margin-top: 0;
+}
+#resources-container .lang-selector {
+	padding-left: 1rem;
+	padding-right: 1.5rem;
+	display: flex;
+	flex-direction: row;
+	cursor: pointer;
+}
+#resources-container .lang-list .lang-selector::before {
+	display: none;
+}
+#resources-container .lang-selector:hover,
+#resources-container .lang-selector.active {
+	background-color: #E2C504;
+	color: white;
+}
+#resources-container .lang-code {
+	flex: 1 1 auto;
+	text-align: right;
+	color: #AAA;
+	font-style: italic;
+	pointer-events: none;
+}
+#resources-container .lang-selector:hover .lang-code,
+#resources-container .lang-selector.active .lang-code {
+	color: white;
+}
+/* Main Content */
+#resources-container .main-content {
+	flex: 1 1 auto;
+}
+#resources-container .main-content > * {
+	padding-left: 1.5rem
+}
+#resources-container .lang-title {
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+	background-color: #EEE;
+}
+#resources-container .resource-title {
+	margin-bottom: 1.25rem;
+}
+#resources-container .resource-links {
+	margin-bottom: 1.25rem;
+}
+#resources-container .resource-link,
+#resources-container .content-link {
+	display: inline-block;
+	margin-left: 1rem;
+	background-color: #81A83E;
+	color: white;
+	text-decoration: none;
+	padding: 0.5rem 1.25rem;
+}
+#resources-container .resource-link:first-of-type,
+#resources-container .content-link:first-of-type {
+	margin-left: 0;
+}
+#resources-container .content {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+#resources-container .content-title {
+	flex: 1 1 auto;
+	margin: 1rem 0;
+}
+#resources-container .content-links {
+	flex: 0 0 auto;
 }

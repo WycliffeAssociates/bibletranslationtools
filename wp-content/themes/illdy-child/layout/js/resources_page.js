@@ -127,7 +127,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
       var title = create('h5', 'lang-list-title');
       title.innerText = 'Languages';
 
-      var list = create('ul', 'lang-list');
+      var list = create('ul', 'lang-list sticky');
       list.appendChild(title);
 
       this.createListItemEls().forEach(function(item) {
@@ -163,7 +163,9 @@ var ResourcesPage = ( function( window, $, undefined ) {
 
     this.render = function() {
       $(this.rootEl).empty();
-      this.rootEl.appendChild(this.createListEl());
+      var listEl = this.createListEl();
+      this.rootEl.appendChild(listEl);
+      $('.lang-list').Stickyfill();
     };
 
   }

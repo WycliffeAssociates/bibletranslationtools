@@ -7,6 +7,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
     return el;
   };
 
+
   function ResourcesPage() {
 
     this.resourcesData;
@@ -79,60 +80,6 @@ var ResourcesPage = ( function( window, $, undefined ) {
     };
 
 
-    this.renderResources = function(data) {
-      // // Safe guard to make sure we don't parse the already-parsed data, which
-      // // will throw an error.
-      // var jsonData = typeof data === 'string' ? JSON.parse(data) : data;
-      //
-      // // Accordion root
-      // $(container).append('<div id="accordion"></div>');
-      // var accordion = $(container).find('#accordion');
-      //
-      // jsonData.forEach(function(lang) {
-      //   // Section title (Language name)
-      //   var langName = lang.name;
-      //   if (lang.englishName) {
-      //     langName += '<span class="english-name">' + lang.englishName + '</span>';
-      //   }
-      //   langName += '<span class="lang-code">' + lang.code + '</span>';
-      //   accordion.append('<h3 class="lang-section">' + langName + '</h3>');
-      //
-      //   // Section body
-      //   accordion.append('<div id="' + lang.code + '-container" class="resource-container"></div>');
-      //   var langResourceContainer = accordion.find('#' + lang.code + '-container');
-      //
-      //   lang.resources.forEach(function(res) {
-      //     langResourceContainer.append('<h4 class="resource-title">' + res.name + '</h4>');
-      //
-      //     res.links && res.links.forEach(function(l) {
-      //       if (l) {
-      //         langResourceContainer.append('<a class="resource-link" href="' + l.url + '">' + l.format + '</a>');
-      //       }
-      //     });
-      //
-      //     res.contents && res.contents.forEach(function(c, index) {
-      //       if (c.links) {
-      //         var title = '<span class="content-title">' + c.title + '</span>';
-      //         langResourceContainer.append('<p id="' + lang.code + '-' + res.slug + '-' + c.slug + '" class="resource-content">' + title + '</p>');
-      //
-      //         c.links.forEach(function(l) {
-      //           langResourceContainer.find('#' + lang.code + '-' + res.slug + '-' + c.slug).append('<span class="resource-link"><a href="' + l.url + '">' + l.format + '</a>');
-      //         });
-      //       }
-      //     });
-      //
-      //   });
-      //
-      // });
-      //
-      // // Initialize jQuery accordion
-      // accordion.accordion({
-      //   collapsible: true,
-      //   heightStyle: 'content'
-      // });
-    };
-
-
     this.handleFailedInit = function(err) {
       console.error('Some error happened.', err);
     };
@@ -146,6 +93,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
     this.list;
     this.selected;
     this.onSelectedChange;
+
 
     this.setList = function(list) {
       this.list = list.map(function(lang) {
@@ -233,9 +181,13 @@ var ResourcesPage = ( function( window, $, undefined ) {
     };
 
 
-    this.createLinkEls = function(links, className) {
+    this.createLinkEls = function(links, className, lang) {
       return links.filter(function(link) {
-        return link;
+        // Filter out all PDF links of non-English resources because they lead
+        // to a 404.
+        // TODO: Check for each link and make sure they are ok. Maybe on the
+        // backend.
+        return link && !(lang !== 'en' && link.format === 'pdf');
       })
       .map(function(link) {
           var linkEl = create('a', className);
@@ -247,7 +199,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
     };
 
 
-    this.createContentEls = function(contents) {
+    this.createContentEls = function(contents, lang) {
       var _this = this;
       return contents.filter(function(content) {
         return content.links;
@@ -260,7 +212,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
         contentRow.appendChild(contentTitle);
 
         var linkContainer = create('div', 'content-links');
-        _this.createLinkEls(content.links, 'content-link').forEach(function(link) {
+        _this.createLinkEls(content.links, 'content-link', lang).forEach(function(link) {
           linkContainer.appendChild(link);
         });
         contentRow.appendChild(linkContainer);
@@ -298,7 +250,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
           }
 
           // Content and content links
-          _this.createContentEls(resource.contents).forEach(function(content) {
+          _this.createContentEls(resource.contents, lang.code).forEach(function(content) {
             content && _this.rootEl.appendChild(content);
           });
 

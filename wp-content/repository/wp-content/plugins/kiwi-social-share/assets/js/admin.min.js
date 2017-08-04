@@ -1,0 +1,1 @@
+jQuery(document).ready(function(a){try{kiwi.init(a),kiwi.interactions.upsellModalPage(a),kiwi.interactions.handleModalPageForm(a),kiwi.interactions.registration(a)}catch(a){console.warn(a.message)}}),jQuery(document).on("KiwiObjectsLoaded",function(){kiwi.interface.preloader(jQuery)});

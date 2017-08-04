@@ -1,0 +1,191 @@
+/*
+Theme Name: Illdy Child
+Theme URI: http://example.com/twenty-fifteen-child/
+Template: illdy
+Author: Vicky Leong
+Author URI: http://vickyleong.com
+Description: Illdy Child Theme
+Tags: light,dark,two-columns,right-sidebar,responsive-layout,accessibility-ready
+Version: 1.0.0.1499975045
+Updated: 2017-07-13 19:44:05
+
+*/
+
+/* Add color overlay on header and counter sections on the front page */
+#header {
+	position: relative;
+}
+#header::before,
+#counter::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+#header::before {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+#counter::before {
+	background-color: rgba(200, 200, 20, 0.8);
+}
+/* Make the responsive menu on top of everything else */
+.responsive-menu.active {
+	position: relative;
+	z-index: 999;
+}
+/* Hide blog post title. We already have a big o'l title on the header */
+#blog .blog-post .blog-post-title {
+	display: none;
+}
+/* Remove the space above the first title in a section */
+.blog-post-entry .so-panel.panel-first-child .textwidget h3:first-child,
+.blog-post-entry .so-panel.panel-first-child .textwidget h4:first-child {
+	margin-top: 0;
+}
+/* Add more spacing to the bottom of post's body */
+.blog-post-entry .panel-layout {
+	padding-bottom: 6rem;
+}
+/* Remove spacing between MAST phase steps */
+.mast-phase .sow-features-feature .textwidget p {
+	margin: 0;
+}
+/* Remove bullets from list */
+.markup-format ul li {
+	list-style-type: none;
+}
+/* Make PC/MAC/Linux button for tS to look like the Google Play badge a bit more */
+.get-ts-desktop .ow-button-base a {
+	border: 2px solid #CCC !important;
+	font-weight: bold;
+}
+/* Remove underline from SO button's text */
+.so-widget-sow-button a {
+    text-decoration: none;
+}
+/* Used for anything that wants to have a basic card material drop shadow */
+.card {
+	box-shadow: 0px 3px 22px -3px rgba(0,0,0,0.5);
+}
+/* Center the images of projects in projects section */
+.widget_illdy_project .project {
+	background-size: cover;
+	background-position: center;
+}
+/* Allow child/sub pages to be hidden on top menu, but appear when their */
+/* parent is hovered over */
+#header .top-header .page_item_has_children::after {
+	content: '+';
+	margin-left: 0.5rem;
+}
+#header .top-header .page_item_has_children:hover::after {
+	content: '-';
+	padding: 0 0.17rem;
+}
+#header .top-header .page_item_has_children .children {
+	position: absolute;
+  right: 0;
+  width: auto;
+  flex-direction: column;
+	border-top: 1px solid white;
+	display: none;
+}
+#header .top-header .page_item_has_children:hover .children {
+	display: flex;
+}
+#header .top-header .page_item_has_children .children .page_item a {
+	color: white;
+	white-space: nowrap;
+}
+#header .top-header .page_item_has_children .children .page_item a:hover {
+	color: #F1D204;
+}
+#header .top-header .header-navigation ul.children li {
+	margin-left: 0;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+#header .top-header .header-navigation ul.children li {
+	margin-left: 0;
+}
+/* Make the child menu to be on top of the hero title */
+#header .top-header {
+	z-index: 999;
+	position: relative;
+}
+/* Make sure responsive menu is not displayed when the screen is resized to wider screen */
+/* Had to use !important because there is an inline style of "display: block;" :( */
+.responsive-menu.active {
+	display: none !important;
+}
+@media only screen and (max-width: 992px) {
+	.responsive-menu {
+		position: absolute;
+		padding-left: 2rem;
+		padding-right: 2rem;
+		background-color: transparent;
+	}
+	.responsive-menu.active {
+		position: absolute;
+		/* Had to use !important to override the previous !important :( */
+		display: block !important;
+	}
+	.responsive-menu .page_item {
+		width: auto;
+		flex: 1 1 auto;
+		list-style: none;
+		font-weight: 700;
+	}
+	.responsive-menu .children {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.responsive-menu .page_item a {
+		background-color: rgba(255, 255, 255, 0.55);
+		color: black;
+	}
+	.responsive-menu .children .page_item {
+		background-color: transparent;
+	}
+	.responsive-menu .children .page_item a {
+		background-color: rgba(0, 0, 0, 0.55);
+		color: white;
+	}
+}
+
+.ui-accordion .ui-state-active {
+	color: #FFF;
+}
+#resources-container .lang-section {
+	display: flex;
+	flex-direction: row;
+}
+#resources-container .english-name {
+	margin-left: 1rem;
+}
+#resources-container .english-name::before {
+	content: '-';
+	display: inline;
+	margin-right: 1rem;
+}
+#resources-container .lang-code {
+	flex: 1 1 auto;
+	margin-right: 1rem;
+	text-align: right;
+}
+/* Add some space around resource links in resource page */
+#resources-container .resource-link:not(:first-of-type) {
+	margin-left: 1rem;
+}
+#resources-container .resource-content {
+	display: flex;
+	flex-direction: row;
+}
+#resources-container .content-title {
+	flex: 1 1 auto;
+}

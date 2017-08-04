@@ -158,42 +158,10 @@ Updated: 2017-07-13 19:44:05
 	}
 }
 
-.ui-accordion .ui-state-active {
-	color: #FFF;
-}
-/*#resources-container .lang-section {
-	display: flex;
-	flex-direction: row;
-}
-#resources-container .english-name {
-	margin-left: 1rem;
-}
-#resources-container .english-name::before {
-	content: '-';
-	display: inline;
-	margin-right: 1rem;
-}
-#resources-container .lang-code {
-	flex: 1 1 auto;
-	margin-right: 1rem;
-	text-align: right;
-}*/
-/* Add some space around resource links in resource page */
-/*#resources-container .resource-link:not(:first-of-type) {
-	margin-left: 1rem;
-}
-#resources-container .resource-content {
-	display: flex;
-	flex-direction: row;
-}
-#resources-container .content-title {
-	flex: 1 1 auto;
-}*/
 #resources-container {
 	display: flex;
 	flex-direction: row;
 }
-/* Sidebar */
 #resources-container .sidebar {
 	flex: 0 0 300px;
 	padding-left: 0;
@@ -201,12 +169,14 @@ Updated: 2017-07-13 19:44:05
 	margin-bottom: 0;
 	border-left: none;
 }
-#resources-container .lang-list {
+#resources-container .lang-list-container {
 	border-right: 1px solid #DDD;
 	max-height: calc(100vh);
+	display: flex;
+	flex-direction: column;
+}
+#resources-container .lang-list {
 	overflow-y: auto;
-	/*position: sticky;
-	top: 0px;*/
 }
 #resources-container .lang-list-title {
 	margin-top: 0;
@@ -218,7 +188,7 @@ Updated: 2017-07-13 19:44:05
 	flex-direction: row;
 	cursor: pointer;
 }
-#resources-container .lang-list .lang-selector::before {
+#resources-container .lang-list li::before {
 	display: none;
 }
 #resources-container .lang-selector:hover,
@@ -237,7 +207,18 @@ Updated: 2017-07-13 19:44:05
 #resources-container .lang-selector.active .lang-code {
 	color: white;
 }
-/* Main Content */
+#resources-container .grip {
+	width: 100%;
+	height: 7.7rem;
+	position: sticky;
+	top: 0;
+	background-color: #AAA;
+	color: white;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
 #resources-container .main-content {
 	flex: 1 1 auto;
 }
@@ -280,6 +261,39 @@ Updated: 2017-07-13 19:44:05
 #resources-container .content-links {
 	flex: 0 0 auto;
 }
+@media only screen and (max-width: 767px) {
+	#resources-container {
+		transition: transform 250ms ease-in-out;
+	}
+	#resources-container.opened {
+		transform: translateX(calc(300px + 1.5rem));
+	}
+	#resources-container .sidebar {
+		/*flex-basis: auto;*/
+		margin-left: calc(-300px - 1.5rem);
+	}
+	#resources-container .test {
+		flex: 0 0 3rem;
+	}
+	#resources-container .grip {
+		display: flex;
+	}
+	#resources-container .main-content {
+		/*padding-left: 1.5rem;*/
+	}
+	#resources-container .lang-list-container {
+		/*border-right-color: transparent;*/
+	}
+	#resources-container .lang-list {
+		/*position: absolute;*/
+		/*left: 0;*/
+		/*right: 0;*/
+		/*background-color: white;*/
+		/*height: 0;*/
+	}
+}
+
+/* It's being used in the sidebar of resources page, but can be used elsewhere */
 .sticky {
 	position: -webkit-sticky;
 	position: sticky;

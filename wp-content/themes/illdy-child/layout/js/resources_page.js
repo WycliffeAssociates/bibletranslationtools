@@ -29,6 +29,17 @@ var ResourcesPage = ( function( window, $, undefined ) {
       // Create and append main sections to the container
       var sidebarRoot = create('section', 'sidebar', 'sidebar');
       container.appendChild(sidebarRoot);
+
+      var test = create('section', 'test', 'test');
+      var grip = create('div', 'grip', 'grip');
+      grip.innerText = '. . .';
+      grip.addEventListener('click', function(e) {
+        $('#resources-container').toggleClass('opened');
+      });
+      test.appendChild(grip);
+      container.appendChild(test);
+
+
       var mainContentRoot = create('section', 'main-content', 'main-content');
       container.appendChild(mainContentRoot);
 
@@ -58,6 +69,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
       this.mainContent.setResources(this.resourcesData.filter(function(lang) {
         return lang.code === newVal;
       }));
+      $('#resources-container').removeClass('opened');
     };
 
 
@@ -127,14 +139,17 @@ var ResourcesPage = ( function( window, $, undefined ) {
       var title = create('h5', 'lang-list-title');
       title.innerText = 'Languages';
 
-      var list = create('ul', 'lang-list sticky');
-      list.appendChild(title);
+      var list = create('ul', 'lang-list');
+
+      var container = create('div', 'lang-list-container sticky');
+      container.appendChild(title);
+      container.appendChild(list);
 
       this.createListItemEls().forEach(function(item) {
         list.appendChild(item);
       });
 
-      return list;
+      return container;
     };
 
 
@@ -165,7 +180,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
       $(this.rootEl).empty();
       var listEl = this.createListEl();
       this.rootEl.appendChild(listEl);
-      $('.lang-list').Stickyfill();
+      $('.lang-list-container').Stickyfill();
     };
 
   }

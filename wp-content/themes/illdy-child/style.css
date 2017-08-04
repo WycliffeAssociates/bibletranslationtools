@@ -292,3 +292,8 @@ Updated: 2017-07-13 19:44:05
 	content: '';
 	display: table;
 }
+
+/* Make anything in page body that overflows horizontally to be hidden */
+.container {
+	overflow-x: hidden;
+}

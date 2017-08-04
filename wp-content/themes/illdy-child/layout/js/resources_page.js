@@ -29,17 +29,8 @@ var ResourcesPage = ( function( window, $, undefined ) {
       // Create and append main sections to the container
       var sidebarRoot = create('section', 'sidebar', 'sidebar');
       container.appendChild(sidebarRoot);
-
-      var test = create('section', 'test', 'test');
-      var grip = create('div', 'grip', 'grip');
-      grip.innerText = '. . .';
-      grip.addEventListener('click', function(e) {
-        $('#resources-container').toggleClass('opened');
-      });
-      test.appendChild(grip);
-      container.appendChild(test);
-
-
+      var sidebarGutter = this.createSidebarGutter();
+      container.appendChild(sidebarGutter);
       var mainContentRoot = create('section', 'main-content', 'main-content');
       container.appendChild(mainContentRoot);
 
@@ -73,6 +64,18 @@ var ResourcesPage = ( function( window, $, undefined ) {
     };
 
 
+    this.createSidebarGutter = function() {
+      var sidebarGutter = create('section', 'sidebar-gutter', 'sidebar-gutter');
+      var sidebarToggle = create('div', 'sidebar-toggle', 'sidebar-toggle');
+      sidebarToggle.innerText = '. . .';
+      sidebarToggle.addEventListener('click', function(e) {
+        $('#resources-container').toggleClass('opened');
+      });
+      sidebarGutter.appendChild(sidebarToggle);
+      return sidebarGutter;
+    };
+
+
     this.renderPage = function() {
       // Give sidebar the list of languges
       this.sidebar.setList(this.resourcesData);
@@ -86,7 +89,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
         return;
       }
 
-      // debugger;
+
       // Default to English resources
       this.sidebar.setSelected('en');
     };

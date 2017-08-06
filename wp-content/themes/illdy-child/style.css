@@ -295,5 +295,8 @@ Updated: 2017-07-13 19:44:05
 
 /* Make anything in page body that overflows horizontally to be hidden */
 .container {
+	/* Without display: table, overflow: hidden will break position: sticky of */
+	/* the lang-list */
+	display: table;
 	overflow-x: hidden;
 }

@@ -314,7 +314,11 @@ var ResourcesPage = ( function( window, $, undefined ) {
             $(wrapper).accordion({
               collapsible: true,
               heightStyle: 'content',
-              active: false
+              active: false,
+              icons: {
+                header: 'expand-resource',
+                activeHeader: 'collapse-resource'
+              }
             });
 
           } else {

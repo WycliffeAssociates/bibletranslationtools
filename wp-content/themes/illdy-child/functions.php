@@ -20,7 +20,7 @@ function illdy_child_enqueue_scripts()
 
     if (is_page('resources')) {
         wp_register_script( 'stickyfill', $child_theme_dir . '/layout/js/stickyfill.js', array( 'jquery' ), NULL, true);
-        wp_register_script( 'resources-page', $child_theme_dir . '/layout/js/resources_page.js', array( 'jquery', 'stickyfill' ), NULL, true);
+        wp_register_script( 'resources-page', $child_theme_dir . '/layout/js/resources_page.js', array( 'jquery', 'stickyfill', 'jquery-ui-accordion' ), NULL, true);
         wp_enqueue_script( ' stickyfill' );
         wp_enqueue_script( 'resources-page' );
     }

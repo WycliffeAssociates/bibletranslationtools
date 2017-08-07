@@ -89,7 +89,6 @@ var ResourcesPage = ( function( window, $, undefined ) {
         return;
       }
 
-
       // Default to English resources
       this.sidebar.setSelected('en');
     };
@@ -226,6 +225,7 @@ var ResourcesPage = ( function( window, $, undefined ) {
       })
       .map(function(content) {
         var contentRow = create('div', 'content');
+        contentRow.setAttribute('data-category', content.category);
 
         var contentTitle = create('p', 'content-title');
         contentTitle.innerText = content.title;
@@ -270,13 +270,68 @@ var ResourcesPage = ( function( window, $, undefined ) {
           }
 
           // Content and content links
-          _this.createContentEls(resource.contents, lang.code).forEach(function(content) {
-            content && _this.rootEl.appendChild(content);
-          });
+          if (resource.subj && resource.subj.toLowerCase() === 'bible') {
+            // If the resources is a Bible type, group the contents by testament
+            var wrapper = create('div', 'container-wrapper content-accordion');
+            var otContainer = create('div', 'ot-content-container');
+            var ntContainer = create('div', 'nt-content-container');
+            var otherContainer = create('div', 'other-content-container');
+
+            // Sort contents into the appropriate container
+            var containerMap = {
+              'bible-ot': otContainer,
+              'bible-nt': ntContainer,
+              [undefined]: otherContainer,
+            };
+            _this.createContentEls(resource.contents, lang.code).forEach(function(content) {
+                content && containerMap[content.dataset.category.trim()].appendChild(content);
+            });
+
+            // Only append the containers that are not empty
+            if (otContainer.childNodes.length) {
+              var otContainerTitle = create('h5', 'ot-content-title');
+              otContainerTitle.innerText = 'Old Testament';
+              wrapper.appendChild(otContainerTitle);
+              wrapper.appendChild(otContainer);
+            }
+            if (ntContainer.childNodes.length) {
+              var ntContainerTitle = create('h5', 'nt-content-title');
+              ntContainerTitle.innerText = 'New Testament';
+              wrapper.appendChild(ntContainerTitle);
+              wrapper.appendChild(ntContainer);
+            }
+            if (otherContainer.childNodes.length) {
+              var otherContainerTitle = create('h5', 'other-content-title');
+              otherContainerTitle.innerText = 'Other';
+              wrapper.appendChild(otherContainerTitle);
+              wrapper.appendChild(otherContainer);
+            }
+
+            // Mount the wrapper
+            _this.rootEl.appendChild(wrapper);
+
+            // Transform to jQuery UI Accordion
+            $(wrapper).accordion({
+              collapsible: true,
+              heightStyle: 'content',
+              active: false
+            });
+
+          } else {
+
+            // If the resource is not a Bible type, then just append everything
+            // to the container itself.
+            _this.createContentEls(resource.contents, lang.code).forEach(function(content) {
+              _this.rootEl.appendChild(content);
+            });
+
+          }
 
         });
 
       });
+
+
     };
 
   }

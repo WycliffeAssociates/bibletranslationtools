@@ -230,6 +230,22 @@ Updated: 2017-07-13 19:44:05
 	padding-bottom: 2rem;
 	background-color: #EEE;
 }
+#resources-container .resource {
+	margin-bottom: 3rem;
+}
+#resources-container .resource-list {
+	display: flex;
+	flex-direction: column;
+}
+#resources-container .resource-list > * {
+	order: 10;
+}
+#resources-container .resource.ulb {
+	order: 1;
+}
+#resources-container .resource.udb {
+	order: 2;
+}
 #resources-container .resource-title {
 	margin-bottom: 1.25rem;
 }

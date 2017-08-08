@@ -204,6 +204,36 @@ var ResourcesPage = ( function( window, $, undefined ) {
     };
 
 
+    this.createLangResources = function(resources, langCode) {
+      var container = create('div', 'resource-list');
+      resources.forEach(function(resource) {
+        container.appendChild(this.createResource(resource, langCode));
+      }, this);
+      return container;
+    };
+
+
+    this.createResource = function(resource, langCode) {
+      var container = create('div', 'resource ' + resource.slug);
+      container.appendChild(this.createResourceHeader(resource.name));
+
+      if (resource.links) {
+        container.appendChild(this.createResourceLinks(resource.links));
+      }
+
+      var contentEls = this.createContentEls(resource.contents, langCode);
+      if (resource.subj && resource.subj.toLowerCase() === 'bible') {
+        container.appendChild(this.createAccordion(contentEls));
+      } else {
+        contentEls.forEach(function(content) {
+          container.appendChild(content);
+        });
+      }
+
+      return container;
+    };
+
+
     this.createResourceHeader = function(title) {
       var header = create('h4', 'resource-title');
       header.innerText = title || 'Unknown';
@@ -310,27 +340,12 @@ var ResourcesPage = ( function( window, $, undefined ) {
 
     this.render = function() {
       $(this.rootEl).empty();
-
       this.resources.forEach(function(lang) {
-        rootEl.appendChild(this.createLangHeader(lang.englishName || lang.name));
-
-        lang.resources.forEach(function(resource) {
-          rootEl.appendChild(this.createResourceHeader(resource.name));
-
-          if (resource.links) {
-            rootEl.appendChild(this.createResourceLinks(resource.links));
-          }
-
-          var contentEls = this.createContentEls(resource.contents, lang.code);
-          if (resource.subj && resource.subj.toLowerCase() === 'bible') {
-            rootEl.appendChild(this.createAccordion(contentEls));
-          } else {
-            contentEls.forEach(function(content) {
-              rootEl.appendChild(content);
-            });
-          }
-
-        }, this);
+        this.rootEl.appendChild(this.createLangHeader(lang.englishName || lang.name));
+        this.rootEl.appendChild(this.createLangResources(lang.resources, lang.code));
+        // lang.resources.forEach(function(resource) {
+        //   rootEl.appendChild(this.createResource(resource, lang.code));
+        // }, this);
       }, this);
     };
 

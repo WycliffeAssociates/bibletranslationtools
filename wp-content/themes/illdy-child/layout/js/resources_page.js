@@ -43,14 +43,13 @@ var ResourcesPage = ( function( window, $, undefined ) {
       this.renderPage = this.renderPage.bind(this);
 
       // Get json data and return a promise
-      var _this = this;
-      return $.get(this.dataUrl, function(data) {
+      return $.get(this.dataUrl, (function(data) {
         if (!data) {
           console.error('resources.json doesn\'t provide any data');
           return;
         }
-        _this.resourcesData = typeof data === 'string' ? JSON.parse(data) : data;
-      });
+        this.resourcesData = typeof data === 'string' ? JSON.parse(data) : data;
+      }).bind(this));
     };
 
 
@@ -156,20 +155,19 @@ var ResourcesPage = ( function( window, $, undefined ) {
 
 
     this.createListItemEls = function() {
-      var _this = this;
-      return _this.list.map(function(lang) {
+      return this.list.map((function(lang) {
         var item = create('li', 'lang-selector', 'lang-selector-' + lang.code);
         item.setAttribute('data-code', lang.code);
         item.setAttribute('data-direction', lang.direction);
         item.innerText = lang.englishName || lang.name;
-        item.addEventListener('click', _this.onLangClick.bind(_this));
+        item.addEventListener('click', this.onLangClick.bind(this));
 
         var code = create('span', 'lang-code', 'lang-code-' + lang.code);
         code.innerText = lang.code;
         item.appendChild(code);
 
         return item;
-      });
+      }).bind(this));
     };
 
 
@@ -193,11 +191,33 @@ var ResourcesPage = ( function( window, $, undefined ) {
     this.rootEl = rootEl;
     this.resources;
 
-
     this.setResources = function(resources) {
       this.resources = resources;
       this.render();
     };
+
+
+    this.createLangHeader = function(title) {
+      var header = create('h3', 'lang-title');
+      header.innerText = title || 'Unknown';
+      return header;
+    };
+
+
+    this.createResourceHeader = function(title) {
+      var header = create('h4', 'resource-title');
+      header.innerText = title || 'Unknown';
+      return header;
+    };
+
+
+    this.createResourceLinks = function(links) {
+      var container = create('div', 'resource-links');
+      this.createLinkEls(links, 'resource-link').forEach(function(link) {
+        link && container.appendChild(link);
+      });
+      return container;
+    }
 
 
     this.createLinkEls = function(links, className, lang) {
@@ -219,11 +239,10 @@ var ResourcesPage = ( function( window, $, undefined ) {
 
 
     this.createContentEls = function(contents, lang) {
-      var _this = this;
       return contents.filter(function(content) {
         return content.links;
       })
-      .map(function(content) {
+      .map((function(content) {
         var contentRow = create('div', 'content');
         contentRow.setAttribute('data-category', content.category);
 
@@ -232,110 +251,87 @@ var ResourcesPage = ( function( window, $, undefined ) {
         contentRow.appendChild(contentTitle);
 
         var linkContainer = create('div', 'content-links');
-        _this.createLinkEls(content.links, 'content-link', lang).forEach(function(link) {
+        this.createLinkEls(content.links, 'content-link', lang).forEach(function(link) {
           linkContainer.appendChild(link);
         });
         contentRow.appendChild(linkContainer);
 
         return contentRow;
+      }).bind(this));
+    };
+
+
+    this.createAccordion = function(contentEls) {
+      var accordion = create('div', 'container-wrapper content-accordion');
+      var containers = {
+        'bible-ot': create('div', 'ot-content-container'),
+        'bible-nt': create('div', 'nt-content-container'),
+        [undefined]: create('div', 'other-content-container'),
+      };
+
+      // Sort contents into the appropriate container
+      contentEls.forEach(function(el) {
+        el && containers[el.dataset.category.trim()].appendChild(el);
       });
+
+      // Only append non-empty containers to the accordion
+      if (containers['bible-ot'].childNodes.length) {
+        var otContainerTitle = create('h5', 'ot-content-title');
+        otContainerTitle.innerText = 'Old Testament';
+        accordion.appendChild(otContainerTitle);
+        accordion.appendChild(containers['bible-ot']);
+      }
+      if (containers['bible-nt'].childNodes.length) {
+        var ntContainerTitle = create('h5', 'nt-content-title');
+        ntContainerTitle.innerText = 'New Testament';
+        accordion.appendChild(ntContainerTitle);
+        accordion.appendChild(containers['bible-nt']);
+      }
+      if (containers[undefined].childNodes.length) {
+        var otherContainerTitle = create('h5', 'other-content-title');
+        otherContainerTitle.innerText = 'Other';
+        accordion.appendChild(otherContainerTitle);
+        accordion.appendChild(containers[undefined]);
+      }
+
+      $(accordion).accordion({
+        collapsible: true,
+        heightStyle: 'content',
+        active: false,
+        icons: {
+          header: 'expand-resource',
+          activeHeader: 'collapse-resource'
+        }
+      });
+
+      return accordion;
     };
 
 
     this.render = function() {
-      var _this = this;
       $(this.rootEl).empty();
 
       this.resources.forEach(function(lang) {
-
-        // Language/Header
-        var header = create('h3', 'lang-title');
-        header.innerText = lang.englishName || lang.name;
-        _this.rootEl.appendChild(header);
+        rootEl.appendChild(this.createLangHeader(lang.englishName || lang.name));
 
         lang.resources.forEach(function(resource) {
+          rootEl.appendChild(this.createResourceHeader(resource.name));
 
-          // Resource
-          var resourceName = create('h4', 'resource-title');
-          resourceName.innerText = resource.name;
-          _this.rootEl.appendChild(resourceName);
-
-          // Resource links
           if (resource.links) {
-            var linkContainer = create('div', 'resource-links');
-            _this.createLinkEls(resource.links, 'resource-link').forEach(function(link) {
-              link && linkContainer.appendChild(link);
-            });
-            _this.rootEl.appendChild(linkContainer);
+            rootEl.appendChild(this.createResourceLinks(resource.links));
           }
 
-          // Content and content links
+          var contentEls = this.createContentEls(resource.contents, lang.code);
           if (resource.subj && resource.subj.toLowerCase() === 'bible') {
-            // If the resources is a Bible type, group the contents by testament
-            var wrapper = create('div', 'container-wrapper content-accordion');
-            var otContainer = create('div', 'ot-content-container');
-            var ntContainer = create('div', 'nt-content-container');
-            var otherContainer = create('div', 'other-content-container');
-
-            // Sort contents into the appropriate container
-            var containerMap = {
-              'bible-ot': otContainer,
-              'bible-nt': ntContainer,
-              [undefined]: otherContainer,
-            };
-            _this.createContentEls(resource.contents, lang.code).forEach(function(content) {
-                content && containerMap[content.dataset.category.trim()].appendChild(content);
-            });
-
-            // Only append the containers that are not empty
-            if (otContainer.childNodes.length) {
-              var otContainerTitle = create('h5', 'ot-content-title');
-              otContainerTitle.innerText = 'Old Testament';
-              wrapper.appendChild(otContainerTitle);
-              wrapper.appendChild(otContainer);
-            }
-            if (ntContainer.childNodes.length) {
-              var ntContainerTitle = create('h5', 'nt-content-title');
-              ntContainerTitle.innerText = 'New Testament';
-              wrapper.appendChild(ntContainerTitle);
-              wrapper.appendChild(ntContainer);
-            }
-            if (otherContainer.childNodes.length) {
-              var otherContainerTitle = create('h5', 'other-content-title');
-              otherContainerTitle.innerText = 'Other';
-              wrapper.appendChild(otherContainerTitle);
-              wrapper.appendChild(otherContainer);
-            }
-
-            // Mount the wrapper
-            _this.rootEl.appendChild(wrapper);
-
-            // Transform to jQuery UI Accordion
-            $(wrapper).accordion({
-              collapsible: true,
-              heightStyle: 'content',
-              active: false,
-              icons: {
-                header: 'expand-resource',
-                activeHeader: 'collapse-resource'
-              }
-            });
-
+            rootEl.appendChild(this.createAccordion(contentEls));
           } else {
-
-            // If the resource is not a Bible type, then just append everything
-            // to the container itself.
-            _this.createContentEls(resource.contents, lang.code).forEach(function(content) {
-              _this.rootEl.appendChild(content);
+            contentEls.forEach(function(content) {
+              rootEl.appendChild(content);
             });
-
           }
 
-        });
-
-      });
-
-
+        }, this);
+      }, this);
     };
 
   }

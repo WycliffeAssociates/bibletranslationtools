@@ -1,4 +1,4 @@
-var ResourcesPage = ( function( window, $, undefined ) {
+var ResourcesPage = (function(window, $) {
 
   var create = function(type, className, id) {
     el = window.document.createElement(type);
@@ -343,9 +343,6 @@ var ResourcesPage = ( function( window, $, undefined ) {
       this.resources.forEach(function(lang) {
         this.rootEl.appendChild(this.createLangHeader(lang.englishName || lang.name));
         this.rootEl.appendChild(this.createLangResources(lang.resources, lang.code));
-        // lang.resources.forEach(function(resource) {
-        //   rootEl.appendChild(this.createResource(resource, lang.code));
-        // }, this);
       }, this);
     };
 
@@ -354,4 +351,4 @@ var ResourcesPage = ( function( window, $, undefined ) {
 
   return ResourcesPage;
 
-})( window, jQuery );
+})(window, jQuery);

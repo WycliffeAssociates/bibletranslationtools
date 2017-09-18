@@ -107,7 +107,7 @@ Updated: 2017-07-13 19:44:05
 	margin-left: 0;
 	padding-left: 1rem;
 	padding-right: 1rem;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.85);
 }
 #header .top-header .header-navigation ul.children li {
 	margin-left: 0;
@@ -117,6 +117,12 @@ Updated: 2017-07-13 19:44:05
 	z-index: 999;
 	position: relative;
 }
+
+/* Make internal pages to have smaller banner */
+#header .bottom-header.blog {
+	padding: 60px 0;
+}
+
 /* Make sure responsive menu is not displayed when the screen is resized to wider screen */
 /* Had to use !important because there is an inline style of "display: block;" :( */
 .responsive-menu.active {
@@ -129,6 +135,9 @@ Updated: 2017-07-13 19:44:05
 		padding-right: 2rem;
 		background-color: transparent;
 	}
+	.responsive-menu > ul {
+		border-top: 1px solid white;
+	}
 	.responsive-menu.active {
 		position: absolute;
 		/* Had to use !important to override the previous !important :( */
@@ -140,21 +149,27 @@ Updated: 2017-07-13 19:44:05
 		list-style: none;
 		font-weight: 700;
 	}
+	.responsive-menu .page_item a {
+		background-color: black;
+		color: white;
+		text-transform: uppercase;
+		font-size: 115%;
+		border-bottom: none;
+	}
 	.responsive-menu .children {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-	}
-	.responsive-menu .page_item a {
-		background-color: rgba(255, 255, 255, 0.55);
-		color: black;
+		justify-content: center;
+		background-color: #333;
 	}
 	.responsive-menu .children .page_item {
-		background-color: transparent;
+		flex: 0 0 auto;
 	}
 	.responsive-menu .children .page_item a {
-		background-color: rgba(0, 0, 0, 0.55);
-		color: white;
+		background-color: #333;
+		text-transform: none;
+		font-size: 100%;
 	}
 }
 
@@ -320,6 +335,7 @@ Updated: 2017-07-13 19:44:05
 	overflow-x: hidden;
 }
 
+/* Accordion styling for language resources in resources page */
 #resources-container .ui-accordion .ui-accordion-header {
   background-color: #EEE;
   border: none;

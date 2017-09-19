@@ -173,56 +173,56 @@ Updated: 2017-07-13 19:44:05
 	}
 }
 
-#resources-container {
+#translations-container {
 	display: flex;
 	flex-direction: row;
 }
-#resources-container .sidebar {
+#translations-container .sidebar {
 	flex: 0 0 300px;
 	padding-left: 0;
 	margin-top: 0;
 	margin-bottom: 0;
 	border-left: none;
 }
-#resources-container .lang-list-container {
+#translations-container .lang-list-container {
 	border-right: 1px solid #DDD;
 	max-height: calc(100vh);
 	display: flex;
 	flex-direction: column;
 }
-#resources-container .lang-list {
+#translations-container .lang-list {
 	overflow-y: auto;
 }
-#resources-container .lang-list-title {
+#translations-container .lang-list-title {
 	margin-top: 0;
 }
-#resources-container .lang-selector {
+#translations-container .lang-selector {
 	padding-left: 1rem;
 	padding-right: 1.5rem;
 	display: flex;
 	flex-direction: row;
 	cursor: pointer;
 }
-#resources-container .lang-list li::before {
+#translations-container .lang-list li::before {
 	display: none;
 }
-#resources-container .lang-selector:hover,
-#resources-container .lang-selector.active {
+#translations-container .lang-selector:hover,
+#translations-container .lang-selector.active {
 	background-color: #E2C504;
 	color: white;
 }
-#resources-container .lang-code {
+#translations-container .lang-code {
 	flex: 1 1 auto;
 	text-align: right;
 	color: #AAA;
 	font-style: italic;
 	pointer-events: none;
 }
-#resources-container .lang-selector:hover .lang-code,
-#resources-container .lang-selector.active .lang-code {
+#translations-container .lang-selector:hover .lang-code,
+#translations-container .lang-selector.active .lang-code {
 	color: white;
 }
-#resources-container .sidebar-toggle {
+#translations-container .sidebar-toggle {
 	width: 100%;
 	height: 7.7rem;
 	position: sticky;
@@ -234,83 +234,101 @@ Updated: 2017-07-13 19:44:05
 	justify-content: center;
 	cursor: pointer;
 }
-#resources-container .main-content {
+#translations-container .main-content {
 	flex: 1 1 auto;
 }
-#resources-container .main-content > * {
+#translations-container .main-content > * {
 	padding-left: 1.5rem
 }
-#resources-container .lang-title {
+#translations-container .lang-title {
 	padding-top: 2rem;
 	padding-bottom: 2rem;
 	background-color: #EEE;
 }
-#resources-container .resource {
+#translations-container .content {
 	margin-bottom: 3rem;
 }
-#resources-container .resource-list {
+#translations-container .content-list {
 	display: flex;
 	flex-direction: column;
 }
-#resources-container .resource-list > * {
+#translations-container .content-list > * {
 	order: 10;
 }
-#resources-container .resource.ulb {
+#translations-container .content.ulb {
 	order: 1;
 }
-#resources-container .resource.udb {
+#translations-container .content.udb {
 	order: 2;
 }
-#resources-container .resource-title {
+#translations-container .content-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+#translations-container .content-title {
+	flex: 1 1 auto;
+	margin-bottom: 0;
+}
+#translations-container .content-checking-level {
+	flex: 0 0 auto;
+	width: 48px;
+	height: 48px;
+}
+#translations-container .content-links {
 	margin-bottom: 1.25rem;
 }
-#resources-container .resource-links {
-	margin-bottom: 1.25rem;
-}
-#resources-container .resource-link,
-#resources-container .content-link {
+#translations-container .content-link,
+#translations-container .subcontent-link {
 	display: inline-block;
 	margin-left: 1rem;
 	background-color: #81A83E;
 	color: white;
 	text-decoration: none;
 	padding: 0.5rem 1.25rem;
+	border-radius: 2px;
+	box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.5);
+	transition: box-shadow 200ms ease-in-out;
 }
-#resources-container .resource-link:first-of-type,
-#resources-container .content-link:first-of-type {
+#translations-container .content-link:hover,
+#translations-container .subcontent-link:hover {
+	box-shadow: 0px 2px 7px 1px rgba(0, 0, 0, 0.5);
+}
+#translations-container .content-link:first-of-type,
+#translations-container .subcontent-link:first-of-type {
 	margin-left: 0;
 }
-#resources-container .content {
+#translations-container .subcontent {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 }
-#resources-container .content-title {
+#translations-container .subcontent-title {
 	flex: 1 1 auto;
 	margin: 1rem 0;
 }
-#resources-container .content-links {
+#translations-container .subcontent-links {
 	flex: 0 0 auto;
 }
 @media only screen and (max-width: 767px) {
 	.container {
 		width: 100%;
 	}
-	#resources-container {
+	#translations-container {
 		position: relative;
 		left: 0;
 		transition: left 250ms ease-in-out;
 	}
-	#resources-container.opened {
+	#translations-container.opened {
 		left: calc(300px + 1.5rem);
 	}
-	#resources-container .sidebar {
+	#translations-container .sidebar {
 		margin-left: calc(-300px - 1.5rem);
 	}
-	#resources-container .sidebar-gutter {
+	#translations-container .sidebar-gutter {
 		flex: 0 0 3rem;
 	}
-	#resources-container .sidebar-toggle {
+	#translations-container .sidebar-toggle {
 		display: flex;
 	}
 }
@@ -334,25 +352,31 @@ Updated: 2017-07-13 19:44:05
 	display: table;
 	overflow-x: hidden;
 }
+/* Container was simply too small on that screen size */
+@media (min-width: 768px) and (max-width: 992px) {
+	.container {
+		width: 100%;
+	}
+}
 
 /* Accordion styling for language resources in resources page */
-#resources-container .ui-accordion .ui-accordion-header {
+#translations-container .ui-accordion .ui-accordion-header {
   background-color: #EEE;
   border: none;
   font-size: 100%;
   font-weight: bold;
 }
-#resources-container .ui-accordion .ui-accordion-content {
+#translations-container .ui-accordion .ui-accordion-content {
   padding: 0;
   border: none;
   padding-top: 0.5rem;
 }
-#resources-container .ui-icon {
+#translations-container .ui-icon {
 	background-size: cover;
 }
-#resources-container .ui-accordion .expand-resource {
+#translations-container .ui-accordion .expand-resource {
 	background-image: url('./layout/images/chevron-down.png');
 }
-#resources-container .ui-accordion .collapse-resource {
+#translations-container .ui-accordion .collapse-resource {
 	background-image: url('./layout/images/chevron-up.png');
 }

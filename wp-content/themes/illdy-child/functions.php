@@ -7,7 +7,7 @@ function illdy_child_enqueue_styles() {
 
     wp_enqueue_style( $parent_style, $parent_theme_dir . '/style.css');
     wp_enqueue_style( 'illdy-child', $child_theme_dir . '/style.css', array( $parent_style ), wp_get_theme()->get('Version'));
-    if (is_page('resources')) {
+    if (is_page('translations')) {
       wp_enqueue_style( 'jquery-accordion', $child_theme_dir . '/layout/css/jquery-ui.min.css', array( $parent_style ));
     }
 }
@@ -18,11 +18,13 @@ function illdy_child_enqueue_scripts()
     $parent_theme_dir = get_template_directory_uri();
     $child_theme_dir = get_stylesheet_directory_uri();
 
-    if (is_page('resources')) {
+    if (is_page('translations')) {
         wp_register_script( 'stickyfill', $child_theme_dir . '/layout/js/stickyfill.js', array( 'jquery' ), NULL, true);
-        wp_register_script( 'resources-page', $child_theme_dir . '/layout/js/resources_page.js', array( 'jquery', 'stickyfill', 'jquery-ui-accordion' ), NULL, true);
+        wp_register_script( 'translations-page', $child_theme_dir . '/layout/js/translations_page.js', array( 'jquery', 'stickyfill', 'jquery-ui-accordion' ), NULL, true);
+        wp_localize_script( 'translations-page', 'WPURL', array( 'siteurl' => $child_theme_dir ));
         wp_enqueue_script( ' stickyfill' );
-        wp_enqueue_script( 'resources-page' );
+        wp_enqueue_script( 'translations-page' );
+        // wp_enqueue_script( 'wp-url' );
     }
 
     // Use same handle as parent theme to override ('illdy-plugins')

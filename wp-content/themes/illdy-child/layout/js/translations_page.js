@@ -213,9 +213,12 @@ var TranslationsPage = (function(window, $) {
       this.contents = contents;
     };
 
-    this.createLangHeader = function(title) {
+    this.createLangHeader = function(name, englishName) {
       var header = create('h3', 'lang-title');
-      header.innerText = title || 'Unknown';
+      header.innerText = name || 'Unknown';
+      if (englishName && englishName !== name) {
+        header.innerText += ' - ' + englishName;
+      }
       return header;
     };
 
@@ -370,7 +373,7 @@ var TranslationsPage = (function(window, $) {
     this.render = function() {
       $(this.rootEl).empty();
       this.contents.forEach(function(lang) {
-        this.rootEl.appendChild(this.createLangHeader(lang.englishName || lang.name));
+        this.rootEl.appendChild(this.createLangHeader(lang.name, lang.englishName));
         this.rootEl.appendChild(this.createContentList(lang.contents, lang.code));
       }, this);
     };

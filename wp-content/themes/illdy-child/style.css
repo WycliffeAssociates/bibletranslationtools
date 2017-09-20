@@ -281,7 +281,8 @@ Updated: 2017-07-13 19:44:05
 #translations-container .content-link,
 #translations-container .subcontent-link {
 	display: inline-block;
-	margin-left: 1rem;
+	margin-right: 1rem;
+	margin-bottom: 1rem;
 	background-color: #81A83E;
 	color: white;
 	text-decoration: none;
@@ -296,7 +297,7 @@ Updated: 2017-07-13 19:44:05
 }
 #translations-container .content-link:first-of-type,
 #translations-container .subcontent-link:first-of-type {
-	margin-left: 0;
+	/*margin-left: 0;*/
 }
 #translations-container .subcontent {
 	display: flex;

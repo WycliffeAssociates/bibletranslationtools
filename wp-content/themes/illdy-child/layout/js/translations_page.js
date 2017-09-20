@@ -239,7 +239,8 @@ var TranslationsPage = (function(window, $) {
       }
 
       var subcontents = this.createSubcontents(content.subcontents);
-      if (content.subject && content.subject.toLowerCase() === 'bible') {
+      var contentSubject = content.subject && content.subject.toLowerCase();
+      if (contentSubject && contentSubject === 'bible' || contentSubject === 'bible stories') {
         container.appendChild(this.createAccordion(subcontents));
       } else {
         subcontents.forEach(function(subcontent) {
@@ -296,6 +297,11 @@ var TranslationsPage = (function(window, $) {
           if (link.format === 'zip') {
             linkEl.innerText += ' (' + link.zipContent + ')';
           }
+          if (link.quality) {
+            var qualitySpan = create('i', 'quality');
+            qualitySpan.innerText = ' - ' + link.quality;
+            linkEl.appendChild(qualitySpan);
+          }
           linkEl.setAttribute('href', link.url);
           linkEl.setAttribute('target', '_blank');
           return linkEl;
@@ -329,6 +335,7 @@ var TranslationsPage = (function(window, $) {
       var containers = {
         'bible-ot': create('div', 'ot-subcontent-container'),
         'bible-nt': create('div', 'nt-subcontent-container'),
+        'obs': create('div', 'obs-subcontent-container'),
         [undefined]: create('div', 'other-subcontent-container'),
       };
 
@@ -349,6 +356,12 @@ var TranslationsPage = (function(window, $) {
         ntContainerTitle.innerText = 'New Testament';
         accordion.appendChild(ntContainerTitle);
         accordion.appendChild(containers['bible-nt']);
+      }
+      if (containers['obs'].childNodes.length) {
+        var obsContainerTitle = create('h5', 'obs-subcontent-title');
+        obsContainerTitle.innerText = 'Chapters';
+        accordion.appendChild(obsContainerTitle);
+        accordion.appendChild(containers['obs']);
       }
       if (containers[undefined].childNodes.length) {
         var otherContainerTitle = create('h5', 'other-subcontent-title');

@@ -18,6 +18,11 @@ function illdy_child_enqueue_scripts()
     $parent_theme_dir = get_template_directory_uri();
     $child_theme_dir = get_stylesheet_directory_uri();
 
+    if (is_page('homepage')) {
+      wp_register_script( 'homepage', $child_theme_dir . '/layout/js/homepage.js', array( 'jquery' ), NULL, true);
+      wp_enqueue_script( 'homepage' );
+    }
+
     if (is_page('translations')) {
         wp_register_script( 'stickyfill', $child_theme_dir . '/layout/js/stickyfill.js', array( 'jquery' ), NULL, true);
         wp_register_script( 'translations-page', $child_theme_dir . '/layout/js/translations_page.js', array( 'jquery', 'stickyfill', 'jquery-ui-accordion' ), NULL, true);

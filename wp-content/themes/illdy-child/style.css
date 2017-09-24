@@ -31,6 +31,30 @@ Updated: 2017-07-13 19:44:05
 #counter::before {
 	background-color: rgba(200, 200, 20, 0.8);
 }
+
+/* This targets the service section on the home page */
+#services.front-page-section {
+	padding: 75px 0;
+}
+#services.front-page-section .widget_illdy_service {
+	margin-top: 0;
+	margin-bottom: 3rem;
+}
+#services.front-page-section .section-content .service .service-icon {
+	font-size: 5rem;
+}
+#services.front-page-section .service-link {
+	line-height: 2.6;
+	font-size: 85%;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #337ab7;
+}
+#services.front-page-section .service-link::after {
+	content: '\00BB';
+	margin-left: 0.5rem;
+}
+
 /* Make the responsive menu on top of everything else */
 .responsive-menu.active {
 	position: relative;

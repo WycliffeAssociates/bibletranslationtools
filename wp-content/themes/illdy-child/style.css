@@ -32,17 +32,20 @@ Updated: 2017-07-13 19:44:05
 	background-color: rgba(200, 200, 20, 0.8);
 }
 
-/* This targets the service section on the home page */
+/* Custom styling for Services section on the home page */
 #services.front-page-section {
 	padding: 75px 0;
 }
+/* Equalize service widgets spacing */
 #services.front-page-section .widget_illdy_service {
 	margin-top: 0;
 	margin-bottom: 3rem;
 }
+/* Enlarges the service icon for more balance */
 #services.front-page-section .section-content .service .service-icon {
 	font-size: 5rem;
 }
+/* Makes the link more distinguishable and pronounced */
 #services.front-page-section .service-link {
 	line-height: 2.6;
 	font-size: 85%;
@@ -50,9 +53,27 @@ Updated: 2017-07-13 19:44:05
 	text-transform: uppercase;
 	color: #337ab7;
 }
+/* Adds right-angled quote after the link text */
 #services.front-page-section .service-link::after {
 	content: '\00BB';
 	margin-left: 0.5rem;
+}
+@media only screen and (min-width: 768px) {
+	/* Aligns service widgets content to the left on wider screen */
+	#services .service {
+		text-align: left;
+	}
+	/* Makes service icon and title be on the same line */
+	#services .section-content .service .service-icon,
+	#services .section-content .service .service-title {
+		display: inline-block;
+		width: auto;
+	}
+	/* Adjusts spacing between the icon, title, and the paragraph */
+	#services .section-content .service .service-title {
+		margin-left: 2rem;
+		margin-bottom: 0;
+	}
 }
 
 /* Make the responsive menu on top of everything else */

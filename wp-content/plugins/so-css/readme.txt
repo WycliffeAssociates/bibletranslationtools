@@ -1,9 +1,9 @@
 === SiteOrigin CSS ===
 Tags: css, design, edit, customize
 Requires at least: 3.9
-Tested up to: 4.8
-Stable tag: 1.1.3
-Build time: 2017-04-30T20:55:22+02:00
+Tested up to: 4.7.2
+Stable tag: 1.1.5
+Build time: 2017-09-19T17:05:02+02:00
 License: GPLv2 or later
 Contributors: gpriday
 Donate link: https://siteorigin.com/downloads/contribution/
@@ -64,6 +64,13 @@ We're actively developing SiteOrigin CSS. Keep track of what's happening over on
 We offer free support on the [SiteOrigin support forums](https://siteorigin.com/thread/).
 
 == Changelog ==
+
+= 1.1.5 - 19 September 2017 =
+* Use `home_url` instead of `site_url` to determine where to open CSS preview.
+* Increment and decrement buttons work when value empty or zero. Also added repeating action while button held down.
+* Scroll editor instead of the whole page so 'Save' button is always visible.
+* Set color CSS on visual editor and inspector.
+* Saving generated CSS to stylesheet file in uploads directory.
 
 = 1.1.4 - 31 January 2017 =
 * Updated CodeMirror to 2.25.2.

@@ -2,8 +2,8 @@
 Contributors: colorlibplugins, silkalns
 Tags: woocommerce, widgets, plugin, demo, companion, home page, one page, parallax, social, portfolio, projects
 Requires at least: 3.8
-Tested up to: 4.6
-Stable tag: 1.0.5
+Tested up to: 4.8
+Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -56,6 +56,9 @@ Currently it works only with Illdy theme.
 You can still use Illdy theme without this plugin but you won't be able to import demo content and use theme specific widgets that you see on front page of theme demo.
 
 == Changelog ==
+
+= 1.0.6 = 
+* Portfolio URLs were not saving; bug fixed
 
 = 1.0.5 =
 * Improvements to support new Illdy theme version

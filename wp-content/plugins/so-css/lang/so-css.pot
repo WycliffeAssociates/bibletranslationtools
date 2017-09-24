@@ -409,43 +409,43 @@ msgstr ""
 msgid "Z-Index"
 msgstr ""
 
-#: tmp/so-css.php:96, tmp/so-css.php:96, tmp/so-css.php:138
+#: tmp/so-css.php:111, tmp/so-css.php:111, tmp/so-css.php:175
 msgid "Custom CSS"
 msgstr ""
 
-#: tmp/so-css.php:140
+#: tmp/so-css.php:177
 msgid "SiteOrigin CSS adds any custom CSS you enter here into your site's header. "
 msgstr ""
 
-#: tmp/so-css.php:141
+#: tmp/so-css.php:178
 msgid "These changes will persist across updates so it's best to make all your changes here. "
 msgstr ""
 
-#: tmp/so-css.php:195
+#: tmp/so-css.php:234
 msgid "Unchanged"
 msgstr ""
 
-#: tmp/so-css.php:196
+#: tmp/so-css.php:235
 msgid "Select"
 msgstr ""
 
-#: tmp/so-css.php:197
+#: tmp/so-css.php:236
 msgid "Select Image"
 msgstr ""
 
-#: tmp/so-css.php:198
+#: tmp/so-css.php:237
 msgid "Are you sure you want to leave without saving?"
 msgstr ""
 
-#: tmp/so-css.php:234
+#: tmp/so-css.php:273
 msgid "CSS Editor"
 msgstr ""
 
-#: tmp/so-css.php:235
+#: tmp/so-css.php:274
 msgid "Support"
 msgstr ""
 
-#: tmp/so-css.php:373
+#: tmp/so-css.php:412
 msgid "Changes apply to %s and its child themes"
 msgstr ""
 

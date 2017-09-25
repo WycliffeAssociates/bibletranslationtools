@@ -277,7 +277,7 @@ var TranslationsPage = (function(window, $) {
 
     this.createContentLinks = function(links) {
       var container = create('div', 'content-links');
-      this.createLinkEls(links, 'content-link').forEach(function(link) {
+      this.createLinkEls(links, 'content-link btn btn-primary card').forEach(function(link) {
         link && container.appendChild(link);
       });
       return container;
@@ -321,7 +321,7 @@ var TranslationsPage = (function(window, $) {
         subcontentRow.appendChild(subcontentTitle);
 
         var linkContainer = create('div', 'subcontent-links');
-        this.createLinkEls(subcontent.links, 'subcontent-link', lang).forEach(function(link) {
+        this.createLinkEls(subcontent.links, 'subcontent-link btn btn-default card', lang).forEach(function(link) {
           linkContainer.appendChild(link);
         });
         subcontentRow.appendChild(linkContainer);

@@ -436,20 +436,13 @@ Updated: 2017-07-13 19:44:05
 }
 #translations-container .content-link,
 #translations-container .subcontent-link {
-	display: inline-block;
 	margin-right: 1rem;
 	margin-bottom: 1rem;
-	background-color: #81A83E;
-	color: white;
-	text-decoration: none;
-	padding: 0.5rem 1.25rem;
-	border-radius: 2px;
-	box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.5);
-	transition: box-shadow 200ms ease-in-out;
+	text-transform: none;
 }
-#translations-container .content-link:hover,
-#translations-container .subcontent-link:hover {
-	box-shadow: 0px 2px 7px 1px rgba(0, 0, 0, 0.5);
+#translations-container .content-link:last-of-type,
+#translations-container .subcontent-link:last-of-type {
+	margin-right: 0;
 }
 #translations-container .subcontent {
 	display: flex;

@@ -263,6 +263,7 @@ var TranslationsPage = (function(window, $) {
     };
 
     this.createCheckingLevelIcon = function(checkingLevel) {
+      checkingLevel = checkingLevel || '';
       var checkingLevelIcon = create('img', 'content-checking-level');
       var imagePath = WPURL.siteurl + '/layout/images';
       var iconMapping = {

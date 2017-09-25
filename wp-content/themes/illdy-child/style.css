@@ -488,6 +488,7 @@ Updated: 2017-07-13 19:44:05
   border: none;
   font-size: 100%;
   font-weight: bold;
+	color: initial;
 }
 #translations-container .ui-accordion .ui-accordion-content {
   padding: 0;

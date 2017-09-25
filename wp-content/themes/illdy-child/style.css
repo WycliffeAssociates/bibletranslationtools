@@ -426,3 +426,32 @@ Updated: 2017-07-13 19:44:05
 #translations-container .ui-accordion .collapse-resource {
 	background-image: url('./layout/images/chevron-up.png');
 }
+
+.process h3 {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.process p {
+	margin-top: 0;
+	margin-bottom: 1rem;
+}
+.process a.btn {
+	color: #FFF;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+@media only screen and (max-width: 768px) {
+	.process {
+		text-align: center;
+		margin-bottom: 5rem;
+	}
+	/* Makes process image smaller on processes page */
+	.process-image > .fl-col-content {
+		padding-top: 180px;
+		padding-bottom: 180px;
+	}
+	/* Slightly widens the process paragraph */
+	.fl-col-small {
+		max-width: 480px;
+	}
+}

@@ -1082,6 +1082,37 @@ img.mfp-img {
 	padding-right:20px;
 	padding-left:20px;
 }
+
+
+
+
+
+.fl-node-59c87854d723f > .fl-row-content-wrap {
+	background-image: url(/wp-content/uploads/2017/09/pattern.png);
+	background-repeat: repeat;
+	background-position: center center;
+	background-attachment: scroll;
+	background-size: auto;
+}
+
+
+
+.fl-node-59c87854d723f > .fl-row-content-wrap {
+	border-style: solid;
+	border-width: 0;
+		border-color: #EEEEEE;
+	border-color: rgba(238,238,238, 1);
+	}
+ .fl-node-59c87854d723f > .fl-row-content-wrap {
+	padding-top:60px;
+	padding-bottom:60px;
+}
+ .fl-node-59c87854d723f > .fl-row-content-wrap {
+	border-top-width:2px;
+	border-right-width:2px;
+	border-bottom-width:2px;
+	border-left-width:2px;
+}
 .fl-node-59c80c55e9f08 {
 	width: 40%;
 }
@@ -1246,6 +1277,66 @@ img.mfp-img {
 
 	
 	
+.fl-node-59c8785521198 {
+	width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+	
+	
+.fl-node-59c87c205e445 {
+	width: 33.33%;
+}
+
+
+
+
+
+
+
+
+
+
+	
+	
+.fl-node-59c87c205e454 {
+	width: 33.33%;
+}
+
+
+
+
+
+
+
+
+
+
+	
+	
+.fl-node-59c87c205e45f {
+	width: 33.33%;
+}
+
+
+
+
+
+
+
+
+
+
+	
+	
  .fl-node-59c80ceae77d4 > .fl-module-content {
 	margin-top:0px;
 	margin-right:0px;
@@ -1293,4 +1384,13 @@ img.mfp-img {
 	margin-right:0px;
 	margin-bottom:0px;
 	margin-left:0px;
+}
+ .fl-node-59c87c27afe13 > .fl-module-content {
+	margin-top:0px;
+}
+ .fl-node-59c87c75a5237 > .fl-module-content {
+	margin-top:0px;
+}
+ .fl-node-59c87c809c9ff > .fl-module-content {
+	margin-top:0px;
 }

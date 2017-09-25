@@ -11,117 +11,153 @@ Updated: 2017-07-13 19:44:05
 
 */
 
-/* Add color overlay on header and counter sections on the front page */
-#header {
-	position: relative;
-}
-#header::before,
-#counter::before {
-	content: '';
-	display: block;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-}
-#header::before {
-	background-color: rgba(0, 0, 0, 0.5);
-}
-#counter::before {
-	background-color: rgba(200, 200, 20, 0.8);
-}
+/********
+*
+* GENERIC
+*
+********/
 
-/* Custom styling for Services section on the home page */
-#services.front-page-section {
-	padding: 75px 0;
+/* Make anything in page body that overflows horizontally to be hidden */
+.container {
+	/* Without display: table, overflow: hidden will break position: sticky of */
+	/* the lang-list */
+	display: table;
+	overflow-x: hidden;
 }
-/* Equalize service widgets spacing */
-#services.front-page-section .widget_illdy_service {
-	margin-top: 0;
-	margin-bottom: 3rem;
-}
-/* Enlarges the service icon for more balance */
-#services.front-page-section .section-content .service .service-icon {
-	font-size: 5rem;
-}
-/* Makes the link more distinguishable and pronounced */
-#services.front-page-section .service-link {
-	line-height: 2.6;
-	font-size: 85%;
-	font-weight: bold;
-	text-transform: uppercase;
-	color: #337ab7;
-}
-/* Adds right-angled quote after the link text */
-#services.front-page-section .service-link::after {
-	content: '\00BB';
-	margin-left: 0.5rem;
-}
-@media only screen and (min-width: 768px) {
-	/* Aligns service widgets content to the left on wider screen */
-	#services .service {
-		text-align: left;
-	}
-	/* Makes service icon and title be on the same line */
-	#services .section-content .service .service-icon,
-	#services .section-content .service .service-title {
-		display: inline-block;
-		width: auto;
-	}
-	/* Adjusts spacing between the icon, title, and the paragraph */
-	#services .section-content .service .service-title {
-		margin-left: 2rem;
-		margin-bottom: 0;
+/* Container was simply too small on that screen size */
+@media (min-width: 768px) and (max-width: 992px) {
+	.container {
+		width: 100%;
 	}
 }
-
-/* Make the responsive menu on top of everything else */
-.responsive-menu.active {
-	position: relative;
-	z-index: 999;
+/* Removes bullets from list */
+.markup-format ul li {
+	list-style-type: none;
 }
-/* Hide blog post title. We already have a big o'l title on the header */
+.markup-format a {
+	text-decoration: none;
+}
+/* Make internal pages to have smaller banner */
+#header .bottom-header.blog {
+	padding: 60px 0;
+}
+/* Reduce the space between blog post body and footer */
+#blog .blog-post {
+	margin-bottom: 0;
+}
+/* Hides blog post title. We already have a big o'l title on the header */
 #blog .blog-post .blog-post-title {
 	display: none;
 }
-/* Remove the space above the first title in a section */
+/* Removes the space above the first title in a section */
 .blog-post-entry .so-panel.panel-first-child .textwidget h3:first-child,
 .blog-post-entry .so-panel.panel-first-child .textwidget h4:first-child {
 	margin-top: 0;
 }
-/* Add more spacing to the bottom of post's body */
+/* Adds more spacing to the bottom of post's body */
 .blog-post-entry .panel-layout {
 	padding-bottom: 6rem;
 }
-/* Remove spacing between MAST phase steps */
-.mast-phase .sow-features-feature .textwidget p {
-	margin: 0;
-}
-/* Remove bullets from list */
-.markup-format ul li {
-	list-style-type: none;
-}
-/* Make PC/MAC/Linux button for tS to look like the Google Play badge a bit more */
-.get-ts-desktop .ow-button-base a {
-	border: 2px solid #CCC !important;
-	font-weight: bold;
-}
-/* Remove underline from SO button's text */
-.so-widget-sow-button a {
-    text-decoration: none;
-}
 /* Used for anything that wants to have a basic card material drop shadow */
 .card {
+	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
+	transition: box-shadow 100ms ease-in-out;
+}
+.card:hover {
 	box-shadow: 0px 3px 22px -3px rgba(0,0,0,0.5);
 }
-/* Center the images of projects in projects section */
-.widget_illdy_project .project {
-	background-size: cover;
-	background-position: center;
+/* It's being used in the sidebar of resources page, but can be used elsewhere */
+.sticky {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
 }
-/* Allow child/sub pages to be hidden on top menu, but appear when their */
-/* parent is hovered over */
+.sticky::before,
+.sticky::after {
+	content: '';
+	display: table;
+}
+.btn.btn-primary {
+	border: none;
+	background: none;
+	background-color: #81A83E;
+	color: #FFF;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+.btn.btn-default {
+	border: 2px solid #81A83E;
+	background: none;
+	background-color: rgba(255, 255, 255, 0.5);
+	color: #81A83E;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+/***********
+*
+* NAVIGATION
+*
+***********/
+
+/* Makes the responsive menu on top of everything else */
+.responsive-menu.active {
+	position: relative;
+	z-index: 999;
+	/* Make sure responsive menu is not displayed when the screen is resized to wider screen */
+	/* Had to use !important because there is an inline style of "display: block;" :( */
+	display: none !important;
+}
+@media only screen and (max-width: 992px) {
+	.responsive-menu {
+		position: absolute;
+		padding-left: 2rem;
+		padding-right: 2rem;
+		background-color: transparent;
+	}
+	.responsive-menu.active {
+		position: absolute;
+		/* Had to use !important to override the previous !important :( */
+		display: block !important;
+	}
+	.responsive-menu > ul {
+		border-top: 1px solid white;
+	}
+	.responsive-menu .page_item {
+		width: auto;
+		flex: 1 1 auto;
+		list-style: none;
+		font-weight: 700;
+	}
+	.responsive-menu .page_item a {
+		background-color: black;
+		color: white;
+		text-transform: uppercase;
+		font-size: 115%;
+		border-bottom: none;
+	}
+	.responsive-menu .children {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		background-color: #333;
+	}
+	.responsive-menu .children .page_item {
+		flex: 0 0 auto;
+	}
+	.responsive-menu .children .page_item a {
+		background-color: #333;
+		text-transform: none;
+		font-size: 100%;
+	}
+}
+/* Makes the child menu to be on top of the hero title */
+#header .top-header {
+	z-index: 999;
+	position: relative;
+}
+/* Allow child/sub pages to be hidden on top menu, but appear when their parent is hovered over */
 #header .top-header .page_item_has_children::after {
 	content: '+';
 	margin-left: 0.5rem;
@@ -154,69 +190,144 @@ Updated: 2017-07-13 19:44:05
 	padding-right: 1rem;
 	background-color: rgba(0, 0, 0, 0.85);
 }
-#header .top-header .header-navigation ul.children li {
-	margin-left: 0;
-}
-/* Make the child menu to be on top of the hero title */
-#header .top-header {
-	z-index: 999;
+
+/**************
+*
+* HEADER/FOOTER
+*
+**************/
+
+/* Adds color overlay on the header */
+#header {
 	position: relative;
 }
-
-/* Make internal pages to have smaller banner */
-#header .bottom-header.blog {
-	padding: 60px 0;
+#header::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+#header::before {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.visit-other-pages {
+	margin-top: 5rem;
+}
+.visit-other-pages .fl-row-content-wrap {
+	border-radius: 12px;
+}
+.visit-other-pages h3 {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.visit-other-pages .btn {
+	width: 100%;
+}
+@media only screen and (max-width: 768px) {
+	.visit-other-pages h3 {
+		text-align: center;
+	}
 }
 
-/* Make sure responsive menu is not displayed when the screen is resized to wider screen */
-/* Had to use !important because there is an inline style of "display: block;" :( */
-.responsive-menu.active {
-	display: none !important;
+/**************************
+*
+*	ILLDY FRONT-PAGE SECTIONS
+*
+**************************/
+
+/****************
+* Counter Section
+****************/
+
+/* Adds color overlay on the counter section */
+#counter::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(200, 200, 20, 0.8);
 }
-@media only screen and (max-width: 992px) {
-	.responsive-menu {
-		position: absolute;
-		padding-left: 2rem;
-		padding-right: 2rem;
-		background-color: transparent;
+
+/*****************
+* Services Section
+*****************/
+
+/* Tweaks styling for services section */
+#services.front-page-section {
+	padding: 75px 0;
+}
+#services.front-page-section .widget_illdy_service {
+	/* Equalize service widgets spacing */
+	margin-top: 0;
+	margin-bottom: 3rem;
+}
+#services.front-page-section .section-content .service .service-icon {
+	/* Enlarges the service icon for a better balance */
+	font-size: 5rem;
+}
+#services.front-page-section .service-link {
+	/* Makes the link more distinguishable and pronounced */
+	line-height: 2.6;
+	font-size: 85%;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #337ab7;
+}
+#services.front-page-section .service-link::after {
+	/* Adds right-angled quote after the link text */
+	content: '\00BB';
+	margin-left: 0.5rem;
+}
+@media only screen and (min-width: 768px) {
+	/* Aligns service widgets content to the left on wider screen */
+	#services .service {
+		text-align: left;
 	}
-	.responsive-menu > ul {
-		border-top: 1px solid white;
-	}
-	.responsive-menu.active {
-		position: absolute;
-		/* Had to use !important to override the previous !important :( */
-		display: block !important;
-	}
-	.responsive-menu .page_item {
+	/* Makes service icon and title be on the same line */
+	#services .section-content .service .service-icon,
+	#services .section-content .service .service-title {
+		display: inline-block;
 		width: auto;
-		flex: 1 1 auto;
-		list-style: none;
-		font-weight: 700;
 	}
-	.responsive-menu .page_item a {
-		background-color: black;
-		color: white;
-		text-transform: uppercase;
-		font-size: 115%;
-		border-bottom: none;
-	}
-	.responsive-menu .children {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: center;
-		background-color: #333;
-	}
-	.responsive-menu .children .page_item {
-		flex: 0 0 auto;
-	}
-	.responsive-menu .children .page_item a {
-		background-color: #333;
-		text-transform: none;
-		font-size: 100%;
+	/* Adjusts spacing between the icon, title, and the paragraph */
+	#services .section-content .service .service-title {
+		margin-left: 2rem;
+		margin-bottom: 0;
 	}
 }
+
+/*****************
+* Projects Section
+*****************/
+
+/* Center the images of projects in projects section */
+.widget_illdy_project .project {
+	background-size: cover;
+	background-position: center;
+}
+
+/**********
+*
+* MAST PAGE
+*
+**********/
+
+/* Remove spacing between MAST phase steps */
+.mast-phase .sow-features-feature .textwidget p {
+	margin: 0;
+}
+
+/******************
+*
+* TRANSLATIONS PAGE
+*
+******************/
 
 #translations-container {
 	display: flex;
@@ -340,10 +451,6 @@ Updated: 2017-07-13 19:44:05
 #translations-container .subcontent-link:hover {
 	box-shadow: 0px 2px 7px 1px rgba(0, 0, 0, 0.5);
 }
-#translations-container .content-link:first-of-type,
-#translations-container .subcontent-link:first-of-type {
-	/*margin-left: 0;*/
-}
 #translations-container .subcontent {
 	display: flex;
 	flex-direction: row;
@@ -379,33 +486,10 @@ Updated: 2017-07-13 19:44:05
 	}
 }
 
-/* It's being used in the sidebar of resources page, but can be used elsewhere */
-.sticky {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
-}
-.sticky::before,
-.sticky::after {
-	content: '';
-	display: table;
-}
+/*
+* ACCORDION in translations page
+*/
 
-/* Make anything in page body that overflows horizontally to be hidden */
-.container {
-	/* Without display: table, overflow: hidden will break position: sticky of */
-	/* the lang-list */
-	display: table;
-	overflow-x: hidden;
-}
-/* Container was simply too small on that screen size */
-@media (min-width: 768px) and (max-width: 992px) {
-	.container {
-		width: 100%;
-	}
-}
-
-/* Accordion styling for language resources in resources page */
 #translations-container .ui-accordion .ui-accordion-header {
   background-color: #EEE;
   border: none;
@@ -427,6 +511,12 @@ Updated: 2017-07-13 19:44:05
 	background-image: url('./layout/images/chevron-up.png');
 }
 
+/***************
+*
+* PROCESSES PAGE
+*
+***************/
+
 .process h3 {
 	margin-top: 0;
 	margin-bottom: 0;
@@ -435,12 +525,8 @@ Updated: 2017-07-13 19:44:05
 	margin-top: 0;
 	margin-bottom: 1rem;
 }
-.process a.btn {
-	color: #FFF;
-	text-decoration: none;
-	text-transform: uppercase;
-}
 @media only screen and (max-width: 768px) {
+	/* Aligns to the center on smaller screen */
 	.process {
 		text-align: center;
 		margin-bottom: 5rem;

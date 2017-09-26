@@ -535,3 +535,47 @@ Updated: 2017-07-13 19:44:05
 		max-width: 480px;
 	}
 }
+
+/***************
+*
+* RESOURCES PAGE
+*
+***************/
+
+.looking-for-translations .fl-row-content-wrap {
+	border-radius: 12px;
+}
+/* Aligns the "See translations" button to the right */
+.looking-for-translations-button-container {
+	text-align: right;
+}
+@media only screen and (max-width: 768px) {
+	/* Aligns the text and the button to the center on smaller screen */
+	.looking-for-translations-button-container,
+	.looking-for-translations-text-container {
+		text-align: center;
+	}
+	/* Adds needed spacing between the button and the container when things stack */
+	.looking-for-translations-button-container {
+		padding-bottom: 4rem;
+	}
+}
+/* Minimizes the space between the title and paragraph of the intro */
+.resources-intro h3 {
+	margin-bottom: 1rem;
+}
+.resources-intro p {
+	margin-top: 0;
+}
+/* Forces the image size of the resource list item */
+.resources-list img {
+	width: 128px;
+	height: 128px;
+}
+/* Minimizes the space between the resource title and paragraph */
+.resources-list h5 {
+	margin-bottom: 1rem;
+}
+.resources-list p {
+	margin-top: 0;
+}

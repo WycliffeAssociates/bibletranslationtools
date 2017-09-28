@@ -579,3 +579,24 @@ Updated: 2017-07-13 19:44:05
 .resources-list p {
 	margin-top: 0;
 }
+
+/**********
+*
+* MAST PAGE
+*
+**********/
+
+.mast-overview-container p {
+	margin-top: 1rem;
+}
+.download-instructions-container a.btn {
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+}
+.step-description-container h3 {
+	margin-bottom: 1rem;
+}
+.step-description-container p {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}

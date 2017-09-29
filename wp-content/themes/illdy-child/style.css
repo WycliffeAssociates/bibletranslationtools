@@ -118,6 +118,14 @@ ul {
 *
 ***********/
 
+.responsive-menu .menu-item {
+	background-color: black;
+	list-style-type: none;
+}
+.responsive-menu .menu-item a {
+	color: white;
+}
+
 /* Makes the responsive menu on top of everything else */
 .responsive-menu.active {
 	position: relative;

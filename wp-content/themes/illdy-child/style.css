@@ -611,6 +611,11 @@ ul {
 	margin-right: 1rem;
 	margin-bottom: 1rem;
 }
+@media only screen and (max-width: 992px) {
+	.step-description-container .fl-col-content {
+		padding-left: 20px;
+	}
+}
 .step-description-container h3 {
 	margin-bottom: 1rem;
 }

@@ -1,3 +1,9 @@
+<h4>1.10.8.3 09/29/17</h4>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed a minor security issue with <code>fl_builder_export_templates_data</code> action.</li>
+</ul>
+
 <h4>1.10.8.2 09/12/2017</h4>
 <p><strong>Enhancements</strong></p>
 <ul>

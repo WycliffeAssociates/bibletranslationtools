@@ -631,3 +631,46 @@ ul {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
+
+/**********
+*
+* SAIL PAGE
+*
+**********/
+
+@media only screen and (max-width: 768px) {
+	.fl-row[data-node] .fl-row-content-wrap {
+		margin-bottom: 80px;
+	}
+
+	.fl-row.sail-the-steps .fl-row-content-wrap,
+	.fl-row.sail-steps-1-2 .fl-row-content-wrap,
+	.fl-row.sail.steps-3-4 .fl-row-content-wrap {
+		margin-bottom: 0;
+	}
+
+	.fl-row.sail-the-steps .fl-heading,
+	.fl-row.sail-the-tool .fl-heading  {
+		text-align: center;
+	}
+
+	.fl-row.sail-the-tool .fl-heading  {
+		margin-top: 20px !important;
+	}
+}
+
+/* Emboldens the number of people who are deaf and blind */
+.deaf-and-blind-counter .fl-number {
+	font-weight: 900;
+}
+/* Fits the number to smaller screens */
+@media only screen and (max-width: 560px) {
+	.deaf-and-blind-counter .fl-number-int {
+		font-size: 75%;
+	}
+}
+@media only screen and (max-width: 400px) {
+	.deaf-and-blind-counter .fl-number-int {
+		font-size: 55%;
+	}
+}

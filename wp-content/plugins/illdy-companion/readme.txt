@@ -57,6 +57,10 @@ You can still use Illdy theme without this plugin but you won't be able to impor
 
 == Changelog ==
 
+= 2.0.3 =
+ * Add TinyMCE instead of Textarea in Illdy Widgets ( https://github.com/puikinsh/illdy/issues/222 )
+ * Parallax jumping on mobile ( https://github.com/puikinsh/illdy/issues/225 )
+
 = 1.0.6 = 
 * Portfolio URLs were not saving; bug fixed
 

@@ -23,7 +23,7 @@ if ( ! function_exists( 'illdy_companion_admin_scripts' ) ) {
 	/**
 	 * Function to enqueue admin resources - CSS/JS
 	 */
-	function illdy_companion_admin_scripts() {
+	function illdy_companion_admin_scripts( $hook_suffix ) {
 
 		wp_enqueue_style( 'illdy-companion-admin-css', plugins_url( '/assets/css/admin.css', __FILE__ ) );
 		wp_enqueue_style( 'font-awesome', plugins_url( '/assets/css/font-awesome.min.css', __FILE__ ), array(), '4.5.0', 'all' );
@@ -35,6 +35,11 @@ if ( ! function_exists( 'illdy_companion_admin_scripts' ) ) {
 		wp_localize_script( 'illdy-companion-admin-js', 'illdyCompanion', array(
 			'ajaxurl' => esc_url( admin_url( 'admin-ajax.php' ) ),
 		) );
+
+		if ( 'widgets.php' == $hook_suffix ) {
+			wp_enqueue_script( 'illdy-widget-text-editor', ILLDY_COMPANION_ASSETS_DIR . 'js/widget-text-editor.js', false, '1.0', true );
+		}
+
 	}
 
 	add_action( 'admin_enqueue_scripts', 'illdy_companion_admin_scripts' );

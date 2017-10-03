@@ -150,9 +150,11 @@ class Illdy_Widget_Person extends WP_Widget {
 			<input class="widefat" id="<?php echo $this->get_field_id( 'position' ); ?>" name="<?php echo $this->get_field_name( 'position' ); ?>" type="text" value="<?php echo esc_attr( $instance['position'] ); ?>">
 		</p>
 
-		<p>
+		<p class="illdy-editor-container">
 			<label for="<?php echo $this->get_field_id( 'entry' ); ?>"><?php _e( 'Entry:', 'illdy-companion' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'entry' ); ?>" name="<?php echo $this->get_field_name( 'entry' ); ?>" type="text" value="<?php echo esc_attr( $instance['entry'] ); ?>">
+			<textarea name="<?php echo esc_attr( $this->get_field_name( 'entry' ) ); ?>"
+					  id="<?php echo esc_attr( $this->get_field_id( 'entry' ) ); ?>"
+					  class="widefat"><?php echo wp_kses_post( $instance['entry'] ); ?></textarea>
 		</p>
 
 		<p>

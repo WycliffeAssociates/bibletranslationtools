@@ -85,6 +85,8 @@ class Epsilon_Control_Section_Repeater extends WP_Customize_Control {
 	 * @return void
 	 */
 	public function enqueue() {
+		wp_enqueue_style( 'minicolors', EPSILON_URI . '/assets/vendors/minicolors/jquery.minicolors.css' );
+		wp_enqueue_script( 'minicolors', EPSILON_URI . '/assets/vendors/minicolors/jquery.minicolors.min.js', array( 'jquery' ), '1.2.0', true );
 		wp_enqueue_style( 'selectize', EPSILON_URI . '/assets/vendors/selectize/selectize.css' );
 		wp_enqueue_script( 'selectize', EPSILON_URI . '/assets/vendors/selectize/selectize.min.js', array( 'jquery' ), '1.0.0', true );
 	}
@@ -144,6 +146,9 @@ class Epsilon_Control_Section_Repeater extends WP_Customize_Control {
 					$this->repeatable_sections[ $key ]['fields'][ $k ]['icons'] = $this->get_icons();
 				}
 
+				if ( 'epsilon-customizer-navigation' === $v['type'] ) {
+					$this->repeatable_sections[ $key ]['fields'][ $k ]['opensDouble'] = false;
+				}
 				/**
 				 * Range Slider defaults
 				 */
@@ -216,7 +221,7 @@ class Epsilon_Control_Section_Repeater extends WP_Customize_Control {
 	 * Control template;
 	 */
 	public function content_template() {
-		?>
+		//@formatter:off ?>
 		<label>
 			<span class="customize-control-title">
 				{{{ data.label }}}
@@ -231,8 +236,8 @@ class Epsilon_Control_Section_Repeater extends WP_Customize_Control {
 		<ul class="repeater-sections"></ul>
 		<# if(!_.isUndefined(data.choices.limit)){ #>
 		<?php /* Translators: Section limit */ ?>
-		<p class="limit"><?php echo esc_html__( 'Limit: ', 'epsilon-framework' ); ?> {{{ data.choices.limit
-			}}} <?php echo esc_html__( 'sections', 'epsilon-framework' ); ?></p>
+		<p class="limit"><?php echo esc_html__( 'Limit: ', 'epsilon-framework' ); ?>
+			{{{ data.choices.limit }}} <?php echo esc_html__( 'sections', 'epsilon-framework' ); ?></p>
 		<# } #>
 		<div class="epsilon-add-section-buttons">
 			<input type="hidden" value="" {{{ data.link }}}/>
@@ -253,16 +258,16 @@ class Epsilon_Control_Section_Repeater extends WP_Customize_Control {
 				</div>
 				<div class="available-sections-list">
 					<# for (section in data.sections) { #>
-						<# var temp = JSON.stringify(data.sections[section].fields); #>
-							<div class="epsilon-section" data-id="{{ data.sections[section].id }}">
-								<span class="epsilon-section-title">{{ data.sections[section].title }}</span>
-								<span class="epsilon-section-description">{{ data.sections[section].description }}</span>
-								<input type="hidden" value="{{ temp }}"/>
-							</div>
-							<# } #>
+					<# var temp = JSON.stringify(data.sections[section].fields); #>
+						<div class="epsilon-section" data-id="{{ data.sections[section].id }}">
+							<span class="epsilon-section-title">{{ data.sections[section].title }}</span>
+							<span class="epsilon-section-description">{{ data.sections[section].description }}</span>
+							<input type="hidden" value="{{ temp }}"/>
+						</div>
+					<# } #>
 				</div>
 			</div>
 		</div>
-		<?php
+		<?php //@formatter:on
 	}
 }

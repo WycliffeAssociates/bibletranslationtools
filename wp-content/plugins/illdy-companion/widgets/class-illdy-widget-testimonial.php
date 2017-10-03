@@ -91,7 +91,7 @@ class Illdy_Widget_Testimonial extends WP_Widget {
 			<input type="button" class="button button-primary custom_media_button" id="custom_media_button_service" data-fieldid="<?php echo $this->get_field_id( 'image' ); ?>" name="<?php echo $this->get_field_name( 'image' ); ?>" value="<?php _e( 'Upload Image', 'illdy-companion' ); ?>" style="margin-top: 5px;">
 		</p>
 
-		<p>
+		<p class="illdy-editor-container">
 			<label for="<?php echo $this->get_field_id( 'testimonial' ); ?>"><?php _e( 'Testimonial:', 'illdy-companion' ); ?></label>
 			<textarea class="widefat" id="<?php echo $this->get_field_id( 'testimonial' ); ?>" name="<?php echo $this->get_field_name( 'testimonial' ); ?>">
 					<?php echo wp_kses_post( $instance['testimonial'] ); ?>

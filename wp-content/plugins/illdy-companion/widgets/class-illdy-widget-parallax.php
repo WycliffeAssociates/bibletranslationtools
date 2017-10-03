@@ -51,7 +51,7 @@ class Illdy_Widget_Parallax extends WP_Widget {
 		<section class="<?php echo esc_attr( $class1 ); ?>"><?php
 		if ( ( 'background-full' == $instance['image_pos'] || 'background-small' == $instance['image_pos'] ) && '' != $instance['image_src'] ) { ?>
 			<div class="parallax-window <?php echo esc_attr( $class7 ); ?>" data-parallax="scroll"
-				 data-image-src="<?php echo esc_url( $instance['image_src'] ); ?>">
+				 data-image-src="<?php echo esc_url( $instance['image_src'] ); ?>" data-ios-fix="true" data-over-scroll-fix="true" data-android-fix="true">
 				<div class="<?php echo ('background-full' == $instance['image_pos']) ? 'align-transform' : ''; ?>">
 					<?php } else { ?>
 					<div class="container">
@@ -137,12 +137,12 @@ class Illdy_Widget_Parallax extends WP_Widget {
 			<button type="button" class="button remove-button"><?php _e( 'Remove Image', 'illdy-companion' ); ?></button>
 		</p>
 
-		<p><label
+		<p class="illdy-editor-container"><label
 				for="<?php echo esc_attr( $this->get_field_id( 'body_content' ) ); ?>"><?php esc_html_e( 'Content ', 'illdy-companion' ) ?></label>
 
 			<textarea name="<?php echo esc_attr( $this->get_field_name( 'body_content' ) ); ?>"
 					  id="<?php echo esc_attr( $this->get_field_id( 'body_content' ) ); ?>"
-					  class="widefat"><?php echo esc_attr( $instance['body_content'] ); ?></textarea>
+					  class="widefat"><?php echo wp_kses_post( $instance['body_content'] ); ?></textarea>
 		</p>
 
 		<p><label

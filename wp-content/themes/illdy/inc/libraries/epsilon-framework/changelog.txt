@@ -1,3 +1,13 @@
+v1.4.2
+	- Typography control css fix ( bold and italic were not grouped )
+
+v1.4.1
+	- Changed button class to hero
+
+v1.4.0
+	- Rewritten customizer controls code
+	- Created a new custom section that "doubles" the regular panels/sections - Used for rendering repeater fields
+
 v1.3.7
 	- Fixed some reported issues
 

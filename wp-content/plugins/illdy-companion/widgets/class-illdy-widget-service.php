@@ -144,7 +144,7 @@ class Illdy_Widget_Service extends WP_Widget {
 			</select>
 		</p>
 
-		<p>
+		<p class="illdy-editor-container">
 			<label for="<?php echo $this->get_field_id( 'entry' ); ?>"><?php _e( 'Entry:', 'illdy-companion' ); ?></label>
 			<textarea class="widefat" rows="16" cols="20" id="<?php echo $this->get_field_id( 'entry' ); ?>" name="<?php echo $this->get_field_name( 'entry' ); ?>"><?php echo wp_kses_post( $instance['entry'] ); ?></textarea></p>
 		</p>

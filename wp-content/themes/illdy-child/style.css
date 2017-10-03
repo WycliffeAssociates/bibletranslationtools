@@ -639,18 +639,17 @@ ul {
 **********/
 
 @media only screen and (max-width: 768px) {
-	.fl-row[data-node] .fl-row-content-wrap {
+	.section,
+	.section-last-row {
 		margin-bottom: 80px;
 	}
 
-	.fl-row.sail-the-steps .fl-row-content-wrap,
-	.fl-row.sail-steps-1-2 .fl-row-content-wrap,
-	.fl-row.sail.steps-3-4 .fl-row-content-wrap {
+	.process-step-two-cols .fl-row-content-wrap {
 		margin-bottom: 0;
 	}
 
-	.fl-row.sail-the-steps .fl-heading,
-	.fl-row.sail-the-tool .fl-heading  {
+	.center-on-collapse .fl-module-content .fl-heading,
+	.center-on-collapse .fl-module-rich-text .fl-rich-text {
 		text-align: center;
 	}
 

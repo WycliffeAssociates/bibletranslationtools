@@ -272,7 +272,17 @@ var TranslationsPage = (function(window, $) {
         '2': imagePath + '/checking_level_2.png',
         '3': imagePath + '/checking_level_3.png',
       };
+      var titleMapping = {
+        '': 'Translation started, but the checking level is unknown',
+        '1': 'Approved by local church translators',
+        '2': 'Approved by the leaders of a local church',
+        '3': 'Approved by the leaders of multiple local churches',
+      };
       checkingLevelIcon.setAttribute('src', iconMapping[checkingLevel]);
+      checkingLevelIcon.setAttribute('title', titleMapping[checkingLevel]);
+      checkingLevelIcon.setAttribute('data-toggle', 'tooltip');
+      checkingLevelIcon.setAttribute('data-placement', 'left');
+      $(checkingLevelIcon).tooltip();
       return checkingLevelIcon;
     };
 

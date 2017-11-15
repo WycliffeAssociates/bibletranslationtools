@@ -347,12 +347,15 @@ var TranslationsPage = (function(window, $) {
         'bible-ot': create('div', 'ot-subcontent-container'),
         'bible-nt': create('div', 'nt-subcontent-container'),
         'obs': create('div', 'obs-subcontent-container'),
-        [undefined]: create('div', 'other-subcontent-container'),
+        'other': create('div', 'other-subcontent-container'),
       };
 
       // Sort subcontents into the appropriate container
       subcontents.forEach(function(subcontent) {
-        subcontent && containers[subcontent.dataset.category.trim()].appendChild(subcontent);
+        if (subcontent) {
+          var category = subcontent.dataset.category.trim() || 'other';
+          containers[category].appendChild(subcontent);
+        }
       });
 
       // Only append non-empty containers to the accordion
@@ -374,11 +377,11 @@ var TranslationsPage = (function(window, $) {
         accordion.appendChild(obsContainerTitle);
         accordion.appendChild(containers['obs']);
       }
-      if (containers[undefined].childNodes.length) {
+      if (containers['other'].childNodes.length) {
         var otherContainerTitle = create('h5', 'other-subcontent-title');
         otherContainerTitle.innerText = 'Other';
         accordion.appendChild(otherContainerTitle);
-        accordion.appendChild(containers[undefined]);
+        accordion.appendChild(containers['other']);
       }
 
       $(accordion).accordion({

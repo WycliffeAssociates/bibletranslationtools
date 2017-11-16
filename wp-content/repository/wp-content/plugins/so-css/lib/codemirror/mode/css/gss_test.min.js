@@ -1,1 +1,0 @@
-!function(){"use strict";function o(o){test.mode(o,t,Array.prototype.slice.call(arguments,1),"gss")}var t=CodeMirror.getMode({indentUnit:2},"text/x-gss");o("atComponent","[def @component] {","[tag foo] {","  [property color]: [keyword black];","}","}")}();

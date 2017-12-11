@@ -1,0 +1,76 @@
+# This file can be used to create a development environment for Wordpress
+# using Docker.
+#
+#
+# To set up
+# =========
+#
+# Download a recent backup of the database from Azure:
+#
+#     Azure > 
+#     Resource groups > 
+#     bibletranslationtools (Resource Group) > 
+#     bibletranslationtools (App Service) > 
+#     Backups > 
+#     (click backup) > 
+#     Download
+#
+# Unzip the file into $TEMP/bibletranslationtools.  There should now be a
+# file called bibletranslationtools.sql in the directory.
+#
+# Edit bibletranslationtools.sql and add the following lines at the top:
+#
+#     CREATE DATABASE bibletranslationtools;
+#     USE bibletranslationtools;
+#
+#
+# To Run
+# ======
+#
+# To launch, navigate to this directory and issue the following command:
+# > docker-compose up -d
+#
+# To watch system logs:
+# > docker-compose logs -f
+#
+# To shut down:
+# > docker-compose down
+#
+# To visit the website, navigate to: http://localhost:8080
+#
+#
+# Notes
+# =====
+#
+# - The website is exposed at port 8080 on the host.
+#
+# - The MySQL instance is exposed at port 13306 on the host, and can be
+#   connected to with MySQL Workbench or similar tools on your local machine.
+#   Other Docker instances might not be able to see this one, so running
+#   mysql from another container might not work.
+#
+
+version: "2"
+
+services:
+
+  my-wpdb:
+    image: mysql:5.7
+    volumes:
+        - "${TEMP}/bibletranslationtools:/docker-entrypoint-initdb.d"
+    ports:
+        - "13306:3306"
+    environment:
+        MYSQL_ROOT_PASSWORD: ChangeMeIfYouWant
+
+  my-wp:
+    image: wordpress:latest
+    volumes:
+        - ./:/var/www/html
+    ports:
+        - "8080:80"
+    links:
+        - my-wpdb:mysql
+    environment:
+        WORDPRESS_DB_NAME: bibletranslationtools
+        WORDPRESS_DB_PASSWORD: ChangeMeIfYouWant

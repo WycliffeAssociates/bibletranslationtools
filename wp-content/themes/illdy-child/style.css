@@ -374,6 +374,7 @@ ul {
 }
 #translations-container .lang-list {
 	overflow-y: auto;
+        height: 100vh; /* Needed for IE to render scrollbar in lang list */
 }
 #translations-container .lang-list-title {
 	margin-top: 0;

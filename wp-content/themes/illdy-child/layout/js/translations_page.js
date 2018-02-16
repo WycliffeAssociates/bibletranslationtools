@@ -240,7 +240,11 @@ var TranslationsPage = (function(window, $) {
 
       var subcontents = this.createSubcontents(content.subcontents);
       var contentSubject = content.subject && content.subject.toLowerCase();
-      if (contentSubject && contentSubject === 'bible' || contentSubject === 'bible stories') {
+      if (contentSubject && (contentSubject === 'bible' || 
+                             contentSubject === 'bible stories' || 
+                             contentSubject === "translator notes" || 
+                             contentSubject === "bible translation comprehension questions" ||
+                             contentSubject === "reference" )) {
         container.appendChild(this.createAccordion(subcontents));
       } else {
         subcontents.forEach(function(subcontent) {

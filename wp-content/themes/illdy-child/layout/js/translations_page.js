@@ -358,6 +358,9 @@ var TranslationsPage = (function(window, $) {
       subcontents.forEach(function(subcontent) {
         if (subcontent) {
           var category = subcontent.dataset.category.trim() || 'other';
+          if (!(category in containers)) {
+              category = 'other';
+          }
           containers[category].appendChild(subcontent);
         }
       });

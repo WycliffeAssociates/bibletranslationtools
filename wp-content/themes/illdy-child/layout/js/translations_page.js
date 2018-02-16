@@ -332,7 +332,7 @@ var TranslationsPage = (function(window, $) {
         subcontentRow.setAttribute('data-category', subcontent.category);
 
         var subcontentTitle = create('p', 'subcontent-title');
-        subcontentTitle.innerText = subcontent.name;
+        subcontentTitle.innerText = subcontent.name || subcontent.code || "Other";
         subcontentRow.appendChild(subcontentTitle);
 
         var linkContainer = create('div', 'subcontent-links');
@@ -358,6 +358,9 @@ var TranslationsPage = (function(window, $) {
       subcontents.forEach(function(subcontent) {
         if (subcontent) {
           var category = subcontent.dataset.category.trim() || 'other';
+          if (!(category in containers)) {
+              category = 'other';
+          }
           containers[category].appendChild(subcontent);
         }
       });

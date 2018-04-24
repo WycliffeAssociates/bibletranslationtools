@@ -1,8 +1,8 @@
 === WordPress Page Builder - Beaver Builder ===
 Contributors: justinbusa, RobbyMcCullough, billyyoung, hinampaksh, diegoliv, webmandesign, eugenealegiojo, helgatheviking, ozancanakli, brentjettgmailcom, jproffitt71, brainstormforce, ideaboxcreations, laubsterboy, nikolayyordanov, codente, pross, pedromendonca
 Tags: page builder, beaver builder, landing page, front-end builder, drag and drop editor
-Requires at least: 4.4
-Tested up to: 4.8.2
+Requires at least: 4.5
+Tested up to: 4.9.5
 Stable tag: trunk
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -25,7 +25,7 @@ Watch the video below or [try out the demo](https://www.wpbeaverbuilder.com/go/d
 >
 > Along with access to our expert support team, there are many time-saving features in the premium versions which make it a great value for any serious WordPress user. [**Get a license today.**](https://www.wpbeaverbuilder.com/pricing/?utm_medium=bb-lite&utm_source=repo-readme&utm_campaign=repo-support-cta "Beaver Builder Premium Support")
 >
-> You can also reference our [Knowledge Base](http://kb.wpbeaverbuilder.com/ "Beaver Builder Knowledge Base"), or try asking the Beaver Builder community for help in either [Facebook](http://beaver.builders/wp-repo-fb "Beaver Builders on Facebook") or [Slack](http://beaver.builders/wp-repo-slack "Beaver Builders on Slack"). Keep in mind, these are all folks just like you who are volunteering their time.
+> You can also reference our [Knowledge Base](https://kb.wpbeaverbuilder.com/ "Beaver Builder Knowledge Base"), or try asking the Beaver Builder community for help in either [Facebook](http://beaver.builders/wp-repo-fb "Beaver Builders on Facebook") or [Slack](http://beaver.builders/wp-repo-slack "Beaver Builders on Slack"). Keep in mind, these are all folks just like you who are volunteering their time.
 
 = Join our Growing Community =
 

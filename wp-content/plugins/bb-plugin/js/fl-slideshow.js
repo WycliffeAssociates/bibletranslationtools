@@ -5,23 +5,23 @@
 YUI.add('fl-event-move', function(Y) {
 
 /**
- * Adds gesturemovevertical, gesturemoveverticalend, gesturemovehorizontal 
+ * Adds gesturemovevertical, gesturemoveverticalend, gesturemovehorizontal
  * and gesturemovehorizontalend events.
- * 
+ *
  * @module fl-event-move
- */	
+ */
 var _eventBase = {
 
 	_isEndEvent: false,
-		
-	on: function(node, subscriber, ce) 
+
+	on: function(node, subscriber, ce)
 	{
     	if(this.type.indexOf('end') > -1) {
     		this._isEndEvent = true;
     	}
-    	
+
 		subscriber._direction = this.type.replace('gesturemove', '').replace('end', '');
-		
+
 		if(window.navigator.msPointerEnabled) {
     		subscriber._startHandle = node.on('MSPointerDown', this._onStart, this, node, subscriber, ce);
         	subscriber._moveHandle = node.on('MSPointerMove', this._onMove, this, node, subscriber, ce);
@@ -30,28 +30,28 @@ var _eventBase = {
 		else {
     	    subscriber._startHandle = node.on('gesturemovestart', this._onStart, null, this, node, subscriber, ce);
         	subscriber._moveHandle = node.on('gesturemove', this._onMove, null, this, node, subscriber, ce);
-        	subscriber._endHandle = node.on('gesturemoveend', this._onEnd, { standAlone: true }, this, node, subscriber, ce);	
+        	subscriber._endHandle = node.on('gesturemoveend', this._onEnd, { standAlone: true }, this, node, subscriber, ce);
 		}
     },
-    
-    detach: function(node, subscriber, ce) 
+
+    detach: function(node, subscriber, ce)
     {
         subscriber._startHandle.detach();
         subscriber._startHandle = null;
 		subscriber._moveHandle.detach();
         subscriber._moveHandle = null;
 		subscriber._endHandle.detach();
-		subscriber._endHandle = null;		
+		subscriber._endHandle = null;
     },
-    
-    _onStart: function(e, node, subscriber, ce) 
+
+    _onStart: function(e, node, subscriber, ce)
     {
     	subscriber._doMove = null;
 		subscriber._startX = e.pageX;
 		subscriber._startY = e.pageY;
 	},
-	
-	_onMove: function(e, node, subscriber, ce) 
+
+	_onMove: function(e, node, subscriber, ce)
 	{
 		if(this._checkDirection(e, subscriber)) {
 			subscriber._doMove = true;
@@ -63,23 +63,23 @@ var _eventBase = {
 			ce.fire(e);
 		}
 	},
-    
-    _onEnd: function(e, node, subscriber, ce) 
+
+    _onEnd: function(e, node, subscriber, ce)
     {
     	if(subscriber._doMove && this._isEndEvent) {
     		e.startPageX = subscriber._startX;
     		e.startPageY = subscriber._startY;
     		ce.fire(e);
     	}
-    	
+
     	subscriber._doMove = null;
 	},
-	
+
 	_checkDirection: function(e, subscriber)
 	{
 		var xDelta = Math.abs(subscriber._startX - e.pageX),
 			yDelta = Math.abs(subscriber._startY - e.pageY);
-			
+
 		if(yDelta > xDelta && subscriber._startY > e.pageY && subscriber._direction == 'vertical') {
 			return true;
 		}
@@ -92,7 +92,7 @@ var _eventBase = {
 		else if(yDelta < xDelta && subscriber._startX < e.pageX && subscriber._direction == 'horizontal') {
 			return true;
 		}
-		
+
 		return false;
 	}
 };
@@ -141,7 +141,7 @@ YUI.add('fl-slideshow', function(Y) {
 
 /**
  * Caption widget used in slideshows.
- * 
+ *
  * @namespace FL
  * @class SlideshowCaption
  * @constructor
@@ -149,7 +149,7 @@ YUI.add('fl-slideshow', function(Y) {
  * @extends Widget
  */
 Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Widget, [Y.WidgetChild], {
-		
+
 	/**
 	 * Flag for whether the text has been
 	 * toggled or not.
@@ -160,7 +160,7 @@ Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Wid
 	 * @protected
 	 */
 	_textToggled: false,
-	
+
 	/**
 	 * An anchor node used for the toggle link.
 	 *
@@ -170,7 +170,7 @@ Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Wid
 	 * @protected
 	 */
 	_textToggleLink: null,
-	
+
 	/**
 	 * @method renderUI
 	 * @protected
@@ -179,14 +179,14 @@ Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Wid
 	{
         var root = this.get('root'),
 		    bb   = this.get('boundingBox');
-		
+
 		this._textToggleLink = Y.Node.create('<a href="javascript:void(0);"></a>');
 		this._textToggleLink.addClass('fl-slideshow-caption-toggle');
 		this._textToggleLink.set('innerHTML', root.get('captionMoreLinkText'));
 
 		bb.appendChild(this._textToggleLink);
 	},
-	
+
 	/**
 	 * @method bindUI
 	 * @protected
@@ -196,22 +196,22 @@ Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Wid
 		this.get('root').on('imageLoadComplete', Y.bind(this._setText, this));
 		this._textToggleLink.on('click', Y.bind(this._toggleText, this));
 	},
-		
+
 	/**
 	 * Sets the caption text and displays the
 	 * toggle link if necessary.
-	 * 
+	 *
 	 * @method _setText
 	 * @protected
 	 */
-	
+
 	_setText: function()
 	{
 		var root 		= this.get('root'),
 			text 		= root.imageInfo.caption,
 			textLength	= root.get('captionTextLength'),
 			cb			= this.get('contentBox');
-		
+
 		if(!root.imageInfo.caption || root.imageInfo.caption === '') {
 			cb.set('innerHTML', '');
 			this._textToggleLink.setStyle('display', 'none');
@@ -234,14 +234,14 @@ Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Wid
 		else {
 			text = this._stripTags(text);
 		}
-		
+
 		cb.set('innerHTML', text);
 	},
-		
+
 	/**
 	 * Shows or hides the full text when the
 	 * toggle link is clicked.
-	 * 
+	 *
 	 * @method _toggleText
 	 * @protected
 	 */
@@ -250,7 +250,7 @@ Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Wid
 		var root 		= this.get('root'),
 			text 		= root.imageInfo.caption,
 			cb			= this.get('contentBox');
-		
+
 		if(this._textToggled) {
 			text = this._shortenText(text);
 			this._textToggleLink.set('innerHTML', root.get('captionMoreLinkText'));
@@ -261,48 +261,48 @@ Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Wid
 			this._textToggleLink.set('innerHTML', root.get('captionLessLinkText'));
 			this._textToggled = true;
 		}
-		
+
 		cb.set('innerHTML', text);
 	},
-		
+
 	/**
 	 * Strips out HTML tags from the caption text.
-	 * 
+	 *
 	 * @method _stripTags
 	 * @param text {String} The text to strip HTML tags from.
-	 * @param ignoreSettings {Boolean} If true, will strip tags even if 
+	 * @param ignoreSettings {Boolean} If true, will strip tags even if
 	 * the stripTags attribute is set to false.
 	 * @protected
 	 */
 	_stripTags: function(text, ignoreSettings)
 	{
         var root = this.get('root'), textDiv;
-        
+
 		if(ignoreSettings || root.get('captionStripTags')) {
 			textDiv = document.createElement('div');
 			textDiv.innerHTML = text;
 			text = textDiv.textContent || textDiv.innerText;
 		}
-		
+
 		return text;
 	},
-		
+
 	/**
-	 * Shortens the caption text to the length of 
+	 * Shortens the caption text to the length of
 	 * the textLength attribute.
-	 * 
+	 *
 	 * @method _shortenText
 	 * @protected
 	 */
 	_shortenText: function(text)
 	{
         var root = this.get('root');
-        
+
 		text = this._stripTags(text, true).substring(0, root.get('captionTextLength'));
-		
+
 		return Y.Lang.trim(text.substring(0, text.lastIndexOf(' '))) + ' ...';
 	}
-			
+
 }, {
 
 	/**
@@ -314,7 +314,7 @@ Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Wid
 	 * @static
 	 */
 	CSS_PREFIX: 'fl-slideshow-caption',
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Widget.
@@ -330,9 +330,9 @@ Y.namespace('FL').SlideshowCaption = Y.Base.create('fl-slideshow-caption', Y.Wid
 });
 
 /**
- * A widget for loading and transitioning between SlideshowImage 
+ * A widget for loading and transitioning between SlideshowImage
  * instances. Each SlideshowImage instance is a child widget of
- * SlideshowFrame. SlideshowFrame is a child widget of the main 
+ * SlideshowFrame. SlideshowFrame is a child widget of the main
  * slideshow widget.
  *
  * @namespace FL
@@ -352,7 +352,7 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	 * @protected
 	 */
 	_imageInfo: null,
-			
+
 	/**
 	 * The active FL.SlideshowImage instance in the frame.
 	 *
@@ -362,9 +362,9 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	 * @protected
 	 */
 	_activeImage: null,
-	
+
 	/**
-	 * A FL.SlideshowImage instance used to load the 
+	 * A FL.SlideshowImage instance used to load the
 	 * next image and transition it into the frame.
 	 *
 	 * @property _nextImage
@@ -373,9 +373,9 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	 * @protected
 	 */
 	_nextImage: null,
-	
+
 	/**
-	 * Used to store imageInfo if a load request is 
+	 * Used to store imageInfo if a load request is
 	 * made while the frame is transitioning. If not null
 	 * when the transition completes, a new image will
 	 * be loaded using the imageInfo.
@@ -386,9 +386,9 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	 * @protected
 	 */
 	_loadQueue: null,
-	
+
 	/**
-	 * An instance of FL.SlideshowTransition used for 
+	 * An instance of FL.SlideshowTransition used for
 	 * the current transition in progress.
 	 *
 	 * @property _transition
@@ -397,7 +397,7 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	 * @protected
 	 */
 	_transition: null,
-	
+
 	/**
 	 * A flag for whether the frame is currently transitioning or not.
 	 *
@@ -407,9 +407,9 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	 * @protected
 	 */
 	_transitioning: false,
-	
+
 	/**
-	 * Flag for whether to resize when the current transition 
+	 * Flag for whether to resize when the current transition
 	 * completes. Set to true when a resize request is made
 	 * during a transition.
 	 *
@@ -419,7 +419,7 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	 * @protected
 	 */
 	_resizeAfterTransition: false,
-	
+
 	/**
 	 * Provides functionality for gesture based transitions
  	 * between the active and next images.
@@ -430,7 +430,7 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	 * @protected
 	 */
 	_gestures: null,
-	
+
 	/**
 	 * Creates new instances of FL.SlideshowImage used in the frame.
 	 *
@@ -440,11 +440,11 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	initializer: function()
 	{
 		var imageConfig = this.get('imageConfig');
-	
+
 		this._activeImage = new Y.FL.SlideshowImage(imageConfig);
 		this._nextImage = new Y.FL.SlideshowImage(imageConfig);
 	},
-	
+
 	/**
 	 * Renders the FL.SlideshowImage instances used in the frame.
 	 *
@@ -456,7 +456,7 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 		this.add(this._activeImage);
 		this.add(this._nextImage);
 	},
-	
+
 	/**
 	 * @method bindUI
 	 * @protected
@@ -466,23 +466,23 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 		var activeBB 	= this._activeImage.get('boundingBox'),
 			nextBB 		= this._nextImage.get('boundingBox'),
 			transition	= this.get('transition');
-		
+
 		if(('ontouchstart' in window || window.navigator.msPointerEnabled) && this.get('touchSupport')) {
-		
+
 			this._gestures = new Y.FL.SlideshowGestures({
 				direction: transition == 'slideVertical' ? 'vertical' : 'horizontal',
 				activeItem: activeBB,
 				nextItem: nextBB
 			});
-			
+
 			this._gestures.on('moveStart', this._gesturesMoveStart, this);
 			this._gestures.on('endComplete', this._gesturesEndComplete, this);
 		}
 	},
-	
+
 	/**
 	 * Functional styles for the UI.
-	 * 
+	 *
 	 * @method syncUI
 	 * @protected
 	 */
@@ -491,30 +491,30 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 		var activeBB 	= this._activeImage.get('boundingBox'),
 			nextBB	 	= this._nextImage.get('boundingBox'),
 			cb			= this.get('contentBox');
-	
+
 		activeBB.setStyle('position', 'absolute');
 		activeBB.setStyle('top', '0px');
 		activeBB.setStyle('left', '-9999px');
-		
+
 		nextBB.setStyle('position', 'absolute');
 		nextBB.setStyle('top', '0px');
 		nextBB.setStyle('left', '-9999px');
-		
+
 		cb.setStyle('position', 'relative');
 		cb.setStyle('overflow', 'hidden');
 	},
-	
+
 	/**
 	 * Checks whether the imageInfo should be loaded or queued.
 	 * Initializes a new transition if loading is ok.
 	 *
 	 * @method load
 	 * @param imageInfo {Object} The image info to load.
-	 */	
+	 */
 	load: function(imageInfo)
 	{
 		var activeInfo = this._activeImage._imageInfo;
-		
+
 		if(this._transitioning) {
 			this._loadQueue = imageInfo;
 			return;
@@ -522,59 +522,59 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 		else if(activeInfo && activeInfo.largeURL == imageInfo.largeURL) {
 			return;
 		}
-		
+
 		this._imageInfo = imageInfo;
 		this._transitionInit(imageInfo);
 	},
-	
+
 	/**
 	 * Preloads the next image using the provided imageInfo.
-	 * 
+	 *
 	 * @method preload
 	 * @param imageInfo {Object} The imageInfo to preload.
 	 * @param width {Number} The width to preload.
 	 * @param height {Number} The height to preload.
-	 */	
+	 */
 	preload: function(imageInfo, width, height)
 	{
 		this._imageInfo = imageInfo;
 		this._nextImage.preload(imageInfo, width, height);
 	},
-	
+
 	/**
 	 * Unloads the active and next image instances.
-	 * 
+	 *
 	 * @method unload
-	 */	
+	 */
 	unload: function()
 	{
 		this._imageInfo = null;
 		this._loadQueue = null;
 		this._transitioning = false;
 		this._transition = null;
-		
+
 		this._activeImage.detachAll();
 		this._activeImage.unload();
 		this._activeImage.get('boundingBox').setStyle('left', '-9999px');
-		
+
 		this._nextImage.detachAll();
 		this._nextImage.unload();
 		this._nextImage.get('boundingBox').setStyle('left', '-9999px');
 	},
-	
+
 	/**
 	 * Resizes the bounding box and active image.
-	 * 
+	 *
 	 * @method resize
 	 * @param width {Number} The width value.
 	 * @param height {Number} The height value.
-	 */	
+	 */
 	resize: function(width, height)
 	{
 		if(!width || !height) {
 			return;
 		}
-		
+
 		var bb 		= this.get('boundingBox'),
 			padding = [
 				parseInt(bb.getComputedStyle('paddingTop'), 10),
@@ -582,13 +582,13 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 				parseInt(bb.getComputedStyle('paddingBottom'), 10),
 				parseInt(bb.getComputedStyle('paddingLeft'), 10)
 			];
-			
+
 		width = width - padding[1] - padding[3];
 		height = height - padding[0] - padding[2];
-		
+
 		this.set('width', width);
 		this.set('height', height);
-		
+
 		if(this._transitioning) {
 			this._resizeAfterTransition = true;
 		}
@@ -597,20 +597,20 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 			this._nextImage.resize(width, height);
 		}
 	},
-	
+
 	/**
 	 * Gets the current transition to use.
-	 * 
+	 *
 	 * @method _getTransition
 	 * @protected
-	 */		
+	 */
 	_getTransition: function()
 	{
 		var root            = this.get('root'),
             lastIndex 		= root.albumInfo.images.length - 1,
 			direction		= 'next',
 			transition 		= root.get('transition');
-			
+
 		if(root.lastImageIndex === null) {
 			direction = '';
 		}
@@ -626,7 +626,7 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 		else if(root.lastImageIndex < root.imageIndex) {
 			direction = 'next';
 		}
-		
+
 		if(direction == 'next') {
 			transition = transition.replace('slideHorizontal', 'slideLeft');
 			transition = transition.replace('slideVertical', 'slideUp');
@@ -635,35 +635,35 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 			transition = transition.replace('slideHorizontal', 'slideRight');
 			transition = transition.replace('slideVertical', 'slideDown');
 		}
-		
+
 		return transition;
 	},
-	
+
 	/**
 	 * Fires the transitionInit event and loads the next image.
-	 * The transition starts when the image's loadComplete 
+	 * The transition starts when the image's loadComplete
 	 * event is fired.
 	 *
 	 * @method _transitionInit
 	 * @param imageInfo {Object} The imageInfo to load before transitioning.
 	 * @protected
-	 */	
+	 */
 	_transitionInit: function(imageInfo)
 	{
 		this._transitioning = true;
-		
+
 		// Disable gestures if set.
 		if(this._gestures) {
 			this._gestures.disable();
 		}
-		
+
 		/**
 		 * Fires when the next image is loading before a new transition.
-		 * 
+		 *
 		 * @event transitionInit
-		 */	
+		 */
 		this.fire('transitionInit');
-		
+
 		if(imageInfo) {
 			this._nextImage.once('loadComplete', this._transitionStart, this);
 			this._nextImage.load(imageInfo);
@@ -672,28 +672,28 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 			this._transitionStart();
 		}
 	},
-	
+
 	/**
 	 * Fires the transitionStart event and starts the transition
 	 * using a new instance of FL.SlideshowTransition.
-	 * 
+	 *
 	 * @method _transitionStart
 	 * @protected
-	 */	
+	 */
 	_transitionStart: function()
 	{
         var root = this.get('root');
-        
+
 		/**
-		 * Fires when the next image has finished loading 
+		 * Fires when the next image has finished loading
 		 * and a new transition starts.
-		 * 
+		 *
 		 * @event transitionStart
-		 */	
+		 */
 		this.fire('transitionStart');
-		
+
 		this._transition = new Y.FL.SlideshowTransition({
-			itemIn: this._nextImage._imageInfo ? this._nextImage.get('boundingBox') : null, 
+			itemIn: this._nextImage._imageInfo ? this._nextImage.get('boundingBox') : null,
 			itemOut: this._activeImage._imageInfo ? this._activeImage.get('boundingBox') : null,
 			type: this._getTransition(),
 			duration: root.get('transitionDuration'),
@@ -701,39 +701,39 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 			kenBurnsDuration: root.get('speed')/1000,
 			kenBurnsZoom: root.get('kenBurnsZoom')
 		});
-		
+
 		if(this._nextImage._imageInfo) {
 			this._nextImage.get('boundingBox').setStyle('left', '0px');
 		}
-		
+
 		this._transition.once('complete', this._transitionComplete, this);
 		this._transition.run();
 	},
-	
+
 	/**
-	 * Switches the next and active image variables, unloads the 
-	 * last image, fires the transitionComplete event and loads 
+	 * Switches the next and active image variables, unloads the
+	 * last image, fires the transitionComplete event and loads
 	 * or resizes if appropriate.
-	 * 
+	 *
 	 * @method _transitionComplete
 	 * @protected
-	 */		
+	 */
 	_transitionComplete: function()
 	{
         var root = this.get('root');
-        
+
         // Swap image container references.
 		this._swapImageRefs();
-		
+
 		/**
 		 * Fired when the current transition completes.
-		 * 
+		 *
 		 * @event transitionComplete
-		 */	
+		 */
 		this.fire('transitionComplete');
 		this._transition = null;
 		this._transitioning = false;
-		
+
 		// Enable gestures if set.
 		if(this._gestures) {
             if(root && root.albumInfo.images.length <= 1) {
@@ -743,7 +743,7 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
                 this._gestures.enable();
             }
 		}
-		
+
 		// Load from the queue?
 		if(this._loadQueue) {
 			this.load(this._loadQueue);
@@ -756,7 +756,7 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 			this._nextImage.resize(this.get('width'), this.get('height'));
 		}
 	},
-		
+
 	/**
 	 * @method _gesturesMoveStart
 	 * @param e {Object} The event object.
@@ -767,24 +767,24 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 		var index 	= 0,
 			root 	= this.get('root');
 
-		index = e.direction == 'next' ? root.imageIndex + 1 : root.imageIndex - 1;	        
+		index = e.direction == 'next' ? root.imageIndex + 1 : root.imageIndex - 1;
         index = index < 0 ? root.albumInfo.images.length - 1 : index;
-		index = index >= root.albumInfo.images.length ? 0 : index;	
-		
+		index = index >= root.albumInfo.images.length ? 0 : index;
+
 		root.pause();
 		root._hideLoadingImage();
 		root._showLoadingImageWithDelay();
-		
+
 		Y.FL.SlideshowImageLoader.removeGroup(this._nextImage.get('loadGroup'));
-		
+
 		this._nextImage.once('loadComplete', root._hideLoadingImage, root);
 		this._nextImage.load(root.albumInfo.images[index]);
 	},
-	
+
 	/**
 	 * @method _gesturesEndComplete
 	 * @protected
-	 */	
+	 */
 	_gesturesEndComplete: function()
 	{
 		var root	= this.get('root'),
@@ -795,19 +795,19 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
         	this._swapImageRefs();
 			this._imageInfo = root.albumInfo.images[index];
 			root.loadImage(index);
-        }        
+        }
 	},
-	
+
 	/**
 	 * @method _swapImageRefs
 	 * @protected
-	 */	
+	 */
 	_swapImageRefs: function()
 	{
 		var active = this._activeImage;
 		this._activeImage = this._nextImage;
 		this._nextImage = active;
-		
+
 		if(this._nextImage._imageInfo) {
 			this._nextImage.unload();
 			this._nextImage.get('boundingBox').setStyle('left', '-9999px');
@@ -817,19 +817,19 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 			this._gestures.set('nextItem', this._nextImage.get('boundingBox'));
 		}
 	}
-	
+
 }, {
 
 	/**
 	 * Custom CSS class name for the widget.
-	 
+
 	 * @property CSS_PREFIX
 	 * @type String
 	 * @protected
 	 * @static
 	 */
 	CSS_PREFIX: 'fl-slideshow-frame',
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Widget.
@@ -840,11 +840,11 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 	 * @static
 	 */
 	ATTRS: {
-		
+
 		/**
-		 * The configuration object used to create new instances of 
+		 * The configuration object used to create new instances of
 		 * FL.SlideshowImage. See the API docs for {@link FL.SlideshowImage}
-		 * for a complete list of configuration attributes. 
+		 * for a complete list of configuration attributes.
 		 *
 		 * @attribute imageConfig
 		 * @type Object
@@ -853,9 +853,9 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 		imageConfig: {
 			value: null
 		},
-		
+
 		/**
-		 * Whether to use touch gestures, when available, 
+		 * Whether to use touch gestures, when available,
 		 * to transition between images or not.
 		 *
 		 * @attribute touchSupport
@@ -870,7 +870,7 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
 
 /**
  * A plugin for fullscreen slideshow functionality.
- * 
+ *
  * @namespace FL
  * @class SlideshowFullscreen
  * @constructor
@@ -878,9 +878,9 @@ Y.namespace('FL').SlideshowFrame = Y.Base.create('fl-slideshow-frame', Y.Widget,
  * @extends Plugin.Base
  */
 Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen', Y.Plugin.Base, [], {
-	
+
 	/**
-	 * Flag for whether the slideshow is in 
+	 * Flag for whether the slideshow is in
 	 * fullscreen mode.
 	 *
 	 * @property active
@@ -888,7 +888,7 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 * @default false
 	 */
 	active: false,
-	
+
 	/**
 	 * A div containing the close message.
 	 *
@@ -898,7 +898,7 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 * @protected
 	 */
 	_closeMessage: null,
-	
+
 	/**
 	 * A timer for hiding the close message.
 	 *
@@ -908,7 +908,7 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 * @protected
 	 */
 	_closeMessageTimer: null,
-	
+
 	/**
 	 * The initial styles of the host's bounding box
 	 * before entering fullscreen mode.
@@ -927,14 +927,14 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 * @method initializer
 	 * @protected
 	 */
-	initializer: function() 
+	initializer: function()
 	{
 		var host 	= this.get('host'),
 			bb 		= host.get('boundingBox'),
 			self 	= this;
-		
+
 		bb.addClass('fl-fullscreen-enabled');
-		
+
 		if(Y.FL.SlideshowFullscreen.OS_SUPPORT) {
 			document.addEventListener('fullscreenchange', function(){ self._osChange(); }, false);
 			document.addEventListener('mozfullscreenchange', function(){ self._osChange(); }, false);
@@ -947,10 +947,10 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 
 	/**
 	 * Exits fullscreen if it is currently active
-	 * otherwise it enters fullscreen. 
+	 * otherwise it enters fullscreen.
 	 *
 	 * @method toggle
-	 */	
+	 */
 	toggle: function()
 	{
 		if(this.active) {
@@ -966,7 +966,7 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 * the slideshow takes over the browser window.
 	 *
 	 * @method enter
-	 */	    
+	 */
 	enter: function()
 	{
 		if(Y.FL.SlideshowFullscreen.OS_SUPPORT) {
@@ -981,7 +981,7 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 * Exits fullscreen mode.
 	 *
 	 * @method exit
-	 */		
+	 */
 	exit: function()
 	{
 		if(Y.FL.SlideshowFullscreen.OS_SUPPORT) {
@@ -997,11 +997,11 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 *
 	 * @method _osEnter
 	 * @protected
-	 */			
+	 */
 	_osEnter: function()
 	{
 		var bbNode = this.get('host').get('boundingBox')._node;
-		
+
 		if(bbNode.webkitRequestFullScreen) {
 			bbNode.webkitRequestFullScreen();
 		}
@@ -1018,7 +1018,7 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 *
 	 * @method _osExit
 	 * @protected
-	 */			
+	 */
 	_osExit: function()
 	{
 		if(document.exitFullscreen) {
@@ -1034,26 +1034,26 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 
 	/**
 	 * Called when the OS fullscreenchange event fires and enters
-	 * or exits standard fullscreen mode which positions and 
-	 * resizes the slideshow. 
+	 * or exits standard fullscreen mode which positions and
+	 * resizes the slideshow.
 	 *
 	 * @method _osChange
 	 * @protected
-	 */			
+	 */
 	_osChange: function()
 	{
 		var host = this.get('host');
-		
-		// Transitions break on Safari while entering and 
-		// exiting fullscreen. This fixes them! 
+
+		// Transitions break on Safari while entering and
+		// exiting fullscreen. This fixes them!
 		if(host.frame && host.frame._transitioning) {
 			host.frame._transitionComplete();
 		}
-		
+
 		if(this.active) {
 			this._exit();
 		}
-		else {	
+		else {
 			this._enter();
 		}
 	},
@@ -1063,27 +1063,27 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 *
 	 * @method _browserEnter
 	 * @protected
-	 */			
+	 */
 	_browserEnter: function()
 	{
 		var bb = this.get('host').get('boundingBox');
-		
+
 		this._initialStyles = {
     		position: bb.getStyle('position'),
     		top: bb.getStyle('top'),
     		left: bb.getStyle('left'),
     		zIndex: bb.getStyle('zIndex')
     	};
-		
+
 		bb.setStyles({
 			position: 'fixed',
 			top: '0px',
 			left: '0px',
 			zIndex: 10000
 		});
-		
+
 		Y.Node.one('body').on('fl-fullscreen|keydown', Y.bind(this._onKey, this));
-		
+
 		this._showCloseMessage();
 		this._enter();
 	},
@@ -1093,20 +1093,20 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 *
 	 * @method _browserExit
 	 * @protected
-	 */			
+	 */
 	_browserExit: function()
 	{
 		var bb = this.get('host').get('boundingBox');
-		
+
 		bb.setStyles({
 			position: this._initialStyles.position,
 			top: this._initialStyles.top,
 			left: this._initialStyles.left,
 			zIndex: this._initialStyles.zIndex
 		});
-		
+
 		Y.Node.one('body').detach('fl-fullscreen|keydown');
-		
+
 		this._hideCloseMessage();
 		this._exit();
 	},
@@ -1116,37 +1116,37 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 *
 	 * @method _enter
 	 * @protected
-	 */			
+	 */
 	_enter: function()
 	{
 		var host 	= this.get('host'),
 			bb 		= host.get('boundingBox');
-		
+
 		bb.addClass('fl-fullscreen-active');
-		
+
 		this.active = true;
-		
+
 		host.resize();
 	},
-	
+
 	/**
 	 * Exits fullscreen mode.
 	 *
 	 * @method _exit
 	 * @protected
-	 */		
+	 */
 	_exit: function()
 	{
 		var host 	= this.get('host'),
 			bb 		= host.get('boundingBox');
-		
-		bb.removeClass('fl-fullscreen-active');	
-		
+
+		bb.removeClass('fl-fullscreen-active');
+
 		this.active = false;
-		
+
 		host.resize();
 	},
-	
+
 	/**
 	 * Keyboard input for the esc button.
 	 *
@@ -1160,9 +1160,9 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 			return false;
 		}
 	},
-	
+
 	/**
-	 * Creates the close message if one is 
+	 * Creates the close message if one is
 	 * not already available in the document.
 	 *
 	 * @method _initCloseMessage
@@ -1175,7 +1175,7 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 		this._closeMessage.setStyle('display', 'none');
 		this.get('host').get('boundingBox').insert(this._closeMessage);
 	},
-	
+
 	/**
 	 * Shows the close message.
 	 *
@@ -1188,11 +1188,11 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 			this._closeMessageTimer.cancel();
 			this._closeMessageTimer = null;
 		}
-		
+
 		this._closeMessage.show(true);
 		this._closeMessageTimer = Y.later(4000, this, this._hideCloseMessage);
 	},
-	
+
 	/**
 	 * Hides the close message.
 	 *
@@ -1205,10 +1205,10 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 			this._closeMessageTimer.cancel();
 			this._closeMessageTimer = null;
 		}
-		
+
 		this._closeMessage.hide(true);
 	}
-	
+
 },	{
 
 	/**
@@ -1220,18 +1220,18 @@ Y.namespace('FL').SlideshowFullscreen = Y.Base.create('fl-slideshow-fullscreen',
 	 * @static
 	 */
 	NS: 'fullscreen',
-	
+
 	OS_SUPPORT: (function(){
-	
+
 		var doc = document.documentElement;
-		
+
 		return doc.webkitRequestFullScreen || doc.mozRequestFullScreen || doc.requestFullScreen;
 	})()
 });
 
 /**
  * Provides functionality for gesture based transitions
- * between two slideshow components. 
+ * between two slideshow components.
  *
  * @namespace FL
  * @class SlideshowGestures
@@ -1250,7 +1250,7 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 	 * @protected
 	 */
 	_startX: null,
-	
+
 	/**
 	 * The y coordinate for where a gesture event starts.
 	 *
@@ -1260,9 +1260,9 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 	 * @protected
 	 */
 	_startY: null,
-	
+
 	/**
-	 * A flag for whether a gesture is moving or not. 
+	 * A flag for whether a gesture is moving or not.
 	 *
 	 * @property _moving
 	 * @type Boolean
@@ -1270,7 +1270,7 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 	 * @protected
 	 */
 	_touchMoving: false,
-	
+
 	/**
 	 * Whether the gesture is moving or not.
 	 *
@@ -1280,9 +1280,9 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 	 * @protected
 	 */
 	_moving: false,
-	
+
 	/**
-	 * The direction the current gesture event 
+	 * The direction the current gesture event
 	 * is moving in (either next or prev).
 	 *
 	 * @property _movingDirection
@@ -1291,9 +1291,9 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 	 * @protected
 	 */
 	_movingDirection: null,
-	
+
 	/**
-	 * A flag for whether a gesture gesture is currently 
+	 * A flag for whether a gesture gesture is currently
 	 * transitioning or not.
 	 *
 	 * @property _transitioning
@@ -1306,12 +1306,12 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 	/**
 	 * @method initializer
 	 * @protected
-	 */ 
-	initializer: function() 
+	 */
+	initializer: function()
 	{
 		this.enable();
 	},
-	
+
 	/**
 	 * @method enable
 	 */
@@ -1321,13 +1321,13 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 			direction 	= this.get('direction'),
 			active 		= this.get('activeItem'),
 			next 		= this.get('nextItem');
-	
+
 		active.on(id + '|gesturemovestart', Y.bind(this._onStart, this));
 		next.on(id + '|gesturemovestart', Y.bind(this._onStart, this));
 		next.on(id + '|transitionend', Y.bind(this._onEndComplete, this) );
 		next.on(id + '|oTransitionEnd', Y.bind(this._onEndComplete, this) );
 		next.on(id + '|webkitTransitionEnd', Y.bind(this._onEndComplete, this) );
-		
+
 		if(direction == 'horizontal') {
 			active.on(id + '|gesturemovehorizontal', Y.bind(this._onMoveHorizontal, this));
 			active.on(id + '|gesturemovehorizontalend', Y.bind(this._onEndHorizontal, this));
@@ -1341,7 +1341,7 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 			next.on(id + '|gesturemoveverticalend', Y.bind(this._onEndVertical, this));
 		}
 	},
-	
+
 	/**
 	 * @method disable
 	 */
@@ -1350,11 +1350,11 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 		var id 		= this.get('id'),
 			active 	= this.get('activeItem'),
 			next 	= this.get('nextItem');
-		
+
 		active.detach(id + '|*');
 		next.detach(id + '|*');
 	},
-	
+
 	/**
 	 * @method _onStart
 	 * @param e {Object} The event object.
@@ -1363,24 +1363,24 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 	_onStart: function(e)
 	{
 		var direction = this.get('direction');
-		
+
 		if(this._transitioning) {
 			this._onEndComplete();
 		}
-		
+
 		if(direction == 'horizontal') {
 			this._startX = e.pageX;
 		}
 		else {
 			this._startY = e.pageY;
 		}
-		
+
 		/**
 		 * @event start
 		 */
 		this.fire('start');
 	},
-		
+
 	/**
 	 * @method _onMoveHorizontal
 	 * @param e {Object} The event object.
@@ -1394,38 +1394,38 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 			width		= parseInt(active.getComputedStyle('width'), 10),
 			translate 	= x < 0 ? Math.abs(x) : -x,
 			direction	= x < 0 ? 'prev' : 'next';
-			
+
 		e.preventDefault();
-		
+
 		if(!this._moving || this._movingDirection != direction) {
-        
+
         	active.setStyle('left', 0);
-	        
+
 	        next.setStyles({
 	        	'opacity': 1,
 	        	'left': x < 0 ? -width : width
 	        });
-	        
+
 	        this._moving = true;
         	this._movingDirection = direction;
-        	
+
 			/**
 			 * @event moveStart
 			 */
 			this.fire('moveStart', { direction: direction });
 		}
-			
+
 		active.setStyle('-webkit-transform', 'translate('+ translate +'px, 0px) translateZ(0px)');
 		active.setStyle('-ms-transform', 'translate('+ translate +'px, 0px) translateZ(0px)');
         next.setStyle('-webkit-transform', 'translate('+ translate +'px, 0px) translateZ(0px)');
         next.setStyle('-ms-transform', 'translate('+ translate +'px, 0px) translateZ(0px)');
-        
+
 		/**
 		 * @event move
 		 */
 		this.fire('move');
 	},
-		
+
 	/**
 	 * @method _onMoveVertical
 	 * @param e {Object} The event object.
@@ -1441,37 +1441,37 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 			direction	= y < 0 ? 'prev' : 'next';
 
 		e.preventDefault();
-		
+
 		if(!this._moving || this._movingDirection != direction) {
- 
+
         	active.setStyle('top', 0);
-	        
+
 	        next.setStyles({
 	        	'opacity': 1,
 	        	'left' : 'auto',
 	        	'top': y < 0 ? -height : height
 	        });
-	        
+
 	        this._moving = true;
         	this._movingDirection = direction;
-        	
+
 			/**
 			 * @event moveStart
 			 */
 			this.fire('moveStart', { direction: direction });
 		}
-			
+
 		active.setStyle('-webkit-transform', 'translate(0px, '+ translate +'px) translateZ(0px)');
 		active.setStyle('-ms-transform', 'translate(0px, '+ translate +'px) translateZ(0px)');
         next.setStyle('-webkit-transform', 'translate(0px, '+ translate +'px) translateZ(0px)');
         next.setStyle('-ms-transform', 'translate(0px, '+ translate +'px) translateZ(0px)');
-        
+
 		/**
 		 * @event move
 		 */
 		this.fire('move');
 	},
-		
+
 	/**
 	 * @method _onEndHorizontal
 	 * @param e {Object} The event object.
@@ -1482,29 +1482,29 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 		if(!this._moving) {
 			return;
 		}
-		
+
 		var x 			= this._startX - e.pageX,
 			active 		= this.get('activeItem'),
 			next 		= this.get('nextItem'),
 			width		= parseInt(next.getComputedStyle('width'), 10),
 			translate 	= x < 0 ? width : -width;
-        
-		active.transition({ 
-			'transform': 'translate('+ translate +'px, 0px)' 
+
+		active.transition({
+			'transform': 'translate('+ translate +'px, 0px)'
 		});
-		
-		next.transition({ 
-			'transform': 'translate('+ translate +'px, 0px)' 
+
+		next.transition({
+			'transform': 'translate('+ translate +'px, 0px)'
 		});
-		
+
 		this._transitioning = true;
-		
+
 		/**
 		 * @event end
 		 */
 		this.fire('end');
 	},
-		
+
 	/**
 	 * @method _onEndVertical
 	 * @param e {Object} The event object.
@@ -1515,39 +1515,39 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 		if(!this._moving) {
 			return;
 		}
-		
+
 		var y 			= this._startY - e.pageY,
 			active 		= this.get('activeItem'),
 			next 		= this.get('nextItem'),
 			height		= parseInt(next.getComputedStyle('height'), 10),
 			translate 	= y < 0 ? height : -height;
-        
-		active.transition({ 
-			'transform': 'translate(0px, '+ translate +'px)' 
+
+		active.transition({
+			'transform': 'translate(0px, '+ translate +'px)'
 		});
-		
-		next.transition({ 
-			'transform': 'translate(0px, '+ translate +'px)' 
+
+		next.transition({
+			'transform': 'translate(0px, '+ translate +'px)'
 		});
-		
+
 		this._transitioning = true;
-		
+
 		/**
 		 * @event end
 		 */
 		this.fire('end');
 	},
-	
+
 	/**
 	 * @method _onEndComplete
 	 * @protected
-	 */	
+	 */
 	_onEndComplete: function()
 	{
 		var direction 	= this.get('direction'),
 			active 		= this.get('activeItem'),
 			next 		= this.get('nextItem');
-		
+
 		active.setStyles({
         	'opacity': 0,
         	'-webkit-transform': '',
@@ -1555,14 +1555,14 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
         	'-ms-transform': '',
         	'-ms-transition': ''
         });
-		
+
 		next.setStyles({
         	'-webkit-transform': '',
         	'-webkit-transition': '',
         	'-ms-transform': '',
         	'-ms-transition': ''
         });
-        
+
         if(direction == 'horizontal') {
         	active.setStyle('left', '-9999px');
         	next.setStyle('left', '0px');
@@ -1577,7 +1577,7 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 		this._moving = false;
 		this._movingDirection = null;
 		this._transitioning = false;
-		
+
 		/**
 		 * @event endComplete
 		 */
@@ -1585,7 +1585,7 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 	}
 
 }, {
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Widget.
@@ -1608,7 +1608,7 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 		direction: {
 			value: 'horizontal'
 		},
-		
+
 		/**
 		 * The Node that is currently visible.
 		 *
@@ -1619,7 +1619,7 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 		activeItem: {
 			value: null
 		},
-		
+
 		/**
 		 * The Node that will be transitioned in.
 		 *
@@ -1635,13 +1635,13 @@ Y.namespace('FL').SlideshowGestures = Y.Base.create('fl-slideshow-gestures', Y.B
 
 /**
  * A load queue for slideshow images.
- * 
+ *
  * @namespace FL
  * @class SlideshowImageLoader
  * @static
  */
 Y.namespace('FL').SlideshowImageLoader = {
-	
+
 	/**
 	 * Whether an image is being loaded or not.
 	 *
@@ -1651,7 +1651,7 @@ Y.namespace('FL').SlideshowImageLoader = {
 	 * @protected
 	 */
 	_loading: false,
-	
+
 	/**
 	 * An node for loading the next image.
 	 *
@@ -1661,7 +1661,7 @@ Y.namespace('FL').SlideshowImageLoader = {
 	 * @protected
 	 */
 	_currentImage: null,
-	
+
 	/**
 	 * An object containing the group, src and callback
 	 * for the current image that is being loaded.
@@ -1672,9 +1672,9 @@ Y.namespace('FL').SlideshowImageLoader = {
 	 * @protected
 	 */
 	_currentImageData: null,
-	
+
 	/**
-	 * An array of image data objects that contain the group, 
+	 * An array of image data objects that contain the group,
 	 * src and callback for each image that will be loaded.
 	 *
 	 * @property _queue
@@ -1683,17 +1683,17 @@ Y.namespace('FL').SlideshowImageLoader = {
 	 * @protected
 	 */
 	_queue: [],
-	
+
 	/**
 	 * Adds an image to the queue.
 	 *
 	 * @method add
-	 * @param group {String} The group this image is associated with. 
+	 * @param group {String} The group this image is associated with.
 	 * Used to remove images in bulk.
 	 * @param src {String} The image url to load.
-	 * @param callback {Function} A function to call when the image 
+	 * @param callback {Function} A function to call when the image
 	 * has finished loading.
-	 * @param bump {Boolean} If true, the image will be added to 
+	 * @param bump {Boolean} If true, the image will be added to
 	 * the first position in the queue.
 	 */
 	add: function(group, src, callback, bump)
@@ -1703,19 +1703,19 @@ Y.namespace('FL').SlideshowImageLoader = {
 			src			: src,
 			callback	: callback
 		};
-		
+
 		if(bump) {
 			this._queue.unshift(imgData);
 		}
 		else {
 			this._queue.push(imgData);
 		}
-		
+
 		if(!this._loading) {
 			this._load();
 		}
 	},
-	
+
 	/**
 	 * Removes a group of images from the queue.
 	 *
@@ -1725,18 +1725,18 @@ Y.namespace('FL').SlideshowImageLoader = {
 	removeGroup: function(group)
 	{
 		var i = this._queue.length - 1;
-		
+
 		for( ; i > -1 ; i--) {
 			if(this._queue[i].group == group) {
 				this._queue.splice(i, 1);
 			}
 		}
-		
+
 		if(this._currentImageData && this._currentImageData.group == group) {
 			this._currentImage.detachAll();
 			this._currentImage = null;
 			this._currentImageData = null;
-			
+
 			if(this._queue.length > 0) {
 				this._load();
 			}
@@ -1745,7 +1745,7 @@ Y.namespace('FL').SlideshowImageLoader = {
 			}
 		}
 	},
-	
+
 	/**
 	 * Loads the next image in the queue.
 	 *
@@ -1761,7 +1761,7 @@ Y.namespace('FL').SlideshowImageLoader = {
 		this._currentImage.on('load', Y.bind(this._loadComplete, this));
 		this._currentImage.set('src', this._currentImageData.src);
 	},
-	
+
 	/**
 	 * Calls the current image's callback function if set
 	 * and loads the next image if the queue is not empty.
@@ -1774,7 +1774,7 @@ Y.namespace('FL').SlideshowImageLoader = {
 		if(this._currentImageData.callback) {
 			this._currentImageData.callback(this._currentImage);
 		}
-		
+
 		if(this._queue.length > 0) {
 			this._load();
 		}
@@ -1796,9 +1796,9 @@ Y.namespace('FL').SlideshowImageLoader = {
  * @extends Widget
  */
 Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget, [Y.WidgetChild], {
-	
+
 	/**
-	 * The imageInfo object used to load the image and 
+	 * The imageInfo object used to load the image and
 	 * its various sizes.
 	 *
 	 * @property info
@@ -1807,7 +1807,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @protected
 	 */
 	_imageInfo: null,
-			
+
 	/**
 	 * A reference to the current image node in the bounding box.
 	 *
@@ -1817,7 +1817,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @protected
 	 */
 	_image: null,
-	
+
 	/**
 	 * Whether or not new imageInfo is loading.
 	 *
@@ -1827,7 +1827,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @protected
 	 */
 	_loading: false,
-	
+
 	/**
 	 * The URL that is currently being loaded.
 	 *
@@ -1837,7 +1837,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @protected
 	 */
 	_loadingURL: null,
-			
+
 	/**
 	 * An anchor node used for the video play button.
 	 *
@@ -1845,9 +1845,9 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @type Node
 	 * @default null
 	 * @protected
-	 */	
+	 */
 	_videoButton: null,
-			
+
 	/**
 	 * A div node used to hold the video iframe.
 	 *
@@ -1855,9 +1855,9 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @type Node
 	 * @default null
 	 * @protected
-	 */	
+	 */
 	_videoBox: null,
-			
+
 	/**
 	 * An iframe node used to render the video.
 	 *
@@ -1865,12 +1865,12 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @type Node
 	 * @default null
 	 * @protected
-	 */	
+	 */
 	_video: null,
-	
+
 	/**
 	 * The default content template for the image
-	 * inherited from Y.Widget. Set to null since 
+	 * inherited from Y.Widget. Set to null since
 	 * only the bounding box is needed.
 	 *
 	 * @property CONTENT_TEMPLATE
@@ -1879,7 +1879,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @protected
 	 */
 	CONTENT_TEMPLATE: null,
-	
+
 	/**
 	 * Initial styling for the bounding box.
 	 *
@@ -1895,7 +1895,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 			bb.addClass('fl-slideshow-image-cropped');
 		}
 	},
-	
+
 	/**
 	 * Sets the imageInfo object and
 	 * loads the appropriate image size.
@@ -1909,9 +1909,9 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		this._loading = true;
 		this._load();
 	},
-	
+
 	/**
-	 * Sets the width and height of the bounding box and 
+	 * Sets the width and height of the bounding box and
 	 * preloads an image using the provided imageInfo object.
 	 *
 	 * @method preload
@@ -1924,22 +1924,22 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		var isVideo			= this._isVideo(),
 			loadVideos 		= this.get('loadVideos'),
 			showVideoButton = this.get('showVideoButton');
-			
+
 		this.unload();
 		this.set('width', width);
 		this.set('height', height);
 		this._imageInfo = imageInfo;
-		
+
 		if(!isVideo || !loadVideos || (isVideo && loadVideos && showVideoButton)) {
 			Y.FL.SlideshowImageLoader.add(
-				this.get('loadGroup'), 
-				this._getImageURL(), 
-				Y.bind(this._imagePreloaded, this), 
+				this.get('loadGroup'),
+				this._getImageURL(),
+				Y.bind(this._imagePreloaded, this),
 				this.get('loadPriority')
 			);
 		}
 	},
-	
+
 	/**
 	 * Called when preloading completes.
 	 *
@@ -1951,7 +1951,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	{
 		this._image = img;
 	},
-	
+
 	/**
 	 * Unloads the image if there is one loaded
 	 * and sets the imageInfo object to null.
@@ -1977,12 +1977,12 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		if(this._videoBox) {
 			this._removeVideoBox();
 		}
-		
+
 		this._imageInfo = null;
 		this._loading = false;
 		this._loadingURL = null;
 	},
-	
+
 	/**
 	 * Resizes the bounding box and loads the
 	 * appropriate image size if necessary.
@@ -1995,7 +1995,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	{
 		var borderWidth = parseInt(this.get('boundingBox').getComputedStyle('borderTopWidth'), 10) * 2,
 			bb			= this.get('boundingBox');
-			
+
 		this.set('width', width - borderWidth);
 		this.set('height', height - borderWidth);
 		bb.setStyle('width', width - borderWidth + 'px');
@@ -2014,9 +2014,9 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 			if(this._image) {
 				this._positionImage();
 			}
-		}		
+		}
 	},
-		
+
 	/**
 	 * Loads (or reloads) the image or video.
 	 *
@@ -2027,7 +2027,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	{
 		var loadVideos 		= this.get('loadVideos'),
 			showVideoButton = this.get('showVideoButton');
-	
+
 		if(this._isVideo() && loadVideos && !showVideoButton && !('ontouchstart' in window)) {
 			this._loadVideo();
 		}
@@ -2035,10 +2035,10 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 			this._loadImage();
 		}
 	},
-	
+
 	/**
 	 * Loads the appropriate image size if
-	 * it is not already loading. 
+	 * it is not already loading.
 	 *
 	 * @method _loadImage
 	 * @protected
@@ -2047,30 +2047,30 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	{
 		var url 		= this._getImageURL(),
 			loadVideos 	= this.get('loadVideos');
-			
+
 		// Already loading.
 		if(url == this._loadingURL) {
 			return;
 		}
-		
+
 		// New URL to load.
 		this._loadingURL = url;
-		
+
 		// Load the new image.
 		Y.FL.SlideshowImageLoader.add(
-			this.get('loadGroup'), 
-			this._loadingURL, 
-			Y.bind(this._loadImageComplete, this), 
+			this.get('loadGroup'),
+			this._loadingURL,
+			Y.bind(this._loadImageComplete, this),
 			this.get('loadPriority')
 		);
-		
+
 		// Initial load?
 		if(this._loading) {
-			
+
 			if(this._isVideo() && loadVideos) {
 				this._insertVideoButton();
 			}
-		
+
 			/**
 			 * Only fires when a new image is being
 			 * loaded, not a different size.
@@ -2080,7 +2080,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 			this.fire('loadStart');
 		}
 	},
-	
+
 	/**
 	 * Fires when the image has finished loading.
 	 *
@@ -2091,38 +2091,38 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	{
 		var bb 				= this.get('boundingBox'),
 			showVideoButton = this.get('showVideoButton');
-		
+
 		this._image = img;
 		this._image.setStyle('visibility', 'hidden');
 		this._image.addClass('fl-slideshow-image-img');
-		
+
 		// Remove load events.
 		this._image.detachAll();
-		
+
 		// Remove previous videos.
 		if(this._video && !showVideoButton) {
 			this._video.remove();
 			this._video = null;
 		}
-		
+
 		// Remove the old image.
 		bb.all('img').remove();
-		
+
 		// Append the new image.
 		bb.append(this._image);
-		
+
 		// Setup, scale and position the new image.
 		this._setupImage();
 		this._resizeImage();
 		this._positionImage();
 		this._image.setStyle('visibility', 'visible');
-		
+
 		// Clear the loading url.
 		this._loadingURL = null;
-		
+
 		// Finish an initial load?
 		if(this._loading) {
-			
+
 			this._loading = false;
 
 			/**
@@ -2134,7 +2134,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 			this.fire('loadComplete');
 		}
 	},
-	
+
 	/**
 	 * UI setup for the new image.
 	 *
@@ -2144,22 +2144,22 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	_setupImage: function()
 	{
         var bb = this.get('boundingBox');
-        
+
 		// IE interpolation
 		if(typeof this._image._node.style.msInterpolationMode != 'undefined') {
 			this._image._node.style.msInterpolationMode = 'bicubic';
 		}
-		
+
 		// Protection
 		if(this.get('protect')) {
             bb.delegate('contextmenu', this._protectImage, 'img');
             bb.delegate('mousedown', this._protectImage, 'img');
 		}
 	},
-	
+
 	/**
 	 * Fires on contextmenu or mousedown in attempt
-	 * to keep the image from being copied. 
+	 * to keep the image from being copied.
 	 *
 	 * @method _protectImage
 	 * @return {Boolean} Returns false to prevent the default event.
@@ -2170,7 +2170,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		e.preventDefault();
 		return false;
 	},
-	
+
 	/**
 	 * Resizes the image node.
 	 *
@@ -2195,20 +2195,20 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		if(this._imageInfo && this.get('checkFilenamesForNoCrop')) {
 			noCrop = this._imageInfo.filename.indexOf('nocrop') > -1;
 		}
-			
+
 		if(this.get('crop') && !(cropHorizontalsOnly && isHorizontal) && !noCrop) {
 			newWidth = targetWidth;
-			newHeight = Math.round(imageHeight * targetWidth/imageWidth);	
-			
+			newHeight = Math.round(imageHeight * targetWidth/imageWidth);
+
 			if(newHeight < targetHeight) {
 				newHeight = targetHeight;
-				newWidth = Math.round(imageWidth * targetHeight/imageHeight);	
+				newWidth = Math.round(imageWidth * targetHeight/imageHeight);
 			}
 		}
 		else {
 			xScale = imageWidth/targetWidth;
 			yScale = imageHeight/targetHeight;
-			
+
 			if (yScale > xScale){
 				newWidth = Math.round(imageWidth * (1/yScale));
 				newHeight = Math.round(imageHeight * (1/yScale));
@@ -2218,21 +2218,21 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 				newHeight = Math.round(imageHeight * (1/xScale));
 			}
 		}
-		
+
 		// Don't resize past the original size?
 		if(!this.get('crop') && !this.get('upsize') && (newWidth > imageWidth || newHeight > imageHeight)) {
 			newWidth = imageWidth;
 			newHeight = imageHeight;
 		}
-		
+
 		// Compensate for borders.
 		newWidth -= borderWidth;
 		newHeight -= borderWidth;
-		
+
 		// Resize the image.
 		this._image.setStyle('width', newWidth + 'px');
 		this._image.setStyle('height', newHeight + 'px');
-		
+
 		// Constrain bounding box to image size.
 		if(!this.get('crop') && this.get('constrainWidth')) {
 			this.set('width', newWidth + 'px');
@@ -2241,7 +2241,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 			this.set('height', newHeight + 'px');
 		}
 	},
-	
+
 	/**
 	 * Positions the image within the bounding box.
 	 *
@@ -2251,7 +2251,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	_positionImage: function()
 	{
 		var pos 			= this.get('position').split(' '),
-			x 				= pos[0] === '' ? 'center' : pos[0], 
+			x 				= pos[0] === '' ? 'center' : pos[0],
 			y 				= pos[1] === '' ? 'center' : pos[1],
 			newX 			= 0,
 			newY			= 0,
@@ -2260,42 +2260,42 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 			borderWidth 	= parseInt(this._image.getComputedStyle('borderTopWidth'), 10) * 2,
 			imageWidth		= parseInt(this._image.getComputedStyle('width'), 10) + borderWidth,
 			imageHeight		= parseInt(this._image.getComputedStyle('height'), 10) + borderWidth;
-		
+
 		if(isNaN(imageWidth) && isNaN(imageHeight)) {
 			return;
 		}
 		if(x == 'left') {
-			newX = 0;	
+			newX = 0;
 		}
 		if(x == 'center') {
 			newX = 	(bbWidth - imageWidth)/2;
 		}
 		if(x == 'right') {
-			newX = bbWidth - imageWidth;	
+			newX = bbWidth - imageWidth;
 		}
-		
+
 		if(y == 'top') {
-			newY = 0;	
+			newY = 0;
 		}
 		if(y == 'center') {
 			newY = (bbHeight - imageHeight)/2;
 		}
 		if(y == 'bottom') {
-			newY = bbHeight - imageHeight;	
+			newY = bbHeight - imageHeight;
 		}
-		
+
 		this._image.setStyles({
 			'left': newX,
 			'top': newY
 		});
 	},
-	
+
 	/**
-	 * Gets the appropriate image url based 
-	 * on the size of the bounding box. 
+	 * Gets the appropriate image url based
+	 * on the size of the bounding box.
 	 *
 	 * @method _getImageURL
-	 * @return {String} The url to load. 
+	 * @return {String} The url to load.
 	 * @protected
 	 */
 	_getImageURL: function()
@@ -2308,8 +2308,8 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 			useThumbSizes	= this.get('useThumbSizes'),
 			i 				= this._imageInfo,
 			sizes = [
-				i.tinyURL 		|| i.thumbURL 	|| i.largeURL, 
-				i.thumbURL 		|| i.largeURL, 
+				i.tinyURL 		|| i.thumbURL 	|| i.largeURL,
+				i.thumbURL 		|| i.largeURL,
 				i.smallURL 		|| i.largeURL,
 				i.mediumURL 	|| i.largeURL 	|| i.smallURL,
 				i.largeURL 		|| i.mediumURL 	|| i.smallURL,
@@ -2317,7 +2317,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 				i.x2largeURL 	|| i.largeURL 	|| i.mediumURL 	|| i.smallURL,
 				i.x3largeURL 	|| i.x2largeURL || i.largeURL 	|| i.mediumURL || i.smallURL
 			];
-			
+
 		// Width
 		if(useThumbSizes && targetWidth <= 100) {
 			imageWidth = 0;
@@ -2343,7 +2343,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		else {
 			imageWidth = 7;
 		}
-		
+
 		// Height
 		if(useThumbSizes && targetHeight <= 100) {
 			imageHeight = 0;
@@ -2369,15 +2369,15 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		else {
 			imageHeight = 7;
 		}
-		
+
 		// Get the size number.
 		size = Math.max(imageWidth, imageHeight);
-		
+
 		return sizes[size];
 	},
-	
+
 	/**
-	 * Checks whether this is a video or not. 
+	 * Checks whether this is a video or not.
 	 *
 	 * @method _isVideo
 	 * @protected
@@ -2393,26 +2393,26 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		else if(this._imageInfo.iframe !== '') {
 			return true;
 		}
-		
+
 		return false;
 	},
-	
+
 	/**
 	 * @method _loadVideo
 	 * @protected
-	 */	
+	 */
 	_loadVideo: function()
 	{
 		var bb 				= this.get('boundingBox'),
 			showVideoButton = this.get('showVideoButton'),
 			autoPlay 		= showVideoButton ? true : false;
-		
+
 		// Remove previous videos
 		if(this._video) {
 			this._video.remove();
 			this._video = null;
 		}
-		
+
 		// Get the video code
 		if(this._imageInfo.format == 'mp4' && this._imageInfo.sourceType == 'smugmug') {
 			this._video = this._getSmugMugVideoEmbed(this._imageInfo, autoPlay);
@@ -2420,59 +2420,59 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		else if(this._imageInfo.iframe !== '') {
 			this._video = this._getIframeVideoEmbed(this._imageInfo, autoPlay);
 		}
-		
+
 		// Insert the video
 		if(this._videoBox) {
-			this._videoBox.one('.fl-slideshow-video-wrap').insert(this._video);	
+			this._videoBox.one('.fl-slideshow-video-wrap').insert(this._video);
 		}
 		else {
 			bb.all('img').remove();
 			bb.append(this._video);
 		}
-		
+
 		// Finish an initial load?
 		if(this._loading) {
 			this._loading = false;
 			this.fire('loadComplete');
 		}
 	},
-	
+
 	/**
 	 * @method _insertVideoButton
 	 * @protected
-	 */	
+	 */
 	_insertVideoButton: function()
 	{
 		var bb 		= this.get('boundingBox'),
 			event 	= 'ontouchstart' in window ? 'touchstart' : 'click';
-			
+
 		this._videoButton = Y.Node.create('<a class="fl-slideshow-video-button" href="javascript:void(0);"></a>');
 		this._videoButton.on(event, Y.bind(this._showVideoBox, this));
 		bb.insert(this._videoButton);
 		this._positionVideoButton();
 	},
-	
+
 	/**
 	 * @method _positionVideoButton
 	 * @protected
-	 */	
+	 */
 	_positionVideoButton: function()
 	{
 		var bbWidth			= this.get('width'),
 			bbHeight		= this.get('height'),
 			buttonWidth		= parseInt(this._videoButton.getStyle('width'), 10),
 			buttonHeight 	= parseInt(this._videoButton.getStyle('height'), 10);
-			
+
 		this._videoButton.setStyles({
 			left: (bbWidth - buttonWidth)/2,
 			top: (bbHeight - buttonHeight)/2
 		});
 	},
-	
+
 	/**
 	 * @method _showVideoBox
 	 * @protected
-	 */	
+	 */
 	_showVideoBox: function()
 	{
 		var root 	= this.get('root'),
@@ -2486,17 +2486,17 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		this._videoBox.insert(close);
 		this._videoBox.on(event, Y.bind(this._removeVideoBox, this));
 		close.on(event, Y.bind(this._removeVideoBox, this));
-		
+
 		if(typeof YUI.Env.mods['sm-fonticon'] !== 'undefined') {
             close.addClass('sm-fonticon sm-fonticon-XCrossEncircled sm-button-skin-default sm-button-nochrome');
         }
-        
+
 		Y.one('body').insert(this._videoBox);
 		this._loadVideo();
-		
+
 		Y.one('body').on('fl-slideshow-image|keydown', this._onKey, this);
 	},
-	
+
 	/**
 	 * Get the embed code for a SmugMug video.
 	 *
@@ -2504,24 +2504,24 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @param imageInfo {Object} The image info for the embed.
 	 * @param autoPlay {Boolean} Whether to auto play videos or not.
 	 * @protected
-	 */ 
+	 */
 	_getSmugMugVideoEmbed: function(imageInfo, autoPlay)
 	{
 		var test		= document.createElement('video'),
 			width		= 0,
-			mp4 		= '', 
+			mp4 		= '',
 			vars		= '',
 			code 		= '';
-		
+
 		if(Y.UA.mobile !== null && !!test.canPlayType && test.canPlayType('video/mp4')) {
 			width = this.get('width');
-			mp4 = 'http://www.smugmug.com/photos/' + imageInfo.id + '_' + imageInfo.key + '-' + width + '.mp4';
+			mp4 = 'https://www.smugmug.com/photos/' + imageInfo.id + '_' + imageInfo.key + '-' + width + '.mp4';
 			code += '<video width="100%" height="100%" poster="'+ this._getImageURL() +'" controls preload="none"';
-			
+
 			if(autoPlay) {
 				code += ' autoplay';
 			}
-			
+
 			code += '>';
 			code += '<source src="'+ mp4 +'" type="video/mp4" />';
 			code += '</video>';
@@ -2529,26 +2529,26 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		else {
 			vars = 'imageId=' + imageInfo.id;
 			vars += '&amp;imageKey=' + imageInfo.key;
-			vars += '&amp;albumId=' + imageInfo.albumId; 
-			vars += '&amp;albumKey=' + imageInfo.albumKey; 
-			vars += '&amp;apiURL=http://api.smugmug.com/&amp;hostLevel=live&amp;isPro=true';
-			
+			vars += '&amp;albumId=' + imageInfo.albumId;
+			vars += '&amp;albumKey=' + imageInfo.albumKey;
+			vars += '&amp;apiURL=https://api.smugmug.com/&amp;hostLevel=live&amp;isPro=true';
+
 			if(autoPlay) {
 				vars += '&amp;autoPlay=true';
 			}
 			else {
 				vars += '&amp;autoPlay=false';
 			}
-			
-			code += '<object type="application/x-shockwave-flash" width="100%" height="100%" data="http://cdn.smugmug.com/img/ria/SmugPlayer/2012102601.swf">';
-			code += '<param name="movie" value="http://cdn.smugmug.com/img/ria/SmugPlayer/2012102601.swf">';
+
+			code += '<object type="application/x-shockwave-flash" width="100%" height="100%" data="https://cdn.smugmug.com/img/ria/SmugPlayer/2012102601.swf">';
+			code += '<param name="movie" value="https://cdn.smugmug.com/img/ria/SmugPlayer/2012102601.swf">';
 			code += '<param name="allowFullScreen" value="true">';
 			code += '<param name="wmode" value="transparent">';
 			code += '<param name="flashVars" value="' + vars + '">';
-			code += '<embed src="http://cdn.smugmug.com/img/ria/SmugPlayer/2012102601.swf" flashvars="'+ vars +'" width="100%" height="100%" type="application/x-shockwave-flash" allowfullscreen="true" wmode="transparent">';
+			code += '<embed src="https://cdn.smugmug.com/img/ria/SmugPlayer/2012102601.swf" flashvars="'+ vars +'" width="100%" height="100%" type="application/x-shockwave-flash" allowfullscreen="true" wmode="transparent">';
 			code += '</object>';
 		}
-		
+
 		return Y.Node.create(code);
 	},
 
@@ -2559,25 +2559,25 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @param imageInfo {Object} The image info for the embed.
 	 * @param autoPlay {Boolean} Whether to auto play videos or not.
 	 * @protected
-	 */ 	
+	 */
 	_getIframeVideoEmbed: function(imageInfo, autoPlay)
 	{
 		var code 	= '<iframe width="100%" height="100%" frameborder="0" allowfullscreen ',
 			url	 	= imageInfo.iframe;
-		
+
 		if(autoPlay) {
 			url += url.indexOf('?') > -1 ? '&autoplay=1' : '?autoplay=1';
 		}
-		
+
 		code += 'src="'+ url +'"></iframe>';
 
 		return Y.Node.create(code);
 	},
-	
+
 	/**
 	 * @method _removeVideoBox
 	 * @protected
-	 */	
+	 */
 	_removeVideoBox: function(e)
 	{
 		if(typeof e !== 'undefined' && e.target) {
@@ -2585,16 +2585,16 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 				return;
 			}
 		}
-		
+
 		if(this._videoBox !== null) {
     		this._videoBox.remove();
     		this._videoBox = null;
     		this._video = null;
         }
-        		
+
 		Y.one('body').detach('fl-slideshow-image|keydown', this._onKey);
 	},
-	
+
 	/**
 	 * Keyboard input for the esc button.
 	 *
@@ -2608,12 +2608,12 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 			return false;
 		}
 	}
-	
+
 }, {
 
 	/**
 	 * Custom CSS class name for the widget.
-	 
+
 	 * @property CSS_PREFIX
 	 * @type String
 	 * @protected
@@ -2631,7 +2631,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 	 * @static
 	 */
 	ATTRS: {
-	
+
 		/**
 		 * @attribute loadGroup
 		 * @type String
@@ -2640,7 +2640,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		loadGroup: {
 			value: 'none'
 		},
-		
+
 		/**
 		 * @attribute loadPriority
 		 * @type Boolean
@@ -2649,7 +2649,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		loadPriority: {
 			value: false
 		},
-		
+
 		/**
 		 * Whether to crop the image.
 		 *
@@ -2660,7 +2660,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		crop: {
 			value: false
 		},
-		
+
 		/**
 		 * Checks whether the filename has nocrop in it or not.
 		 * If it does, the image will not be cropped.
@@ -2672,7 +2672,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		checkFilenamesForNoCrop: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to only crop horizontal images or not.
 		 *
@@ -2683,9 +2683,9 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		cropHorizontalsOnly: {
 			value: false
 		},
-		
+
 		/**
-		 * The x and y position of the image 
+		 * The x and y position of the image
 		 * within the bounding box.
 		 *
 		 * @attribute position
@@ -2695,7 +2695,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		position: {
 			value: 'center center'
 		},
-		
+
 		/**
 		 * Whether to right click protect the image.
 		 *
@@ -2706,7 +2706,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		protect: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to resize the image past
 		 * its original width and height.
@@ -2718,7 +2718,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
         upsize: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to load thumb sizes. Defaults
 		 * to false since thumb sizes are square.
@@ -2730,9 +2730,9 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		useThumbSizes: {
 			value: false
 		},
-		
+
 		/**
-		 * Whether to constrain the width of the 
+		 * Whether to constrain the width of the
 		 * bounding box to the width of the image.
 		 *
 		 * @attribute constrainWidth
@@ -2742,9 +2742,9 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		constrainWidth: {
 			value: false
 		},
-		
+
 		/**
-		 * Whether to constrain the height of the 
+		 * Whether to constrain the height of the
 		 * bounding box to the height of the image.
 		 *
 		 * @attribute constrainHeight
@@ -2754,7 +2754,7 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		constrainHeight: {
 			value: false
 		},
-		
+
 		/**
 		 * Whether to load videos or not. The poster
 		 * image will be loaded if set to false.
@@ -2762,14 +2762,14 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 		 * @attribute loadVideos
 		 * @type Boolean
 		 * @default true
-		 */		
+		 */
 		loadVideos: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to show the video play button or not.
-		 * When clicked, videos will be displayed in a 
+		 * When clicked, videos will be displayed in a
 		 * lightbox instead of the slideshow itself.
 		 *
 		 * @attribute showVideoButton
@@ -2783,9 +2783,9 @@ Y.namespace('FL').SlideshowImage = Y.Base.create('fl-slideshow-image', Y.Widget,
 });
 
 /**
- * A plugin that turns the cursor into a prev or next arrow when 
+ * A plugin that turns the cursor into a prev or next arrow when
  * it is over the left or right side of the slideshow.
- * 
+ *
  * @namespace FL
  * @class SlideshowMouseNav
  * @constructor
@@ -2798,7 +2798,7 @@ Y.namespace('FL').SlideshowMouseNav = Y.Base.create('fl-slideshow-mouse-nav', Y.
 	 * @method initializer
 	 * @protected
 	 */
-	initializer: function() 
+	initializer: function()
 	{
 		var trigger = this.get('trigger');
 
@@ -2806,11 +2806,11 @@ Y.namespace('FL').SlideshowMouseNav = Y.Base.create('fl-slideshow-mouse-nav', Y.
 		trigger.on('mousemove', this._showArrow, this);
 		trigger.on('mouseleave', this._hideArrow, this);
     },
- 
+
 	/**
 	 * @method _triggerClick
 	 * @protected
-	 */ 
+	 */
     _triggerClick: function(e)
     {
     	var host 			= this.get('host'),
@@ -2818,7 +2818,7 @@ Y.namespace('FL').SlideshowMouseNav = Y.Base.create('fl-slideshow-mouse-nav', Y.
     		triggerWidth	= parseInt(trigger.getStyle('width'), 10),
     		triggerRegion 	= trigger.get('region'),
     		layerX 			= e.pageX - triggerRegion.left + 5;
-    	
+
     	if(layerX >= triggerWidth/2) {
     		host.nextImage();
     	}
@@ -2826,11 +2826,11 @@ Y.namespace('FL').SlideshowMouseNav = Y.Base.create('fl-slideshow-mouse-nav', Y.
     		host.prevImage();
     	}
     },
- 
+
 	/**
 	 * @method _showArrow
 	 * @protected
-	 */   
+	 */
     _showArrow: function(e)
     {
     	var host 			= this.get('host'),
@@ -2850,19 +2850,19 @@ Y.namespace('FL').SlideshowMouseNav = Y.Base.create('fl-slideshow-mouse-nav', Y.
         	}
         }
     },
-  
+
 	/**
 	 * @method _hideArrow
 	 * @protected
-	 */    
+	 */
     _hideArrow: function()
     {
     	var trigger = this.get('trigger');
-    	
+
     	trigger.removeClass('fl-slideshow-mouse-nav-next');
     	trigger.removeClass('fl-slideshow-mouse-nav-prev');
     }
-    
+
 },	{
 
 	/**
@@ -2874,7 +2874,7 @@ Y.namespace('FL').SlideshowMouseNav = Y.Base.create('fl-slideshow-mouse-nav', Y.
 	 * @static
 	 */
 	NS: 'mouseNav',
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Plugin.
@@ -2885,7 +2885,7 @@ Y.namespace('FL').SlideshowMouseNav = Y.Base.create('fl-slideshow-mouse-nav', Y.
 	 * @static
 	 */
 	ATTRS: {
-		
+
 		/**
 		 * A Node that triggers the arrows.
 		 *
@@ -2909,25 +2909,25 @@ Y.namespace('FL').SlideshowMouseNav = Y.Base.create('fl-slideshow-mouse-nav', Y.
  * @extends Base
  */
 Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.Base, [], {
-	
+
 	/**
 	 * Runs the Ken Burns effect.
 	 *
 	 * @method run
-	 */ 
+	 */
 	run: function()
 	{
         var imageNode = null,
             transform = null;
-            
+
 		if(Y.FL.Utils.cssSupport('transform')) {
-            
+
             // Image node
             imageNode = this.get('image').one('img');
-            
+
             // Transform object
             transform = this._getTransform();
-            
+
             // Apply the start transform
             imageNode.setStyles({
                 '-webkit-transform-origin': transform.origin,
@@ -2936,7 +2936,7 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
                 'transform-origin': transform.origin,
                 'transform': transform.start
             });
-        
+
             // Transition to the end transform
             imageNode.transition({
                 easing: 'ease-out',
@@ -2945,13 +2945,13 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
             });
         }
 	},
-	
+
 	/**
 	 * @method _getTransform
 	 * @protected
-	 */ 	
+	 */
 	_getTransform: function()
-	{  
+	{
         var zoom            = this.get('zoom'),
             image           = this.get('image'),
             i               = 0,
@@ -2961,11 +2961,11 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
         // Random zoom direction
         i = Math.floor(Math.random() * Y.FL.SlideshowKenBurns.ZOOM_DIRECTIONS.length);
         zoomDirection = Y.FL.SlideshowKenBurns.ZOOM_DIRECTIONS[i];
-        
+
         // Random transform
         i = Math.floor(Math.random() * Y.FL.SlideshowKenBurns.TRANSFORMS.length);
         transform = Y.FL.SlideshowKenBurns.TRANSFORMS[i];
-        
+
         // Get the start and end transforms
         if(!image.hasClass('fl-slideshow-image-cropped') && zoomDirection == 'in') {
             i = Math.floor(Math.random() * 2);
@@ -2981,12 +2981,12 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
             transform.start = 'scale(1) translate(0, 0)';
             transform.end = 'scale(' + zoom + ') ' + transform.translate;
         }
-        
+
         return transform;
 	}
 
 }, {
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Widget.
@@ -2999,8 +2999,8 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
 	ATTRS: {
 
 		/**
-		 * An instance of FL.Slideshow image to apply the 
-		 * Ken Burns effect on. 
+		 * An instance of FL.Slideshow image to apply the
+		 * Ken Burns effect on.
 		 *
 		 * @attribute image
 		 * @type FL.Slideshow
@@ -3017,11 +3017,11 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
 		 * @attribute scale
 		 * @type Number
 		 * @default 1.2
-		 */		
+		 */
 		zoom: {
 		  value: 1.2
 		},
-		
+
 		/**
 		 * The duration of the effect in seconds.
 		 *
@@ -3033,7 +3033,7 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
 			value: 2
 		}
 	},
-	
+
 	/**
 	 * The zoom directions that can be applied to an image.
 	 *
@@ -3042,12 +3042,12 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
 	 * @readOnly
 	 * @protected
 	 * @static
-	 */ 
+	 */
 	ZOOM_DIRECTIONS: [
-        'in', 
+        'in',
         'out'
     ],
-    
+
 	/**
 	 * The types of transforms that can be applied to an image.
 	 *
@@ -3056,7 +3056,7 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
 	 * @readOnly
 	 * @protected
 	 * @static
-	 */ 
+	 */
     TRANSFORMS: [
         {
             origin    : 'left top',
@@ -3081,9 +3081,9 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
 });
 
 /**
- * Navigation buttons widget for controlling a slideshow instance 
+ * Navigation buttons widget for controlling a slideshow instance
  * and its child widgets.
- * 
+ *
  * @namespace FL
  * @class SlideshowNav
  * @constructor
@@ -3091,7 +3091,7 @@ Y.namespace('FL').SlideshowKenBurns = Y.Base.create('fl-slideshow-ken-burns', Y.
  * @extends Widget
  */
 Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.WidgetChild], {
-		
+
 	/**
 	 * An object containing the anchor nodes for all buttons.
 	 *
@@ -3101,7 +3101,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	 * @protected
 	 */
 	_buttons: null,
-	
+
 	/**
 	 * An div node containing the anchor nodes for the main buttons.
 	 *
@@ -3111,7 +3111,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	 * @protected
 	 */
 	_buttonsContainer: null,
-	
+
 	/**
 	 * An div node containing the anchor nodes for the left buttons.
 	 *
@@ -3121,7 +3121,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	 * @protected
 	 */
 	_buttonsLeftContainer: null,
-	
+
 	/**
 	 * An div node containing the anchor nodes for the right buttons.
 	 *
@@ -3131,14 +3131,14 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	 * @protected
 	 */
 	_buttonsRightContainer: null,
-	
+
 	/**
 	 * Property map for rendering SmugMug font icons.
 	 *
 	 * @property _fontIcons
 	 * @type Object
 	 * @protected
-	 */	
+	 */
 	_fontIcons: {
         buy: 'Cart',
         caption: 'InfoEncircled',
@@ -3153,10 +3153,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
         social: 'Heart',
         thumbs: 'ViewThumbGrid'
     },
-	
+
 	/**
 	 * The default content template for the nav
-	 * inherited from Y.Widget. Set to null since 
+	 * inherited from Y.Widget. Set to null since
 	 * only the bounding box is needed.
 	 *
 	 * @property CONTENT_TEMPLATE
@@ -3165,10 +3165,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	 * @protected
 	 */
 	CONTENT_TEMPLATE: null,
-		
+
 	/**
 	 * Renders the buttons.
-	 * 
+	 *
 	 * @method renderUI
 	 * @protected
 	 */
@@ -3178,10 +3178,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 		this._renderButtons();
 		this._renderFontIcons();
 	},
-	
+
 	/**
 	 * Binds events to the root slideshow for each button.
-	 * 
+	 *
 	 * @method bindUI
 	 * @protected
 	 */
@@ -3189,7 +3189,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	{
 		var root 		= this.get('root'),
 			id 			= this.get('id');
-		
+
 		if(this._buttons.prev) {
 			this._buttons.prev.on('click', root.prevImage, root);
 		}
@@ -3200,7 +3200,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			this._buttons.play.on('click', this._playClicked, this);
 			root.on(id + '|played', this._showPauseButton, this);
 			root.on(id + '|paused', this._showPlayButton, this);
-			
+
 			if(root._playing) {
 				this._showPauseButton();
 			}
@@ -3209,9 +3209,9 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			}
 		}
 		if(this._buttons.buy) {
-		
+
 			root.on(id + '|albumLoadComplete', this._updateBuy, this);
-			
+
 			if(root.albumInfo !== null) {
 				this._updateBuy();
 			}
@@ -3236,7 +3236,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			this._buttons.close.on('click', root.hide, root);
 		}
 	},
-	
+
 	/**
 	 * @method destructor
 	 * @protected
@@ -3245,13 +3245,13 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	{
 		var root 	= this.get('root'),
 			id 		= this.get('id');
-			
+
 		root.detach(id + '|*');
 	},
-		
+
 	/**
 	 * Renders the button left, right and main button containers.
-	 * 
+	 *
 	 * @method _renderContainers
 	 * @protected
 	 */
@@ -3260,11 +3260,11 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 		var cb				= this.get('contentBox'),
 			buttonsLeft		= this.get('buttonsLeft'),
 			buttonsRight	= this.get('buttonsRight');
-			
+
 		this._buttonsContainer = Y.Node.create('<div></div>');
 		this._buttonsContainer.addClass('fl-slideshow-nav-buttons');
 		cb.appendChild(this._buttonsContainer);
-		
+
 		if(buttonsLeft.length > 0) {
 			this._buttonsLeftContainer = Y.Node.create('<div></div>');
 			this._buttonsLeftContainer.addClass('fl-slideshow-nav-buttons-left');
@@ -3276,11 +3276,11 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			cb.appendChild(this._buttonsRightContainer);
 		}
 	},
-		
+
 	/**
-	 * Renders the buttons based on the buttons array 
+	 * Renders the buttons based on the buttons array
 	 * passed in the configuration object.
-	 * 
+	 *
 	 * @method _renderButtons
 	 * @protected
 	 */
@@ -3303,14 +3303,14 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 				container: this._buttonsRightContainer
 			}
 		];
-		
+
 		this._buttons = {};
-		
+
 		for( ; i < b.length; i++) {
 			for(k = 0; k < b[i].names.length; k++) {
-				
+
 				name = b[i].names[k];
-				
+
 				if(name.indexOf('count') > -1) {
 					this._buttons[name] = Y.Node.create('<span></span>');
 					this._updateCount();
@@ -3318,28 +3318,28 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 				else {
 					this._buttons[name] = Y.Node.create('<a href="javascript:void(0);"></a>');
 				}
-				
+
 				if(name.indexOf('buy') > -1) {
 					this._buttons[name].setStyle('display', 'none');
 				}
-				
+
 				this._buttons[name].set('name', name);
 				this._buttons[name].addClass('fl-slideshow-nav-' + name);
 				b[i].container.appendChild(this._buttons[name]);
 			}
 		}
 	},
-		
+
 	/**
 	 * Renders SmugMug font icons for each button.
-	 * 
+	 *
 	 * @method _renderFontIcons
 	 * @protected
 	 */
 	_renderFontIcons: function()
 	{
         var name = null;
-        
+
         if(this.get('useFontIcons') && typeof YUI.Env.mods['sm-fonticon'] !== 'undefined') {
             for(name in this._buttons) {
                 if(typeof this._buttons[name] !== 'undefined' && typeof this._fontIcons[name] !== 'undefined') {
@@ -3352,10 +3352,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
             }
         }
 	},
-		
+
 	/**
-	 * Updates the image count. 
-	 * 
+	 * Updates the image count.
+	 *
 	 * @method _updateCount
 	 * @protected
 	 */
@@ -3365,21 +3365,21 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			countText	= Y.FL.SlideshowNav.COUNT_TEXT,
 			current 	= 1,
 			total 		= 1;
-			
+
 		if(this.get('root').albumInfo) {
 			current 	= this.get('root').imageInfo.index + 1;
 			total 		= this.get('root').albumInfo.images.length;
 		}
-		
+
 		html = countText.replace('{current}', current).replace('{total}', total);
 		this._buttons.count.set('innerHTML', html);
 	},
-		
+
 	/**
 	 * Shows the caption button if the current image
 	 * has a caption, hides it if the image does not
-	 * have a caption. 
-	 * 
+	 * have a caption.
+	 *
 	 * @method _updateCaption
 	 * @protected
 	 */
@@ -3387,7 +3387,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	{
 		var root		= this.get('root'),
 			imageInfo 	= root.imageInfo;
-		
+
 		if(imageInfo && imageInfo.caption === '') {
 			root.caption.slideshowOverlay.enable();
 			root.caption.slideshowOverlay.hide();
@@ -3399,10 +3399,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			this._buttons.caption.removeClass('fl-slideshow-nav-caption-disabled');
 		}
 	},
-		
+
 	/**
 	 * Checks if buying has been enabled for the current album.
-	 * 
+	 *
 	 * @method _updateBuy
 	 * @protected
 	 */
@@ -3413,7 +3413,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			rootSource 		= root.get('source')[root.albumIndex],
 			albumIndex		= root.albumIndex,
 			source 			= root.get('source')[albumIndex];
-			
+
 		if(rootSource && rootSource.type == 'smugmug') {
 			if(typeof root.albumInfo.printable !== 'undefined') {
 				this._updateBuyComplete();
@@ -3428,11 +3428,11 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			}
 		}
 	},
-		
+
 	/**
 	 * Shows the buy button and updates the buy url
 	 * if buying has been enabled.
-	 * 
+	 *
 	 * @method _updateBuyComplete
 	 * @param e {Object} The custom event object passed to this function.
 	 * @protected
@@ -3442,7 +3442,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 		var root		= this.get('root'),
 			printable 	= typeof e == 'undefined' ? root.albumInfo.printable : e.Album.Printable,
 			link 		= root.albumInfo.link;
-		
+
 		if(printable) {
 			root.albumInfo.printable = true;
 			this._buttons.buy.set('href', 'https://secure.smugmug.com/cart/batchadd/?url=' + encodeURIComponent(link));
@@ -3452,7 +3452,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			root.albumInfo.printable = false;
 			this._buttons.buy.setStyle('display', 'none');
 		}
-		
+
 		this.fire('resize');
 	},
 
@@ -3462,11 +3462,11 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	 *
 	 * @method _playClicked
 	 * @protected
-	 */	
+	 */
 	_playClicked: function()
 	{
 		var root = this.get('root');
-		
+
 		if(root._playing) {
 			root.pause();
 		}
@@ -3474,11 +3474,11 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			root.play();
 		}
 	},
-		
+
 	/**
-	 * Toggles the button class for the play button 
-	 * so pause is hidden and play is shown. 
-	 * 
+	 * Toggles the button class for the play button
+	 * so pause is hidden and play is shown.
+	 *
 	 * @method _showPlayButton
 	 * @protected
 	 */
@@ -3486,17 +3486,17 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	{
 		this._buttons.play.removeClass('fl-slideshow-nav-pause');
 		this._buttons.play.addClass('fl-slideshow-nav-play');
-		
+
 		if(this.get('useFontIcons') && typeof YUI.Env.mods['sm-fonticon'] !== 'undefined') {
             this._buttons.play.removeClass('sm-fonticon-PlayerPause');
             this._buttons.play.addClass('sm-fonticon-PlayerPlay');
 		}
 	},
-		
+
 	/**
-	 * Toggles the button class for the play button 
-	 * so pause is shown and play is hidden. 
-	 * 
+	 * Toggles the button class for the play button
+	 * so pause is shown and play is hidden.
+	 *
 	 * @method _showPauseButton
 	 * @protected
 	 */
@@ -3504,13 +3504,13 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	{
 		this._buttons.play.removeClass('fl-slideshow-nav-play');
 		this._buttons.play.addClass('fl-slideshow-nav-pause');
-		
+
 		if(this.get('useFontIcons') && typeof YUI.Env.mods['sm-fonticon'] !== 'undefined') {
             this._buttons.play.removeClass('sm-fonticon-PlayerPlay');
             this._buttons.play.addClass('sm-fonticon-PlayerPause');
 		}
 	}
-		
+
 }, {
 
 	/**
@@ -3522,10 +3522,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	 * @static
 	 */
 	CSS_PREFIX: 'fl-slideshow-nav',
-	
+
 	/**
-	 * Static string used for displaying the image count. Use {current} 
-	 * for the current image and {total} for the total number of images. 
+	 * Static string used for displaying the image count. Use {current}
+	 * for the current image and {total} for the total number of images.
 	 * Those placeholders will be replaced when the count node is created.
 	 *
 	 * @property COUNT_TEXT
@@ -3534,7 +3534,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	 * @static
 	 */
 	COUNT_TEXT: '{current} of {total}',
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Widget.
@@ -3545,10 +3545,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 	 * @static
 	 */
 	ATTRS: {
-		
+
 		/**
 		 * An array of button names that is used to render the main buttons.
-		 * 
+		 *
 		 * @attribute buttons
 		 * @type Array
 		 * @default []
@@ -3558,10 +3558,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			value: [],
 			writeOnce: true
 		},
-		
+
 		/**
 		 * An array of button names that is used to render the left buttons.
-		 * 
+		 *
 		 * @attribute buttonsLeft
 		 * @type Array
 		 * @default []
@@ -3571,10 +3571,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			value: [],
 			writeOnce: true
 		},
-		
+
 		/**
 		 * An array of button names that is used to render the right buttons.
-		 * 
+		 *
 		 * @attribute buttonsRight
 		 * @type Array
 		 * @default []
@@ -3584,10 +3584,10 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 			value: [],
 			writeOnce: true
 		},
-		
+
 		/**
 		 * Whether to use font icons when available.
-		 * 
+		 *
 		 * @attribute useFontIcons
 		 * @type Boolean
 		 * @default true
@@ -3603,7 +3603,7 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
 /**
  * A plugin for overlaying widgets in a slideshow
  * with specialized show and hide functionality.
- * 
+ *
  * @namespace FL
  * @class SlideshowOverlay
  * @constructor
@@ -3611,9 +3611,9 @@ Y.namespace('FL').SlideshowNav = Y.Base.create('fl-slideshow-nav', Y.Widget, [Y.
  * @extends Plugin.Base
  */
 Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plugin.Base, [], {
-	
+
 	/**
-	 * Flag for whether the mouse has entered 
+	 * Flag for whether the mouse has entered
 	 * the host's bounding box.
 	 *
 	 * @property _focus
@@ -3622,7 +3622,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	 * @protected
 	 */
 	_focus: false,
-	
+
 	/**
 	 * Flag for whether the host's bounding box is visible.
 	 *
@@ -3632,9 +3632,9 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	 * @protected
 	 */
 	_visible: true,
-	
+
 	/**
-	 * Flag for whether show and hide functionality 
+	 * Flag for whether show and hide functionality
 	 * has been disabled.
 	 *
 	 * @property _disabled
@@ -3643,9 +3643,9 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	 * @protected
 	 */
 	_disabled: false,
-	
+
 	/**
-	 * An object containing properties for the show transition. 
+	 * An object containing properties for the show transition.
 	 *
 	 * @property _showProps
 	 * @type Object
@@ -3656,9 +3656,9 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	    easing: 'ease-out',
 	    opacity: 1
 	},
-	
+
 	/**
-	 * An object containing properties for the hide transition. 
+	 * An object containing properties for the hide transition.
 	 *
 	 * @property _hideProps
 	 * @type Object
@@ -3679,25 +3679,25 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	 * @protected
 	 */
 	_hideTimer: null,
-	
+
 	/**
 	 * @method initializer
 	 * @protected
 	 */
-	initializer: function() 
+	initializer: function()
 	{
 		var bb = this.get('host').get('boundingBox');
-		
+
 		this.afterHostEvent('render', this._initFocus);
 		this.afterHostEvent('render', this._initVisibility);
-		
+
 		if(this.get('closeButton')) {
 			this._initCloseButton();
 		}
-		
+
 		bb.addClass('fl-slideshow-overlay');
     },
-	
+
 	/**
 	 * @method destructor
 	 * @protected
@@ -3706,7 +3706,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		this._hideTimerCancel();
 	},
-	
+
 	/**
 	 * Binds the mouseenter and mouseleave events for setting focus.
 	 *
@@ -3719,7 +3719,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 		bb.on('mouseenter', Y.bind(this._setFocusOnMouseenter, this));
 		bb.on('mouseleave', Y.bind(this._setFocusOnMouseleave, this));
 	},
-	
+
 	/**
 	 * Sets the initial visibility of the host's bounding box.
 	 *
@@ -3730,21 +3730,21 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		var bb 			= this.get('host').get('boundingBox'),
 			hideStyle 	= this.get('hideStyle');
-		
+
 		if(!this.get('visible')) {
-			
+
 			if(hideStyle == 'display') {
 				bb.setStyle('display', 'none');
 			}
 			else if(hideStyle == 'left') {
 				bb.setStyle('left', '-99999px');
 			}
-			
+
 			bb.setStyle('opacity', '0');
 			this._visible = false;
 		}
 	},
-	
+
 	/**
 	 * Creates and inserts the close button.
 	 *
@@ -3755,17 +3755,17 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		var bb 			= this.get('host').get('boundingBox'),
 			closeButton = null;
-			
+
 		closeButton = Y.Node.create('<a class="fl-slideshow-overlay-close" href="javascript:void(0);"></a>');
 		closeButton.on('click', Y.bind(this._closeButtonClick, this));
-		
+
 		if(typeof YUI.Env.mods['sm-fonticon'] !== 'undefined') {
             closeButton.addClass('sm-fonticon sm-fonticon-XCrossEncircled sm-button-skin-default sm-button-nochrome');
         }
-		
+
 		bb.insert(closeButton);
 	},
-	
+
 	/**
 	 * Hides the overlay when the close button is clicked.
 	 *
@@ -3777,7 +3777,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 		var bb = this.get('host').get('boundingBox');
 		bb.transition(this._hideProps, Y.bind(this._hideComplete, this));
 	},
-	
+
 	/**
 	 * Sets the focus flag to true.
 	 *
@@ -3788,7 +3788,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		this._focus = true;
 	},
-	
+
 	/**
 	 * Sets the focus flag to false.
 	 *
@@ -3799,7 +3799,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		this._focus = false;
 	},
-	
+
 	/**
 	 * Disables show and hide functionality.
 	 *
@@ -3810,7 +3810,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		this._disabled = true;
 	},
-	
+
 	/**
 	 * Enables show and hide functionality.
 	 *
@@ -3821,7 +3821,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		this._disabled = false;
 	},
-	
+
 	/**
 	 * Shows the host's bounding box with a fade in transition.
 	 *
@@ -3832,26 +3832,26 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		var bb 			= this.get('host').get('boundingBox'),
 			hideStyle 	= this.get('hideStyle');
-		
+
 		if(this._disabled) {
 			return;
 		}
-		
+
 		if(hideStyle == 'display') {
 			bb.setStyle('display', 'block');
 		}
 		else if(hideStyle == 'left') {
 			bb.setStyle('left', 'auto');
 		}
-		
+
 		bb.transition(this._showProps, Y.bind(this._showComplete, this));
-		
+
 		/**
 		 * @event hideStart
 		 */
 		this.fire('showStart');
 	},
-	
+
 	/**
 	 * @method _showComplete
 	 * @protected
@@ -3860,13 +3860,13 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		this._visible = true;
 		this.hideWithTimer();
-		
+
 		/**
 		 * @event showComplete
 		 */
 		this.fire('showComplete');
 	},
-	
+
 	/**
 	 * Hides the host's bounding box with a fade out transition.
 	 *
@@ -3878,16 +3878,16 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 		if(this._focus || this._disabled) {
 			return;
 		}
-		
+
 		var bb = this.get('host').get('boundingBox');
 		bb.transition(this._hideProps, Y.bind(this._hideComplete, this));
-		
+
 		/**
 		 * @event hideStart
 		 */
 		this.fire('hideStart');
 	},
-	
+
 	/**
 	 * Hides the host's bounding box with a fade out transition
 	 * after a timer completes.
@@ -3900,7 +3900,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 		this._hideTimerCancel();
 		this._hideTimer = Y.later(this.get('hideDelay'), this, this.hide);
 	},
-	
+
 	/**
 	 * Cancels the hide timer.
 	 *
@@ -3914,7 +3914,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 			this._hideTimer = null;
 		}
 	},
-	
+
 	/**
 	 * @method _hideComplete
 	 * @protected
@@ -3923,22 +3923,22 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	{
 		var bb 			= this.get('host').get('boundingBox'),
 			hideStyle 	= this.get('hideStyle');
-		
+
 		if(hideStyle == 'display') {
 			bb.setStyle('display', 'none');
 		}
 		else if(hideStyle == 'left') {
 			bb.setStyle('left', '-99999px');
 		}
-		
+
 		this._visible = false;
-		
+
 		/**
 		 * @event hideComplete
 		 */
 		this.fire('hideComplete');
 	}
-	
+
 },	{
 
 	/**
@@ -3950,7 +3950,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	 * @static
 	 */
 	NS: 'slideshowOverlay',
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the plugin.
@@ -3961,7 +3961,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 	 * @static
 	 */
 	ATTRS: {
-	
+
 		/**
 		 * Whether to use the close button or not.
 		 *
@@ -3974,7 +3974,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 			value: false,
 			writeOnce: true
 		},
-	
+
 		/**
 		 * The time to wait before hiding the host's bounding box.
 		 * Measured in milliseconds.
@@ -3988,7 +3988,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 			value: 3000,
 			writeOnce: true
 		},
-	
+
 		/**
 		 * The style to use for hiding the image. Possible
 		 * values are display and left.
@@ -4002,10 +4002,10 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 			value: 'display',
 			writeOnce: true
 		},
-		
+
 		/**
 		 * Sets the initial visibility of the host's boudning box.
-		 * 
+		 *
 		 * @attribute visible
 		 * @type Boolean
 		 * @default true
@@ -4020,7 +4020,7 @@ Y.namespace('FL').SlideshowOverlay = Y.Base.create('fl-slideshow-overlay', Y.Plu
 
 /**
  * Social buttons widget used in slideshows.
- * 
+ *
  * @namespace FL
  * @class SlideshowSocial
  * @constructor
@@ -4039,7 +4039,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 	 * @protected
 	 */
 	_buttons: null,
-	
+
 	/**
 	 * @method renderUI
 	 * @protected
@@ -4047,12 +4047,12 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 	renderUI: function()
 	{
 		this._buttons = {};
-		
+
 		if(this.get('root').get('googlePlusButtonEnabled')) {
 			this._renderGooglePlusButton();
 		}
 	},
-	
+
 	/**
 	 * @method bindUI
 	 * @protected
@@ -4060,7 +4060,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 	bindUI: function()
 	{
 		var root = this.get('root');
-		
+
 		if(root.get('likeButtonEnabled')) {
 			root.on('imageLoadComplete', Y.bind(this._updateLikeButton, this));
 		}
@@ -4074,7 +4074,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 			root.on('imageLoadComplete', Y.bind(this._updatePinterestButton, this));
 		}
 	},
-	
+
 	/**
 	 * @method _updateLikeButton
 	 * @protected
@@ -4087,22 +4087,22 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 			albumIndex		= root.albumIndex,
 			rootSource 		= root.get('source')[albumIndex],
 			imageInfo 		= root.imageInfo;
-		
+
 		if(this._buttons.like) {
 			this._buttons.like.remove();
 			this._buttons.like = null;
 		}
-		
+
 		if(rootSource.type == 'smugmug') {
 			src = 'https://www.facebook.com/plugins/like.php?';
-			src += 'href=' + 'http://www.smugmug.com/services/graph/gallery/';
+			src += 'href=' + 'https://www.smugmug.com/services/graph/gallery/';
 			src += rootSource.id + '_' + rootSource.key +'/' + imageInfo.id + '_' + imageInfo.key;
 		}
 		else {
 			src = 'https://www.facebook.com/plugins/like.php?';
 			src += 'href=' + encodeURIComponent(imageInfo.largeURL);
 		}
-		
+
 		src += '&send=false';
 		src += '&layout=button_count';
 		src += '&width=90';
@@ -4110,9 +4110,9 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 		src += '&action=like';
 		src += '&colorscheme=light';
 		src += '&height=21';
-		
+
 		this._buttons.like = Y.Node.create('<iframe src="'+ src +'" scrolling="no" frameborder="0" allowTransparency="true"></iframe>');
-		
+
 		this._buttons.like.setStyles({
 			overflow: 'hidden',
 			width: '90px',
@@ -4121,7 +4121,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 
 		cb.appendChild(this._buttons.like);
 	},
-	
+
 	/**
 	 * @method _updateTweetButton
 	 * @protected
@@ -4131,18 +4131,18 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 		var src			= null,
 			imageInfo 	= this.get('root').imageInfo,
 			cb			= this.get('contentBox');
-			
+
 		if(this._buttons.tweet) {
 			this._buttons.tweet.remove();
 			this._buttons.tweet = null;
 		}
-		
+
 		src = 'https://platform.twitter.com/widgets/tweet_button.html?';
 		src += 'url=' + encodeURIComponent(imageInfo.largeURL);
 		src += '&count=none';
-		
+
 		this._buttons.tweet = Y.Node.create('<iframe src="'+ src +'" scrolling="no" frameborder="0" allowTransparency="true"></iframe>');
-		
+
 		this._buttons.tweet.setStyles({
 			overflow: 'hidden',
 			width: '90px',
@@ -4151,7 +4151,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 
 		cb.appendChild(this._buttons.tweet);
 	},
-	
+
 	/**
 	 * @method _renderGooglePlusButton
 	 * @protected
@@ -4159,15 +4159,15 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 	_renderGooglePlusButton: function()
 	{
 		var po, head;
-		
-		po = document.createElement('script'); 
-		po.type = 'text/javascript'; 
+
+		po = document.createElement('script');
+		po.type = 'text/javascript';
     	po.src = 'https://apis.google.com/js/plusone.js';
-    	
-		head = document.getElementsByTagName('head')[0]; 
+
+		head = document.getElementsByTagName('head')[0];
 		head.parentNode.appendChild(po);
 	},
-	
+
 	/**
 	 * @method _updateGooglePlusButton
 	 * @protected
@@ -4181,7 +4181,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 			this._updateGooglePlusButtonCallback();
 		}
 	},
-	
+
 	/**
 	 * @method _updateGooglePlusButtonCallback
 	 * @protected
@@ -4190,7 +4190,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 	{
 		var imageInfo 	= this.get('root').imageInfo,
 			cb			= this.get('contentBox');
-			
+
 		if(this._buttons.plus) {
 			this._buttons.plus.remove();
 			this._buttons.plus = null;
@@ -4198,7 +4198,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 		if(typeof gapi != 'undefined') {
 			this._buttons.plus = Y.Node.create('<div></div>');
 			cb.appendChild(this._buttons.plus);
-			
+
 			gapi.plusone.render(this._buttons.plus._node, {
 				href: encodeURIComponent(imageInfo.largeURL),
 				annotation: 'bubble',
@@ -4206,7 +4206,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 			});
 		}
 	},
-	
+
 	/**
 	 * @method _updatePinterestButton
 	 * @protected
@@ -4216,16 +4216,16 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 		var href		= 'https://pinterest.com/pin/create/button/',
 			imageInfo 	= this.get('root').imageInfo,
 			cb			= this.get('contentBox');
-		
+
 		if(this._buttons.pin) {
 			this._buttons.pin.remove();
 			this._buttons.pin = null;
 		}
-		
+
 		href += '?url=' + encodeURIComponent(window.location.href);
 		href += '&media='+ encodeURIComponent(imageInfo.mediumURL);
 		href += '&description='+ encodeURIComponent(imageInfo.caption);
-		
+
 		this._buttons.pin = Y.Node.create('<a></a>');
 		this._buttons.pin.setAttribute('data-pin-config', 'none');
 		this._buttons.pin.setAttribute('data-pin-do', 'buttonPin');
@@ -4235,7 +4235,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 
 		cb.appendChild(this._buttons.pin);
 	}
-	
+
 }, {
 
 	/**
@@ -4247,7 +4247,7 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 	 * @static
 	 */
 	CSS_PREFIX: 'fl-slideshow-social',
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Widget.
@@ -4258,13 +4258,13 @@ Y.namespace('FL').SlideshowSocial = Y.Base.create('fl-slideshow-social', Y.Widge
 	 * @static
 	 */
 	ATTRS: {
-	
+
 	}
 });
 
 /**
  * Creates a grid of FL.SlideshowImage instances.
- * 
+ *
  * @namespace FL
  * @class SlideshowThumbs
  * @constructor
@@ -4293,7 +4293,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_pagesBox: null,
-		
+
 	/**
 	 * A reference to the active page div node. Holds a grid
 	 * of FL.SlideshowImage instances.
@@ -4304,7 +4304,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_activePageBox: null,
-		
+
 	/**
 	 * The index of the active page of thumbs.
 	 *
@@ -4314,7 +4314,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_activePageIndex: 0,
-	
+
 	/**
 	 * A reference to the next page div node. Holds a grid
 	 * of FL.SlideshowImage instances.
@@ -4325,7 +4325,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_nextPageBox: null,
-	
+
 	/**
 	 * An array of FL.SlideshowImage instances in the active page.
 	 *
@@ -4335,7 +4335,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_activeImages: null,
-	
+
 	/**
 	 * An array of FL.SlideshowImage instances used to
 	 * preload the next page of images.
@@ -4346,7 +4346,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_nextImages: null,
-	
+
 	/**
 	 * An array of FL.SlideshowImage instances used to
 	 * preload the previous page of images.
@@ -4357,7 +4357,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_prevImages: null,
-	
+
 	/**
 	 * An instance of FL.SlideshowNav used for the left nav.
 	 *
@@ -4367,7 +4367,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_leftNav: null,
-	
+
 	/**
 	 * An instance of FL.SlideshowNav used for the right nav.
 	 *
@@ -4377,7 +4377,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_rightNav: null,
-	
+
 	/**
 	 * An instance of FL.SlideshowNav used for the top nav.
 	 *
@@ -4387,7 +4387,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_topNav: null,
-	
+
 	/**
 	 * An instance of FL.SlideshowNav used for the bottom nav.
 	 *
@@ -4397,7 +4397,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_bottomNav: null,
-	
+
 	/**
 	 * Height of the bounding box.
 	 *
@@ -4407,7 +4407,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_bbHeight: 0,
-	
+
 	/**
 	 * Width of the bounding box.
 	 *
@@ -4417,7 +4417,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_bbWidth: 0,
-	
+
 	/**
 	 * Width of the content box.
 	 *
@@ -4427,7 +4427,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_cbWidth: 0,
-	
+
 	/**
 	 * Left margin of the clip box.
 	 *
@@ -4437,7 +4437,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_clipBoxMarginLeft: 0,
-	
+
 	/**
 	 * Top position of the clip box.
 	 *
@@ -4447,7 +4447,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_clipBoxTop: 0,
-	
+
 	/**
 	 * The number of columns per page.
 	 *
@@ -4457,7 +4457,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_colsPerPage: 0,
-	
+
 	/**
 	 * The number of rows per page.
 	 *
@@ -4467,7 +4467,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_rowsPerPage: 0,
-	
+
 	/**
 	 * The number of images per page.
 	 *
@@ -4477,7 +4477,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_imagesPerPage: 0,
-	
+
 	/**
 	 * The number of pages.
 	 *
@@ -4487,7 +4487,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_numPages: 0,
-	
+
 	/**
 	 * Height of the pages.
 	 *
@@ -4497,7 +4497,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_pageHeight: 0,
-	
+
 	/**
 	 * Width of the pages.
 	 *
@@ -4507,7 +4507,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_pageWidth: 0,
-	
+
 	/**
 	 * The horizontal spacing between thumbs.
 	 *
@@ -4517,7 +4517,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_horizontalSpacing: 0,
-	
+
 	/**
 	 * The vertical spacing between thumbs.
 	 *
@@ -4527,7 +4527,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_verticalSpacing: 0,
-	
+
 	/**
 	 * Width of the left nav.
 	 *
@@ -4537,7 +4537,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_leftNavWidth: 0,
-	
+
 	/**
 	 * Width of the right nav.
 	 *
@@ -4547,7 +4547,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_rightNavWidth: 0,
-	
+
 	/**
 	 * An instance of FL.SlideshowTransition for the current transition.
 	 *
@@ -4557,7 +4557,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_transition: null,
-	
+
 	/**
 	 * Whether the pages are currently transitioning or not.
 	 *
@@ -4567,7 +4567,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_transitioning: false,
-	
+
 	/**
 	 * Direction of the current transition.
 	 *
@@ -4577,7 +4577,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_transitionDirection: 'next',
-	
+
 	/**
 	 * Provides functionality for gesture based transitions
  	 * between the active and next pages.
@@ -4588,7 +4588,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @protected
 	 */
 	_gestures: null,
-	
+
 	/**
 	 * Initialize image vars.
 	 *
@@ -4601,7 +4601,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		this._nextImages = [];
 		this._prevImages = [];
 	},
-		
+
 	/**
 	 * Renders the UI boxes.
 	 *
@@ -4613,10 +4613,10 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		this._renderBoxes();
 		this._renderNavs();
 	},
-	
+
 	/**
 	 * Binds the UI events.
-	 * 
+	 *
 	 * @method bindUI
 	 * @protected
 	 */
@@ -4625,22 +4625,22 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		var root 		= this.get('root'),
 			id 			= this.get('id'),
 			transition 	= this.get('transition');
-			
+
 		root.on(id + '|albumLoadComplete', this._albumLoadComplete, this);
-		
+
 		if('ontouchstart' in window && this.get('touchSupport')) {
-		
+
 			this._gestures = new Y.FL.SlideshowGestures({
 				direction: transition == 'slideVertical' ? 'vertical' : 'horizontal',
 				activeItem: this._activePageBox,
 				nextItem: this._nextPageBox
 			});
-			
+
 			this._gestures.on('moveStart', this._gesturesMoveStart, this);
 			this._gestures.on('endComplete', this._gesturesEndComplete, this);
 		}
 	},
-	
+
 	/**
 	 * Syncs the UI boxes.
 	 *
@@ -4652,7 +4652,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		this._syncBoxes();
 		this._syncNavs();
 	},
-	
+
 	/**
 	 * @method destructor
 	 * @protected
@@ -4661,12 +4661,12 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	{
 		var root 	= this.get('root'),
 			id 		= this.get('id');
-		
+
 		root.detach(id + '|*');
-		
+
 		Y.FL.SlideshowImageLoader.removeGroup('thumbs');
 	},
-	
+
 	/**
 	 * Unload all images.
 	 *
@@ -4677,16 +4677,16 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		var root 	= this.get('root'),
 			id 		= this.get('id'),
 			i 		= 0;
-			
+
 		root.detach(id + '|imageLoadComplete');
-		
+
 		Y.FL.SlideshowImageLoader.removeGroup('thumbs');
-		
+
 		for( ; i < this._activeImages.length; i++) {
 			this._activeImages[i].unload();
 		}
 	},
-	
+
 	/**
 	 * Resizes the UI boxes.
 	 *
@@ -4698,14 +4698,14 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		this._togglePageButtons();
 		this._resizeBoxes();
 		this._resizeNavs();
-		
+
 		if(this.get('root').albumInfo) {
 			Y.FL.SlideshowImageLoader.removeGroup('thumbs');
 			this._renderActivePage();
 			this._preloadNextPage();
 			this._preloadPrevPage();
 		}
-		
+
 		// Enable or disable gestures.
 		if(this._gestures && this._numPages < 2) {
 			this._gestures.disable();
@@ -4714,7 +4714,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			this._gestures.enable();
 		}
 	},
-	
+
 	/**
 	 * Transitions to the previous page.
 	 *
@@ -4724,9 +4724,9 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	prevPage: function()
 	{
 		if(this._transitioning) {
-			return;	
+			return;
 		}
-		
+
 		this._transitionStart('prev');
 	},
 
@@ -4739,15 +4739,15 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	nextPage: function()
 	{
 		if(this._transitioning) {
-			return;	
+			return;
 		}
-		
+
 		this._transitionStart('next');
 	},
-	
+
 	/**
 	 * Called when an album is loaded into the root slideshow widget.
-	 * 
+	 *
 	 * @method _albumLoadComplete
 	 * @protected
 	 */
@@ -4755,14 +4755,14 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	{
 		var root 	= this.get('root'),
 			id 		= this.get('id');
-			
+
 		root.once(id + '|imageLoadComplete', this.resize, this);
 		root.on(id + '|imageLoadComplete', this._imageLoadComplete, this);
 	},
-	
+
 	/**
 	 * Called when an image is loaded into the root slideshow widget.
-	 * 
+	 *
 	 * @method _imageLoadComplete
 	 * @protected
 	 */
@@ -4773,11 +4773,11 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			lastInfo	= lastActive ? lastActive._imageInfo : null,
 			nextActive 	= null,
 			nextInfo	= this.get('root').imageInfo;
-		
+
 		this._setActiveImage(this._activeImages);
-		
+
 		nextActive = Y.one('.fl-slideshow-image-active');
-		
+
 		if(lastActive && !nextActive) {
 			if(nextInfo.index === 0 && lastInfo.index === albumInfo.images.length - 1) {
 				this.nextPage();
@@ -4793,7 +4793,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			}
 		}
 	},
-	
+
 	/**
 	 * Renders the boxes.
 	 *
@@ -4806,23 +4806,23 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		this._clipBox = Y.Node.create('<div></div>');
 		this._clipBox.addClass('fl-slideshow-thumbs-clip');
 		this.get('contentBox').insert(this._clipBox);
-						
+
 		// Pages box
 		this._pagesBox = Y.Node.create('<div></div>');
 		this._pagesBox.addClass('fl-slideshow-thumbs-pages');
 		this._clipBox.insert(this._pagesBox);
-		
+
 		// Active page box
 		this._activePageBox = Y.Node.create('<div></div>');
 		this._activePageBox.addClass('fl-slideshow-thumbs-page');
 		this._pagesBox.insert(this._activePageBox);
-			
+
 		// Next page box
 		this._nextPageBox = Y.Node.create('<div></div>');
 		this._nextPageBox.addClass('fl-slideshow-thumbs-page');
 		this._pagesBox.insert(this._nextPageBox);
 	},
-	
+
 	/**
 	 * Syncs the boxes.
 	 *
@@ -4833,11 +4833,11 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	{
 		// Active page box
 		this._activePageBox.setStyle('left', '0');
-		
+
 		// Next page box
 		this._nextPageBox.setStyle('left', '-9999px');
 	},
-	
+
 	/**
 	 * Resizes the boxes.
 	 *
@@ -4848,28 +4848,28 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	{
 		this.set('width', this._bbWidth);
 		this.set('height', this._bbHeight);
-		
+
 		this.get('contentBox').setStyle('width', this._cbWidth + 'px');
-		
+
 		this._clipBox.setStyle('width', this._pageWidth + 'px');
 		this._clipBox.setStyle('height', this._pageHeight + 'px');
 		this._clipBox.setStyle('padding', this._verticalSpacing + 'px 0 0 ' + this._horizontalSpacing + 'px ');
 		this._clipBox.setStyle('margin',  '0 0 0 ' + this._clipBoxMarginLeft + 'px');
 		this._clipBox.setStyle('top', this._clipBoxTop);
-		
+
 		this._pagesBox.setStyle('width', this._pageWidth + 'px');
 		this._pagesBox.setStyle('height', this._pageHeight + 'px');
-		
+
 		this._activePageBox.setStyle('width', this._pageWidth + 'px');
 		this._activePageBox.setStyle('height', this._pageHeight + 'px');
-		
+
 		this._nextPageBox.setStyle('width', this._pageWidth + 'px');
 		this._nextPageBox.setStyle('height', this._pageHeight + 'px');
 	},
-	
+
 	/**
 	 * Renders the active page of images.
-	 * 
+	 *
 	 * @method _renderActivePage
 	 * @protected
 	 */
@@ -4880,9 +4880,9 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			imageIndex 	= this._imagesPerPage * this._activePageIndex,
 			endIndex	= imageIndex + this._imagesPerPage,
 			images 		= root.albumInfo.images;
-			
+
 		this._clearActiveImage();
-			
+
 		// Remove current images
 		for( ; i < this._activeImages.length; i++) {
 			this._activeImages[i].remove();
@@ -4890,34 +4890,34 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			this._activeImages[i].get('boundingBox')._imageInfo = null;
 			this._activeImages[i].get('boundingBox').remove();
 		}
-		
+
 		// Draw images
 		for(i = 0; imageIndex < endIndex; imageIndex++) {
-		
+
 			if(!images[imageIndex]) {
 				break;
 			}
-			
+
 			this._renderImage(this._activeImages, i, this._activePageBox, images[imageIndex]);
 			i++;
 		}
-		
+
 		this._setActiveImage(this._activeImages);
 	},
-	
+
 	/**
 	 * Renders the next page of images.
-	 * 
+	 *
 	 * @method _renderNextPage
 	 * @protected
-	 */		
+	 */
 	_renderNextPage: function()
 	{
-		var i 			= 0, 
+		var i 			= 0,
 			imageArray 	= this._transitionDirection == 'next' ? this._nextImages : this._prevImages;
-		
+
 		this._nextPageBox.get('children').remove();
-		
+
 		for( ; i < imageArray.length; i++) {
 			if(imageArray[i]._imageInfo) {
 				this._renderImage(imageArray, i, this._nextPageBox, imageArray[i]._imageInfo);
@@ -4926,13 +4926,13 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 				break;
 			}
 		}
-		
+
 		this._setActiveImage(imageArray);
 	},
-	
+
 	/**
 	 * Preloads the next page of images.
-	 * 
+	 *
 	 * @method _preloadNextPage
 	 * @protected
 	 */
@@ -4942,23 +4942,23 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 
 		this._preloadPage(pageIndex, this._nextImages);
 	},
-	
+
 	/**
 	 * Preloads the previous page of images.
-	 * 
+	 *
 	 * @method _preloadPrevPage
 	 * @protected
 	 */
 	_preloadPrevPage: function()
 	{
 		var pageIndex = this._activePageIndex - 1 < 0 ? this._numPages - 1 : this._activePageIndex - 1;
-	
+
 		this._preloadPage(pageIndex, this._prevImages);
 	},
-	
+
 	/**
 	 * Preloads a page of images.
-	 * 
+	 *
 	 * @method _preloadPage
 	 * @param imageIndex {Number} The image index to start preloading from.
 	 * @param imageArray {Array} The array to store the preloaded images.
@@ -4974,40 +4974,40 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			imageConfig = this.get('imageConfig'),
 			width 		= imageConfig.width,
 			height 		= imageConfig.height;
-	
+
 		if(this._numPages > 1) {
-			
+
 			// Unload existing images
 			for( ; i < imageArray.length; i++) {
 				imageArray[i].remove();
 				imageArray[i].unload();
 			}
-			
+
 			// Preload the images
 			for(i = 0; imageIndex < endIndex; imageIndex++) {
-			
+
 				if(!images[imageIndex]) {
 					continue;
 				}
-			
+
 				this._renderImage(imageArray, i);
 				imageArray[i].preload(images[imageIndex], width, height);
 				i++;
 			}
 		}
 	},
-		
+
 	/**
 	 * Renders an image.
-	 * 
+	 *
 	 * @method _renderImage
 	 * @protected
 	 */
 	_renderImage: function(imageArray, i, page, imageInfo)
 	{
-		var imageBB		= null, 
+		var imageBB		= null,
 			imageConfig = this.get('imageConfig');
-		
+
 		// Create the image?
 		if(typeof imageArray[i] == 'undefined') {
 			imageConfig.loadGroup = 'thumbs';
@@ -5019,25 +5019,25 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			imageBB.on('mouseover', this._imageMouseover, this);
 			imageBB.on('mouseout', this._imageMouseout, this);
 		}
-		
+
 		// Image bounding box
 		imageBB = imageArray[i].get('boundingBox');
 		imageBB.setStyle('margin', '0 ' + this._horizontalSpacing + 'px ' + this._verticalSpacing + 'px 0');
-		
-		// Add the image to a page? 
+
+		// Add the image to a page?
 		if(page) {
 			this._childrenContainer = page;
 			this.add(imageArray[i]);
 			imageArray[i].resize(imageConfig.width, imageConfig.height);
 		}
-		
+
 		// Load the image?
 		if(imageInfo) {
 			imageArray[i].load(imageInfo);
 			imageBB._imageInfo = imageInfo;
 		}
 	},
-	
+
 	/**
      * Overrides the WidgetParent _uiAddChild method so _renderImage
      * will render to the appropriate page.
@@ -5045,32 +5045,32 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
      * @method _uiAddChild
      * @protected
      * @param child {Widget} The child Widget instance to render.
-     * @param parentNode {Object} The Node under which the 
+     * @param parentNode {Object} The Node under which the
      * child Widget is to be rendered. Set to the appropriate page
      * in the _renderImage method by setting _childrenContainer.
-     */    
-    _uiAddChild: function (child, parentNode) 
+     */
+    _uiAddChild: function (child, parentNode)
     {
         child.render(parentNode);
         parentNode.appendChild(child.get('boundingBox'));
     },
-	
+
 	/**
 	 * Called when an image is clicked.
-	 * 
+	 *
 	 * @method _imageClick
 	 * @protected
 	 */
 	_imageClick: function(e)
 	{
 		var root = this.get('root');
-		
+
 		if(this.get('pauseOnClick')) {
 			root.pause();
 		}
-		
+
 		root.loadImage(e.currentTarget._imageInfo.index);
-		
+
 		/**
 		 * Fires when an image is clicked.
 		 *
@@ -5078,10 +5078,10 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		 */
 		this.fire('imageClick');
 	},
-	
+
 	/**
 	 * Sets the active image.
-	 * 
+	 *
 	 * @method _setActiveImage
 	 * @param imageArray {Array} The image array to check for the active image.
 	 * @protected
@@ -5089,9 +5089,9 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	_setActiveImage: function(imageArray)
 	{
 		var i = 0;
-		
+
 		this._clearActiveImage();
-		
+
 		for( ; i < imageArray.length; i++) {
 			if(imageArray[i]._imageInfo) {
 				if(imageArray[i]._imageInfo.index == this.get('root').imageInfo.index) {
@@ -5101,33 +5101,33 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			}
 		}
 	},
-	
+
 	/**
 	 * Removes the class name 'fl-slideshow-image-active'
 	 * from the active image.
-	 * 
+	 *
 	 * @method _clearActiveImage
 	 * @protected
 	 */
 	_clearActiveImage: function()
 	{
 		var active = Y.one('.fl-slideshow-image-active');
-		
+
 		if(active) {
 			active.removeClass('fl-slideshow-image-active');
 		}
 	},
-	
+
 	/**
 	 * Gets the transition type.
-	 * 
+	 *
 	 * @method _getTransition
 	 * @protected
 	 */
 	_getTransition: function()
 	{
 		var transition = this.get('transition');
-		
+
 		if(transition == 'slideHorizontal' && this._transitionDirection == 'next') {
 			return 'slideLeft';
 		}
@@ -5140,10 +5140,10 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		else if(transition == 'slideVertical' && this._transitionDirection == 'prev') {
 			return 'slideDown';
 		}
-		
+
 		return transition;
 	},
-	
+
 	/**
 	 * Starts the transition, moving in the provided direction.
 	 *
@@ -5154,32 +5154,32 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	_transitionStart: function(direction)
 	{
 		if(this._numPages > 1) {
-		
+
 			Y.FL.SlideshowImageLoader.removeGroup('thumbs');
-		
+
 			this._transitionDirection = direction;
 			this._transitioning = true;
 			this._nextPageBox.setStyle('left', '0px');
 			this._renderNextPage();
-	
+
 			this._transition = new Y.FL.SlideshowTransition({
-				itemIn: this._nextPageBox, 
+				itemIn: this._nextPageBox,
 				itemOut: this._activePageBox,
-				type: this._getTransition(), 
+				type: this._getTransition(),
 				duration: this.get('transitionDuration'),
 				easing: this.get('transitionEasing')
 			});
-			
+
 			this._transition.once('complete', this._transitionComplete, this);
 			this._transition.run();
-			
+
 			// Disable gestures if set.
 			if(this._gestures) {
 				this._gestures.disable();
 			}
 		}
 	},
-	
+
 	/**
 	 * Transition cleanup called when the current transition ends.
 	 *
@@ -5192,12 +5192,12 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		this._transitioning = false;
 		this._transitionDirection = '';
 		this._transition = null;
-		
+
 		// Enable gestures if set.
 		if(this._gestures) {
 			this._gestures.enable();
 		}
-		
+
 		/**
 		 * Fires when a page transition completes.
 		 *
@@ -5205,7 +5205,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		 */
 		this.fire('transitionComplete');
 	},
-		
+
 	/**
 	 * @method _gesturesMoveStart
 	 * @param e {Object} The event object.
@@ -5214,26 +5214,26 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	_gesturesMoveStart: function(e)
 	{
 		Y.FL.SlideshowImageLoader.removeGroup('thumbs');
-		
+
 		this._transitionDirection = e.direction;
 		this._renderNextPage();
 	},
-	
+
 	/**
 	 * @method _gesturesEndComplete
 	 * @protected
-	 */	
+	 */
 	_gesturesEndComplete: function()
 	{
 		this._swapPageRefs();
 		this._transitionDirection = '';
 		this.fire('transitionComplete');
 	},
-	
+
 	/**
-	 * Swaps the active page and next page references when 
+	 * Swaps the active page and next page references when
 	 * a transition completes and sets the active page index.
-	 * 
+	 *
 	 * @method _swapPageRefs
 	 * @protected
 	 */
@@ -5241,11 +5241,11 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	{
 		var lastBox 	= this._activePageBox,
 			lastImages 	= this._activeImages;
-		
+
 		this._activePageBox = this._nextPageBox;
 		this._nextPageBox = lastBox;
 		this._nextPageBox.setStyle('left', '-9999px');
-		
+
 		if(this._transitionDirection == 'next') {
 			this._activeImages = this._nextImages;
 			this._nextImages = lastImages;
@@ -5254,11 +5254,11 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			this._activeImages = this._prevImages;
 			this._prevImages = lastImages;
 		}
-		
+
 		// Active page index
 		if(this._transitionDirection == 'next' && this._activePageIndex + 1 < this._numPages) {
 			this._activePageIndex++;
-		}	
+		}
 		else if(this._transitionDirection == 'next') {
 			this._activePageIndex = 0;
 		}
@@ -5268,17 +5268,17 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		else if(this._transitionDirection == 'prev') {
 			this._activePageIndex = this._numPages - 1;
 		}
-		
+
 		// Swap gesture refs
 		if(this._gestures) {
 			this._gestures.set('activeItem', this._activePageBox);
 			this._gestures.set('nextItem', this._nextPageBox);
 		}
-		
+
 		this._preloadNextPage();
 		this._preloadPrevPage();
 	},
-	
+
 	/**
 	 * Renders the enabled navs.
 	 *
@@ -5291,7 +5291,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			rightNavButtons 	= this.get('rightNavButtons'),
 			bottomNavButtons 	= this.get('bottomNavButtons'),
 			leftNavButtons 		= this.get('leftNavButtons');
-		
+
 		if(this.get('topNavEnabled') && topNavButtons.length > 0) {
 			this._topNav = new Y.FL.SlideshowNav({ buttons: topNavButtons });
 			this._topNav.get('boundingBox').addClass('fl-slideshow-thumbs-top-nav');
@@ -5322,7 +5322,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			this._bindNavEvents(this._leftNav);
 		}
 	},
-	
+
 	/**
 	 * Syncs the navs.
 	 *
@@ -5332,7 +5332,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	_syncNavs: function()
 	{
 		var rightNavBB, bottomNavBB, leftNavBB;
-		
+
 		if(this._rightNav) {
 			rightNavBB = this._rightNav.get('boundingBox');
 			rightNavBB.setStyle('position', 'absolute');
@@ -5352,7 +5352,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			leftNavBB.setStyle('left', '0px');
 		}
 	},
-	
+
 	/**
 	 * Resizes the navs.
 	 *
@@ -5364,7 +5364,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		var rightNavBB,
 			leftNavBB,
 			marginTop;
-		
+
 		if(this._rightNav) {
 			rightNavBB = this._rightNav.get('boundingBox');
 			marginTop = this._bbHeight/2 - parseInt(rightNavBB.getComputedStyle('height'), 10)/2;
@@ -5376,7 +5376,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			leftNavBB.setStyle('marginTop', marginTop + 'px');
 		}
 	},
-	
+
 	/**
 	 * Binds events to the provided nav.
 	 *
@@ -5392,10 +5392,10 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		if(nav._buttons.nextPage) {
 			nav._buttons.nextPage.on('click', this.nextPage, this);
 		}
-		
+
 		nav.on('resize', this.resize, this);
 	},
-	
+
 	/**
 	 * Hides the prev page and next page buttons
 	 * if there is only one page of thumbs.
@@ -5417,7 +5417,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			this._setSizeInfo();
 		}
 	},
-	
+
 	/**
 	 * Sets the size info used when resizing and loading pages.
 	 *
@@ -5464,25 +5464,25 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			clipBoxTop				= 0,
 			availHorizSpace			= 0,
 			availVerticalSpace		= 0;
-			
+
         // Position absolute causes some resizing bugs.
         bb.setStyle('position', 'relative');
-			
+
 		// Bounding box width
 		if(!isNaN(columns)) {
 			bbWidth = pageWidth = columns * (imageConfig.width + horizontalSpacing) + horizontalSpacing;
 		}
-		
+
 		// Bounding box height
 		if(!isNaN(rows)) {
 			bbHeight = pageHeight = rows * (imageConfig.height + verticalSpacing) + verticalSpacing;
 		}
-		
+
 		// Compensate for the navs
 		if(this._leftNav) {
-		
+
 			leftNavWidth = parseInt(this._leftNav.get('boundingBox').getComputedStyle('width'), 10);
-			
+
 			if(isNaN(columns)) {
 				pageWidth -= leftNavWidth;
 			}
@@ -5491,9 +5491,9 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 			}
 		}
 		if(this._rightNav) {
-		
+
 			rightNavWidth = parseInt(this._rightNav.get('boundingBox').getComputedStyle('width'), 10);
-			
+
 			if(isNaN(columns)) {
 				pageWidth -= rightNavWidth;
 			}
@@ -5504,7 +5504,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		if(this._topNav) {
 
 			topNavHeight = parseInt(this._topNav.get('boundingBox').getComputedStyle('height'), 10);
-			
+
 			if(isNaN(rows)) {
 				pageHeight -= topNavHeight;
 			}
@@ -5515,7 +5515,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		if(this._bottomNav) {
 
 			bottomNavHeight = parseInt(this._bottomNav.get('boundingBox').getComputedStyle('height'), 10);
-			
+
 			if(isNaN(rows)) {
 				pageHeight -= bottomNavHeight;
 			}
@@ -5523,43 +5523,43 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 				bbHeight += bottomNavHeight;
 			}
 		}
-		
+
 		// Columns per page
 		if(isNaN(columns)) {
 			colsPerPage = Math.floor(pageWidth/(imageConfig.width + horizontalSpacing));
 			colsPerPage = colsPerPage < 1 ? 1 : colsPerPage;
 		}
-		
+
 		// Rows per page
 		if(isNaN(rows)) {
 			rowsPerPage = Math.floor(pageHeight/(imageConfig.height + verticalSpacing));
 			rowsPerPage = rowsPerPage < 1 ? 1 : rowsPerPage;
 		}
-		
+
 		// Images per page
 		imagesPerPage = colsPerPage * rowsPerPage;
-		
+
 		// Number of pages
 		if(root.albumInfo) {
 			numPages = Math.ceil(root.albumInfo.images.length/imagesPerPage);
 		}
-		
+
 		// Horizontal spacing
 		if(isNaN(columns) && spaceEvenly) {
-			horizontalSpacing = Math.floor((pageWidth - (imageConfig.width * colsPerPage))/(colsPerPage + 1));		
+			horizontalSpacing = Math.floor((pageWidth - (imageConfig.width * colsPerPage))/(colsPerPage + 1));
 		}
-		
+
 		// Vertical spacing
 		if(isNaN(rows) && spaceEvenly) {
 			verticalSpacing = Math.floor((pageHeight - (imageConfig.height * rowsPerPage))/(rowsPerPage + 1));
 		}
-		
+
 		// Content container width
 		if(root.albumInfo && centerSinglePage && numPages == 1 && rowsPerPage == 1) {
-		
+
 			cbWidth = root.albumInfo.images.length * imageConfig.width;
 			cbWidth += horizontalSpacing * (root.albumInfo.images.length + 1);
-			
+
 			if(this._leftNav) {
 				cbWidth += leftNavWidth;
 			}
@@ -5570,7 +5570,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		else {
 			cbWidth = bbWidth;
 		}
-		
+
 		// Final page width and height
 		if(root.albumInfo && centerSinglePage && numPages == 1 && rowsPerPage == 1) {
 			pageWidth = root.albumInfo.images.length * imageConfig.width;
@@ -5579,16 +5579,16 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		else {
 			pageWidth = colsPerPage * (imageConfig.width + horizontalSpacing);
 		}
-		
+
 		pageHeight = rowsPerPage * (imageConfig.height + verticalSpacing);
-		
-		// Clip box margin left 
+
+		// Clip box margin left
 		if(numPages < 2) {
 			clipBoxMarginLeft = leftNavWidth;
 		}
 		else {
 			availHorizSpace = bbWidth;
-			
+
 			if(this._rightNav) {
 				availHorizSpace -= rightNavWidth;
 			}
@@ -5600,22 +5600,22 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 				clipBoxMarginLeft = (availHorizSpace - pageWidth - horizontalSpacing)/2;
 			}
 		}
-		
-		// Clip box margin top 
+
+		// Clip box margin top
 		if(numPages > 1 && !spaceEvenly) {
 
 			availVerticalSpace = bbHeight;
-			
+
 			if(this._topNav) {
 				availVerticalSpace -= topNavHeight;
 			}
 			if(this._bottomNav) {
 				availVerticalSpace -= bottomNavHeight;
 			}
-			
+
 			clipBoxTop = (availVerticalSpace - (verticalSpacing + pageHeight))/2;
 		}
-				
+
 		// Set the info
 		this._bbHeight = bbHeight;
 		this._bbWidth = bbWidth;
@@ -5633,11 +5633,11 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		this._horizontalSpacing = horizontalSpacing;
 		this._verticalSpacing = verticalSpacing;
 		this._activePageIndex = Math.floor(root.imageIndex/this._imagesPerPage);
-		
+
 		// Set back to the initial position.
         bb.setStyle('position', bbPosition);
 	}
-		
+
 }, {
 
 	/**
@@ -5649,7 +5649,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	 * @static
 	 */
 	CSS_PREFIX: 'fl-slideshow-thumbs',
-	
+
 	/**
 	* Static property used to define the default attribute configuration of
 	* the Widget.
@@ -5660,9 +5660,9 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 	* @static
 	*/
 	ATTRS: {
-		
+
 		/**
-		 * The number of thumbnail columns. If set to auto, the number of 
+		 * The number of thumbnail columns. If set to auto, the number of
 		 * columns will be calculated based on the width of the parent node.
 		 *
 		 * @attribute columns
@@ -5672,9 +5672,9 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		columns: {
 			value: 'auto'
 		},
-		
+
 		/**
-		 * The number of thumbnail rows. If set to auto, the number of 
+		 * The number of thumbnail rows. If set to auto, the number of
 		 * rows will be calculated based on the height of the parent node.
 		 *
 		 * @attribute rows
@@ -5684,7 +5684,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		rows: {
 			value: 'auto'
 		},
-		
+
 		/**
 		 * The horizontal spacing between thumbs.
 		 *
@@ -5695,7 +5695,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		horizontalSpacing: {
 			value: 15
 		},
-		
+
 		/**
 		 * The vertical spacing between thumbs.
 		 *
@@ -5706,7 +5706,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		verticalSpacing: {
 			value: 15
 		},
-		
+
 		/**
 		 * Whether to space the thumbs evenly within a page.
 		 *
@@ -5717,7 +5717,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		spaceEvenly: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to center single pages of thumbs.
 		 *
@@ -5728,7 +5728,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		centerSinglePage: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to pause the parent slideshow when a thumb is clicked.
 		 *
@@ -5739,7 +5739,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		pauseOnClick: {
 			value: false
 		},
-		
+
 		/**
 		 * The type of transition to use between pages.
 		 *
@@ -5750,7 +5750,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		transition: {
 			value: 'slideHorizontal'
 		},
-		
+
 		/**
 		 * The duration of the transition between pages.
 		 *
@@ -5761,10 +5761,10 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		transitionDuration: {
 			value: 0.8
 		},
-		
+
 		/**
 		 * The type of transition easing to use between pages.
-		 * 
+		 *
 		 * @attribute transitionEasing
 		 * @type String
 		 * @default ease-out
@@ -5772,11 +5772,11 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		transitionEasing: {
 			value: 'ease-out'
 		},
-		
+
 		/**
-		 * The configuration object used to create new instances of 
+		 * The configuration object used to create new instances of
 		 * FL.SlideshowImage. See the API docs for {@link FL.SlideshowImage}
-		 * for a complete list of configuration attributes. 
+		 * for a complete list of configuration attributes.
 		 *
 		 * @attribute imageConfig
 		 * @type Object
@@ -5789,7 +5789,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 				height: 50
 			}
 		},
-		
+
 		/**
 		 * Whether to use the top nav or not.
 		 *
@@ -5800,7 +5800,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		topNavEnabled: {
 			value: false
 		},
-		
+
 		/**
 		 * An array of button names used to render the top nav buttons.
 		 *
@@ -5811,18 +5811,18 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		topNavButtons: {
 			value: ['prevPage', 'nextPage']
 		},
-			
+
 		/**
 		 * Whether to use the right nav or not.
 		 *
 		 * @attribute rightNavEnabled
 		 * @type Boolean
 		 * @default true
-		 */	
+		 */
 		rightNavEnabled: {
 			value: true
 		},
-			
+
 		/**
 		 * An array of button names used to render the right nav buttons.
 		 *
@@ -5833,7 +5833,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		rightNavButtons: {
 			value: ['nextPage']
 		},
-		
+
 		/**
 		 * Whether to use the bottom nav or not.
 		 *
@@ -5844,7 +5844,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		bottomNavEnabled: {
 			value: false
 		},
-		
+
 		/**
 		 * An array of button names used to render the bottom nav buttons.
 		 *
@@ -5855,7 +5855,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		bottomNavButtons:{
 			value: ['prevPage', 'nextPage']
 		},
-		
+
 		/**
 		 * Whether to use the left nav or not.
 		 *
@@ -5866,7 +5866,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		leftNavEnabled: {
 			value: true
 		},
-		
+
 		/**
 		 * An array of button names used to render the left nav buttons.
 		 *
@@ -5877,9 +5877,9 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
 		leftNavButtons:{
 			value: ['prevPage']
 		},
-		
+
 		/**
-		 * Whether to use touch gestures, when available, 
+		 * Whether to use touch gestures, when available,
 		 * to transition between pages or not.
 		 *
 		 * @attribute touchSupport
@@ -5902,7 +5902,7 @@ Y.namespace('FL').SlideshowThumbs = Y.Base.create('fl-slideshow-thumbs', Y.Widge
  * @extends Base
  */
 Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition', Y.Base, [], {
-		
+
 	/**
 	 * The transition function to use when run is called.
 	 *
@@ -5912,7 +5912,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 	 * @protected
 	 */
 	_transitionFunction: '_transitionFade',
-			
+
 	/**
 	 * The current transition type.
 	 *
@@ -5924,13 +5924,13 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 	_type: 'fade',
 
 	/**
-	 * Parses the transition type and sets the _transitionFunction 
+	 * Parses the transition type and sets the _transitionFunction
 	 * used when run is called.
 	 *
 	 * @method initializer
 	 * @protected
-	 */ 
-	initializer: function() 
+	 */
+	initializer: function()
 	{
 		var type 		               = this.get('type'),
 			typeArray	               = [],
@@ -5940,14 +5940,14 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			isSlideshowImage           = this._isSlideshowImage(),
 			itemIn 				       = this.get('itemIn'),
 			itemOut 			       = this.get('itemOut');
-        
+
         // Check for random transitions.
 		if(type.indexOf(',') > -1) {
 			typeArray = type.split(',');
 			typeArray.sort(function() { return 0.5 - Math.random(); });
 			type = typeArray[0];
 		}
-		
+
 		// Make sure we can run this transition, otherwise set a fallback.
 		if(!isSlideshowImage && isSlideshowImageTransition) {
             type = 'fade';
@@ -5962,40 +5962,40 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
                 }
             }
         }
-		  
+
 		// Set the transition function and type.
 		if(Y.FL.SlideshowTransition.TYPES[type]) {
 			this._transitionFunction = types[type];
 			this._type = type;
 		}
-		
+
 		// Setup the items.
 		this._setupItems();
 	},
-	
+
 	/**
 	 * Fires the start event and calls the transition function.
 	 *
 	 * @method run
-	 */ 
+	 */
 	run: function()
 	{
 		/**
 		 * Fires when the transition starts.
 		 *
 		 * @event start
-		 */ 
+		 */
 		this.fire('start');
-		
+
 		this[this._transitionFunction].call(this);
 	},
-	
+
 	/**
 	 * Set initial styles for the items.
 	 *
 	 * @method _setupItems
 	 * @protected
-	 */ 	
+	 */
 	_setupItems: function()
 	{
         var itemIn  = this.get('itemIn'),
@@ -6004,7 +6004,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		if(itemIn) {
 			itemIn.setStyle('zIndex', 2);
 			itemIn.setStyle('opacity', 1);
-			
+
 			if(Y.FL.Utils.cssSupport('transform')) {
     			itemIn.setStyle('transform', 'translate(0, 0)');
     		}
@@ -6017,29 +6017,29 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			itemOut.setStyle('zIndex', 1);
 		}
 	},
-	
+
 	/**
 	 * Checks if the transition is being run
 	 * on an instance of FL.SlideshowImage or not.
 	 *
 	 * @method _isSlideshowImage
 	 * @protected
-	 */ 	
+	 */
 	_isSlideshowImage: function()
 	{
         var itemIn 	= this.get('itemIn'),
 			itemOut = this.get('itemOut');
-			
+
         if(itemIn && itemIn.hasClass('fl-slideshow-image')) {
 			return true;
 		}
 		else if(itemOut && itemOut.hasClass('fl-slideshow-image')) {
 			return true;
 		}
-		
+
 		return false;
 	},
-	
+
 	/**
 	 * Starts the transtion using the provided property objects.
 	 *
@@ -6047,7 +6047,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 	 * @param propsIn {Object} The properties to animate in.
 	 * @param propsOut {Object} The properties to animate out.
 	 * @protected
-	 */ 
+	 */
 	_transitionStart: function(propsIn, propsOut)
 	{
 		var itemIn 				= this.get('itemIn'),
@@ -6056,7 +6056,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			itemOutCallback 	= !itemIn ? itemInCallback : null,
 			duration 			= this.get('duration'),
 			easing 				= this.get('easing');
-		
+
 		if(itemIn) {
 			propsIn.duration = propsIn.duration || duration;
 			propsIn.easing = propsIn.easing || easing;
@@ -6067,7 +6067,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			propsOut.easing = propsOut.easing || easing;
 			itemOut.transition(propsOut);
 		}
-		
+
 		if(itemInCallback) {
 			Y.later(propsIn.duration * 1000 + 100, null, itemInCallback);
 		}
@@ -6075,53 +6075,53 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			Y.later(propsOut.duration * 1000 + 100, null, itemOutCallback);
 		}
 	},
-	
+
 	/**
 	 * Clean up method called when the transition completes.
 	 *
 	 * @method _transitionComplete
 	 * @protected
-	 */ 
+	 */
 	_transitionComplete: function()
 	{
 		this._set('itemIn', null);
 		this._set('itemOut', null);
-		
+
 		/**
 		 * Fires when the transition completes.
 		 *
 		 * @event complete
-		 */ 
+		 */
 		this.fire('complete');
 	},
-	
+
 	/**
 	 * No transition.
 	 *
 	 * @method _transitionNone
 	 * @protected
-	 */ 
+	 */
 	_transitionNone: function()
 	{
 		var itemIn  = this.get('itemIn'),
 			itemOut = this.get('itemOut');
-		
+
 		if(itemIn) {
 			itemIn.setStyle('opacity', 1);
 		}
 		if(itemOut) {
 			itemOut.setStyle('opacity', 0);
 		}
-		
+
 		this._transitionComplete();
 	},
-	
+
 	/**
 	 * Fade transition.
 	 *
 	 * @method _transitionFade
 	 * @protected
-	 */ 
+	 */
 	_transitionFade: function()
 	{
 		var itemIn = this.get('itemIn');
@@ -6129,16 +6129,16 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		if(itemIn) {
 			itemIn.setStyle('opacity', 0);
 		}
-				
+
 		this._transitionStart({ opacity: 1 },{ opacity: 0 });
 	},
-	
+
 	/**
 	 * Slide left transition.
 	 *
 	 * @method _transitionSlideLeft
 	 * @protected
-	 */ 
+	 */
 	_transitionSlideLeft: function()
 	{
 		if(Y.FL.Utils.cssSupport('transform')) {
@@ -6153,13 +6153,13 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			this._jsTransitionSlide('left');
 		}
 	},
-	
+
 	/**
 	 * Slide right transition.
 	 *
 	 * @method _transitionSlideRight
 	 * @protected
-	 */ 
+	 */
 	_transitionSlideRight: function()
 	{
 		if(Y.FL.Utils.cssSupport('transform')) {
@@ -6174,13 +6174,13 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			this._jsTransitionSlide('right');
 		}
 	},
-	
+
 	/**
 	 * Slide up transition.
 	 *
 	 * @method _transitionSlideUp
 	 * @protected
-	 */ 
+	 */
 	_transitionSlideUp: function()
 	{
 		if(Y.FL.Utils.cssSupport('transform')) {
@@ -6195,15 +6195,15 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			this._jsTransitionSlide('up');
 		}
 	},
-	
+
 	/**
 	 * Slide down transition.
 	 *
 	 * @method _transitionSlideDown
 	 * @protected
-	 */ 
+	 */
 	_transitionSlideDown: function()
-	{		
+	{
 		if(Y.FL.Utils.cssSupport('transform')) {
 			this._cssTransitionSlide({
 				inStart: 'translate(0, -100%)',
@@ -6216,19 +6216,19 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			this._jsTransitionSlide('down');
 		}
 	},
-	
+
 	/**
 	 * JavaScript slide transition.
 	 *
 	 * @method _jsTransitionSlide
 	 * @protected
-	 */ 	
+	 */
 	_jsTransitionSlide: function(direction)
 	{
 		var itemIn 		= this.get('itemIn'),
 			itemOut 	= this.get('itemOut'),
 			itemOutEnd	= 0;
-			
+
 		// Item Out
 		if(itemOut && direction == 'left') {
 			itemOutEnd = -parseInt(itemOut.getStyle('width'), 10);
@@ -6242,7 +6242,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		if(itemOut && direction == 'down') {
 			itemOutEnd = parseInt(itemOut.getStyle('height'), 10);
 		}
-		
+
 		// Item In
 		if(itemIn) {
 			itemIn.setStyle('opacity', 1);
@@ -6259,7 +6259,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		if(itemIn && direction == 'down') {
 			itemIn.setStyle('top', '-' + itemIn.getStyle('height'));
 		}
-		
+
 		// Transition Start
 		if(direction == 'left' || direction == 'right') {
 			this._transitionStart({ left: 0 },{ left: itemOutEnd });
@@ -6268,21 +6268,21 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			this._transitionStart({ top: 0 },{ top: itemOutEnd });
 		}
 	},
-	
+
 	/**
 	 * CSS slide transition.
 	 *
 	 * @method _cssTransitionSlide
 	 * @protected
-	 */ 
+	 */
 	_cssTransitionSlide: function(props)
-	{	   
+	{
 		var itemIn 	        = this.get('itemIn'),
 			itemOut         = this.get('itemOut'),
 			transformProp   = Y.UA.chrome < 36 ? 'transform' : '-webkit-transform',
 			inProps         = {},
 			outProps        = {};
-			
+
         inProps[transformProp] = props.inEnd;
         outProps[transformProp] = props.outEnd;
 
@@ -6295,21 +6295,21 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			itemOut.setStyle('transition', '');
 			itemOut.setStyle(transformProp, props.outStart);
 		}
-				
+
 		this._transitionStart(inProps, outProps);
 	},
-	
+
 	/**
 	 * Bars and blinds transition.
 	 *
 	 * @method _transitionBars
 	 * @protected
-	 */ 	
+	 */
 	_transitionBars: function()
 	{
         // Hide the image until the slices have transitioned in.
         this.get('itemIn').one('.fl-slideshow-image-img').setStyle('opacity', 0);
-        
+
         var numBars   = this.get('bars'),
             slices    = this._renderSlices(1, numBars),
             duration  = this.get('duration'),
@@ -6318,11 +6318,11 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
             last      = false,
             i         = 0,
             clone     = null,
-            props     = { 
+            props     = {
                 duration: duration,
                 opacity: 1
             };
-            
+
         // barsRandom
         if(this._type == 'barsRandom') {
             slices = this._randomizeSlices(slices);
@@ -6330,23 +6330,23 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 
         // Transition the slices.
         for( ; i < slices.length; i++) {
-            
+
             // Make a clone of our transition properties.
             clone = Y.clone(props);
-        
+
             // blinds
             if(this._type == 'blinds') {
                 clone.width = parseFloat(slices[i].getComputedStyle('width'), 10) + 'px';
                 slices[i].setStyle('width', '0px');
                 increment = 50;
             }
-        
+
             // Run the transition.
             last = i == slices.length - 1 ? true : false;
             Y.later(delay, this, this._transitionSlice, [slices[i], clone, last]);
             delay += increment;
         }
-        
+
         this._transitionSlicesFadeLast(delay);
 	},
 
@@ -6355,12 +6355,12 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 	 *
 	 * @method _transitionBoxes
 	 * @protected
-	 */ 	
+	 */
 	_transitionBoxes: function()
 	{
         // Hide the image until the slices have transitioned in.
         this.get('itemIn').one('.fl-slideshow-image-img').setStyle('opacity', 0);
-        
+
         var numCols     = this.get('boxCols'),
             numRows     = this.get('boxRows'),
             numSlices   = numCols * numRows,
@@ -6375,17 +6375,17 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
             col         = 0,
             startCol    = -1,
             clone       = null,
-            props       = { 
+            props       = {
                 duration: duration,
                 opacity: 1
             };
-        
+
         // boxesRandom
         if(!multi) {
-        
+
             slices = this._randomizeSlices(slices);
             increment = 30;
-            
+
             for( ; i < slices.length; i++) {
                 clone = Y.clone(props);
                 last = i == slices.length - 1 ? true : false;
@@ -6404,7 +6404,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
                     if(col > -1 && col < numCols) {
                         i++;
                         clone = Y.clone(props);
-                        
+
                         // boxesGrow
                         if(this._type == 'boxesGrow') {
                             clone.height = parseFloat(slices[row][col].getComputedStyle('height'), 10) + 'px';
@@ -6413,7 +6413,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
                             slices[row][col].setStyle('width', '0px');
                             increment = 50;
                         }
-                                            
+
                         last = i == numSlices - 1 ? true : false;
                         Y.later(delay, this, this._transitionSlice, [slices[row][col], clone, last]);
                     }
@@ -6422,16 +6422,16 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
                 delay += increment;
             }
         }
-        
+
         this._transitionSlicesFadeLast(delay);
 	},
-	
+
 	/**
 	 * Renders the divs for slice based transitions.
 	 *
 	 * @method _renderSlices
 	 * @protected
-	 */ 		
+	 */
 	_renderSlices: function(numRows, numCols, multidimensional)
 	{
         var itemIn      = this.get('itemIn'),
@@ -6452,33 +6452,33 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
             slices      = [];
 
         for( ; row < numRows; row++) {
-        
+
             if(typeof multidimensional !== 'undefined' && multidimensional) {
                 slices[row] = [];
             }
             for(col = 0; col < numCols; col++) {
-                
+
                 slice = Y.Node.create('<div class="fl-slideshow-transition-slice"></div>');
                 sliceImg = Y.Node.create('<img src="'+ imgSrc +'" />');
-                
+
                 slice.setStyles({
                     left: (sliceWidth * col) + 'px',
-                    top: (sliceHeight * row) + 'px', 
+                    top: (sliceHeight * row) + 'px',
                     width: col == numCols - 1 ? (itemWidth - (sliceWidth * col)) + 'px' : sliceWidth + 'px',
                     height: row == numRows - 1 ? (itemHeight - (sliceHeight * row)) + 'px' : sliceHeight + 'px',
                     opacity: 0
                 });
-                
+
                 sliceImg.setStyles({
                     height: imgHeight + 'px',
                     width: imgWidth + 'px',
                     top: imgTop - ((sliceHeight + (row * sliceHeight)) - sliceHeight) + 'px',
                     left: imgLeft - ((sliceWidth + (col * sliceWidth)) - sliceWidth) + 'px'
                 });
-                
+
                 slice.append(sliceImg);
                 itemIn.append(slice);
-                
+
                 if(typeof multidimensional !== 'undefined' && multidimensional) {
                     slices[row].push(slice);
                 }
@@ -6490,17 +6490,17 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 
         return slices;
 	},
-	
+
 	/**
 	 * Fade the itemOut node.
 	 *
 	 * @method _transitionSlicesFadeLast
 	 * @protected
-	 */ 	
+	 */
 	_transitionSlicesFadeLast: function(delay)
 	{
         var itemOut = this.get('itemOut');
-        
+
         if(itemOut && !itemOut.hasClass('fl-slideshow-image-cropped')) {
 			itemOut.transition({
                 duration: delay/1000 + this.get('duration'),
@@ -6508,45 +6508,45 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 			});
 		}
 	},
-	
+
 	/**
 	 * Transitions a single slice.
 	 *
 	 * @method _transitionSlice
 	 * @protected
-	 */ 	
+	 */
 	_transitionSlice: function(slice, props, last)
 	{
         var callback = last ? Y.bind(this._transitionSlicesComplete, this) : null;
-        
+
         slice.transition(props, callback);
 	},
-	
+
 	/**
 	 * Complete callback for slice based transitions.
 	 *
 	 * @method _transitionSlicesComplete
 	 * @protected
-	 */ 	
+	 */
 	_transitionSlicesComplete: function()
 	{
         var itemIn = this.get('itemIn');
-        
+
         itemIn.all('.fl-slideshow-transition-slice').remove();
         itemIn.one('.fl-slideshow-image-img').setStyle('opacity', 1);
         this._transitionComplete();
 	},
-	
+
 	/**
 	 * Randomizes a slices array.
 	 *
 	 * @method _radomizeSlices
 	 * @protected
-	 */ 	
+	 */
 	_randomizeSlices: function(slices)
 	{
         var i = slices.length, j, temp;
-        
+
         if(i === 0) {
             return;
         }
@@ -6556,17 +6556,17 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
             slices[i] = slices[j];
             slices[j] = temp;
         }
-        
+
         return slices;
 	},
-	
+
 	_transitionKenBurns: function()
 	{
-        var kbDuration  = this.get('kenBurnsDuration'), 
+        var kbDuration  = this.get('kenBurnsDuration'),
             duration    = this.get('duration'),
             itemIn      = this.get('itemIn'),
             zoom        = this.get('kenBurnsZoom');
-            
+
         this._transitionFade();
 
         (new Y.FL.SlideshowKenBurns({
@@ -6577,7 +6577,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 	}
 
 }, {
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Widget.
@@ -6599,7 +6599,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		itemIn: {
 			value: null
 		},
-		
+
 		/**
 		 * The Node to transition out.
 		 *
@@ -6610,7 +6610,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		itemOut: {
 			value: null
 		},
-		
+
 		/**
 		 * The duration of the transition in seconds.
 		 *
@@ -6621,7 +6621,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		duration: {
 			value: 0.5
 		},
-		
+
 		/**
 		 * The type of easing to use.
 		 *
@@ -6632,7 +6632,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		easing: {
 			value: 'ease-out'
 		},
-		
+
 		/**
 		 * The type of transition to use.
 		 *
@@ -6643,9 +6643,9 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		type: {
 			value: 'fade'
 		},
-		
+
 		/**
-		 * The number of bars to use for 
+		 * The number of bars to use for
 		 * transitions such as blinds.
 		 *
 		 * @attribute bars
@@ -6655,9 +6655,9 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		bars: {
 			value: 15
 		},
-		
+
 		/**
-		 * The number of columns to use for 
+		 * The number of columns to use for
 		 * transitions such as boxes.
 		 *
 		 * @attribute boxCols
@@ -6667,9 +6667,9 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		boxCols: {
 			value: 8
 		},
-		
+
 		/**
-		 * The number of rows to use for 
+		 * The number of rows to use for
 		 * transitions such as boxes.
 		 *
 		 * @attribute boxRows
@@ -6679,31 +6679,31 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		boxRows: {
 			value: 4
 		},
-		
+
 		/**
-		 * The duration the ken burns effect will 
+		 * The duration the ken burns effect will
 		 * last, measured in seconds.
 		 *
 		 * @attribute kenBurnsDuration
-		 * @type Number 
+		 * @type Number
 		 * @default 4
-		 */		
+		 */
 		kenBurnsDuration: {
             value: 4
 		},
-		
+
 		/**
 		 * The amount of zoom to use for the Ken Burns effect.
 		 *
 		 * @attribute kenBurnsZoom
-		 * @type Number 
+		 * @type Number
 		 * @default 1.2
-		 */			
+		 */
 		kenBurnsZoom: {
             value: 1.2
 		}
 	},
-	
+
 	/**
 	 * The types of transitions and associated functions.
 	 *
@@ -6712,7 +6712,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 	 * @readOnly
 	 * @protected
 	 * @static
-	 */ 
+	 */
 	TYPES: {
 		fade: '_transitionFade',
 		none: '_transitionNone',
@@ -6728,7 +6728,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 		boxesGrow: '_transitionBoxes',
 		kenBurns: '_transitionKenBurns'
 	},
-	
+
 	/**
 	 * The types of transitions that can only be
 	 * run on FL.SlideshowImage widgets.
@@ -6738,7 +6738,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 	 * @readOnly
 	 * @protected
 	 * @static
-	 */ 
+	 */
 	SLIDESHOW_IMAGE_TYPES: [
         'blinds',
         'bars',
@@ -6752,7 +6752,7 @@ Y.namespace('FL').SlideshowTransition = Y.Base.create('fl-slideshow-transition',
 
 /**
  * A highly configurable slideshow widget.
- * 
+ *
  * @namespace FL
  * @class Slideshow
  * @constructor
@@ -6769,7 +6769,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	 * @default null
 	 */
 	frame: null,
-	
+
 	/**
 	 * A FL.SlideshowNav instance used for the main nav.
 	 *
@@ -6778,7 +6778,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	 * @default null
 	 */
 	nav: null,
-	
+
 	/**
 	 * A FL.SlideshowNav instance used for the image nav's left button.
 	 *
@@ -6787,7 +6787,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	 * @default null
 	 */
 	imageNavLeft: null,
-	
+
 	/**
 	 * A FL.SlideshowNav instance used for the image nav's right button.
 	 *
@@ -6796,45 +6796,45 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	 * @default null
 	 */
 	imageNavRight: null,
-	
+
 	/**
 	 * A FL.SlideshowThumbs instance used for the thumbnail grid.
-	 * 
+	 *
 	 * @property thumbs
 	 * @type FL.SlideshowThumbs
 	 * @default null
 	 */
 	thumbs: null,
-	
+
 	/**
 	 * A FL.SlideshowThumbs instance used for the vertical thumbnail grid.
-	 * 
+	 *
 	 * @property verticalThumbs
 	 * @type FL.SlideshowThumbs
 	 * @default null
 	 */
 	verticalThumbs: null,
-	
+
 	/**
 	 * A FL.SlideshowCaption instance.
-	 * 
+	 *
 	 * @property caption
 	 * @type FL.SlideshowCaption
 	 * @default null
 	 */
 	caption: null,
-	
+
 	/**
 	 * A FL.SlideshowSocial instance.
-	 * 
+	 *
 	 * @property social
 	 * @type FL.SlideshowSocial
 	 * @default null
 	 */
 	social: null,
-	
+
 	/**
-	 * A FL.SlideshowImage instance used to preload 
+	 * A FL.SlideshowImage instance used to preload
 	 * the next image.
 	 *
 	 * @property _nextImagePreloader
@@ -6843,7 +6843,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	 * @protected
 	 */
 	_nextImagePreloader: null,
-	
+
 	/**
 	 * An object that holds the initial nav settings
 	 * when the mini nav has been enabled for a responsive layout.
@@ -6871,19 +6871,17 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			protect: this.get('protect'),
 			upsize: this.get('upsize')
 		};
-		
+
 		// Preloader
 		this._nextImagePreloader = new Y.FL.SlideshowImage(imageConfig);
-		
+
 		// Nav buttons not needed for touch
 		if(this._isMobile()) {
-			this._removeNavButton('prev');
 			this._removeNavButton('prevPage');
-			this._removeNavButton('next');
 			this._removeNavButton('nextPage');
 			this._removeNavButton('fullscreen');
 		}
-		
+
 		// Fullscreen
 		if(this._hasNavButton('fullscreen')) {
 			if(Y.FL.SlideshowFullscreen.OS_SUPPORT) {
@@ -6896,7 +6894,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	},
 
 	/**
-	 * Calls the FL.SlideshowBase superclass renderUI method 
+	 * Calls the FL.SlideshowBase superclass renderUI method
 	 * and renders the child widgets.
 	 *
 	 * @method renderUI
@@ -6905,7 +6903,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	renderUI: function()
 	{
 		Y.FL.Slideshow.superclass.renderUI.apply(this, arguments);
-		
+
 		this._renderFrame();
 		this._renderVerticalThumbs();
 		this._renderNavAndThumbs();
@@ -6914,10 +6912,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		this._renderCaption();
 		this._renderSocial();
 	},
-	
+
 	/**
-	 * Calls the FL.SlideshowBase superclass bindUI method, binds 
-	 * _resizeChildWidgets to fire after the resize method inherited 
+	 * Calls the FL.SlideshowBase superclass bindUI method, binds
+	 * _resizeChildWidgets to fire after the resize method inherited
 	 * from FL.SlideshowBase, shows the loading image, binds overlay events
 	 * and binds an event to load an image into the frame.
 	 *
@@ -6932,24 +6930,24 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			navType			= this.get('navType'),
 			nav 			= this._getNav(),
 			clickAction     = this.get('clickAction');
-		
+
 		// Call superclass bindUI
 		Y.FL.Slideshow.superclass.bindUI.apply(this, arguments);
-		
+
 		// Resize child widgets after the superclass resize method.
 		Y.Do.after(this._resizeChildWidgets, this, 'resize');
-		
+
 		// Loading events
 		this.on('albumLoadStart', this._albumLoadStart, this);
 		this.on('albumLoadComplete', this._albumLoadComplete, this);
 		this.on('imageLoadComplete', this._loadFrame, this);
-		
+
 		// Loading image
 		if(this.get('loadingImageAlwaysEnabled')) {
 			this.frame.on('transitionInit', Y.bind(this._showLoadingImageWithDelay, this));
 			this.frame.on('transitionStart', Y.bind(this._hideLoadingImage, this));
 		}
-		
+
 		// Overlay events
 		if(this.get('overlayHideOnMousemove')) {
 			if(nav && navOverlay) {
@@ -6961,15 +6959,15 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 				ssBB.on('mouseleave', Y.bind(this._hideAllOverlays, this));
 			}
 		}
-				
+
 		ssBB.delegate('click', Y.bind(this._overlayCloseClick, this), '.fl-slideshow-overlay-close');
-		
+
 		// Click action
 		if(clickAction == 'gallery' || clickAction == 'url') {
             frameBB.delegate('click', Y.bind(this._frameClick, this), '.fl-slideshow-image-img');
 		}
 	},
-	
+
 	/**
 	 * Calls the FL.SlideshowBase superclass syncUI method
 	 * and makes the bounding box unselectable.
@@ -6980,13 +6978,13 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	syncUI: function()
 	{
 		var bb = this.get('boundingBox');
-		
+
 		Y.FL.Slideshow.superclass.syncUI.apply(this, arguments);
 
 		bb._node.onselectstart = function() { return false; };
 		bb._node.unselectable = "on";
 		bb._node.style.MozUserSelect = "none";
-		
+
 		if(this.get('clickAction') != 'none') {
             this.frame.get('boundingBox').addClass('fl-click-action-enabled');
 		}
@@ -6999,14 +6997,14 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	 * @access private
 	 * @method _isMobile
 	 * @return {Boolean}
-	 */ 
+	 */
 	_isMobile: function()
 	{
 	    return /Mobile|Android|Silk\/|Kindle|BlackBerry|Opera Mini|Opera Mobi|webOS/i.test( navigator.userAgent );
 	},
-	
+
 	/**
-	 * Unload all slideshow images and pause 
+	 * Unload all slideshow images and pause
 	 * the slideshow.
 	 *
 	 * @method unload
@@ -7015,12 +7013,12 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	{
 		this.pause();
 		this.frame.unload();
-		
+
 		if(this.thumbs !== null) {
 			this.thumbs.unload();
 		}
 	},
-	
+
 	/**
 	 * @method _albumLoadStart
 	 * @protected
@@ -7029,7 +7027,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	{
 		this._showLoadingImage();
 	},
-	
+
 	/**
 	 * @method _albumLoadComplete
 	 * @protected
@@ -7038,7 +7036,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	{
 		this.frame.once('transitionStart', Y.bind(this._hideLoadingImage, this));
 	},
-	
+
 	/**
 	 * Resizes all enabled child widgets.
 	 *
@@ -7050,9 +7048,9 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		var bb				= this.get('boundingBox'),
 			cb				= this.get('contentBox'),
 			imageNavEnabled = this.get('imageNavEnabled');
-		
+
 		this._renderNavAndThumbs();
-				
+
 		if(this.get('verticalThumbsOverlay')) {
 			this._resizeFrame(cb.get('offsetWidth'), bb.get('offsetHeight'));
 			this._resizeVerticalThumbs();
@@ -7065,38 +7063,38 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		if(imageNavEnabled) {
 			this._positionImageNav();
 		}
-		
+
 		this._positionLoadingImage();
 	},
 
 	/**
 	 * @method _renderVerticalThumbs
 	 * @protected
-	 */	
+	 */
 	_renderVerticalThumbs: function()
 	{
 		var threshold 	= this.get('responsiveThreshold'),
 			ssBB 		= this.get('boundingBox'),
-			bbWidth 	= ssBB.get('offsetWidth'), 
+			bbWidth 	= ssBB.get('offsetWidth'),
 			vtBB;
 
 		if(this.get('verticalThumbsEnabled') && bbWidth > threshold) {
 
-			this.verticalThumbs = new Y.FL.SlideshowThumbs(this._getVerticalThumbsConfig());	
+			this.verticalThumbs = new Y.FL.SlideshowThumbs(this._getVerticalThumbsConfig());
 			this.add(this.verticalThumbs);
 			this.verticalThumbs.render(ssBB);
-			
+
 			vtBB = this.verticalThumbs.get('boundingBox');
 			vtBB.addClass('fl-slideshow-vertical-thumbs');
 			vtBB.setStyle(this.get('verticalThumbsPosition'), 0);
 			ssBB.append(vtBB);
-			
+
 			if(this.get('verticalThumbsOverlay')) {
 				this.verticalThumbs.plug(Y.FL.SlideshowOverlay, {
 					hideDelay: this.get('overlayHideDelay'),
 					hideStyle: 'left'
 				});
-				
+
 				this.frame.get('boundingBox').append(vtBB);
 				this.verticalThumbs.resize();
 			}
@@ -7104,14 +7102,14 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 				this.verticalThumbs.resize();
 				this._adjustContentForVerticalThumbs();
 			}
-			
+
 			this._bindVerticalThumbs();
 		}
 	},
-	
+
 	/**
-	 * Prepares and returns the vertical thumbs config object. 
-	 * 
+	 * Prepares and returns the vertical thumbs config object.
+	 *
 	 * @method _getVerticalThumbsConfig
 	 * @protected
 	 * @returns Object
@@ -7143,27 +7141,27 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 					height: 			attrs.verticalThumbsImageHeight
 				}
 			};
-			
+
 		return config;
 	},
-	
+
 	_bindVerticalThumbs: function()
 	{
 		var ssBB 		= this.get('boundingBox'),
 			hideOnMouse = this.get('overlayHideOnMousemove'),
 			vtOverlay 	= this.get('verticalThumbsOverlay'),
 			vt			= this.verticalThumbs;
-		
+
 		if(vt && hideOnMouse && vtOverlay) {
 			this.frame.once('transitionComplete', vt.slideshowOverlay.hideWithTimer, vt.slideshowOverlay);
 			ssBB.on('mousemove', Y.bind(this._toggleVerticalThumbs, this));
 			ssBB.on('mouseenter', Y.bind(this._toggleVerticalThumbs, this));
 		}
 	},
-	
+
 	/**
 	 * Resizes the vertical thumbs.
-	 * 
+	 *
 	 * @method _resizeVerticalThumbs
 	 * @protected
 	 */
@@ -7178,7 +7176,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			navType,
 			nav,
 			navBB;
-			
+
 		if(vtEnabled) {
 			vtOverlay	= this.get('verticalThumbsOverlay');
 			threshold 	= this.get('responsiveThreshold');
@@ -7187,19 +7185,19 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			navOverlay	= this.get('navOverlay');
 			navType		= this.get('navType');
 			nav			= this._getNav();
-		
+
 			if(this.verticalThumbs && bbWidth > threshold) {
-			
+
 				this.verticalThumbs.get('boundingBox').setStyle('display', 'block');
 				this.verticalThumbs.resize();
-				
+
 				if(!vtOverlay) {
 					this._adjustContentForVerticalThumbs();
 				}
 				else if(nav && navOverlay) {
-				
+
 					navBB = nav.get('boundingBox');
-					
+
 					if(navType == 'thumbs') {
 						this._adjustOverlayForVerticalThumbs(navBB, true);
 						this.thumbs.resize();
@@ -7213,9 +7211,9 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 				this._renderVerticalThumbs();
 			}
 			else if(this.verticalThumbs && bbWidth <= threshold) {
-			
+
 				this.verticalThumbs.get('boundingBox').setStyle('display', 'none');
-			
+
 				if(!vtOverlay) {
 					this.get('contentBox').setStyles({
 						left: 'auto',
@@ -7227,10 +7225,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			}
 		}
 	},
-	
+
 	/**
 	 * Toggles the visibility of the vertical thumbs.
-	 * 
+	 *
 	 * @method _toggleVerticalThumbs
 	 * @protected
 	 */
@@ -7245,11 +7243,11 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			}
 		}
 	},
-	
+
 	/**
 	 * Adjusts the content position and width
 	 * for the vertical thumbs.
-	 * 
+	 *
 	 * @method _adjustContentForVerticalThumbs
 	 * @protected
 	 */
@@ -7261,16 +7259,16 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			ssCB 	= this.get('contentBox'),
 			cbPos 	= vtPos == 'left' ? 'right' : 'left',
 			cbWidth = ssBB.get('offsetWidth') - vtBB.get('offsetWidth');
-		
+
 		ssCB.setStyle('position', 'absolute');
 		ssCB.setStyle(cbPos, 0);
 		ssCB.setStyle('width', cbWidth);
 	},
-	
+
 	/**
 	 * Adjusts an overlay's position for the vertical
 	 * thumbs when they are overlaid as well.
-	 * 
+	 *
 	 * @method _adjustOverlayForVerticalThumbs
 	 * @protected
 	 */
@@ -7282,7 +7280,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			vtPos		= null,
 			margin		= typeof useMargin === 'undefined' ? '' : 'margin-',
 			vtWidth		= 0;
-		
+
 		if(this.verticalThumbs && vtEnabled && vtOverlay) {
 			vtBB = this.verticalThumbs.get('boundingBox');
 			vtWidth = vtBB.get('offsetWidth');
@@ -7296,9 +7294,9 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			}
 		}
 	},
-	
+
 	/**
-	 * Creates and renders a new instance of FL.SlideshowFrame 
+	 * Creates and renders a new instance of FL.SlideshowFrame
 	 * used for the main image.
 	 *
 	 * @method _renderFrame
@@ -7317,16 +7315,16 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 				upsize: this.get('upsize'),
 				showVideoButton: this.get('navOverlay')
 			},
-			touchSupport: true
+			touchSupport: this.get('touchSupport')
 		});
-		
+
 		this.add(this.frame);
 		this.frame.render(this.get('contentBox'));
 		this.frame.get('boundingBox').addClass('fl-slideshow-main-image');
 		this._setPlayingTimerEvent(this.frame, 'transitionComplete');
 		this._loadingImageContainer = this.frame.get('contentBox');
 	},
-	
+
 	/**
 	 * Resizes the frame used for the main image.
 	 *
@@ -7339,14 +7337,14 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	{
 		var navOverlay	= this.get('navOverlay'),
 			nav 		= this._getNav();
-			
+
 		if(nav && !navOverlay) {
 			height -= parseInt(nav.get('boundingBox').getComputedStyle('height'), 10);
 		}
-		
+
 		this.frame.resize(width, height);
 	},
-	
+
 	/**
 	 * Called when the imageLoadComplete event fires.
 	 * Loads an image into the frame and preloads the next image.
@@ -7362,28 +7360,28 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			nextIndex 		= activeIndex + 1 >= images.length ? 0 : activeIndex + 1,
 			width			= this.frame.get('width'),
 			height			= this.frame.get('height');
-			
+
 		// Load the frame.
 		this.frame.load(e.imageInfo);
-		
+
 		// Remove main preload images from the load queue.
 		Y.FL.SlideshowImageLoader.removeGroup('main-preload');
-		
+
 		// Preload the next image.
 		this._nextImagePreloader.preload(images[nextIndex], width, height);
 	},
-	
+
 	/**
 	 * Fired when the frame img tag is clicked.
-	 * 
+	 *
 	 * @method _frameClick
 	 * @protected
-	 */	
+	 */
 	_frameClick: function()
 	{
         var clickAction    = this.get('clickAction'),
             clickActionUrl = this.get('clickActionUrl');
-            
+
         if(clickAction == 'url') {
             window.location.href = clickActionUrl;
         }
@@ -7391,19 +7389,19 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
             window.location.href = this.imageInfo.link;
         }
 	},
-	
+
 	/**
 	 * Sets attributes to display a compact nav
 	 * for responsive layouts.
-	 * 
+	 *
 	 * @method _initMiniNav
 	 * @protected
 	 */
 	_initMiniNav: function()
 	{
 		var buttons = [];
-		
-		if(!('ontouchstart' in window)) {
+
+		if(this._hasNavButton('prev')) {
 			buttons.push('prev');
 		}
 		if(this._hasNavButton('thumbs') || this.get('navType') == 'thumbs') {
@@ -7424,27 +7422,27 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		if(this._hasNavButton('fullscreen') && !('ontouchstart' in window)) {
 			buttons.push('fullscreen');
 		}
-		if(!('ontouchstart' in window)) {
+		if(this._hasNavButton('next')) {
 			buttons.push('next');
 		}
-		
+
 		this._initialNavSettings = {
 			buttons: this.get('navButtons'),
 			buttonsLeft: this.get('navButtonsLeft'),
 			buttonsRight: this.get('navButtonsRight'),
 			type: this.get('navType')
 		};
-		
+
 		this._set('navButtons', buttons);
 		this._set('navButtonsLeft', []);
 		this._set('navButtonsRight', []);
 		this._set('navType', 'buttons');
 	},
-	
+
 	/**
-	 * Renders the nav and thumbs layout based on the 
+	 * Renders the nav and thumbs layout based on the
 	 * current window size.
-	 * 
+	 *
 	 * @method _renderNavAndThumbs
 	 * @protected
 	 */
@@ -7458,7 +7456,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		if(navType == 'buttons' || navType == 'thumbs') {
 			bbWidth		= this.get('boundingBox').get('offsetWidth');
 			threshold	= this.get('responsiveThreshold');
-		
+
 			if(bbWidth <= threshold && this._initialNavSettings === null) {
 				this._initMiniNav();
 				renderNav = true;
@@ -7471,12 +7469,12 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 				this._initialNavSettings = null;
 				renderNav = true;
 			}
-			
+
 			// Button nav
 			if(renderNav || this.nav === null) {
 				this._renderNav();
 			}
-			
+
 			// Thumbs nav
 			if(renderNav || this.thumbs === null) {
 				this._renderThumbs();
@@ -7484,23 +7482,23 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			else if(this._thumbsEnabled()) {
 				this._resizeThumbs();
 			}
-			
+
 			// Caption
 			if(renderNav && this.caption !== null) {
 				this._syncCaption();
 			}
-			
+
 			// Social
 			if(renderNav && this.social !== null) {
 				this._syncSocial();
 			}
 		}
 	},
-	
+
 	/**
-	 * Creates and renders a new instance of FL.SlideshowNav 
+	 * Creates and renders a new instance of FL.SlideshowNav
 	 * used for the main nav.
-	 * 
+	 *
 	 * @method _renderNav
 	 * @protected
 	 */
@@ -7510,35 +7508,35 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			navBB 		= null,
 			navOverlay	= this.get('navOverlay'),
 			navPosition = this.get('navPosition');
-		
+
 		// Destroy old instances
 		this._destroyNav();
-		
+
 		// Create a new instance
 		if(this.get('navType') == 'buttons') {
-		
+
 			// Create the nav
-			this.nav = new Y.FL.SlideshowNav({ 
+			this.nav = new Y.FL.SlideshowNav({
 				buttons: this.get('navButtons'),
 				buttonsLeft: this.get('navButtonsLeft'),
 				buttonsRight: this.get('navButtonsRight')
 			});
-			
+
 			// Add to widget parent and render
 			this.add(this.nav);
 			this.nav.render(this.get('contentBox'));
 			navBB = this.nav.get('boundingBox');
-			
+
 			// Plug overlay?
 			if(navOverlay) {
 				this.nav.plug(Y.FL.SlideshowOverlay, {
 					hideDelay: this.get('overlayHideDelay')
 				});
-				
+
 				navBB.setStyle('position', 'absolute');
 				navBB.setStyle(navPosition, '0px');
 			}
-			
+
 			// Insert
 			if(navPosition == 'top') {
 				frameBB.insert(navBB, 'before');
@@ -7546,7 +7544,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			else {
 				frameBB.insert(navBB, 'after');
 			}
-			
+
 			// CSS class name
 			navBB.addClass('fl-slideshow-main-nav');
 		}
@@ -7554,35 +7552,35 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 
 	/**
 	 * Destroy the current nav instance.
-	 * 
+	 *
 	 * @method _destroyNav
 	 * @protected
-	 */		
+	 */
 	_destroyNav: function()
 	{
         if(this.nav !== null) {
 			if(this.nav.slideshowOverlay) {
 				this.nav.slideshowOverlay.destroy();
 			}
-		
+
             this.nav.get('boundingBox').remove();
 			this.remove(this.nav);
 			try { this.nav.destroy(true); } catch(e) {}
 			this.nav = null;
 		}
 	},
-	
+
 	/**
 	 * Returns the nav object or null if navType is
 	 * set to none or custom.
-	 * 
+	 *
 	 * @method _getNav
 	 * @protected
 	 */
 	_getNav: function()
 	{
 		var navType = this.get('navType');
-		
+
 		if(navType == 'buttons') {
 			return this.nav;
 		}
@@ -7593,18 +7591,18 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			return null;
 		}
 	},
-	
+
 	/**
-	 * Toggles the visibility of the nav or thumbs nav 
+	 * Toggles the visibility of the nav or thumbs nav
 	 * if navOverlay is set to true.
-	 * 
+	 *
 	 * @method _toggleNav
 	 * @protected
 	 */
 	_toggleNav: function()
 	{
 		var nav = this._getNav();
-		
+
 		if(nav.slideshowOverlay) {
 			if(nav.slideshowOverlay._visible) {
 				nav.slideshowOverlay.hideWithTimer();
@@ -7614,57 +7612,57 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			}
 		}
 	},
-	
+
 	/**
-	 * Creates and renders two instances of FL.SlideshowNav for the 
-	 * prev and next button that will be overlaid on the main image. 
-	 * 
+	 * Creates and renders two instances of FL.SlideshowNav for the
+	 * prev and next button that will be overlaid on the main image.
+	 *
 	 * @method _renderImageNav
 	 * @protected
 	 */
 	_renderImageNav: function()
 	{
 		var ssBB;
-		
+
 		if(this.get('imageNavEnabled')) {
 			if(this._isMobile()) {
 				this._set('imageNavEnabled', false);
 			}
 			else {
 				ssBB = this.get('boundingBox');
-				
-				this.imageNavLeft = new Y.FL.SlideshowNav({ 
+
+				this.imageNavLeft = new Y.FL.SlideshowNav({
 				    buttons: ['prev'],
 				    useFontIcons: false
 				});
-				
-				this.imageNavRight = new Y.FL.SlideshowNav({ 
+
+				this.imageNavRight = new Y.FL.SlideshowNav({
 				    buttons: ['next'],
 				    useFontIcons: false
 				});
-				
+
 				this.add(this.imageNavLeft);
 				this.add(this.imageNavRight);
-				
+
 				this.imageNavLeft.render(this.frame.get('boundingBox'));
 				this.imageNavRight.render(this.frame.get('boundingBox'));
-				
+
 				this.imageNavLeft.plug(Y.FL.SlideshowOverlay, { hideDelay: this.get('overlayHideDelay') });
 				this.imageNavRight.plug(Y.FL.SlideshowOverlay, { hideDelay: this.get('overlayHideDelay') });
-				
+
 				if(this.get('overlayHideOnMousemove')) {
 					this.frame.once('transitionComplete', this.imageNavLeft.slideshowOverlay.hideWithTimer, this.imageNavLeft.slideshowOverlay);
 					this.frame.once('transitionComplete', this.imageNavRight.slideshowOverlay.hideWithTimer, this.imageNavRight.slideshowOverlay);
 					ssBB.on('mousemove', Y.bind(this._toggleImageNav, this));
 					ssBB.on('mouseenter', Y.bind(this._toggleImageNav, this));
 				}
-				
+
 				this.imageNavLeft.get('boundingBox').addClass('fl-slideshow-image-nav-left');
 				this.imageNavRight.get('boundingBox').addClass('fl-slideshow-image-nav-right');
 			}
 		}
 	},
-	
+
 	/**
 	 * @method _positionImageNav
 	 * @protected
@@ -7680,17 +7678,17 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
                 top: top + 'px',
                 display: 'block'
 			};
-		
+
 		leftBB.setStyles(styles);
 		rightBB.setStyles(styles);
-		
+
 		this._adjustOverlayForVerticalThumbs(leftBB);
 		this._adjustOverlayForVerticalThumbs(rightBB);
 	},
-	
+
 	/**
 	 * Toggles the visibility of the image nav buttons.
-	 * 
+	 *
 	 * @method _toggleImageNav
 	 * @protected
 	 */
@@ -7702,7 +7700,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		else {
 			this.imageNavLeft.slideshowOverlay.show();
 		}
-		
+
 		if(this.imageNavRight.slideshowOverlay._visible) {
 			this.imageNavRight.slideshowOverlay.hideWithTimer();
 		}
@@ -7710,7 +7708,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			this.imageNavRight.slideshowOverlay.show();
 		}
 	},
-	
+
 	/**
 	 * @method _renderMouseNav
 	 * @protected
@@ -7723,10 +7721,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			});
 		}
 	},
-	
+
 	/**
 	 * Checks whether the thumbs are enabled.
-	 * 
+	 *
 	 * @method _thumbsEnabled
 	 * @protected
 	 * @returns Boolean
@@ -7734,7 +7732,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	_thumbsEnabled: function()
 	{
 		var navType = this.get('navType');
-		
+
 		if(navType == 'thumbs') {
 			return true;
 		}
@@ -7745,33 +7743,33 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			return false;
 		}
 	},
-	
+
 	/**
 	 * Creates and renders a new instance of FL.SlideshowThumbs.
-	 * 
+	 *
 	 * @method _renderThumbs
 	 * @protected
 	 */
 	_renderThumbs: function()
 	{
 		var frameBB, navOverlay, navPosition, navType;
-		
+
 		// Destroy old instances
 		this._destroyThumbs();
-		
+
 		// Create a new instance
 		if(this._thumbsEnabled()) {
 			frameBB			= this.frame.get('boundingBox');
 			navOverlay		= this.get('navOverlay');
 			navPosition 	= this.get('navPosition');
 			navType			= this.get('navType');
-			
+
 			// Create the thumbs
 			this.thumbs = new Y.FL.SlideshowThumbs(this._getThumbsConfig());
-			
+
 			// This breaks sometimes on SM Next. Try/catch bandaid for now.
 			try { this.add(this.thumbs); } catch(e) {}
-			
+
 			// Overlay setup
 			if(navType == 'buttons' || navType == 'custom') {
 				this.thumbs.plug(Y.FL.SlideshowOverlay, {
@@ -7786,32 +7784,32 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 					hideStyle: 'left'
 				});
 			}
-			
+
 			// Insert
 			this.thumbs.render(this.get('contentBox'));
-			
+
 			if(navPosition == 'top') {
 				frameBB.insert(this.thumbs.get('boundingBox'), 'before');
 			}
 			else {
 				frameBB.insert(this.thumbs.get('boundingBox'), 'after');
 			}
-			
+
 			// Hide overlay thumbs on click
 			if(this.get('thumbsHideOnClick') && navType != 'thumbs') {
 				this.thumbs.on('imageClick', Y.bind(this._hideThumbsOnImageClick, this));
 			}
-			
+
 			this._syncThumbs();
 		}
 	},
-	
+
 	/**
 	 * Destroy the current thumbs instance.
-	 * 
+	 *
 	 * @method _destroyThumbs
 	 * @protected
-	 */	
+	 */
 	_destroyThumbs: function()
 	{
         if(this.thumbs !== null) {
@@ -7825,10 +7823,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			this.thumbs = null;
 		}
 	},
-	
+
 	/**
 	 * Syncs the thumbs UI styles.
-	 * 
+	 *
 	 * @method _syncThumbs
 	 * @protected
 	 */
@@ -7840,11 +7838,11 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			navType				= this.get('navType'),
 			paddingType			= 'padding' + navPosition.charAt(0).toUpperCase() + navPosition.slice(1),
 			navHeight			= 0;
-		
+
 		if(navType == 'buttons') {
 			navHeight = parseInt(this.nav.get('boundingBox').getComputedStyle('height'), 10);
 			thumbsBB.setStyle('position', 'absolute');
-			
+
 			if(navOverlay) {
 				thumbsBB.setStyle(paddingType, navHeight + 'px');
 				thumbsBB.setStyle(navPosition, '0px');
@@ -7857,13 +7855,13 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			thumbsBB.setStyle('position', 'absolute');
 			thumbsBB.setStyle(navPosition, '0px');
 		}
-		
+
 		this.thumbs.resize();
 	},
-	
+
 	/**
-	 * Prepares and returns the thumbs config object. 
-	 * 
+	 * Prepares and returns the thumbs config object.
+	 *
 	 * @method _getThumbsConfig
 	 * @protected
 	 * @returns Object
@@ -7893,7 +7891,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 				imageConfig:			imageConfig,
 				touchSupport:			true
 			};
-			
+
 			if(navType == 'buttons' || navType == 'custom') {
 				if('ontouchstart' in window) {
 					config.leftNavEnabled = false;
@@ -7905,13 +7903,13 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 					config.rightNavButtons 	= ['nextPage'];
 				}
 			}
-			
+
 			return config;
 	},
-	
+
 	/**
 	 * Resizes the thumbs.
-	 * 
+	 *
 	 * @method _resizeThumbs
 	 * @protected
 	 */
@@ -7921,7 +7919,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			this.thumbs.resize();
 		}
 	},
-	
+
 	/**
 	 * Shows or hides the thumbs.
 	 *
@@ -7932,7 +7930,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	{
 		this._toggleOverlay(this.thumbs.slideshowOverlay);
 	},
-	
+
 	/**
 	 * Hides the thumbs when a thumb image is clicked.
 	 *
@@ -7945,13 +7943,13 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			this.thumbs.slideshowOverlay._focus = false;
 			this.thumbs.slideshowOverlay.enable();
 			this.thumbs.slideshowOverlay.hide();
-			
+
 			if(this.nav && this.nav.slideshowOverlay) {
 				this.nav.slideshowOverlay.enable();
 			}
 		}
 	},
-	
+
 	/**
 	 * Creates and renders a new instance of FL.SlideshowCaption.
 	 *
@@ -7961,29 +7959,29 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	_renderCaption: function()
 	{
 		if(this._hasNavButton('caption')) {
-			
+
 			this.caption = new Y.FL.SlideshowCaption({
-				lessLinkText: this.get('captionLessLinkText'),	
-				moreLinkText: this.get('captionMoreLinkText'),	
-				textLength: this.get('captionTextLength'),	
-				stripTags: this.get('captionStripTags')	
+				lessLinkText: this.get('captionLessLinkText'),
+				moreLinkText: this.get('captionMoreLinkText'),
+				textLength: this.get('captionTextLength'),
+				stripTags: this.get('captionStripTags')
 			});
-			
+
 			this.add(this.caption);
-			
+
 			this.caption.plug(Y.FL.SlideshowOverlay, {
 				hideDelay: this.get('overlayHideDelay'),
 				visible: false,
 				closeButton: true
 			});
-			
+
 			this._syncCaption();
 		}
 	},
-	
+
 	/**
 	 * Syncs the caption UI styles.
-	 * 
+	 *
 	 * @method _syncCaption
 	 * @protected
 	 */
@@ -7995,13 +7993,13 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			nav 			= this._getNav(),
 			paddingType		= 'padding' + navPosition.charAt(0).toUpperCase() + navPosition.slice(1),
 			navHeight		= 0;
-		
+
 		captionBB.setStyle('position', 'absolute');
-		
+
 		if(nav) {
 			navHeight = parseInt(nav.get('boundingBox').getComputedStyle('height'), 10);
 		}
-		
+
 		if(nav && navOverlay) {
 			captionBB.setStyle(paddingType, navHeight + 'px');
 			captionBB.setStyle(navPosition, '0px');
@@ -8010,7 +8008,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			captionBB.setStyle(navPosition, navHeight + 'px');
 		}
 	},
-	
+
 	/**
 	 * Shows or hides the caption.
 	 *
@@ -8021,7 +8019,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	{
 		this._toggleOverlay(this.caption.slideshowOverlay);
 	},
-	
+
 	/**
 	 * Creates and renders a new instance of FL.SlideshowSocial.
 	 *
@@ -8033,20 +8031,20 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		if(this._hasNavButton('social')) {
 			this.social = new Y.FL.SlideshowSocial();
 			this.add(this.social);
-			
+
 			this.social.plug(Y.FL.SlideshowOverlay, {
 				hideDelay: this.get('overlayHideDelay'),
 				visible: false,
 				closeButton: true
 			});
-			
+
 			this._syncSocial();
 		}
 	},
-	
+
 	/**
 	 * Syncs the social UI styles.
-	 * 
+	 *
 	 * @method _syncSocial
 	 * @protected
 	 */
@@ -8058,13 +8056,13 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			nav 			= this._getNav(),
 			paddingType		= 'padding' + navPosition.charAt(0).toUpperCase() + navPosition.slice(1),
 			navHeight		= 0;
-		
+
 		socialBB.setStyle('position', 'absolute');
-		
+
 		if(nav) {
 			navHeight = parseInt(nav.get('boundingBox').getComputedStyle('height'), 10);
 		}
-		
+
 		if(nav && navOverlay) {
 			socialBB.setStyle(paddingType, navHeight + 'px');
 			socialBB.setStyle(navPosition, '0px');
@@ -8073,7 +8071,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			socialBB.setStyle(navPosition, navHeight + 'px');
 		}
 	},
-	
+
 	/**
 	 * Shows or hides the social buttons.
 	 *
@@ -8084,11 +8082,11 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	{
 		this._toggleOverlay(this.social.slideshowOverlay);
 	},
-	
+
 	/**
 	 * Shows or hides an overlaid widget based
 	 * on its current visibility.
-	 * 
+	 *
 	 * @method _toggleOverlay
 	 * @param overlay {Object} The overlay to toggle.
 	 * @protected
@@ -8097,7 +8095,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	{
 		var navType	= this.get('navType'),
 			nav 	= this._getNav();
-		
+
 		if(overlay._visible) {
 			if(nav && nav.slideshowOverlay) {
 				nav.slideshowOverlay.enable();
@@ -8112,7 +8110,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			overlay.show();
 			overlay.disable();
 		}
-		
+
 		if(this.thumbs && navType != 'thumbs' && this.thumbs.slideshowOverlay !== overlay) {
 			this.thumbs.slideshowOverlay.enable();
 			this.thumbs.slideshowOverlay.hide();
@@ -8126,10 +8124,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			this.social.slideshowOverlay.hide();
 		}
 	},
-	
+
 	/**
 	 * Called when an overlay's close button is clicked.
-	 * 
+	 *
 	 * @method _overlayCloseClick
 	 * @protected
 	 */
@@ -8152,10 +8150,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			this.imageNavRight.slideshowOverlay.enable();
 		}
 	},
-	
+
 	/**
 	 * Hides all overlaid widgets.
-	 * 
+	 *
 	 * @method _hideAllOverlays
 	 * @protected
 	 */
@@ -8184,13 +8182,13 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			this.imageNavRight.slideshowOverlay.hideWithTimer();
 		}
 	},
-	
+
 	/**
-	 * Checks if overlays are still visible when the mouse enters 
+	 * Checks if overlays are still visible when the mouse enters
 	 * the bounding box. If they are, overlay functionality is disabled
 	 * until the overlays are closed by a button or the mouse leaves
-	 * the bounding box. If only the nav overlay is visible, this 
-	 * function does nothing. 
+	 * the bounding box. If only the nav overlay is visible, this
+	 * function does nothing.
 	 *
 	 * @method _checkOverlaysOnMouseenter
 	 * @protected
@@ -8201,7 +8199,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			navOverlay		= this.get('navOverlay'),
 			nav 			= this._getNav(),
 			overlayVisible 	= false;
-		
+
 		if(this.thumbs && navType != 'thumbs' && this.thumbs.slideshowOverlay._visible) {
 			overlayVisible = true;
 			this.thumbs.slideshowOverlay.disable();
@@ -8214,15 +8212,15 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			overlayVisible = true;
 			this.social.slideshowOverlay.disable();
 		}
-		
+
 		if(nav && overlayVisible && navOverlay) {
 			nav.slideshowOverlay.disable();
 		}
 	},
-	
+
 	/**
 	 * Checks whether a nav button is set or not.
-	 * 
+	 *
 	 * @method _hasNavButton
 	 * @protected
 	 * @param button {String} The button to look for.
@@ -8231,7 +8229,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	_hasNavButton: function(button)
 	{
 		var navType = this.get('navType');
-		
+
 		if(navType == 'buttons' || navType == 'thumbs' || navType == 'custom') {
 			if(Y.Array.indexOf(this.get('navButtons'), button) > -1) {
 				return true;
@@ -8242,7 +8240,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			else if(Y.Array.indexOf(this.get('navButtonsRight'), button) > -1) {
 				return true;
 			}
-			else {	
+			else {
 				return false;
 			}
 		}
@@ -8250,7 +8248,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			return false;
 		}
 	},
-	
+
 	/**
 	 * @method _removeNavButton
 	 * @param button {String} The name of the button to remove.
@@ -8263,7 +8261,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 			buttonsRight 		= this.get('navButtonsRight'),
 			vtTopNavButtons 	= this.get('verticalThumbsTopNavButtons'),
 			vtBottomNavButtons 	= this.get('verticalThumbsBottomNavButtons');
-			
+
 		if(Y.Array.indexOf(buttons, button) > -1) {
 			buttons.splice(Y.Array.indexOf(buttons, button), 1);
 		}
@@ -8279,14 +8277,14 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		if(Y.Array.indexOf(vtBottomNavButtons, button) > -1) {
 			vtBottomNavButtons.splice(Y.Array.indexOf(vtBottomNavButtons, button), 1);
 		}
-		
+
 		this._set('navButtons', buttons);
 		this._set('navButtonsLeft', buttonsLeft);
 		this._set('navButtonsRight', buttonsRight);
 		this._set('verticalThumbsTopNavButtons', vtTopNavButtons);
 		this._set('verticalThumbsBottomNavButtons', vtBottomNavButtons);
 	}
-		
+
 }, {
 
 	/**
@@ -8298,7 +8296,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	 * @static
 	 */
 	CSS_PREFIX: 'fl-slideshow',
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Widget.
@@ -8309,9 +8307,9 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 	 * @static
 	 */
 	ATTRS: {
-		
+
 		/**
-		 * What should happen when the main image is clicked. 
+		 * What should happen when the main image is clicked.
 		 * Options are none, gallery and url. If url is chosen,
 		 * clickActionUrl must be set.
 		 *
@@ -8322,7 +8320,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		clickAction: {
 			value: 'none'
 		},
-		
+
 		/**
 		 * The redirect url to use when clickAction is set to url.
 		 *
@@ -8333,7 +8331,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		clickActionUrl: {
 			value: ''
 		},
-		
+
 		/**
 		 * Whether to crop the main image.
 		 *
@@ -8344,7 +8342,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		crop: {
 			value: false
 		},
-		
+
 		/**
 		 * Whether to only crop horizontal images or not.
 		 *
@@ -8355,7 +8353,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		cropHorizontalsOnly: {
 			value: false
 		},
-		
+
 		/**
 		 * Whether to always use the loading image between images
 		 * or to only use it between albums.
@@ -8367,9 +8365,9 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		loadingImageAlwaysEnabled: {
 			value: true
 		},
-		
+
 		/**
-		 * The x and y position of the main image 
+		 * The x and y position of the main image
 		 * within the bounding box.
 		 *
 		 * @attribute position
@@ -8379,7 +8377,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		position: {
 			value: 'center center'
 		},
-		
+
 		/**
 		 * Whether to right click protect the main image.
 		 *
@@ -8390,7 +8388,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		protect: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to resize the main image past
 		 * its original width and height.
@@ -8402,12 +8400,12 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
         upsize: {
 			value: true
 		},
-		
+
 		/**
-		 * The type of transition to use. Possible values are 
+		 * The type of transition to use. Possible values are
 		 * none, fade, slideHorizontal and slideVertical. The
 		 * value can also be a common seperated string of transitions
-		 * that will be randomly chosen for each image.  
+		 * that will be randomly chosen for each image.
 		 *
 		 * @attribute transition
 		 * @type String
@@ -8416,7 +8414,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		transition: {
 			value: 'fade'
 		},
-		
+
 		/**
 		 * The duration of the transition, measured in seconds.
 		 *
@@ -8427,7 +8425,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		transitionDuration: {
 			value: 1
 		},
-		
+
 		/**
 		 * The type of transition easing to use.
 		 *
@@ -8438,20 +8436,20 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		transitionEasing: {
 			value: 'ease-out'
 		},
-		
+
 		/**
 		 * The amount of zoom to use for the Ken Burns effect.
 		 *
 		 * @attribute kenBurnsZoom
-		 * @type Number 
+		 * @type Number
 		 * @default 1.2
-		 */			
+		 */
 		kenBurnsZoom: {
             value: 1.2
 		},
-		
+
 		/**
-		 * The type of navigation to use. Possible values are 
+		 * The type of navigation to use. Possible values are
 		 * buttons, thumbs, custon and none.
 		 *
 		 * @attribute navType
@@ -8461,7 +8459,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		navType: {
 			value: 'none'
 		},
-		
+
 		/**
 		 * The position of the main nav. Possible values are top and bottom.
 		 *
@@ -8472,7 +8470,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		navPosition: {
 			value: 'bottom'
 		},
-		
+
 		/**
 		 * Whether to overlay the nav on top of the main image.
 		 *
@@ -8483,7 +8481,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		navOverlay: {
 			value: false
 		},
-		
+
 		/**
 		 * An array of button names used to render the main nav's buttons.
 		 *
@@ -8494,7 +8492,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		navButtons: {
 			value: []
 		},
-		
+
 		/**
 		 * An array of button names used to render the main nav's left buttons.
 		 *
@@ -8505,7 +8503,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		navButtonsLeft: {
 			value: []
 		},
-		
+
 		/**
 		 * An array of button names used to render the main nav's right buttons.
 		 *
@@ -8516,7 +8514,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		navButtonsRight: {
 			value: []
 		},
-		
+
 		/**
 		 * Whether to hide the overlays when the mouse moves or not.
 		 *
@@ -8527,7 +8525,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		overlayHideOnMousemove: {
 			value: true
 		},
-		
+
 		/**
 		 * How long to wait before hiding the overlays.
 		 * Measured in milliseconds.
@@ -8539,10 +8537,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		overlayHideDelay: {
 			value: 3000
 		},
-		
+
 		/**
 		 * Whether to use the image nav or not. If true, a prev
-		 * and next button will be overlaid on the main image. 
+		 * and next button will be overlaid on the main image.
 		 *
 		 * @attribute imageNavEnabled
 		 * @type Boolean
@@ -8551,7 +8549,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		imageNavEnabled: {
 			value: false
 		},
-		
+
 		/**
 		 * Whether to use the mouse nav or not. If true, the cursor
 		 * will turn into a prev or next button when over the slideshow.
@@ -8563,7 +8561,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		mouseNavEnabled: {
 			value: false
 		},
-		
+
 		/**
 		 * Whether to hide the thumbs when clicking on a thumbnail
 		 * image or not. Thumbs always hide navType is set to buttons.
@@ -8575,7 +8573,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsHideOnClick: {
 			value: true
 		},
-		
+
 		/**
 		 * The horizontal spacing between thumbs.
 		 *
@@ -8586,7 +8584,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsHorizontalSpacing: {
 			value: 15
 		},
-		
+
 		/**
 		 * The vertical spacing between thumbs.
 		 *
@@ -8597,7 +8595,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsVerticalSpacing: {
 			value: 15
 		},
-		
+
 		/**
 		 * Whether to space the thumbs evenly within a page.
 		 *
@@ -8608,7 +8606,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsSpaceEvenly: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to center single pages of thumbs.
 		 *
@@ -8619,7 +8617,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsCenterSinglePage: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to pause the slideshow when a thumb is clicked.
 		 *
@@ -8630,7 +8628,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsPauseOnClick: {
 			value: false
 		},
-		
+
 		/**
 		 * The type of transition to use between pages of thumbs.
 		 *
@@ -8641,7 +8639,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsTransition: {
 			value: 'slideHorizontal'
 		},
-		
+
 		/**
 		 * The duration of the transition between pages of thumbs.
 		 *
@@ -8652,10 +8650,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsTransitionDuration: {
 			value: 0.8
 		},
-		
+
 		/**
 		 * The type of transition easing to use between pages of thumbs.
-		 * 
+		 *
 		 * @attribute thumbsTransitionEasing
 		 * @type String
 		 * @default ease-out
@@ -8663,7 +8661,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsTransitionEasing: {
 			value: 'ease-out'
 		},
-		
+
 		/**
 		 * Whether to crop the thumbnails.
 		 *
@@ -8674,7 +8672,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsImageCrop: {
 			value: true
 		},
-		
+
 		/**
 		 * The width of each thumbnail.
 		 *
@@ -8685,7 +8683,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsImageWidth: {
 			value: 50
 		},
-		
+
 		/**
 		 * The height of each thumbnail.
 		 *
@@ -8696,10 +8694,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		thumbsImageHeight: {
 			value: 50
 		},
-		
+
 		/**
 		 * The text to use for the "read less" toggle link.
-		 * 
+		 *
 		 * @attribute captionLessLinkText
 		 * @type String
 		 * @default Read Less
@@ -8707,10 +8705,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		captionLessLinkText: {
 			value: 'Read Less'
 		},
-		
+
 		/**
 		 * The text to use for the "read more" toggle link.
-		 * 
+		 *
 		 * @attribute captionMoreLinkText
 		 * @type String
 		 * @default Read More
@@ -8718,10 +8716,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		captionMoreLinkText: {
 			value: 'Read More'
 		},
-		
+
 		/**
 		 * The length of the caption to show. If greater than -1,
-		 * the text will be truncated and a read more link will 
+		 * the text will be truncated and a read more link will
 		 * be displayed. If set to -1, the entire caption will be shown.
 		 *
 		 * @attribute captionTextLength
@@ -8731,7 +8729,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		captionTextLength: {
 			value: 200
 		},
-		
+
 		/**
 		 * Whether to strip out HTML tags in the caption
 		 * text or not.
@@ -8743,7 +8741,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		captionStripTags: {
 			value: false
 		},
-		
+
 		/**
 		 * Whether to use the vertical thumbs or not.
 		 *
@@ -8754,9 +8752,9 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsEnabled: {
 			value: false
 		},
-		
+
 		/**
-		 * Position of the vertical thumbs. Possible values 
+		 * Position of the vertical thumbs. Possible values
 		 * are either left or right.
 		 *
 		 * @attribute verticalThumbsPosition
@@ -8766,9 +8764,9 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsPosition: {
 			value: 'left'
 		},
-		
+
 		/**
-		 * Whether to overlay the vertical thumbs 
+		 * Whether to overlay the vertical thumbs
 		 * on the main image or not.
 		 *
 		 * @attribute verticalThumbsOverlay
@@ -8778,7 +8776,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsOverlay: {
 			value: false
 		},
-		
+
 		/**
 		 * The number of columns for the vertical thumbs.
 		 *
@@ -8789,7 +8787,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsColumns: {
 			value: 1
 		},
-		
+
 		/**
 		 * Whether to use the vertical thumbs top nav or not.
 		 *
@@ -8800,9 +8798,9 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsTopNavEnabled: {
 			value: false
 		},
-		
+
 		/**
-		 * An array of button names used to render 
+		 * An array of button names used to render
 		 * the vertical thumbs top nav buttons.
 		 *
 		 * @attribute verticalThumbsTopNavButtons
@@ -8812,7 +8810,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsTopNavButtons: {
 			value: ['prevPage', 'nextPage']
 		},
-		
+
 		/**
 		 * Whether to use the vertical thumbs bottom nav or not.
 		 *
@@ -8823,9 +8821,9 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsBottomNavEnabled: {
 			value: true
 		},
-		
+
 		/**
-		 * An array of button names used to render 
+		 * An array of button names used to render
 		 * the vertical thumbs top nav buttons.
 		 *
 		 * @attribute verticalThumbsBottomNavButtons
@@ -8835,7 +8833,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsBottomNavButtons: {
 			value: ['prevPage', 'nextPage']
 		},
-		
+
 		/**
 		 * The horizontal spacing between vertical thumbs.
 		 *
@@ -8846,7 +8844,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsHorizontalSpacing: {
 			value: 15
 		},
-		
+
 		/**
 		 * The vertical spacing between vertical thumbs.
 		 *
@@ -8857,7 +8855,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsVerticalSpacing: {
 			value: 15
 		},
-		
+
 		/**
 		 * Whether to space the vertical thumbs evenly within a page.
 		 *
@@ -8868,7 +8866,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsSpaceEvenly: {
 			value: false
 		},
-		
+
 		/**
 		 * Whether to pause the slideshow when a vertical thumb is clicked.
 		 *
@@ -8879,7 +8877,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsPauseOnClick: {
 			value: false
 		},
-		
+
 		/**
 		 * Whether to crop the vertical thumbs or not.
 		 *
@@ -8890,7 +8888,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsImageCrop: {
 			value: true
 		},
-		
+
 		/**
 		 * The width of each vertical thumbnail.
 		 *
@@ -8901,7 +8899,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsImageWidth: {
 			value: 75
 		},
-		
+
 		/**
 		 * The height of each vertical thumbnail.
 		 *
@@ -8912,7 +8910,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsImageHeight: {
 			value: 75
 		},
-		
+
 		/**
 		 * The type of transition to use between pages of vertical thumbs.
 		 *
@@ -8923,7 +8921,7 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsTransition: {
 			value: 'slideVertical'
 		},
-		
+
 		/**
 		 * The duration of the transition between pages of vertical thumbs.
 		 *
@@ -8934,10 +8932,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsTransitionDuration: {
 			value: 0.8
 		},
-		
+
 		/**
 		 * The type of transition easing to use between pages of vertical thumbs.
-		 * 
+		 *
 		 * @attribute verticalThumbsTransitionEasing
 		 * @type String
 		 * @default ease-out
@@ -8945,10 +8943,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		verticalThumbsTransitionEasing: {
 			value: 'ease-out'
 		},
-		
+
 		/**
 		 * Whether to use the Google Plus button or not.
-		 * 
+		 *
 		 * @attribute googlePlusButtonEnabled
 		 * @type Boolean
 		 * @default true
@@ -8956,10 +8954,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		googlePlusButtonEnabled: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to use the Facebook like button or not.
-		 * 
+		 *
 		 * @attribute likeButtonEnabled
 		 * @type Boolean
 		 * @default true
@@ -8967,10 +8965,10 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		likeButtonEnabled: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to use the Pinterest button or not.
-		 * 
+		 *
 		 * @attribute pinterestButtonEnabled
 		 * @type Boolean
 		 * @default true
@@ -8978,15 +8976,27 @@ Y.namespace('FL').Slideshow = Y.Base.create('fl-slideshow', Y.FL.SlideshowBase, 
 		pinterestButtonEnabled: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to use the Tweet button or not.
-		 * 
+		 *
 		 * @attribute tweetButtonEnabled
 		 * @type Boolean
 		 * @default true
 		 */
 		tweetButtonEnabled: {
+			value: true
+		},
+
+		/**
+		 * Whether to use touch gestures, when available,
+		 * to transition between images or not.
+		 *
+		 * @attribute touchSupport
+		 * @type Boolean
+		 * @default true
+		 */
+		touchSupport: {
 			value: true
 		}
 	}
@@ -9012,7 +9022,7 @@ YUI.add('fl-slideshow-album-loader', function(Y) {
  * @extends Base
  */
 Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loader', Y.Base, [], {
-		
+
 	/**
 	* The source object used for loading.
 	*
@@ -9022,27 +9032,27 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 	* @protected
 	*/
 	_source: null,
-		
+
 	/**
 	 * Loads slideshow album data using the provided source object.
 	 *
 	 * @method load
 	 * @param source {Object} The source object to use for loading.
-	 */ 
+	 */
 	load: function(source)
 	{
 		this._source = source;
-		
+
 		/**
 		 * Fires before a new load request is made.
 		 *
 		 * @event start
 		 */
 		this.fire('start');
-		
+
 		this[Y.FL.SlideshowAlbumLoader.TYPES[source.type]].call(this);
 	},
-	
+
 	 /**
 	 * Called when a source type completes loading
 	 * and fires the complete event.
@@ -9050,11 +9060,11 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 	 * @method _loadComplete
 	 * @param o {Object} Passed to complete event subscribers.
 	 * @protected
-	 */ 
+	 */
 	_loadComplete: function(o)
 	{
 		o = this._randomize(o);
-	
+
 		/**
 		 * Fires after a new load request is made.
 		 *
@@ -9062,71 +9072,71 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 		 */
 		this.fire('complete', o);
 	},
-	
+
 	/**
 	 * Randomizes images in an album.
 	 *
 	 * @method _randomize
 	 * @param album {Object} The album to randomize.
 	 * @protected
-	 */ 
+	 */
 	_randomize: function(o)
 	{
 		var i;
-		
+
 		if(this.get('randomize')) {
 			o.albumInfo.images.sort(function() { return 0.5 - Math.random(); });
-			
+
 			for(i = 0; i < o.albumInfo.images.length; i++) {
 				o.albumInfo.images[i].index = i;
 			}
 		}
-		
+
 		return o;
 	},
-	
+
 	/**
 	 * Loads slideshow album data from SmugMug.
 	 *
 	 * @method _loadSmugMug
 	 * @protected
-	 */ 
-	_loadSmugMug: function() 
+	 */
+	_loadSmugMug: function()
 	{
 		var sm = new Y.FL.SmugMugAPI();
-		
+
 		sm.on('complete', this._loadSmugMugSuccess, this);
 		sm.addParam('method', 'smugmug.images.get');
 		sm.addParam('AlbumID', this._source.id);
 		sm.addParam('AlbumKey', this._source.key);
 		sm.addParam('Extras', 'Caption,Format,FileName');
-		
+
 		// Gallery password
 		if(this._source.password) {
 			sm.addParam('Password', this._source.password);
 		}
-		
+
 		// Site-wide password
 		if(this._source.sp) {
 			sm.addParam('SitePassword', this._source.sp);
 		}
-		
+
 		sm.request();
 	},
-	
+
 	/**
 	 * Processes slideshow album data loaded from SmugMug.
 	 *
 	 * @method _loadSmugMugSuccess
 	 * @param e {Object} The custom event object passed to this function.
 	 * @protected
-	 */ 
-	_loadSmugMugSuccess: function(e) 
+	 */
+	_loadSmugMugSuccess: function(e)
 	{
 		var images 		= e.Album.Images,
 			album 		= {},
 			proxy       = typeof this._source.proxy !== 'undefined' ? this._source.proxy : '',
-			buyBase		= '', 
+			buyBase		= '',
 			baseURL 	= '',
 			ext 		= '',
 			format		= '',
@@ -9140,15 +9150,15 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 		album.link = e.Album.URL;
 		album.title = this._source.title ? this._source.title : '';
 		album.images = [];
-		buyBase = album.link.replace('http://', '').split('/').shift();
-		buyBase = 'http://' + buyBase + '/buy/' + e.Album.id + '_' + e.Album.Key + '/';
-		
+		buyBase = album.link.replace('https://', '').split('/').shift();
+		buyBase = 'https://' + buyBase + '/buy/' + e.Album.id + '_' + e.Album.Key + '/';
+
 		for(i = 0; i < images.length; i++)
 		{
 			baseURL = proxy + e.Album.URL + '/' + images[i].id + '_' + images[i].Key;
 			format = images[i].Format.toLowerCase();
 			ext = format == 'mp4' ? '.jpg' : '.' + format;
-			
+
 			album.images[i] = {};
 			album.images[i].index = i;
 			album.images[i].sourceType = 'smugmug';
@@ -9170,21 +9180,21 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 			album.images[i].x3largeURL = baseURL + '-X3' + ext;
 			album.images[i].buyURL = buyBase + images[i].id + '_' + images[i].Key;
 			album.images[i].iframe = '';
-			
+
 			if(album.images[i].caption.indexOf('iframe')) {
 				temp = Y.Node.create('<div>'+ album.images[i].caption +'</div>');
 				iframe = temp.one('iframe');
-				
+
 				if(iframe) {
 					album.images[i].iframe = iframe.getAttribute('src');
 					album.images[i].caption = album.images[i].caption.replace(/<iframe.*>.*<\/iframe>/gi, '');
 				}
 			}
 		}
-		
+
 		this._loadComplete({ 'albumInfo': album });
 	},
-	
+
 	/**
 	 * Loads slideshow album data from an array of urls.
 	 *
@@ -9192,16 +9202,16 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 	 *
 	 * @method _loadUrls
 	 * @protected
-	 */ 
-	_loadUrls: function() 
+	 */
+	_loadUrls: function()
 	{
 		var album 	= {},
 			i		= 0;
-		
+
 		album.index = this._source.index;
 		album.title = this._source.title ? this._source.title : '';
 		album.images = [];
-		
+
 		for( ; i < this._source.urls.length; i++)
 		{
 			album.images[i] = {};
@@ -9221,12 +9231,12 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 			album.images[i].buyURL = this._source.urls[i].buyURL || '';
 			album.images[i].iframe = this._source.urls[i].iframe || '';
 		}
-		
+
 		this._loadComplete({ 'albumInfo': album });
 	}
-	
+
 }, {
-	
+
 	/**
 	* Static property used to define the default attribute configuration of
 	* the Widget.
@@ -9237,7 +9247,7 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 	* @static
 	*/
 	ATTRS: {
-		
+
 		/**
 		 * If true, the images will be randomized after loading.
 		 *
@@ -9249,7 +9259,7 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 			value: false
 		}
 	},
-	
+
 	/**
 	* The types of source data that can be loaded
 	* and associated functions.
@@ -9259,7 +9269,7 @@ Y.namespace('FL').SlideshowAlbumLoader = Y.Base.create('fl-slideshow-album-loade
 	* @readOnly
 	* @protected
 	* @static
-	*/ 
+	*/
 	TYPES: {
 		'smugmug': '_loadSmugMug',
 		'flickr': '_loadFlickr',
@@ -9280,7 +9290,7 @@ YUI.add('fl-slideshow-base', function(Y) {
  */
 
 /**
- * The base class that gets extended when creating new 
+ * The base class that gets extended when creating new
  * slideshow widgets. Manages loading, playing, and resizing.
  * <p>
  * While SlideshowBase can be instantiated, it is only meant to
@@ -9293,7 +9303,7 @@ YUI.add('fl-slideshow-base', function(Y) {
  * @extends Widget
  */
 Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [Y.WidgetParent], {
-		
+
 	/**
 	 * FL.SlideshowAlbumLoader instance used to load albums.
 	 *
@@ -9303,9 +9313,9 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @protected
 	 */
 	_albumLoader: null,
-	
+
 	/**
-	* An array of albums loaded from the source attribute. 
+	* An array of albums loaded from the source attribute.
 	* Each album is an array of objects containing image info.
 	*
 	* @property albums
@@ -9313,7 +9323,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	* @default []
 	*/
 	albums: [],
-	
+
 	/**
 	 * Info for the active album.
 	 *
@@ -9322,9 +9332,9 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @default null
 	 */
 	albumInfo: null,
-	
+
 	/**
-	 * A number that represents the index of the active 
+	 * A number that represents the index of the active
 	 * album in the albums array.
 	 *
 	 * @property albumIndex
@@ -9332,7 +9342,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @default null
 	 */
 	albumIndex: null,
-	
+
 	/**
 	 * Info for the active image.
 	 *
@@ -9341,9 +9351,9 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @default null
 	 */
 	imageInfo: null,
-	
+
 	/**
-	 * A number that represents the index of the active 
+	 * A number that represents the index of the active
 	 * image in the albumInfo array.
 	 *
 	 * @property imageIndex
@@ -9351,9 +9361,9 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @default null
 	 */
 	imageIndex: null,
-	
+
 	/**
-	 * A number that represents the index of the last 
+	 * A number that represents the index of the last
 	 * image that was loaded in the albumInfo array.
 	 *
 	 * @property lastImageIndex
@@ -9383,7 +9393,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	_playing: false,
 
 	/**
-	 * Timer for the break in between images when 
+	 * Timer for the break in between images when
 	 * the slideshow is playing.
 	 *
 	 * @property _playingTimer
@@ -9403,11 +9413,11 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @protected
 	 */
 	_playingTimerEvent: null,
-	
+
 	/**
-	 * An instance of FL.Spinner that is shown and hidden 
-	 * using _showLoadingImage and _hideLoadingImage when 
-	 * a loading activity occurs. 
+	 * An instance of FL.Spinner that is shown and hidden
+	 * using _showLoadingImage and _hideLoadingImage when
+	 * a loading activity occurs.
 	 *
 	 * @property _loadingImage
 	 * @type FL.Spinner
@@ -9415,7 +9425,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @protected
 	 */
 	_loadingImage: null,
-	
+
 	/**
 	 * An div node that wraps the loading image.
 	 *
@@ -9425,17 +9435,17 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @protected
 	 */
 	_loadingImageWrap: null,
-	
+
 	/**
-	 * Whether the loading image is visible or not. 
+	 * Whether the loading image is visible or not.
 	 *
 	 * @property _loadingImageVisible
 	 * @type Boolean
 	 * @default false
 	 * @protected
-	 */	
+	 */
 	_loadingImageVisible: false,
-	
+
 	/**
 	 * A timer to delay the display of the loading image.
 	 *
@@ -9445,7 +9455,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @protected
 	 */
 	_loadingImageTimer: null,
-	
+
 	/**
 	 * The container to insert the loading image into. If
 	 * no container is set, the loading image will be inserted
@@ -9457,7 +9467,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @protected
 	 */
 	_loadingImageContainer: null,
-	
+
 	/**
 	 * The intial height of the slideshow. Used to resize
 	 * back to the starting height when exiting stretchy.
@@ -9468,7 +9478,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @protected
 	 */
 	_initialHeight: null,
-	
+
 	/**
 	 * The intial width of the slideshow. Used to resize
 	 * back to the starting width when exiting stretchy.
@@ -9483,15 +9493,15 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	/**
 	 * @method initializer
 	 * @protected
-	 */ 
-	initializer: function() 
+	 */
+	initializer: function()
 	{
 		// Loader
 		this._albumLoader = new Y.FL.SlideshowAlbumLoader({
 			randomize: this.get('randomize')
 		});
 	},
-	
+
 	/**
 	 * @method renderUI
 	 * @protected
@@ -9500,7 +9510,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	{
 		this._renderLoadingImage();
 	},
-	
+
 	/**
 	 * @method bindUI
 	 * @protected
@@ -9513,11 +9523,11 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		// Resize Events
 		Y.one(window).on('fl-slideshow-base|resize', this._delayResize, this);
 		Y.one(window).on('fl-slideshow-base|orientationchange', this._delayResize, this);
-		
+
 		// Key Events
 		Y.Node.one('body').on('keydown', Y.bind(this._onKey, this));
 	},
-	
+
 	/**
 	 * @method syncUI
 	 * @protected
@@ -9525,14 +9535,14 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	syncUI: function()
 	{
 		this.get('boundingBox').addClass('fl-slideshow-' + this.get('color'));
-		
+
 		this.resize();
-		
+
 		if(this.get('loadOnRender')) {
 			this.loadAlbum(this.get('defaultAlbum'), this.get('defaultImage'));
 		}
 	},
-	
+
 	/**
 	 * Add album data to the source object.
 	 *
@@ -9543,13 +9553,13 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	{
 		var source = this.get('source'),
             i      = source.length;
-		
+
 		source[i] = data;
 		source[i].index = i;
-		
+
 		this.set('source', source);
 	},
-	
+
 	/**
 	 * Loads an album from the source array with the provided albumIndex.
 	 * If no albumIndex is provided, the first album in the array will be loaded.
@@ -9563,21 +9573,21 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	{
 		var source 			= this.get('source'),
 			loadImageIndex 	= typeof imageIndex == 'undefined' ? 0 : imageIndex;
-		
+
 		// Reset internal image indexes.
 		this.imageIndex = null;
 		this.lastImageIndex = null;
-		
+
 		/**
 		 * Fires before a new album request is made.
 		 *
 		 * @event albumLoadStart
 		 */
 		this.fire('albumLoadStart');
-		
+
 		// Load an image after the album.
 		this.once('albumLoadComplete', Y.bind(this.loadImage, this, loadImageIndex));
-		
+
 		// Load data passed from another slideshow instance.
 		if(source[albumIndex] && source[albumIndex].type == 'album-data') {
 			this.albums[albumIndex] = source[albumIndex].data;
@@ -9592,27 +9602,27 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			this._albumLoader.load(source[albumIndex] || source[0]);
 		}
 	},
-	
+
 	/**
 	 * Processes the loaded album and fires the albumLoadComplete event.
 	 *
 	 * @method _loadAlbumComplete
 	 * @param o {Object} The custom event object passed to this method.
 	 * @protected
-	 */ 
+	 */
 	_loadAlbumComplete: function(o)
 	{
 		this.albums[o.albumInfo.index] = o.albumInfo;
 		this.albumInfo = o.albumInfo;
 		this.albumIndex = o.albumInfo.index;
-		
+
 		/**
 		 * Fires after a new album request is made.
 		 *
 		 * @event albumLoadComplete
 		 */
 		this.fire('albumLoadComplete');
-		
+
 		// Auto Play
 		if(this.get('autoPlay')) {
 			this._playingTimerStart();
@@ -9620,26 +9630,26 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			this._playing = true;
 		}
 	},
-	
+
 	/**
 	 * Sets the active image index and fires the imageLoadComplete event.
 	 *
 	 * @method loadImage
 	 * @param index {Number} The image index to load.
-	 */ 
+	 */
 	loadImage: function(index)
 	{
 		if(this._playing) {
 			this._playingTimerStart();
 		}
-		
+
 		index = index < 0 ? this.albumInfo.images.length - 1 : index;
 		index = index >= this.albumInfo.images.length ? 0 : index;
-		
+
 		this.lastImageIndex = this.imageIndex;
 		this.imageIndex = index;
 		this.imageInfo = this.albumInfo.images[index];
-		
+
 		/**
 		 * Fires after a new image index is set.
 		 *
@@ -9647,20 +9657,20 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		 */
 		this.fire('imageLoadComplete', { 'imageInfo': this.imageInfo });
 	},
-	
+
 	/**
 	 * Loads the previous image.
 	 *
 	 * @method prevImage
-	 */ 
+	 */
 	prevImage: function()
 	{
 		if(this.get('pauseOnNextOrPrev')) {
 			this.pause();
 		}
-		
+
 		this.loadImage(this.imageIndex - 1);
-		
+
 		/**
 		 * Fires when the previous image is loaded.
 		 *
@@ -9668,20 +9678,20 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		 */
 		this.fire('prevImage');
 	},
-	
+
 	/**
 	 * Loads the next image.
 	 *
 	 * @method nextImage
-	 */ 
+	 */
 	nextImage: function()
 	{
 		if(this.get('pauseOnNextOrPrev')) {
 			this.pause();
 		}
-		
+
 		this.loadImage(this.imageIndex + 1);
-		
+
 		/**
 		 * Fires when the next image is loaded.
 		 *
@@ -9689,7 +9699,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		 */
 		this.fire('nextImage');
 	},
-	
+
 	/**
 	 * Keyboard navigation for the next and prev images.
 	 *
@@ -9699,23 +9709,23 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	_onKey: function(e)
 	{
 		switch(e.keyCode) {
-			
+
 			case 37:
 			this.prevImage();
 			break;
-			
+
 			case 39:
 			this.nextImage();
 			break;
 		}
 	},
-	
+
 	/**
-	 * Resizes the slideshow using either the 
+	 * Resizes the slideshow using either the
 	 * stretchy or standard functions.
-	 * 
+	 *
 	 * @method resize
-	 */		
+	 */
 	resize: function()
 	{
 		var stretchy 		= this.get('stretchy'),
@@ -9723,24 +9733,24 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			width 			= parseInt(Y.one('body').get('winWidth'), 10),
 			threshold		= this.get('responsiveThreshold');
 
-        // Stretchy resize to the window only if the parent width is greater 
-        // than the responsive threshold and stretchyType is set to window. 
+        // Stretchy resize to the window only if the parent width is greater
+        // than the responsive threshold and stretchyType is set to window.
 		if(width > threshold && stretchy && stretchyType == 'window') {
 			this._stretchyWindowResize();
 		}
-		
-		// Ratio resize if the parent width is less than the responsive 
+
+		// Ratio resize if the parent width is less than the responsive
 		// threshold or if stretchyType is set to ratio.
 		else if((width <= threshold) || (stretchy && stretchyType == 'ratio')) {
 			this._stretchyRatioResize();
 		}
-		
+
 		// Do a standard resize based on the height and
 		// width passed to the constructor function.
 		else {
 			this._standardResize();
 		}
-		
+
 		/**
 		 * Fires when the slideshow is resized.
 		 *
@@ -9752,7 +9762,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	/**
 	 * @method _standardResize
 	 * @protected
-	 */		
+	 */
 	_standardResize: function()
 	{
 		var stretchy 		= this.get('stretchy'),
@@ -9769,24 +9779,24 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			this._stretchyWindowResize();
 			return;
 		}
-		 
-		// Resize to the width and height of the parent. 
+
+		// Resize to the width and height of the parent.
 		else if(stretchy && stretchyType == 'contain') {
 			bb.setStyle('height', parentHeight + 'px');
     		bb.setStyle('width', parentWidth + 'px');
 		}
-		
+
 		// Ratio resize if we don't have a height defined.
 		else if(!Y.Lang.isNumber(height)) {
 			this._stretchyRatioResize();
 			return;
 		}
-		
+
 		// Resize to the defined width and height.
 		else {
-		
+
     		bb.setStyle('height', height + 'px');
-    		
+
     		if(width) {
     			bb.setStyle('width', width + 'px');
     		}
@@ -9795,14 +9805,14 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
     		}
 		}
 	},
-	
+
 	/**
-	 * Resizes to the height of the window, compensating 
+	 * Resizes to the height of the window, compensating
 	 * for any padding.
-	 * 
+	 *
 	 * @method _stretchyWindowResize
 	 * @protected
-	 */		
+	 */
 	_stretchyWindowResize: function()
 	{
 		var bb				= this.get('boundingBox'),
@@ -9811,26 +9821,26 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			paddingBottom 	= parseInt(bb.getStyle('paddingBottom'), 10),
 			height 			= parseInt(Y.one('body').get('winHeight'), 10),
 			width			= '';
-		
-		// Set the vertical space to 0 and width to the 
+
+		// Set the vertical space to 0 and width to the
 		// window's width if we are in fullscreen mode.
 		if(bb.hasClass('fl-fullscreen-active')) {
 			verticalSpace = 0;
 			width = parseInt(Y.one('body').get('winWidth'), 10) + 'px';
 		}
-	
+
 		height =  (height - paddingTop - paddingBottom - verticalSpace) + 'px';
-		
+
 		bb.setStyle('height', height);
 		bb.setStyle('width', width);
 	},
-	
+
 	/**
 	 * Resizes the height by multiplying the width and stretchyRatio value.
-	 * 
+	 *
 	 * @method _stretchyRatioResize
 	 * @protected
-	 */		
+	 */
 	_stretchyRatioResize: function()
 	{
 		var bb				= this.get('boundingBox'),
@@ -9844,15 +9854,15 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			winWidth		= parseInt(Y.one('body').get('winWidth'), 10),
 			height 			= computedWidth * stretchyRatio,
 			width			= '';
-		
+
 		// Use the window's height and width if we are in fullscreen mode.
 		if(bb.hasClass('fl-fullscreen-active')) {
 			height = winHeight;
 			width = winWidth;
 		}
-	
+
 		height = (height - paddingTop - paddingBottom - verticalSpace) + 'px';
-		
+
 		bb.setStyle('height', height);
 		bb.setStyle('width', width);
 	},
@@ -9862,13 +9872,13 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 *
 	 * @method _delayResize
 	 * @protected
-	 */		
+	 */
 	_delayResize: function()
 	{
 		if(this._resizeTimer) {
 			this._resizeTimer.cancel();
 		}
-		
+
 		this._resizeTimer = Y.later(300, this, this.resize);
 	},
 
@@ -9876,11 +9886,11 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * Starts a new playing timer and fires the played event.
 	 *
 	 * @method play
-	 */	
+	 */
 	play: function()
 	{
 		this._playingTimer = Y.later(this.get('speed'), this, this._playingTimerComplete);
-			
+
 		/**
 		 * Fires when the playing timer starts.
 		 *
@@ -9889,16 +9899,16 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		this.fire('played');
 		this._playing = true;
 	},
-	
+
 	/**
 	 * Cancels the current playing timer and fires the paused event.
 	 *
 	 * @method pause
-	 */	
+	 */
 	pause: function()
 	{
 		this._playingTimerCancel();
-			
+
 		/**
 		 * Fires when the playing timer is canceled.
 		 *
@@ -9907,7 +9917,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		this.fire('paused');
 		this._playing = false;
 	},
-	
+
 	/**
 	 * A new playing timer will start when this event is fired.
 	 *
@@ -9915,7 +9925,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @param obj {Object} The event's host object.
 	 * @param e {String} The event to fire on the host object.
 	 * @protected
-	 */	
+	 */
 	_setPlayingTimerEvent: function(obj, e)
 	{
 		this._playingTimerEvent = {
@@ -9923,18 +9933,18 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			'e': e
 		};
 	},
-	
+
 	/**
-	 * Cancels the playing timer if it is running and starts a new one. 
+	 * Cancels the playing timer if it is running and starts a new one.
 	 * The next image is loaded when the timer completes.
 	 *
 	 * @method _playingTimerStart
 	 * @protected
-	 */	
+	 */
 	_playingTimerStart: function(e)
 	{
 		this._playingTimerCancel();
-		
+
 		if(!e && this._playingTimerEvent !== null) {
 			this._playingTimerEvent.obj.once('fl-slideshow-base|' + this._playingTimerEvent.e, Y.bind(this._playingTimerStart, this));
 		}
@@ -9942,18 +9952,18 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			this._playingTimer = Y.later(this.get('speed'), this, this._playingTimerComplete);
 		}
 	},
-	
+
 	/**
-	 * Fires when the playing timer completes, starts a 
+	 * Fires when the playing timer completes, starts a
 	 * new timer and loads the next image.
 	 *
 	 * @method _playingTimerComplete
 	 * @protected
-	 */	
+	 */
 	_playingTimerComplete: function()
 	{
 		this.loadImage(this.imageIndex + 1);
-		
+
 		/**
 		 * Fires when the playing timer completes.
 		 *
@@ -9961,13 +9971,13 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		 */
 		this.fire('playingTimerComplete');
 	},
-	
+
 	/**
 	 * Cancels the playing timer.
 	 *
 	 * @method _playingTimerCancel
 	 * @protected
-	 */	
+	 */
 	_playingTimerCancel: function()
 	{
 		if(this._playingTimer) {
@@ -9977,13 +9987,13 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			this._playingTimerEvent.obj.detach('fl-slideshow-base|' + this._playingTimerEvent.e);
 		}
 	},
-	
+
 	/**
 	 * Creates the loading image.
-	 * 
+	 *
 	 * @method _renderLoadingImage
 	 * @protected
-	 */	
+	 */
 	_renderLoadingImage: function()
 	{
         var defaults = {
@@ -9997,71 +10007,71 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
                 shadow: false // Whether to render a shadow
             },
             settings = Y.merge(defaults, this.get('loadingImageSettings'));
-        
+
 		if(this.get('loadingImageEnabled')) {
-            
+
             // Loading image
             if(settings.color === '') {
                 settings.color = this._colorToHex(Y.one('body').getStyle('color'));
             }
-			
+
             this._loadingImage = new Y.FL.Spinner(settings);
-            
+
             // Loading image wrap
             this._loadingImageWrap = Y.Node.create('<div class="fl-loading-image"></div>');
-            
+
             this._loadingImageWrap.setStyles({
                 position    : 'absolute',
                 'z-index'   : '1000'
 			});
 		}
 	},
-	
+
 	/**
 	 * Inserts the loading image.
 	 *
 	 * @method _showLoadingImage
 	 * @protected
-	 */	
+	 */
 	_showLoadingImage: function()
 	{
 		if(this._loadingImage && !this._loadingImageVisible) {
-		
+
             this._loadingImageVisible = true;
             this._loadingImage.spin();
 			this._loadingImageWrap.insert(this._loadingImage.el);
-			
+
 			if(this._loadingImageContainer !== null) {
                 this._loadingImageContainer.insert(this._loadingImageWrap);
 			}
 			else {
                 this.get('contentBox').insert(this._loadingImageWrap);
 			}
-			
+
 			this._positionLoadingImage();
 		}
 	},
-	
+
 	/**
-	 * Inserts the loading image div node after 
+	 * Inserts the loading image div node after
 	 * a timer completes.
 	 *
 	 * @method _showLoadingImageWithDelay
 	 * @protected
-	 */	
+	 */
 	_showLoadingImageWithDelay: function()
 	{
 		if(this._loadingImage) {
 			this._loadingImageTimer = Y.later(1000, this, this._showLoadingImage);
 		}
 	},
-	
+
 	/**
 	 * Removes the loading image div node.
 	 *
 	 * @method _hideLoadingImage
 	 * @protected
-	 */	
+	 */
 	_hideLoadingImage: function()
 	{
 		if(this._loadingImageTimer) {
@@ -10074,17 +10084,17 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			this._loadingImageWrap.remove();
 		}
 	},
-	
+
 	/**
 	 * Centers the loading image in the content box.
 	 *
 	 * @method _positionLoadingImage
 	 * @protected
-	 */	
+	 */
 	_positionLoadingImage: function()
 	{
 		if(this._loadingImage && this._loadingImageVisible) {
-		
+
             var wrap            = this._loadingImageWrap,
         		wrapHeight      = parseInt(wrap.getComputedStyle('height'), 10),
                 wrapWidth       = parseInt(wrap.getComputedStyle('width'), 10),
@@ -10098,47 +10108,47 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
                 left        : left + 'px',
                 top         : top + 'px'
 			});
-			
+
 			Y.one(this._loadingImage.el).setStyles({
                 left        : '50%',
                 top         : '50%'
 			});
 		}
 	},
-	
+
 	/**
 	 * Convert RGB color value to a hex value.
 	 *
 	 * @method _colorToHex
 	 * @protected
-	 */		
-	_colorToHex: function(color) 
+	 */
+	_colorToHex: function(color)
 	{
         var digits, red, green, blue, rgb;
-        
+
         if(color.substr(0, 1) === '#') {
             return color;
         }
-        
+
         digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
-        
+
         if ( null === digits ) {
 	        return '#000';
         }
-        
+
         red = parseInt(digits[2], 10);
         green = parseInt(digits[3], 10);
         blue = parseInt(digits[4], 10);
         rgb = blue | (green << 8) | (red << 16);
         rgb = rgb.toString(16);
-        
+
         if(rgb === '0') {
             rgb = '000';
         }
-        
+
         return digits[1] + '#' + rgb;
     }
-		
+
 }, {
 
 	/**
@@ -10150,7 +10160,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @static
 	 */
 	CSS_PREFIX: 'fl-slideshow-base',
-	
+
 	/**
 	 * Static property used to define the default attribute configuration of
 	 * the Widget.
@@ -10161,9 +10171,9 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 	 * @static
 	 */
 	ATTRS: {
-	
+
 		/**
-		 * Used to create the color class that gets added to the bounding box 
+		 * Used to create the color class that gets added to the bounding box
 		 * when the widget is rendered. The color class is used to create new
 		 * CSS color themes. The default CSS provided includes dark and light themes.
 		 *
@@ -10176,16 +10186,16 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 			value: 'dark',
 			writeOnce: true
 		},
-	
+
 		/**
-		 * An array of source objects used to load albums. Each object must have 
+		 * An array of source objects used to load albums. Each object must have
 		 * a type property and can have a title property as well.
 		 * <p>
 		 * In addition to those properties, each object has additional required
 		 * properties specific to its type. The types currently supported are
 		 * smugmug and urls with planned support for flickr and picasa.
 		 * See the user guide for information on loading different types.
-		 * 
+		 *
 		 * @attribute source
 		 * @type Array
 		 * @default []
@@ -10198,11 +10208,11 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 				if(source.constructor == Object) {
 					source = [source];
 				}
-				
+
 				for(var i = 0; i < source.length; i++) {
 					source[i].index = i;
 				}
-				
+
 				return source;
 			}
 		},
@@ -10250,7 +10260,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		autoPlay: {
 			value: true
 		},
-		
+
 		/**
 		 * Whether to pause when the next or previous image is loaded
 		 * using nextImage or prevImage. The slideshow will not be paused
@@ -10264,7 +10274,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		pauseOnNextOrPrev: {
 			value: true
 		},
-		
+
 		/**
 		 * If true, the images will be randomized after loading.
 		 *
@@ -10275,7 +10285,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		randomize: {
 			value: false
 		},
-		
+
 		/**
 		 * The time between images when playing, measured in milliseconds.
 		 *
@@ -10286,12 +10296,12 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		speed: {
 			value: 4000
 		},
-		
+
 		/**
-		 * The minimum width of the parent node at which 
-		 * responsive features are enabled. Set to 0 to 
+		 * The minimum width of the parent node at which
+		 * responsive features are enabled. Set to 0 to
 		 * disable responsive features as they are enabled
-		 * whether stretchy is set to true or not. 
+		 * whether stretchy is set to true or not.
 		 *
 		 * @attribute responsiveThreshold
 		 * @type Number
@@ -10311,15 +10321,15 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 		stretchy: {
 			value: false
 		},
-		
+
 		/**
 		 * The type of stretchy logic to use. Possible values are
-		 * window and ratio. Both types resize the width of the 
+		 * window and ratio. Both types resize the width of the
 		 * slideshow to the width of its parent node. With window, the
 		 * height of the slideshow is resized to the height of the window.
 		 * With ratio, the height of the slideshow is resized based
 		 * on the ratio set with stretchyRatio or the height of the window
-		 * if the ratio height is greater than the window height. 
+		 * if the ratio height is greater than the window height.
 		 *
 		 * @attribute stretchyType
 		 * @type String
@@ -10366,7 +10376,7 @@ Y.namespace('FL').SlideshowBase = Y.Base.create('fl-slideshow-base', Y.Widget, [
 
 		/**
 		 * Property object for setting up the spin.js loading image.
-		 * For a complete list of properties see: 
+		 * For a complete list of properties see:
 		 * http://effinroot.eiremedia.netdna-cdn.com/repo/plugins/misc/spin.js/index.html
 		 *
 		 * @attribute loadingImageSettings
@@ -10390,7 +10400,7 @@ YUI.add('fl-smugmug-api', function(Y) {
 
 /**
  * SmugMug API wrapper.
- * 
+ *
  * NOTE: Only anonymous logins are currently supported.
  *
  * @namespace FL
@@ -10400,7 +10410,7 @@ YUI.add('fl-smugmug-api', function(Y) {
  * @extends Base
  */
 Y.namespace('FL').SmugMugAPI = Y.Base.create('fl-smugmug-api', Y.Base, [], {
-                
+
 	/**
 	 * ID for the current session.
 	 *
@@ -10410,7 +10420,7 @@ Y.namespace('FL').SmugMugAPI = Y.Base.create('fl-smugmug-api', Y.Base, [], {
 	 * @protected
 	 */
 	_sessionID: null,
-	
+
 	/**
 	 * URL with parameters for the next API request.
 	 * Reset after each request.
@@ -10421,25 +10431,25 @@ Y.namespace('FL').SmugMugAPI = Y.Base.create('fl-smugmug-api', Y.Base, [], {
 	 * @protected
 	 */
 	_requestURL: null,
-		
+
 	/**
 	 * Lifecycle method. Initializes the request url.
      *
      * @method initializer
      * @protected
-     */  
-	initializer: function() 
+     */
+	initializer: function()
 	{
 		this._resetRequestURL();
 	},
-	
+
 	/**
 	 * Adds a key/value pair to the request url.
 	 *
 	 * @method addParam
 	 * @param key {String} The name of the parameter (example: key=val).
 	 * @param val {String} The value of the parameter (example: key=val).
-	 */ 
+	 */
 	addParam: function(key, val)
 	{
 		this._requestURL = this._requestURL + '&' + key + '=' + val;
@@ -10449,37 +10459,37 @@ Y.namespace('FL').SmugMugAPI = Y.Base.create('fl-smugmug-api', Y.Base, [], {
 	 * Requests an anonymous login session.
 	 *
 	 * @method loginAnon
-	 */ 
+	 */
 	loginAnon: function()
 	{
 	    this.addParam('method', 'smugmug.login.anonymously');
 	    this.once('complete', this._loginAnonComplete);
 	    this.request();
 	},
-	
+
 	/**
 	 * Anonymous login success handler.
 	 *
 	 * @method _loginAnonComplete
 	 * @param data {Object} A jsonp data object.
 	 * @protected
-	 */ 
+	 */
 	_loginAnonComplete: function(data)
 	{
     	if(data.Login) {
     		this._sessionID = data.Login.Session.id;
     	}
 	},
-	
+
 	/**
 	 * Sends an API request using the request url.
 	 *
 	 * @method request
-	 */ 
+	 */
 	request: function()
 	{
 		this.addParam('Callback', '{callback}');
-	   	
+
 	   	Y.jsonp(this._requestURL, {
 		    on: {
 		        success: this._requestComplete,
@@ -10490,44 +10500,44 @@ Y.namespace('FL').SmugMugAPI = Y.Base.create('fl-smugmug-api', Y.Base, [], {
 		    args: []
 		});
 	},
-	
+
 	/**
 	 * API request complete handler.
 	 *
 	 * @method _requestComplete
 	 * @param data {Object} A jsonp data object.
 	 * @protected
-	 */ 
+	 */
 	_requestComplete: function(data)
 	{
 		this._resetRequestURL();
-		
+
 		/**
 		 * Fires when a request is complete.
 		 *
 		 * @event complete
-		 */		
+		 */
 		this.fire('complete', data);
 	},
-	
+
 	/**
-	 * Clears all parameters on the request url except 
+	 * Clears all parameters on the request url except
 	 * the API key and session ID.
 	 *
 	 * @method _resetRequestURL
 	 * @protected
-	 */ 
+	 */
 	_resetRequestURL: function()
 	{
 		this._requestURL = this.get('apiURL') + '?APIKey=' + this.get('apiKey');
-		
+
 		if(this._sessionID) {
 	        this.addParam('SessionID', this._sessionID);
 	    }
 	}
-	
+
 }, {
-	
+
 	/**
 	* Static property used to define the default attribute configuration of
 	* the Widget.
@@ -10538,7 +10548,7 @@ Y.namespace('FL').SmugMugAPI = Y.Base.create('fl-smugmug-api', Y.Base, [], {
 	* @static
 	*/
 	ATTRS: {
-	
+
         /**
 		* SmugMug API url to use for requests.
 		*
@@ -10549,7 +10559,7 @@ Y.namespace('FL').SmugMugAPI = Y.Base.create('fl-smugmug-api', Y.Base, [], {
 		apiURL: {
         	value: 'https://api.smugmug.com/services/api/json/1.3.0/'
         },
-		
+
         /**
 		* SmugMug API key.
 		*
@@ -10598,29 +10608,29 @@ Y.namespace('FL').Utils = {
 	 * @method cssSupport
 	 * @param p {String} The property to check.
 	 * @returns Boolean
-	 */ 
+	 */
 	cssSupport: function(p)
 	{
 		var b = document.body || document.documentElement,
 	    	s = b.style,
 	    	v = ['Moz', 'Webkit', 'Khtml', 'O', 'ms', 'Icab'],
 	    	i = 0;
-	    	
+
 	    // Transform not working well in these browsers
 	    if(p == 'transform' && Y.UA.gecko && Y.UA.gecko < 4) { return false; }
 	    if(p == 'transform' && Y.UA.opera > 0) { return false; }
 	    if(p == 'transform' && Y.UA.ie > 0 && Y.UA.ie < 10) { return false; }
 	    if(p == 'transform' && navigator.userAgent.match(/Trident/)) { return false; }
-	    
+
 	    // No css support detected
 	    if(typeof s == 'undefined') { return false; }
-	
+
 	    // Tests for standard prop
 	    if(typeof s[p] == 'string') { return true; }
-	
+
 	    // Tests for vendor specific prop
 	    p = p.charAt(0).toUpperCase() + p.substr(1);
-	    
+
 	    for( ; i < v.length; i++) {
 			if(typeof s[v[i] + p] == 'string') { return true; }
 	    }

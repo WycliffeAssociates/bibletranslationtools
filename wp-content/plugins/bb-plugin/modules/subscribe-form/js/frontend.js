@@ -7,7 +7,8 @@
 		if ( reCaptchaFields.length > 0 ) {
 			reCaptchaFields.each(function(i){
 				var self 		= $( this ),
-				 	attrWidget 	= self.attr('data-widgetid');
+				 	attrWidget 	= self.attr('data-widgetid'),
+					newID 		= $(this).attr('id') + '-' + i;
 
 				// Avoid re-rendering as it's throwing API error
 				if ( (typeof attrWidget !== typeof undefined && attrWidget !== false) ) {
@@ -15,7 +16,10 @@
 				}
 				else {
 
-					widgetID = grecaptcha.render( $(this).attr('id'), {
+					// Increment ID to avoid conflict with the same form.
+					self.attr( 'id', newID );
+
+					widgetID = grecaptcha.render( newID, {
 						sitekey : self.data( 'sitekey' ),
 						theme	: self.data( 'theme' ),
 						size	: self.data( 'validate' ),
@@ -27,8 +31,6 @@
 								if ( 'invisible' == self.data( 'validate' ) ) {
 									self.closest( '.fl-subscribe-form' ).find( 'a.fl-button' ).trigger( 'click' );
 								}
-
-								grecaptcha.reset( widgetID );
 							}
 						}
 					});
@@ -64,15 +66,18 @@
 
 		_submitForm: function( e )
 		{
-			var postId      	= this.form.closest( '.fl-builder-content' ).data( 'post-id' ),
-				templateId		= this.form.data( 'template-id' ),
-				templateNodeId	= this.form.data( 'template-node-id' ),
-				nodeId      	= this.form.closest( '.fl-module' ).data( 'node' ),
-				buttonText  	= this.button.find( '.fl-button-text' ).text(),
-				waitText    	= this.button.closest( '.fl-form-button' ).data( 'wait-text' ),
-				name        	= this.form.find( 'input[name=fl-subscribe-form-name]' ),
-				email       	= this.form.find( 'input[name=fl-subscribe-form-email]' ),
-				recaptcha 		= this.form.find( '.fl-grecaptcha' ),
+			var submitButton    = $( e.currentTarget ),
+				currentForm     = submitButton.closest( '.fl-subscribe-form' ),
+				postId      	= currentForm.closest( '.fl-builder-content' ).data( 'post-id' ),
+				templateId		= currentForm.data( 'template-id' ),
+				templateNodeId	= currentForm.data( 'template-node-id' ),
+				nodeId      	= currentForm.closest( '.fl-module' ).data( 'node' ),
+				buttonText  	= submitButton.find( '.fl-button-text' ).text(),
+				waitText    	= submitButton.closest( '.fl-form-button' ).data( 'wait-text' ),
+				name        	= currentForm.find( 'input[name=fl-subscribe-form-name]' ),
+				email       	= currentForm.find( 'input[name=fl-subscribe-form-email]' ),
+				termsCheckbox   = currentForm.find( 'input[name=fl-terms-checkbox]'),
+				recaptcha 		= currentForm.find( '.fl-grecaptcha' ),
 				reCaptchaValue	= recaptcha.data( 'fl-grecaptcha-response' ),
 				re          	= /\S+@\S+\.\S+/,
 				valid       	= true,
@@ -80,7 +85,7 @@
 
 			e.preventDefault();
 
-			if ( this.button.hasClass( 'fl-form-button-disabled' ) ) {
+			if ( submitButton.hasClass( 'fl-form-button-disabled' ) ) {
 				return; // Already submitting
 			}
 
@@ -93,6 +98,18 @@
 				email.addClass( 'fl-form-error' );
 				email.siblings( '.fl-form-error-message' ).show();
 				valid = false;
+			}
+
+			if ( termsCheckbox.length ) {
+				if ( ! termsCheckbox.is(':checked') ) {
+					valid = false;
+					termsCheckbox.addClass( 'fl-form-error' );
+					termsCheckbox.parent().siblings( '.fl-form-error-message' ).show();
+				}
+				else {
+					termsCheckbox.removeClass( 'fl-form-error' );
+					termsCheckbox.parent().siblings( '.fl-form-error-message' ).hide();
+				}
 			}
 
 			if ( recaptcha.length > 0 && valid ) {
@@ -115,15 +132,16 @@
 
 			if ( valid ) {
 
-				this.form.find( '> .fl-form-error-message' ).hide();
-				this.button.find( '.fl-button-text' ).text( waitText );
-				this.button.data( 'original-text', buttonText );
-				this.button.addClass( 'fl-form-button-disabled' );
+				currentForm.find( '> .fl-form-error-message' ).hide();
+				submitButton.find( '.fl-button-text' ).text( waitText );
+				submitButton.data( 'original-text', buttonText );
+				submitButton.addClass( 'fl-form-button-disabled' );
 
 				ajaxData = {
 					action  			: 'fl_builder_subscribe_form_submit',
 					name    			: name.val(),
 					email   			: email.val(),
+					terms_checked       : termsCheckbox.is(':checked') ? '1' : '0',
 					post_id 			: postId,
 					template_id 		: templateId,
 					template_node_id 	: templateNodeId,
@@ -134,28 +152,31 @@
 					ajaxData.recaptcha = reCaptchaValue;
 				}
 
-				$.post( FLBuilderLayoutConfig.paths.wpAjaxUrl, ajaxData, $.proxy( this._submitFormComplete, this ) );
+				$.post( FLBuilderLayoutConfig.paths.wpAjaxUrl, ajaxData, $.proxy( function( response ){
+					this._submitFormComplete( response, submitButton );
+				}, this ));
 			}
 		},
 
-		_submitFormComplete: function( response )
+		_submitFormComplete: function( response, button )
 		{
 			var data        = JSON.parse( response ),
-				buttonText  = this.button.data( 'original-text' );
+				buttonText  = button.data( 'original-text' ),
+				form        = button.closest( '.fl-subscribe-form' );
 
 			if ( data.error ) {
 
 				if ( data.error ) {
-					this.form.find( '> .fl-form-error-message' ).text( data.error );
+					form.find( '> .fl-form-error-message' ).text( data.error );
 				}
 
-				this.form.find( '> .fl-form-error-message' ).show();
-				this.button.removeClass( 'fl-form-button-disabled' );
-				this.button.find( '.fl-button-text' ).text( buttonText );
+				form.find( '> .fl-form-error-message' ).show();
+				button.removeClass( 'fl-form-button-disabled' );
+				button.find( '.fl-button-text' ).text( buttonText );
 			}
 			else if ( 'message' == data.action ) {
-				this.form.find( '> *' ).hide();
-				this.form.append( '<div class="fl-form-success-message">' + data.message + '</div>' );
+				form.find( '> *' ).hide();
+				form.append( '<div class="fl-form-success-message">' + data.message + '</div>' );
 			}
 			else if ( 'redirect' == data.action ) {
 				window.location.href = data.url;
@@ -165,7 +186,8 @@
 		_onEnterKey: function( e )
 		{
 			if (e.which == 13) {
-		    	this.button.trigger( 'click' );
+				var currentForm = $( e.currentTarget ).closest( '.fl-subscribe-form' );
+				currentForm.find( 'a.fl-button' ).trigger( 'click' );
 		  	}
 		}
 	}

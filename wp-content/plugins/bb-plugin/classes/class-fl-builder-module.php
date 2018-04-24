@@ -139,6 +139,13 @@ class FLBuilderModule {
 	public $js = array();
 
 	/**
+	 * The class of the font icon for this module.
+	 *
+	 * @since 2.0
+	 */
+	public $icon = '';
+
+	/**
 	 * Module constructor.
 	 *
 	 * @since 1.0
@@ -151,16 +158,6 @@ class FLBuilderModule {
 		$this->enabled          = isset( $params['enabled'] ) ? $params['enabled'] : true;
 		$this->editor_export    = isset( $params['editor_export'] ) ? $params['editor_export'] : true;
 		$this->partial_refresh  = isset( $params['partial_refresh'] ) ? $params['partial_refresh'] : false;
-
-		$details = apply_filters( 'fl_builder_module_details', array(
-			'name'        => $params['name'],
-			'description' => $params['description'],
-			'category'    => $params['category'],
-		), $this->slug );
-
-		$this->name             = $details['name'];
-		$this->description      = $details['description'];
-		$this->category         = $details['category'];
 
 		// We need to normalize the paths here since path comparisons
 		// break on Windows because they use backslashes.
@@ -189,6 +186,22 @@ class FLBuilderModule {
 			$this->url = trailingslashit( FL_BUILDER_URL . 'modules/' . $this->slug );
 			$this->dir = trailingslashit( FL_BUILDER_DIR . 'modules/' . $this->slug );
 		}
+		// Icon requires dir be defined before calling get_icon()
+		$this->icon = isset( $params['icon'] ) ? $this->get_icon( $params['icon'] ) : $this->get_icon();
+
+		$details = apply_filters( 'fl_builder_module_details', array(
+			'name'        => $params['name'],
+			'description' => $params['description'],
+			'category'    => $this->normalize_category_name( $params['category'] ),
+			'group'    	  => isset( $params['group'] ) ? $params['group'] : false,
+			'icon'		  => $this->icon,
+		), $this->slug );
+
+		$this->name             = $details['name'];
+		$this->description      = $details['description'];
+		$this->category         = $details['category'];
+		$this->group            = $details['group'];
+		$this->icon             = $details['icon'];
 	}
 
 	/**
@@ -295,5 +308,72 @@ class FLBuilderModule {
 	 */
 	public function remove() {
 
+	}
+
+	/**
+	 * Get svg icon string
+	 *
+	 * @since 2.0
+	 * @return String
+	 */
+	public function get_icon( $icon = '' ) {
+
+		// check if $icon is referencing an included icon.
+		if ( '' != $icon && file_exists( FL_BUILDER_DIR . 'img/svg/' . $icon ) ) {
+			$path = FL_BUILDER_DIR . 'img/svg/' . $icon;
+
+			// check if module directory includes an icon.svg file
+		} elseif ( file_exists( $this->dir . 'icon.svg' ) ) {
+			$path = $this->dir . 'icon.svg';
+
+			// default to included icon
+		} else {
+			$path = FL_BUILDER_DIR . 'img/svg/insert.svg';
+		}
+		if ( file_exists( $path ) ) {
+			return file_get_contents( $path );
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Normalizes category names to support 2.0 since the default
+	 * category names changed.
+	 *
+	 * @since 2.0
+	 * @access private
+	 * @param string $cat
+	 * @return string
+	 */
+	private function normalize_category_name( $cat ) {
+		if ( __( 'Basic Modules', 'fl-builder' ) === $cat ) {
+			$cat = __( 'Basic', 'fl-builder' );
+		} elseif ( __( 'Advanced Modules', 'fl-builder' ) === $cat ) {
+			$cat = __( 'Advanced', 'fl-builder' );
+		}
+		return $cat;
+	}
+
+	/**
+	 * Get the default svg icon
+	 *
+	 * @since 2.0
+	 * @return String
+	 */
+	static public function get_default_icon() {
+		$path = FL_BUILDER_DIR . 'img/svg/insert.svg';
+		return file_get_contents( $path );
+	}
+
+	/**
+	 * Get the widget icon
+	 *
+	 * @since 2.0
+	 * @return String
+	 */
+	static public function get_widget_icon() {
+		$path = FL_BUILDER_DIR . 'img/svg/wordpress-alt.svg';
+		return file_get_contents( $path );
 	}
 }

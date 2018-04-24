@@ -6,9 +6,11 @@ class Illdy_Widget_Project extends WP_Widget {
 	 * Register widget with WordPress.
 	 */
 	function __construct() {
-		parent::__construct( 'illdy_project', __( '[Illdy] - Project', 'illdy-companion' ), array(
-			'description' => __( 'Add this widget in "Front page - Projects Sidebar".', 'illdy-companion' ),
-		) );
+		parent::__construct(
+			'illdy_project', __( '[Illdy] - Project', 'illdy-companion' ), array(
+				'description' => __( 'Add this widget in "Front page - Projects Sidebar".', 'illdy-companion' ),
+			)
+		);
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
@@ -36,17 +38,17 @@ class Illdy_Widget_Project extends WP_Widget {
 
 		$defaults = array(
 			'title' => '',
-			'url' => '',
+			'url'   => '',
 			'image' => '',
 		);
 		$instance = wp_parse_args( $instance, $defaults );
 
-		$image_id = illdy_get_image_id_from_image_url( $instance['image'] );
+		$image_id                 = illdy_get_image_id_from_image_url( $instance['image'] );
 		$get_attachment_image_src = wp_get_attachment_image_src( $image_id, 'illdy-front-page-projects' );
 
 		$class = 'project';
 
-		if ( '' == $instance['url'] ) {
+		if ( '' == $instance['url'] && ! $lightbox ) {
 			$class .= ' no-url';
 		}
 		$attr = '';
@@ -60,7 +62,7 @@ class Illdy_Widget_Project extends WP_Widget {
 			}
 
 						$class .= ' fancybox';
-			$attr = ' rel="projects-gallery"';
+			$attr               = ' rel="projects-gallery"';
 		} else {
 			$url = $instance['url'];
 		}
@@ -83,7 +85,7 @@ class Illdy_Widget_Project extends WP_Widget {
 
 		$defaults = array(
 			'title' => __( '[Illdy] - Project', 'illdy-companion' ),
-			'url' => '',
+			'url'   => '',
 			'image' => get_template_directory_uri() . '/layout/images/front-page/front-page-project-1.jpg',
 		);
 		$instance = wp_parse_args( $instance, $defaults );
@@ -118,10 +120,10 @@ class Illdy_Widget_Project extends WP_Widget {
 	 * @return array Updated safe values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
+		$instance          = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
 		$instance['image'] = ! empty( $new_instance['image'] ) ? esc_url_raw( $new_instance['image'] ) : '';
-		$instance['url'] = ( ! empty( $new_instance['url'] ) ? esc_url_raw( $new_instance['url'] ) : '' );
+		$instance['url']   = ( ! empty( $new_instance['url'] ) ? esc_url_raw( $new_instance['url'] ) : '' );
 
 		return $instance;
 	}

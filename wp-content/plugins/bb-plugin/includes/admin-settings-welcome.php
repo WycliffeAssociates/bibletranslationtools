@@ -8,13 +8,14 @@ function fl_welcome_utm( $campaign ) {
 	);
 }
 
-$blog_post_url     = FLBuilderModel::get_store_url( 'beaver-builder-1-9-shasta', fl_welcome_utm( 'settings-welcome-blog-post' ) );
+$blog_post_url     = FLBuilderModel::get_store_url( 'beaver-builder-2-0-hoover', fl_welcome_utm( 'settings-welcome-blog-post' ) );
 $change_logs_url   = FLBuilderModel::get_store_url( 'change-logs', fl_welcome_utm( 'settings-welcome-change-logs' ) );
 $upgrade_url       = FLBuilderModel::get_upgrade_url( fl_welcome_utm( 'settings-welcome-upgrade' ) );
 $support_url       = FLBuilderModel::get_store_url( 'beaver-builder-support', fl_welcome_utm( 'settings-welcome-support' ) );
 $faqs_url          = FLBuilderModel::get_store_url( 'frequently-asked-questions', fl_welcome_utm( 'settings-welcome-faqs' ) );
 $forums_url        = FLBuilderModel::get_store_url( 'support', fl_welcome_utm( 'settings-welcome-forums' ) );
-$docs_url          = 'http://kb.wpbeaverbuilder.com/';
+$docs_url          = 'https://kb.wpbeaverbuilder.com/';
+$fb_url            = 'https://www.facebook.com/groups/beaverbuilders/';
 
 ?>
 <div id="fl-welcome-form" class="fl-settings-form">
@@ -68,15 +69,16 @@ $docs_url          = 'http://kb.wpbeaverbuilder.com/';
 
 			<div class="fl-welcome-col">
 
-				<h4><?php _e( 'What\'s New in Beaver Builder 1.9 Shasta', 'fl-builder' ); ?></h4>
+				<h4><?php _e( 'What\'s New in Beaver Builder 2.0 Hoover', 'fl-builder' ); ?></h4>
 
-				<p><?php _e( 'Beaver Builder 1.9 is out and it has some epic new features:', 'fl-builder' ); ?></p>
+				<p><?php _e( 'We’re thrilled to announce Beaver Builder 2.0, Hoover. Beaver Builder 2.0 looks better, feels better, it\'s faster, and we\'re introducing new customization options and tons of workflow improvements.', 'fl-builder' ); ?></p>
 
 				<ul>
-					<li><?php _e( 'The ability to drag, drop and nest columns.', 'fl-builder' ); ?></li>
-					<li><?php _e( 'A revamped editor with more accurate dragging and dropping.', 'fl-builder' ); ?></li>
-					<li><?php _e( 'Responsive settings for margins, paddings and borders.', 'fl-builder' ); ?></li>
-					<li><?php _e( 'New content page templates available in the template selector.', 'fl-builder' ); ?></li>
+					<li><?php _e( 'A sleek and modern visual refresh.', 'fl-builder' ); ?></li>
+					<li><?php _e( 'A centralized main menu.', 'fl-builder' ); ?></li>
+					<li><?php _e( 'Keyboard shortcuts.', 'fl-builder' ); ?></li>
+					<li><?php _e( 'Major performance improvements.', 'fl-builder' ); ?></li>
+					<li><?php _e( 'Customizable and dockable settings panels.', 'fl-builder' ); ?></li>
 				</ul>
 
 				<p><?php printf( __( 'There\'s a whole lot more, too! Read about everything else on our <a href="%1$s" target="_blank">update post</a> or <a href="%2$s" target="_blank">change logs</a>.', 'fl-builder' ), $blog_post_url, $change_logs_url ); ?></p>
@@ -91,7 +93,7 @@ $docs_url          = 'http://kb.wpbeaverbuilder.com/';
 
 				<p><?php _e( 'The fastest way to find an answer to a question is to see if someone\'s already answered it!', 'fl-builder' );  ?></p>
 
-				<p><?php printf( __( 'For that, check our <a href="%1$s" target="_blank">Knowledge Base</a>, <a href="%2$s" target="_blank">FAQ page</a>, or search our legacy <a href="%3$s" target="_blank">support forum.</a>', 'fl-builder' ), $docs_url, $faqs_url, $forums_url );  ?></p>
+				<p><?php printf( __( 'For that, check our <a href="%1$s" target="_blank">Knowledge Base</a> or try searching <a href="%2$s" target="_blank">the Beaver Builders Facebook group</a>.', 'fl-builder' ), $docs_url, $fb_url );  ?></p>
 
 				<?php if ( true === FL_BUILDER_LITE ) : ?>
 				<p><?php printf( __( 'If you can\'t find an answer, consider upgrading to a premium version of Beaver Builder. Our expert support team is waiting to answer your questions and help you build your website. <a href="%s" target="_blank">Learn More</a>.', 'fl-builder' ), $upgrade_url ); ?></p>

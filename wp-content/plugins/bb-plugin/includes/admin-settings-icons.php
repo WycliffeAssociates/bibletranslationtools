@@ -30,7 +30,7 @@
 
 		<div class="fl-settings-form-content">
 
-			<p><?php _e( 'Enable or disable icon sets using the options below or upload a custom icon set. Instructions on how to generate your own custom icon sets can be read <a href="http://kb.wpbeaverbuilder.com/article/110-enable-disable-or-import-new-icon-sets" target="_blank">here</a>.', 'fl-builder' ); ?></p>
+			<p><?php _e( 'Enable or disable icon sets using the options below or upload a custom icon set. Instructions on how to generate your own custom icon sets can be read <a href="https://kb.wpbeaverbuilder.com/article/110-enable-disable-or-import-new-icon-sets" target="_blank">here</a>.', 'fl-builder' ); ?></p>
 
 			<?php
 

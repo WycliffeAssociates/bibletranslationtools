@@ -12,8 +12,9 @@ class FLCtaModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Call to Action', 'fl-builder' ),
 			'description'   	=> __( 'Display a heading, subheading and a button.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Actions', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'megaphone.svg',
 		));
 	}
 
@@ -43,8 +44,8 @@ class FLCtaModule extends FLBuilderModule {
 			'border_size'       => $this->settings->btn_border_size,
 			'font_size'         => $this->settings->btn_font_size,
 			'icon'              => $this->settings->btn_icon,
-			'icon_position'		=> $this->settings->btn_icon_position,
-			'icon_animation'	=> $this->settings->btn_icon_animation,
+			'icon_position'     => $this->settings->btn_icon_position,
+			'icon_animation'    => $this->settings->btn_icon_animation,
 			'link'              => $this->settings->btn_link,
 			'link_nofollow'     => $this->settings->btn_link_nofollow,
 			'link_target'       => $this->settings->btn_link_target,

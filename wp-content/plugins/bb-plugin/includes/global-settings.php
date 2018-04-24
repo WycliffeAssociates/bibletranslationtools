@@ -43,6 +43,7 @@ FLBuilder::register_settings_form('global', array(
 							'placeholder'       => '0',
 							'responsive'        => true,
 							'description'       => 'px',
+							'sanitize'			=> 'absint',
 						),
 						'row_padding'       => array(
 							'type'              => 'unit',
@@ -51,6 +52,7 @@ FLBuilder::register_settings_form('global', array(
 							'placeholder'       => '0',
 							'responsive'        => true,
 							'description'       => 'px',
+							'sanitize'			=> 'absint',
 						),
 						'row_width'         => array(
 							'type'              => 'text',
@@ -59,6 +61,7 @@ FLBuilder::register_settings_form('global', array(
 							'maxlength'         => '4',
 							'size'              => '5',
 							'description'       => 'px',
+							'sanitize'			=> 'absint',
 							'help'              => __( 'All rows will default to this width. You can override this and make a row full width in the settings for each row.', 'fl-builder' ),
 						),
 						'row_width_default' => array(
@@ -96,6 +99,7 @@ FLBuilder::register_settings_form('global', array(
 							'placeholder'       => '0',
 							'responsive'        => true,
 							'description'       => 'px',
+							'sanitize'			=> 'absint',
 						),
 					),
 				),
@@ -133,6 +137,7 @@ FLBuilder::register_settings_form('global', array(
 							'maxlength'         => '4',
 							'size'              => '5',
 							'description'       => 'px',
+							'sanitize'			=> 'absint',
 							'help'              => __( 'The browser width at which the layout will adjust for medium devices such as tablets.', 'fl-builder' ),
 						),
 						'responsive_breakpoint' => array(
@@ -142,6 +147,7 @@ FLBuilder::register_settings_form('global', array(
 							'maxlength'         => '4',
 							'size'              => '5',
 							'description'       => 'px',
+							'sanitize'			=> 'absint',
 							'help'              => __( 'The browser width at which the layout will adjust for small devices such as phones.', 'fl-builder' ),
 						),
 					),

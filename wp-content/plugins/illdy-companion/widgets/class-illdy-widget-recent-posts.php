@@ -6,9 +6,11 @@ class Illdy_Widget_Recent_Posts extends WP_Widget {
 	 * Register widget with WordPress.
 	 */
 	function __construct() {
-		parent::__construct( 'illdy_recent_posts', __( '[Illdy] - Recent Posts', 'illdy-companion' ), array(
-			'description' => __( 'Thiw widget will display the latest posts with thumbnail image on the left side.', 'illdy-companion' ),
-		) );
+		parent::__construct(
+			'illdy_recent_posts', __( '[Illdy] - Recent Posts', 'illdy-companion' ), array(
+				'description' => __( 'Thiw widget will display the latest posts with thumbnail image on the left side.', 'illdy-companion' ),
+			)
+		);
 	}
 
 	/**
@@ -23,7 +25,7 @@ class Illdy_Widget_Recent_Posts extends WP_Widget {
 		echo $args['before_widget'];
 
 		$defaults = array(
-			'title' => '',
+			'title'         => '',
 			'display_title' => '',
 			'numberofposts' => 4,
 		);
@@ -51,13 +53,13 @@ class Illdy_Widget_Recent_Posts extends WP_Widget {
 
 				global $post;
 
-				$output = '<div class="widget-recent-post clearfix">';
-					$output .= ( has_post_thumbnail( $post->ID ) ? '<div class="recent-post-image">' : '' );
+				$output          = '<div class="widget-recent-post clearfix">';
+					$output     .= ( has_post_thumbnail( $post->ID ) ? '<div class="recent-post-image">' : '' );
 						$output .= ( has_post_thumbnail( $post->ID ) ? get_the_post_thumbnail( $post->ID, 'illdy-widget-recent-posts' ) : '' );
-					$output .= ( has_post_thumbnail( $post->ID ) ? '</div><!--/.recent-post-image-->' : '' );
-					$output .= '<a href="' . esc_url( get_the_permalink() ) . '" title="' . esc_attr( get_the_title() ) . '" class="recent-post-title">' . esc_html( get_the_title() ) . '</a>';
-					$output .= '<a href="' . esc_url( get_the_permalink() ) . '" title="' . __( 'More...', 'illdy-companion' ) . '" class="recent-post-button">' . __( 'More...', 'illdy-companion' ) . '</a>';
-				$output .= '</div><!--/.widget-recent-post.clearfix-->';
+					$output     .= ( has_post_thumbnail( $post->ID ) ? '</div><!--/.recent-post-image-->' : '' );
+					$output     .= '<a href="' . esc_url( get_the_permalink() ) . '" title="' . esc_attr( get_the_title() ) . '" class="recent-post-title">' . esc_html( get_the_title() ) . '</a>';
+					$output     .= '<a href="' . esc_url( get_the_permalink() ) . '" title="' . __( 'More...', 'illdy-companion' ) . '" class="recent-post-button">' . __( 'More...', 'illdy-companion' ) . '</a>';
+				$output         .= '</div><!--/.widget-recent-post.clearfix-->';
 
 				echo $output;
 
@@ -81,7 +83,7 @@ class Illdy_Widget_Recent_Posts extends WP_Widget {
 	public function form( $instance ) {
 
 		$defaults = array(
-			'title' => __( '[Illdy] - Recent Posts', 'illdy-companion' ),
+			'title'         => __( '[Illdy] - Recent Posts', 'illdy-companion' ),
 			'display_title' => '',
 			'numberofposts' => 4,
 		);
@@ -92,9 +94,7 @@ class Illdy_Widget_Recent_Posts extends WP_Widget {
 		<div class="checkbox_switch" style="margin-top:15px;margin-bottom: 0;">
 			<span class="customize-control-title onoffswitch_label"><?php _e( 'Display title?', 'illdy-companion' ); ?></span>
 			<div class="onoffswitch">
-				<input type="checkbox" id="<?php echo $this->get_field_id( 'display_title' ); ?>"
-					   name="<?php echo $this->get_field_name( 'display_title' ); ?>" class="onoffswitch-checkbox"
-					   value="1" <?php checked( $instance['display_title'] ); ?>>
+				<input type="checkbox" id="<?php echo $this->get_field_id( 'display_title' ); ?>" name="<?php echo $this->get_field_name( 'display_title' ); ?>" class="onoffswitch-checkbox" value="1" <?php checked( $instance['display_title'] ); ?>>
 				<label class="onoffswitch-label" for="<?php echo $this->get_field_id( 'display_title' ); ?>"></label>
 			</div>
 		</div>
@@ -122,9 +122,9 @@ class Illdy_Widget_Recent_Posts extends WP_Widget {
 	 * @return array Updated safe values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
+		$instance                  = array();
 		$instance['display_title'] = $new_instance['display_title'];
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? wp_kses_post( $new_instance['title'] ) : '';
+		$instance['title']         = ( ! empty( $new_instance['title'] ) ) ? wp_kses_post( $new_instance['title'] ) : '';
 		$instance['numberofposts'] = ( ! empty( $new_instance['numberofposts'] ) ? absint( $new_instance['numberofposts'] ) : '' );
 
 		return $instance;

@@ -5,8 +5,6 @@ illdyCompanion.textEditor = {
     var context = jQuery( selector ),
         editorId = jQuery( context.find( 'textarea' ) ).attr( 'id' );
 
-    console.log( selector );
-
     if ( tinymce.get( editorId ) ) {
 		wp.editor.remove( editorId );
 	}
@@ -15,7 +13,7 @@ illdyCompanion.textEditor = {
       tinymce: {
         wpautop: true,
         setup: function( editor ) {
-          editor.on( 'change', function( e ) {
+          editor.on( 'change', function() {
             editor.save();
             jQuery( editor.getElement() ).trigger( 'change' );
           } );

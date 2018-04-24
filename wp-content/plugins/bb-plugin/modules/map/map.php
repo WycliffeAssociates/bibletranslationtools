@@ -12,8 +12,9 @@ class FLMapModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Map', 'fl-builder' ),
 			'description'   	=> __( 'Display a Google map.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Media', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'location.svg',
 		));
 	}
 }
@@ -29,7 +30,8 @@ FLBuilder::register_module('FLMapModule', array(
 				'title'         => '',
 				'fields'        => array(
 					'address'       => array(
-						'type'          => 'text',
+						'type'          => 'textarea',
+						'rows'			=> '3',
 						'label'         => __( 'Address', 'fl-builder' ),
 						'placeholder'   => __( '1865 Winchester Blvd #202 Campbell, CA 95008', 'fl-builder' ),
 						'preview'       => array(
@@ -43,6 +45,7 @@ FLBuilder::register_module('FLMapModule', array(
 						'default'       => '400',
 						'size'          => '5',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 				),
 			),

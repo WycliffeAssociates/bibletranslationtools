@@ -79,6 +79,23 @@ final class FLBuilderAutoSuggest {
 	}
 
 	/**
+	 * Returns the values for all suggest fields in a settings form.
+	 *
+	 * @since 2.0
+	 * @param array $fields
+	 * @return array
+	 */
+	static public function get_values( $fields ) {
+		$values = array();
+
+		foreach ( $fields as $field ) {
+			$values[ $field['name'] ] = self::get_value( $field['action'], $field['value'], $field['data'] );
+		}
+
+		return $values;
+	}
+
+	/**
 	 * Returns the SQL escaped like value for auto suggest queries.
 	 *
 	 * @since 1.2.3
@@ -109,14 +126,17 @@ final class FLBuilderAutoSuggest {
 
 		$data	= array();
 		$like	= self::get_like();
-		$type	= esc_sql( $_REQUEST['fl_as_action_data'] );
+		$types	= explode( ',', esc_sql( $_REQUEST['fl_as_action_data'] ) );
+		$types_in = join( "', '", array_map( 'esc_sql', $types ) );
 
+		// @codingStandardsIgnoreStart
 		$posts	= $wpdb->get_results( $wpdb->prepare( "
 			SELECT ID, post_title FROM {$wpdb->posts}
 			WHERE post_title LIKE %s
-			AND post_type = %s
+			AND post_type IN ('{$types_in}')
 			AND post_status = 'publish'
-		", '%' . $like . '%', $type ) );
+		", '%' . $like . '%' ) );
+		// @codingStandardsIgnoreEnd
 
 		foreach ( $posts as $post ) {
 			$data[] = array(

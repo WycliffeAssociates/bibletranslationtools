@@ -10,11 +10,12 @@ class FLContactFormModule extends FLBuilderModule {
 	 */
 	public function __construct() {
 		parent::__construct(array(
-			'name'				=> __( 'Contact Form', 'fl-builder' ),
-			'description'		=> __( 'A very simple contact form.', 'fl-builder' ),
-			'category'			=> __( 'Advanced Modules', 'fl-builder' ),
-			'editor_export'		=> false,
+			'name'           	=> __( 'Contact Form', 'fl-builder' ),
+			'description'    	=> __( 'A very simple contact form.', 'fl-builder' ),
+			'category'       	=> __( 'Actions', 'fl-builder' ),
+			'editor_export'  	=> false,
 			'partial_refresh'	=> true,
+			'icon'				=> 'editor-table.svg',
 		));
 
 		add_action( 'wp_ajax_fl_builder_email', array( $this, 'send_mail' ) );
@@ -32,12 +33,10 @@ class FLContactFormModule extends FLBuilderModule {
 			) {
 
 			$site_lang = substr( get_locale(), 0, 2 );
-			$post_id    = FLBuilderModel::get_post_id();
-
 			$this->add_js(
 				'g-recaptcha',
 				'https://www.google.com/recaptcha/api.js?onload=onLoadFLReCaptcha&render=explicit&hl=' . $site_lang,
-				array( 'fl-builder-layout-' . $post_id ),
+				array(),
 				'2.0',
 				true
 			);
@@ -67,6 +66,7 @@ class FLContactFormModule extends FLBuilderModule {
 		$template_id	 	= isset( $_POST['template_id'] ) ? sanitize_text_field( $_POST['template_id'] ) : false;
 		$template_node_id	  = isset( $_POST['template_node_id'] ) ? sanitize_text_field( $_POST['template_node_id'] ) : false;
 		$recaptcha_response	= isset( $_POST['recaptcha_response'] ) ? $_POST['recaptcha_response'] : false;
+		$terms_checked	    = isset( $_POST['terms_checked'] ) && 1 == $_POST['terms_checked'] ? true : false;
 
 		$subject 			= (isset( $_POST['subject'] ) ? $_POST['subject'] : __( 'Contact Form Submission', 'fl-builder' ));
 		$admin_email 		= get_option( 'admin_email' );
@@ -98,11 +98,20 @@ class FLContactFormModule extends FLBuilderModule {
 				$subject   = $settings->subject_hidden;
 			}
 
+			// Validate terms and conditions if enabled
+			if ( ( isset( $settings->terms_checkbox ) && 'show' == $settings->terms_checkbox ) && ! $terms_checked ) {
+				$response = array(
+					'error'   => true,
+					'message' => __( 'Terms and Conditions is required!', 'fl-builder' ),
+				);
+				wp_send_json( $response );
+			}
+
 			// Validate reCAPTCHA if enabled
 			if ( isset( $settings->recaptcha_toggle ) && 'show' == $settings->recaptcha_toggle && $recaptcha_response ) {
 				if ( ! empty( $settings->recaptcha_secret_key ) && ! empty( $settings->recaptcha_site_key ) ) {
 					if ( version_compare( phpversion(), '5.3', '>=' ) ) {
-						include $module->dir . 'includes/validate-recaptcha.php';
+						include FLBuilderModel::$modules['contact-form']->dir . 'includes/validate-recaptcha.php';
 					} else {
 						$response['error'] = false;
 					}
@@ -176,6 +185,16 @@ FLBuilder::register_module('FLContactFormModule', array(
 							'show'	   => __( 'Show', 'fl-builder' ),
 							'hide'	   => __( 'Hide', 'fl-builder' ),
 						),
+						'toggle'		=> array(
+							'show'			=> array(
+								'fields'		=> array( 'name_placeholder' ),
+							),
+						),
+					),
+					'name_placeholder'	=> array(
+						'type'		=> 'text',
+						'label'		=> __( 'Name Field Placeholder', 'fl-builder' ),
+						'default'	=> __( 'Your name', 'fl-builder' ),
 					),
 					'subject_toggle'	=> array(
 						'type'		  => 'select',
@@ -186,10 +205,18 @@ FLBuilder::register_module('FLContactFormModule', array(
 							'hide'	   => __( 'Hide', 'fl-builder' ),
 						),
 						'toggle'		=> array(
+							'show'			=> array(
+								'fields'		=> array( 'subject_placeholder' ),
+							),
 							'hide'			=> array(
 								'fields'		=> array( 'subject_hidden' ),
 							),
 						),
+					),
+					'subject_placeholder'	=> array(
+						'type'		=> 'text',
+						'label'		=> __( 'Subject Field Placeholder', 'fl-builder' ),
+						'default'	=> __( 'Subject', 'fl-builder' ),
 					),
 					'subject_hidden'   => array(
 						'type'		  => 'text',
@@ -205,6 +232,16 @@ FLBuilder::register_module('FLContactFormModule', array(
 							'show'	   => __( 'Show', 'fl-builder' ),
 							'hide'	   => __( 'Hide', 'fl-builder' ),
 						),
+						'toggle'		=> array(
+							'show'			=> array(
+								'fields'		=> array( 'email_placeholder' ),
+							),
+						),
+					),
+					'email_placeholder'	=> array(
+						'type'		=> 'text',
+						'label'		=> __( 'Email Field Placeholder', 'fl-builder' ),
+						'default'	=> __( 'Your email', 'fl-builder' ),
 					),
 					'phone_toggle'	  => array(
 						'type'		  => 'select',
@@ -214,6 +251,51 @@ FLBuilder::register_module('FLContactFormModule', array(
 							'show'	   => __( 'Show', 'fl-builder' ),
 							'hide'	   => __( 'Hide', 'fl-builder' ),
 						),
+						'toggle'		=> array(
+							'show'			=> array(
+								'fields'		=> array( 'phone_placeholder' ),
+							),
+						),
+					),
+					'phone_placeholder'	=> array(
+						'type'		=> 'text',
+						'label'		=> __( 'Phone Field Placeholder', 'fl-builder' ),
+						'default'	=> __( 'Your phone', 'fl-builder' ),
+						),
+					'message_placeholder'	=> array(
+						'type'		=> 'text',
+						'label'		=> __( 'Your Message Placeholder', 'fl-builder' ),
+						'default'	=> __( 'Your message', 'fl-builder' ),
+					),
+					'terms_checkbox' => array(
+						'type'		  => 'select',
+						'label'		  => __( 'Terms and Conditions Checkbox', 'fl-builder' ),
+						'default'		  => 'hide',
+						'options'		  => array(
+							'show'	   => __( 'Show', 'fl-builder' ),
+							'hide'	   => __( 'Hide', 'fl-builder' ),
+						),
+						'toggle'		=> array(
+							'show'			=> array(
+								'fields'		=> array( 'terms_checkbox_text', 'terms_text' ),
+							),
+						),
+					),
+					'terms_checkbox_text'	=> array(
+						'type'		=> 'text',
+						'label'		=> __( 'Checkbox Text', 'fl-builder' ),
+						'default'	=> __( 'I Accept the Terms and Conditions', 'fl-builder' ),
+					),
+					'terms_text' => array(
+						'type'		  => 'editor',
+						'label'		  => 'Terms and Conditions',
+						'media_buttons' => false,
+						'rows'          => 8,
+						'preview'       => array(
+							'type'          => 'text',
+							'selector'      => '.fl-terms-checkbox-text',
+						),
+						'connections'   => array( 'string' ),
 					),
 				),
 			),
@@ -454,10 +536,12 @@ FLBuilder::register_module('FLContactFormModule', array(
 							'show'	   => __( 'Show', 'fl-builder' ),
 							'hide'	   => __( 'Hide', 'fl-builder' ),
 						),
-						'help' 			=> __( 'If you want to show this field, please provide valid Site and Secret Keys.', 'fl-builder' ),
-						'preview'		  => array(
-							'type'		   => 'none',
+						'toggle' 		=> array(
+							'show'        => array(
+								'fields' 	=> array( 'recaptcha_site_key', 'recaptcha_secret_key', 'recaptcha_validate_type', 'recaptcha_theme' ),
+							),
 						),
+						'help' 			=> __( 'If you want to show this field, please provide valid Site and Secret Keys.', 'fl-builder' ),
 					),
 					'recaptcha_site_key'		=> array(
 						'type'			=> 'text',
@@ -473,6 +557,31 @@ FLBuilder::register_module('FLContactFormModule', array(
 						'default'		  => '',
 						'preview'		  => array(
 							'type'		   => 'none',
+						),
+					),
+					'recaptcha_validate_type' => array(
+						'type'          		=> 'select',
+						'label'         		=> __( 'Validate Type', 'fl-builder' ),
+						'default'       		=> 'normal',
+						'options'       		=> array(
+							'normal'  				=> __( '"I\'m not a robot" checkbox', 'fl-builder' ),
+							'invisible'     		=> __( 'Invisible', 'fl-builder' ),
+						),
+						'help' 					=> __( 'Validate users with checkbox or in the background.<br />Note: Checkbox and Invisible types use seperate API keys.', 'fl-builder' ),
+						'preview'      		 	=> array(
+							'type'          		=> 'none',
+						),
+					),
+					'recaptcha_theme'   => array(
+						'type'          	=> 'select',
+						'label'         	=> __( 'Theme', 'fl-builder' ),
+						'default'       	=> 'light',
+						'options'       	=> array(
+							'light'  			=> __( 'Light', 'fl-builder' ),
+							'dark'     			=> __( 'Dark', 'fl-builder' ),
+						),
+						'preview'      		 	=> array(
+							'type'          		=> 'none',
 						),
 					),
 				),

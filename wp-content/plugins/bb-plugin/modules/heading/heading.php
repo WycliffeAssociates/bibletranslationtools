@@ -12,8 +12,9 @@ class FLHeadingModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Heading', 'fl-builder' ),
 			'description'   	=> __( 'Display a title/page heading.', 'fl-builder' ),
-			'category'      	=> __( 'Basic Modules', 'fl-builder' ),
+			'category'      	=> __( 'Basic', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'text.svg',
 		));
 	}
 }
@@ -144,6 +145,7 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'line_height'     => array(
 						'type'          => 'select',
@@ -245,6 +247,7 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'r_line_height'     => array(
 						'type'          => 'select',

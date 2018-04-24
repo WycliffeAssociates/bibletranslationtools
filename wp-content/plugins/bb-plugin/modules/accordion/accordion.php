@@ -12,8 +12,9 @@ class FLAccordionModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Accordion', 'fl-builder' ),
 			'description'   	=> __( 'Display a collapsible accordion of items.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Layout', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'layout.svg',
 		));
 
 		$this->add_css( 'font-awesome' );
@@ -77,6 +78,7 @@ FLBuilder::register_module('FLAccordionModule', array(
 						'maxlength'     => '2',
 						'size'          => '3',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 						'preview'       => array(
 							'type'          => 'none',
 						),

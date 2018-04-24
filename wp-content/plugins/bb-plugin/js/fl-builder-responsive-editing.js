@@ -13,7 +13,7 @@
 		 *
 		 * @since 1.9
 		 * @private
-		 * @property {FLBuilderPreview} _mode
+		 * @property {String} _mode
 		 */
 		_mode: 'default',
 
@@ -86,7 +86,10 @@
 				FLBuilderConfig.pluginUrl,
 				'fl-theme-builder',
 				'/wp-includes/',
-				'/wp-admin/'
+				'/wp-admin/',
+				'admin-bar-inline-css',
+				'ace-tm',
+				'ace_editor.css'
 			] );
 
 			// Reparse stylesheets that match these paths on each update.
@@ -94,7 +97,9 @@
 				FLBuilderConfig.postId + '-layout-draft.css?',
 				FLBuilderConfig.postId + '-layout-draft-partial.css?',
 				FLBuilderConfig.postId + '-layout-preview.css?',
-				FLBuilderConfig.postId + '-layout-preview-partial.css?'
+				FLBuilderConfig.postId + '-layout-preview-partial.css?',
+				'fl-builder-global-css',
+				'fl-builder-layout-css'
 			] );
 		},
 
@@ -107,7 +112,8 @@
 		 */
 		_switchTo: function( mode, callback )
 		{
-			var body        = $( 'body' ),
+			var html		= $( 'html' ),
+				body        = $( 'body' ),
 				content     = $( FLBuilder._contentClass ),
 				preview     = $( '.fl-responsive-preview' ),
 				mask        = $( '.fl-responsive-preview-mask' ),
@@ -124,12 +130,14 @@
 					return;
 				}
 
+				html.removeClass( 'fl-responsive-preview-enabled' );
 				placeholder.after( content );
 				placeholder.remove();
 				preview.remove();
 				mask.remove();
 			}
 			else if ( 0 === preview.length ) {
+				html.addClass( 'fl-responsive-preview-enabled' );
 				content.after( '<div class="fl-content-placeholder"></div>' );
 				body.prepend( wp.template( 'fl-responsive-preview' )() );
 				$( '.fl-responsive-preview' ).addClass( 'fl-preview-' + mode );
@@ -142,7 +150,7 @@
 
 			// Set the content width and apply media queries.
 			if ( 'responsive' == mode ) {
-				width = FLBuilderConfig.global.responsive_breakpoint >= 320 ? 320 : FLBuilderConfig.global.responsive_breakpoint;
+				width = FLBuilderConfig.global.responsive_breakpoint >= 360 ? 360 : FLBuilderConfig.global.responsive_breakpoint;
 				content.width( width );
 				FLBuilderSimulateMediaQuery.update( width, callback );
 			}
@@ -324,17 +332,12 @@
 
 			if ( Number( FLBuilderConfig.global.responsive_enabled ) ) {
 
-				self._initFields( 'unit', 'input', 'keyup', self._spacingFieldKeyup, [
-					'margin_top',
-					'margin_bottom',
-					'margin_left',
-					'margin_right',
-					'padding_top',
-					'padding_bottom',
-					'padding_left',
-					'padding_right'
+				self._initFields( 'dimension', 'input', 'keyup', self._spacingFieldKeyup, [
+					'margin',
+					'padding'
 				] );
 
+				self._initFields( 'dimension', 'input', 'keyup', self._textFieldKeyup );
 				self._initFields( 'unit', 'input', 'keyup', self._textFieldKeyup );
 			}
 
@@ -415,26 +418,30 @@
 		 */
 		_textFieldKeyup: function()
 		{
-			var fields             = FLBuilderResponsiveEditing._getFields( this, 'input' ),
-				defaultPlaceholder = fields.default.attr( 'placeholder' ),
-				defaultValue       = fields.default.val(),
-				mediumValue        = fields.medium.val();
+			var fields = FLBuilderResponsiveEditing._getFields( this, 'input' );
 
-			// Medium placeholder
-			if ( '' == defaultValue ) {
-				fields.medium.attr( 'placeholder', ( undefined === defaultPlaceholder ? '' : defaultPlaceholder ) );
-			}
-			else {
-				fields.medium.attr( 'placeholder', defaultValue );
-			}
+			fields.default.each( function( i ) {
 
-			// Responsive placeholder
-			if ( '' == mediumValue ) {
-				fields.responsive.attr( 'placeholder', fields.medium.attr( 'placeholder' ) );
-			}
-			else {
-				fields.responsive.attr( 'placeholder', mediumValue );
-			}
+				var defaultPlaceholder = fields.default.eq( i ).attr( 'placeholder' ),
+					defaultValue       = fields.default.eq( i ).val(),
+					mediumValue        = fields.medium.eq( i ).val();
+
+				// Medium placeholder
+				if ( '' == defaultValue ) {
+					fields.medium.eq( i ).attr( 'placeholder', ( undefined === defaultPlaceholder ? '' : defaultPlaceholder ) );
+				}
+				else {
+					fields.medium.eq( i ).attr( 'placeholder', defaultValue );
+				}
+
+				// Responsive placeholder
+				if ( '' == mediumValue ) {
+					fields.responsive.eq( i ).attr( 'placeholder', fields.medium.eq( i ).attr( 'placeholder' ) );
+				}
+				else {
+					fields.responsive.eq( i ).attr( 'placeholder', mediumValue );
+				}
+			} );
 		},
 
 		/**
@@ -448,20 +455,13 @@
 		{
 			var form                 = $( '.fl-builder-settings' ),
 				type                 = 'row',
-				parts                = $( this ).closest( '.fl-field' ).attr( 'id' ).replace( 'fl-field-', '' ).split( '_' ),
-				field                = parts[0],
-				dimension            = parts[1],
+				name                 = $( this ).closest( '.fl-field' ).attr( 'id' ).replace( 'fl-field-', '' ),
 				fields               = FLBuilderResponsiveEditing._getFields( this, 'input' ),
 				config               = FLBuilderConfig.global,
 				configPrefix         = null,
-				defaultVal           = fields.default.val(),
 				defaultGlobalVal     = null,
-				mediumVal            = fields.medium.val(),
 				mediumGlobalVal      = null,
-				responsiveVal        = fields.responsive.val(),
-				responsiveGlobalVal  = null,
-				moduleGlobalVal      = null,
-				moduleResponsiveVal  = null;
+				responsiveGlobalVal  = null;
 
 			// Get the node type
 			if ( form.hasClass( 'fl-builder-row-settings' ) ) {
@@ -474,7 +474,7 @@
 				type = 'module';
 			}
 
-			// Spoof global column defaults.
+			// Spoof global column defaults since we don't have a setting for those.
 			$.extend( config, {
 				col_margins            : 0,
 				col_margins_medium     : '',
@@ -485,56 +485,67 @@
 			} );
 
 			// Set the global values
-			configPrefix         = type + '_' + field + ( 'margin' == field ? 's' : '' );
+			configPrefix         = type + '_' + name + ( 'margin' === name ? 's' : '' );
 			defaultGlobalVal     = config[ configPrefix ];
 			mediumGlobalVal      = config[ configPrefix + '_medium' ];
 			responsiveGlobalVal  = config[ configPrefix + '_responsive' ];
 
-			// Medium value
-			if ( '' == mediumGlobalVal ) {
+			// Loop through the fields.
+			fields.default.each( function( i ) {
 
-				if ( '' != defaultVal ) {
-					fields.medium.attr( 'placeholder', defaultVal );
-				}
-				else if ( '' != defaultGlobalVal ) {
-					fields.medium.attr( 'placeholder', defaultGlobalVal );
-				}
-			}
+				var dimension            = fields.default.eq( i ).attr( 'name' ).split( '_' ).pop(),
+					defaultVal           = fields.default.eq( i ).val(),
+					mediumVal            = fields.medium.eq( i ).val(),
+					responsiveVal        = fields.responsive.eq( i ).val(),
+					moduleGlobalVal      = null,
+					moduleResponsiveVal  = null;
 
-			// Responsive value
-			if ( '' == responsiveGlobalVal ) {
+				// Medium value
+				if ( '' === mediumGlobalVal ) {
 
-				if ( 'module' == type && Number( config.auto_spacing ) ) {
-
-					moduleGlobalVal     = '' == mediumGlobalVal ? Number( defaultGlobalVal ) : mediumGlobalVal;
-					moduleResponsiveVal = '' == mediumVal ? Number( defaultVal ) : mediumVal;
-
-					if ( '' != moduleResponsiveVal && ( moduleResponsiveVal > moduleGlobalVal || moduleResponsiveVal < 0 ) ) {
-						fields.responsive.attr( 'placeholder', moduleGlobalVal );
+					if ( '' !== defaultVal ) {
+						fields.medium.eq( i ).attr( 'placeholder', defaultVal );
 					}
-					else if ( '' != moduleResponsiveVal ) {
-						fields.responsive.attr( 'placeholder', moduleResponsiveVal );
-					}
-					else {
-						fields.responsive.attr( 'placeholder', moduleGlobalVal );
+					else if ( '' !== defaultGlobalVal ) {
+						fields.medium.eq( i ).attr( 'placeholder', defaultGlobalVal );
 					}
 				}
-				else if ( ! Number( config.auto_spacing ) || ( 'padding' == field && 'top|bottom'.indexOf( dimension ) > -1 ) ) {
 
-					if ( '' != mediumVal ) {
-						fields.responsive.attr( 'placeholder', mediumVal );
+				// Responsive value
+				if ( '' === responsiveGlobalVal ) {
+
+					if ( 'module' === type && Number( config.auto_spacing ) ) {
+
+						moduleGlobalVal     = '' === mediumGlobalVal ? Number( defaultGlobalVal ) : mediumGlobalVal;
+						moduleResponsiveVal = '' === mediumVal ? Number( defaultVal ) : mediumVal;
+
+						if ( '' !== moduleResponsiveVal && ( moduleResponsiveVal > moduleGlobalVal || moduleResponsiveVal < 0 ) ) {
+							fields.responsive.eq( i ).attr( 'placeholder', moduleGlobalVal );
+						}
+						else if ( '' !== moduleResponsiveVal ) {
+							fields.responsive.eq( i ).attr( 'placeholder', moduleResponsiveVal );
+						}
+						else {
+							fields.responsive.eq( i ).attr( 'placeholder', moduleGlobalVal );
+						}
 					}
-					else if ( '' != mediumGlobalVal ) {
-						fields.responsive.attr( 'placeholder', mediumGlobalVal );
-					}
-					else if ( '' != defaultVal ) {
-						fields.responsive.attr( 'placeholder', defaultVal );
-					}
-					else if ( '' != defaultGlobalVal ) {
-						fields.responsive.attr( 'placeholder', defaultGlobalVal );
+					else if ( ! Number( config.auto_spacing ) || ( 'padding' === name && 'top|bottom'.indexOf( dimension ) > -1 ) ) {
+
+						if ( '' !== mediumVal ) {
+							fields.responsive.eq( i ).attr( 'placeholder', mediumVal );
+						}
+						else if ( '' !== mediumGlobalVal ) {
+							fields.responsive.eq( i ).attr( 'placeholder', mediumGlobalVal );
+						}
+						else if ( '' !== defaultVal ) {
+							fields.responsive.eq( i ).attr( 'placeholder', defaultVal );
+						}
+						else if ( '' !== defaultGlobalVal ) {
+							fields.responsive.eq( i ).attr( 'placeholder', defaultGlobalVal );
+						}
 					}
 				}
-			}
+			} );
 		},
 
 		/**

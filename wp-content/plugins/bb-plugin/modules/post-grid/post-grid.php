@@ -12,9 +12,10 @@ class FLPostGridModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Posts', 'fl-builder' ),
 			'description'   	=> __( 'Display a grid of your WordPress posts.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Posts', 'fl-builder' ),
 			'editor_export' 	=> false,
 			'partial_refresh'	=> true,
+			'icon'				=> 'schedule.svg',
 		));
 	}
 
@@ -174,13 +175,13 @@ class FLPostGridModule extends FLBuilderModule {
 	 */
 	public function render_excerpt() {
 		if ( ! empty( $this->settings->content_length ) ) {
-			add_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ) );
+			add_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ), 9999 );
 		}
 
 		the_excerpt();
 
 		if ( ! empty( $this->settings->content_length ) ) {
-			remove_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ) );
+			remove_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ), 9999 );
 		}
 	}
 
@@ -203,7 +204,7 @@ class FLPostGridModule extends FLBuilderModule {
 	 */
 	static public function schema_meta() {
 		// General Schema Meta
-		echo '<meta itemscope itemprop="mainEntityOfPage" itemtype="http://schema.org/WebPage" itemid="' . esc_url( get_permalink() ) . '" content="' . the_title_attribute( array(
+		echo '<meta itemscope itemprop="mainEntityOfPage" itemtype="https://schema.org/WebPage" itemid="' . esc_url( get_permalink() ) . '" content="' . the_title_attribute( array(
 			'echo' => false,
 		) ) . '" />';
 		echo '<meta itemprop="datePublished" content="' . get_the_time( 'Y-m-d' ) . '" />';
@@ -222,7 +223,7 @@ class FLPostGridModule extends FLBuilderModule {
 		echo '</div>';
 
 		// Author Schema Meta
-		echo '<div itemscope itemprop="author" itemtype="http://schema.org/Person">';
+		echo '<div itemscope itemprop="author" itemtype="https://schema.org/Person">';
 		echo '<meta itemprop="url" content="' . get_author_posts_url( get_the_author_meta( 'ID' ) ) . '" />';
 		echo '<meta itemprop="name" content="' . get_the_author_meta( 'display_name', get_the_author_meta( 'ID' ) ) . '" />';
 		echo '</div>';
@@ -233,7 +234,7 @@ class FLPostGridModule extends FLBuilderModule {
 			$image = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full' );
 
 			if ( is_array( $image ) ) {
-				echo '<div itemscope itemprop="image" itemtype="http://schema.org/ImageObject">';
+				echo '<div itemscope itemprop="image" itemtype="https://schema.org/ImageObject">';
 				echo '<meta itemprop="url" content="' . $image[0] . '" />';
 				echo '<meta itemprop="width" content="' . $image[1] . '" />';
 				echo '<meta itemprop="height" content="' . $image[2] . '" />';
@@ -242,8 +243,8 @@ class FLPostGridModule extends FLBuilderModule {
 		}
 
 		// Comment Schema Meta
-		echo '<div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">';
-		echo '<meta itemprop="interactionType" content="http://schema.org/CommentAction" />';
+		echo '<div itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">';
+		echo '<meta itemprop="interactionType" content="https://schema.org/CommentAction" />';
 		echo '<meta itemprop="userInteractionCount" content="' . wp_count_comments( get_the_ID() )->approved . '" />';
 		echo '</div>';
 	}
@@ -259,9 +260,9 @@ class FLPostGridModule extends FLBuilderModule {
 		global $post;
 
 		if ( ! is_object( $post ) || ! isset( $post->post_type ) || 'post' != $post->post_type ) {
-			echo 'http://schema.org/CreativeWork';
+			echo 'https://schema.org/CreativeWork';
 		} else {
-			echo 'http://schema.org/BlogPosting';
+			echo 'https://schema.org/BlogPosting';
 		}
 	}
 }
@@ -779,6 +780,57 @@ FLBuilder::register_module('FLPostGridModule', array(
 					),
 				),
 			),
+		),
+	),
+	'content'   => array(
+		'title'         => __( 'Content', 'fl-builder' ),
+		'file'          => FL_BUILDER_DIR . 'includes/loop-settings.php',
+	),
+	'pagination' => array(
+		'title'      => __( 'Pagination', 'fl-builder' ),
+		'sections'   => array(
+			'pagination'   => array(
+				'title'         => __( 'Pagination', 'fl-builder' ),
+				'fields'        => array(
+					'pagination'     => array(
+						'type'          => 'select',
+						'label'         => __( 'Pagination Style', 'fl-builder' ),
+						'default'       => 'numbers',
+						'options'       => array(
+							'numbers'       => __( 'Numbers', 'fl-builder' ),
+							'scroll'        => __( 'Scroll', 'fl-builder' ),
+							'load_more'     => __( 'Load More Button', 'fl-builder' ),
+							'none'          => _x( 'None', 'Pagination style.', 'fl-builder' ),
+						),
+						'toggle' 		=> array(
+							'load_more' 	=> array(
+								'sections' 		=> array( 'load_more_general' ),
+							),
+						),
+					),
+					'posts_per_page' => array(
+						'type'          => 'text',
+						'label'         => __( 'Posts Per Page', 'fl-builder' ),
+						'default'       => '10',
+						'size'          => '4',
+					),
+					'no_results_message' => array(
+						'type' 				=> 'text',
+						'label'				=> __( 'No Results Message', 'fl-builder' ),
+						'default'			=> __( "Sorry, we couldn't find any posts. Please try a different search.", 'fl-builder' ),
+					),
+					'show_search'    => array(
+						'type'          => 'select',
+						'label'         => __( 'Show Search', 'fl-builder' ),
+						'default'       => '1',
+						'options'       => array(
+							'1'             => __( 'Show', 'fl-builder' ),
+							'0'             => __( 'Hide', 'fl-builder' ),
+						),
+						'help'          => __( 'Shows the search form if no posts are found.' ),
+					),
+				),
+			),
 			'load_more_general' => array(
 				'title'         => __( 'Load More Button', 'fl-builder' ),
 				'fields'        => array(
@@ -872,57 +924,6 @@ FLBuilder::register_module('FLPostGridModule', array(
 							'auto'		   => _x( 'Auto', 'Width.', 'fl-builder' ),
 							'full'		   => __( 'Full Width', 'fl-builder' ),
 						),
-					),
-				),
-			),
-		),
-	),
-	'content'   => array(
-		'title'         => __( 'Content', 'fl-builder' ),
-		'file'          => FL_BUILDER_DIR . 'includes/loop-settings.php',
-	),
-	'pagination' => array(
-		'title'      => __( 'Pagination', 'fl-builder' ),
-		'sections'   => array(
-			'pagination'   => array(
-				'title'         => __( 'Pagination', 'fl-builder' ),
-				'fields'        => array(
-					'pagination'     => array(
-						'type'          => 'select',
-						'label'         => __( 'Pagination Style', 'fl-builder' ),
-						'default'       => 'numbers',
-						'options'       => array(
-							'numbers'       => __( 'Numbers', 'fl-builder' ),
-							'scroll'        => __( 'Scroll', 'fl-builder' ),
-							'load_more'     => __( 'Load More Button', 'fl-builder' ),
-							'none'          => _x( 'None', 'Pagination style.', 'fl-builder' ),
-						),
-						'toggle' 		=> array(
-							'load_more' 	=> array(
-								'sections' 		=> array( 'load_more_general' ),
-							),
-						),
-					),
-					'posts_per_page' => array(
-						'type'          => 'text',
-						'label'         => __( 'Posts Per Page', 'fl-builder' ),
-						'default'       => '10',
-						'size'          => '4',
-					),
-					'no_results_message' => array(
-						'type' 				=> 'text',
-						'label'				=> __( 'No Results Message', 'fl-builder' ),
-						'default'			=> __( "Sorry, we couldn't find any posts. Please try a different search.", 'fl-builder' ),
-					),
-					'show_search'    => array(
-						'type'          => 'select',
-						'label'         => __( 'Show Search', 'fl-builder' ),
-						'default'       => '1',
-						'options'       => array(
-							'1'             => __( 'Show', 'fl-builder' ),
-							'0'             => __( 'Hide', 'fl-builder' ),
-						),
-						'help'          => __( 'Shows the search form if no posts are found.' ),
 					),
 				),
 			),

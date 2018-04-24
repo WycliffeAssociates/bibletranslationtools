@@ -17,13 +17,13 @@ class FLMenuModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Menu', 'fl-builder' ),
 			'description'   	=> __( 'Renders a WordPress menu.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Actions', 'fl-builder' ),
 			'partial_refresh'	=> true,
 			'editor_export' 	=> false,
+			'icon'				=> 'hamburger-menu.svg',
 		));
 
 		add_action( 'pre_get_posts', 		__CLASS__ . '::set_pre_get_posts_query', 10, 2 );
-		add_filter( 'wp_nav_menu_objects',  __CLASS__ . '::sort_nav_objects', 10, 2 );
 	}
 
 	public static function _get_menus() {
@@ -67,9 +67,9 @@ class FLMenuModule extends FLBuilderModule {
 
 			if ( in_array( $toggle, array( 'hamburger', 'hamburger-label' ) ) ) {
 
-				echo '<button class="fl-menu-mobile-toggle ' . $toggle . '"><div class="svg-container">';
+				echo '<button class="fl-menu-mobile-toggle ' . $toggle . '"><span class="svg-container">';
 				include FL_BUILDER_DIR . 'img/svg/hamburger-menu.svg';
-				echo '</div>';
+				echo '</span>';
 
 				if ( 'hamburger-label' == $toggle ) {
 					echo '<span class="fl-menu-mobile-toggle-label">' . __( 'Menu', 'fl-builder' ) . '</span>';
@@ -269,7 +269,7 @@ FLBuilder::register_module('FLMenuModule', array(
 						'default'       => 'mobile',
 						'options'       => array(
 							'always'		=> __( 'Always', 'fl-builder' ),
-							'medium-mobile'	=> __( 'Medium & Small Devices Only', 'fl-builder' ),
+							'medium-mobile'	=> __( 'Medium &amp; Small Devices Only', 'fl-builder' ),
 							'mobile'		=> __( 'Small Devices Only', 'fl-builder' ),
 						),
 					),
@@ -553,7 +553,8 @@ class FL_Menu_Module_Walker extends Walker_Nav_Menu {
 		$class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args, $depth ) );
 		$class_names = ' class="' . esc_attr( $class_names ) . $submenu . '"';
 
-		$output .= $indent . '<li id="menu-item-' . $item->ID . '"' . $value . $class_names . '>';
+		$item_id = apply_filters( 'fl_builder_menu_item_id', 'menu-item-' . $item->ID, $item, $depth );
+		$output .= $indent . '<li id="' . $item_id . '"' . $value . $class_names . '>';
 
 		$attributes = ! empty( $item->attr_title ) ? ' title="' . esc_attr( $item->attr_title ) . '"' : '';
 		$attributes .= ! empty( $item->target ) ? ' target="' . esc_attr( $item->target ) . '"' : '';

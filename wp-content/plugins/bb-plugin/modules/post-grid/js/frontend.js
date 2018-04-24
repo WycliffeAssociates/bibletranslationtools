@@ -117,7 +117,8 @@
 				pages	 = $( this.nodeClass + ' .fl-builder-pagination' ).find( 'li .page-numbers:not(.next)' );
 
 			if( pages.length > 1) {
-				this.totalPages = parseInt( pages.last().text() );
+				total = pages.last().text().replace( /\D/g, '' )
+				this.totalPages = parseInt( total );
 			}
 
 			if( isScroll && this.totalPages > 1 && 'undefined' === typeof FLBuilder ) {
@@ -186,6 +187,10 @@
 			else if(this.settings.layout == 'gallery') {
 				this.gallery.resize();
 				elements.css('visibility', 'visible');
+			}
+
+			if( 'load_more' == this.settings.pagination ) {
+				$( '#infscr-loading' ).appendTo( this.wrapperClass );
 			}
 
 			this.currPage++;

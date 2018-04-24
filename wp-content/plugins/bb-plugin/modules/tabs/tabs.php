@@ -12,8 +12,9 @@ class FLTabsModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Tabs', 'fl-builder' ),
 			'description'   	=> __( 'Display a collection of tabbed content.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Layout', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'layout.svg',
 		));
 
 		$this->add_css( 'font-awesome' );

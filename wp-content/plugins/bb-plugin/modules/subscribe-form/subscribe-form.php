@@ -16,9 +16,10 @@ class FLSubscribeFormModule extends FLBuilderModule {
 		parent::__construct( array(
 			'name'          	=> __( 'Subscribe Form', 'fl-builder' ),
 			'description'   	=> __( 'Adds a simple subscribe form to your layout.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Actions', 'fl-builder' ),
 			'editor_export' 	=> false,
 			'partial_refresh'	=> true,
+			'icon'				=> 'editor-table.svg',
 		));
 
 		add_action( 'wp_ajax_fl_builder_subscribe_form_submit', array( $this, 'submit' ) );
@@ -36,12 +37,10 @@ class FLSubscribeFormModule extends FLBuilderModule {
 			) {
 
 			$site_lang = substr( get_locale(), 0, 2 );
-			$post_id    = FLBuilderModel::get_post_id();
-
 			$this->add_js(
 				'g-recaptcha',
 				'https://www.google.com/recaptcha/api.js?onload=onLoadFLReCaptcha&render=explicit&hl=' . $site_lang,
-				array( 'fl-builder-layout-' . $post_id ),
+				array(),
 				'2.0',
 				true
 			);
@@ -70,6 +69,7 @@ class FLSubscribeFormModule extends FLBuilderModule {
 	public function submit() {
 		$name       		= isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : false;
 		$email      		= isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : false;
+		$terms_checked	    = isset( $_POST['terms_checked'] ) && 1 == $_POST['terms_checked'] ? true : false;
 		$recaptcha     		= isset( $_POST['recaptcha'] ) ? $_POST['recaptcha'] : false;
 		$post_id     		= isset( $_POST['post_id'] ) ? $_POST['post_id'] : false;
 		$node_id    		= isset( $_POST['node_id'] ) ? sanitize_text_field( $_POST['node_id'] ) : false;
@@ -94,12 +94,19 @@ class FLSubscribeFormModule extends FLBuilderModule {
 				$settings = $module->settings;
 			}
 
+			// Validate terms and conditions if enabled
+			if ( ( isset( $settings->terms_checkbox ) && 'show' == $settings->terms_checkbox ) && ! $terms_checked ) {
+				$result = array(
+					'error' => __( 'Terms and Conditions is required!', 'fl-builder' ),
+				);
+			}
+
 			// Validate reCAPTCHA first if enabled
-			if ( $recaptcha ) {
+			if ( $recaptcha && ! $result['error'] ) {
 
 				if ( ! empty( $settings->recaptcha_secret_key ) && ! empty( $settings->recaptcha_site_key ) ) {
 					if ( version_compare( phpversion(), '5.3', '>=' ) ) {
-						include $module->dir . 'includes/validate-recaptcha.php';
+						include FLBuilderModel::$modules['subscribe-form']->dir . 'includes/validate-recaptcha.php';
 					} else {
 						$result['error'] = false;
 					}
@@ -150,8 +157,11 @@ FLBuilder::register_module( 'FLSubscribeFormModule', array(
 		'sections'      => array(
 			'service'       => array(
 				'title'         => '',
-				'file'          => FL_BUILDER_DIR . 'includes/service-settings.php',
 				'services'      => 'autoresponder',
+				'template'		=> array(
+					'id'			=> 'fl-builder-service-settings',
+					'file'          => FL_BUILDER_DIR . 'includes/ui-service-settings.php',
+				),
 			),
 			'structure'        => array(
 				'title'         => __( 'Structure', 'fl-builder' ),
@@ -173,6 +183,36 @@ FLBuilder::register_module( 'FLSubscribeFormModule', array(
 							'show'          => __( 'Show', 'fl-builder' ),
 							'hide'          => __( 'Hide', 'fl-builder' ),
 						),
+					),
+					'terms_checkbox' => array(
+						'type'		  => 'select',
+						'label'		  => __( 'Terms and Conditions Checkbox', 'fl-builder' ),
+						'default'		  => 'hide',
+						'options'		  => array(
+							'show'	   => __( 'Show', 'fl-builder' ),
+							'hide'	   => __( 'Hide', 'fl-builder' ),
+						),
+						'toggle'		=> array(
+							'show'			=> array(
+								'fields'		=> array( 'terms_checkbox_text', 'terms_text' ),
+							),
+						),
+					),
+					'terms_checkbox_text'	=> array(
+						'type'		=> 'text',
+						'label'		=> __( 'Checkbox Text', 'fl-builder' ),
+						'default'	=> __( 'I Accept the Terms and Conditions', 'fl-builder' ),
+					),
+					'terms_text' => array(
+						'type'		  => 'editor',
+						'label'		  => 'Terms and Conditions',
+						'media_buttons' => false,
+						'rows'          => 8,
+						'preview'       => array(
+							'type'          => 'text',
+							'selector'      => '.fl-terms-checkbox-text',
+						),
+						'connections'   => array( 'string' ),
 					),
 				),
 			),
@@ -363,6 +403,7 @@ FLBuilder::register_module( 'FLSubscribeFormModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'btn_padding'   => array(
 						'type'          => 'text',
@@ -371,6 +412,7 @@ FLBuilder::register_module( 'FLSubscribeFormModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'btn_border_radius' => array(
 						'type'          => 'text',
@@ -379,6 +421,7 @@ FLBuilder::register_module( 'FLSubscribeFormModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 				),
 			),
@@ -449,6 +492,6 @@ FLBuilder::register_module( 'FLSubscribeFormModule', array(
 				),
 			),
 		),
-		'description'   => sprintf( __( 'Please register keys for your website at the <a%s>Google Admin Console</a>', 'fl-builder' ), ' href="https://www.google.com/recaptcha/admin" target="_blank"' ),
+		'description'   => sprintf( __( 'Please register keys for your website at the <a%s>Google Admin Console</a>', 'fl-builder' ), ' href="https://www.google.com/recaptcha/admin" target="_blank" rel="noopener"' ),
 	),
 ));

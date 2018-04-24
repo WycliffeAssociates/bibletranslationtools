@@ -17,7 +17,7 @@ if ( isset( $pages[ $settings->layout ] ) ) {
 } // End if().
 elseif ( 'product' == $settings->layout ) {
 	add_filter( 'post_class', array( $module, 'single_product_post_class' ) );
-	echo '[product id="' . $settings->product_id . '"]';
+	echo '[product id="' . $settings->product_id . '" columns="1"]';
 	remove_filter( 'post_class', array( $module, 'single_product_post_class' ) );
 } // Single Product Page
 elseif ( 'product_page' == $settings->layout ) {

@@ -70,8 +70,12 @@
  "Alegreya": [
   "regular",
   "italic",
+  "500",
+  "500italic",
   "700",
   "700italic",
+  "800",
+  "800italic",
   "900",
   "900italic"
  ]
@@ -79,8 +83,12 @@
  "Alegreya SC": [
   "regular",
   "italic",
+  "500",
+  "500italic",
   "700",
   "700italic",
+  "800",
+  "800italic",
   "900",
   "900italic"
  ]
@@ -183,11 +191,6 @@
  ]
 }, {
  "Amatic SC": [
-  "regular",
-  "700"
- ]
-}, {
- "Amatica SC": [
   "regular",
   "700"
  ]
@@ -529,6 +532,69 @@
 }, {
  "Bangers": [
   "regular"
+ ]
+}, {
+ "Barlow": [
+  "100",
+  "100italic",
+  "200",
+  "200italic",
+  "300",
+  "300italic",
+  "regular",
+  "italic",
+  "500",
+  "500italic",
+  "600",
+  "600italic",
+  "700",
+  "700italic",
+  "800",
+  "800italic",
+  "900",
+  "900italic"
+ ]
+}, {
+ "Barlow Condensed": [
+  "100",
+  "100italic",
+  "200",
+  "200italic",
+  "300",
+  "300italic",
+  "regular",
+  "italic",
+  "500",
+  "500italic",
+  "600",
+  "600italic",
+  "700",
+  "700italic",
+  "800",
+  "800italic",
+  "900",
+  "900italic"
+ ]
+}, {
+ "Barlow Semi Condensed": [
+  "100",
+  "100italic",
+  "200",
+  "200italic",
+  "300",
+  "300italic",
+  "regular",
+  "italic",
+  "500",
+  "500italic",
+  "600",
+  "600italic",
+  "700",
+  "700italic",
+  "800",
+  "800italic",
+  "900",
+  "900italic"
  ]
 }, {
  "Barrio": [
@@ -1232,22 +1298,6 @@
   "regular"
  ]
 }, {
- "Droid Sans": [
-  "regular",
-  "700"
- ]
-}, {
- "Droid Sans Mono": [
-  "regular"
- ]
-}, {
- "Droid Serif": [
-  "regular",
-  "italic",
-  "700",
-  "700italic"
- ]
-}, {
  "Duru Sans": [
   "regular"
  ]
@@ -1257,7 +1307,16 @@
  ]
 }, {
  "EB Garamond": [
-  "regular"
+  "regular",
+  "italic",
+  "500",
+  "500italic",
+  "600",
+  "600italic",
+  "700",
+  "700italic",
+  "800",
+  "800italic"
  ]
 }, {
  "Eagle Lake": [
@@ -1908,6 +1967,73 @@
 }, {
  "Homenaje": [
   "regular"
+ ]
+}, {
+ "IBM Plex Mono": [
+  "100",
+  "100italic",
+  "200",
+  "200italic",
+  "300",
+  "300italic",
+  "regular",
+  "italic",
+  "500",
+  "500italic",
+  "600",
+  "600italic",
+  "700",
+  "700italic"
+ ]
+}, {
+ "IBM Plex Sans": [
+  "100",
+  "100italic",
+  "200",
+  "200italic",
+  "300",
+  "300italic",
+  "regular",
+  "italic",
+  "500",
+  "500italic",
+  "600",
+  "600italic",
+  "700",
+  "700italic"
+ ]
+}, {
+ "IBM Plex Sans Condensed": [
+  "100",
+  "100italic",
+  "200",
+  "200italic",
+  "300",
+  "300italic",
+  "regular",
+  "italic",
+  "500",
+  "500italic",
+  "600",
+  "600italic",
+  "700",
+  "700italic"
+ ]
+}, {
+ "IBM Plex Serif": [
+  "100",
+  "100italic",
+  "200",
+  "200italic",
+  "300",
+  "300italic",
+  "regular",
+  "italic",
+  "500",
+  "500italic",
+  "600",
+  "600italic",
+  "700italic"
  ]
 }, {
  "IM Fell DW Pica": [
@@ -2689,6 +2815,11 @@
   "regular"
  ]
 }, {
+ "Mina": [
+  "regular",
+  "700"
+ ]
+}, {
  "Miniver": [
   "regular"
  ]
@@ -2909,6 +3040,31 @@
  ]
 }, {
  "NTR": [
+  "regular"
+ ]
+}, {
+ "Nanum Brush Script": [
+  "regular"
+ ]
+}, {
+ "Nanum Gothic": [
+  "regular",
+  "700",
+  "800"
+ ]
+}, {
+ "Nanum Gothic Coding": [
+  "regular",
+  "700"
+ ]
+}, {
+ "Nanum Myeongjo": [
+  "regular",
+  "700",
+  "800"
+ ]
+}, {
+ "Nanum Pen Script": [
   "regular"
  ]
 }, {
@@ -4183,6 +4339,23 @@
   "800italic"
  ]
 }, {
+ "Spectral SC": [
+  "200",
+  "200italic",
+  "300",
+  "300italic",
+  "regular",
+  "italic",
+  "500",
+  "500italic",
+  "600",
+  "600italic",
+  "700",
+  "700italic",
+  "800",
+  "800italic"
+ ]
+}, {
  "Spicy Rice": [
   "regular"
  ]
@@ -4553,6 +4726,13 @@
   "700italic",
   "900",
   "900italic"
+ ]
+}, {
+ "Vollkorn SC": [
+  "regular",
+  "600",
+  "700",
+  "900"
  ]
 }, {
  "Voltaire": [

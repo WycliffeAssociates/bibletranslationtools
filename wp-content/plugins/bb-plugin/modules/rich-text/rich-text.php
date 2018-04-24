@@ -12,8 +12,9 @@ class FLRichTextModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Text Editor', 'fl-builder' ),
 			'description'   	=> __( 'A WYSIWYG text editor.', 'fl-builder' ),
-			'category'      	=> __( 'Basic Modules', 'fl-builder' ),
+			'category'      	=> __( 'Basic', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'text.svg',
 		));
 	}
 }

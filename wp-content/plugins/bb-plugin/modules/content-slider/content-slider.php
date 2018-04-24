@@ -12,8 +12,9 @@ class FLContentSliderModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Content Slider', 'fl-builder' ),
 			'description'   	=> __( 'Displays multiple slides with an optional heading and call to action.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Media', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'slides.svg',
 		));
 
 		$this->add_css( 'jquery-bxslider' );
@@ -187,7 +188,7 @@ class FLContentSliderModule extends FLBuilderModule {
 				'icon_position'     => isset( $slide->btn_icon_position ) ? $slide->btn_icon_position : 'before',
 				'icon_animation'    => isset( $slide->btn_icon_animation ) ? $slide->btn_icon_animation : 'before',
 				'link'              => $slide->link,
-				'link_nofollow'		=> isset( $slide->link_nofollow ) ? $slide->link_nofollow : 'no',
+				'link_nofollow'     => isset( $slide->link_nofollow ) ? $slide->link_nofollow : 'no',
 				'link_target'       => $slide->link_target,
 				'padding'           => $slide->btn_padding,
 				'style'             => ( isset( $slide->btn_3d ) && $slide->btn_3d ) ? 'gradient' : $slide->btn_style,
@@ -200,6 +201,20 @@ class FLContentSliderModule extends FLBuilderModule {
 			echo '<div class="fl-slide-cta-button">';
 			FLBuilder::render_module_html( 'button', $btn_settings );
 			echo '</div>';
+		}
+	}
+
+	/**
+	 * @method is_loop_enabled
+	 */
+	public function is_loop_enabled() {
+		if ( 'true' == $this->settings->loop &&
+			1 == count( $this->settings->slides ) &&
+			'video' == $this->settings->slides[0]->bg_layout
+			) {
+			return 'false';
+		} else {
+			return $this->settings->loop;
 		}
 	}
 }
@@ -221,6 +236,7 @@ FLBuilder::register_module('FLContentSliderModule', array(
 						'maxlength'     => '4',
 						'size'          => '5',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 						'help'          => __( 'This setting is the minimum height of the content slider. Content will expand the height automatically.', 'fl-builder' ),
 					),
 					'auto_play'     => array(
@@ -243,6 +259,7 @@ FLBuilder::register_module('FLContentSliderModule', array(
 						'default'       => '5',
 						'maxlength'     => '4',
 						'size'          => '5',
+						'sanitize'		=> 'absint',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' ),
 					),
 					'loop'          => array(
@@ -269,6 +286,7 @@ FLBuilder::register_module('FLContentSliderModule', array(
 						'default'       => '0.5',
 						'maxlength'     => '4',
 						'size'          => '5',
+						'sanitize'		=> 'absint',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' ),
 					),
 					'play_pause'    => array(
@@ -315,6 +333,7 @@ FLBuilder::register_module('FLContentSliderModule', array(
 						'maxlength'     => '4',
 						'size'          => '5',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 						'help'          => __( 'The max width that the content area will be within your slides.', 'fl-builder' ),
 					),
 				),
@@ -422,6 +441,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 						),
 						'bg_photo'      => array(
 							'type'          => 'photo',
+							'show_remove'   => true,
 							'label'         => __( 'Background Photo', 'fl-builder' ),
 						),
 						'bg_color'      => array(
@@ -467,6 +487,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 						),
 						'fg_photo'      => array(
 							'type'          => 'photo',
+							'show_remove'   => true,
 							'label'         => __( 'Photo', 'fl-builder' ),
 						),
 						'fg_video'      => array(
@@ -857,6 +878,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 						),
 						'r_photo'    => array(
 							'type'          => 'photo',
+							'show_remove'   => true,
 							'label'         => __( 'Photo', 'fl-builder' ),
 						),
 					),

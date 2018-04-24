@@ -115,6 +115,11 @@ final class FLBuilderServices {
 			'name'              => 'Mailrelay',
 			'class'             => 'FLBuilderServiceMailrelay',
 		),
+		'mautic'            => array(
+			'type'              => 'autoresponder',
+			'name'              => 'Mautic',
+			'class'             => 'FLBuilderServiceMautic',
+		),
 		'sendinblue'        => array(
 			'type'              => 'autoresponder',
 			'name'              => 'SendinBlue',
@@ -152,11 +157,21 @@ final class FLBuilderServices {
 			}
 		}
 
+		// Remove services that use namespaces if we're not on a supported PHP version.
 		foreach ( $services as $key => $service ) {
 			if ( isset( $service['namespace'] ) && ! version_compare( phpversion(), '5.3', '>=' ) ) {
 				unset( $services[ $key ] );
 			}
 		}
+
+		// Remove services that don't meet the requirements.
+		if ( isset( $services['mailpoet'] )
+			&& ! class_exists( 'WYSIJA' )
+			&& ( ! defined( 'MAILPOET_INITIALIZED' ) || ( defined( 'MAILPOET_INITIALIZED' ) && false === MAILPOET_INITIALIZED ) )
+			) {
+			unset( $services['mailpoet'] );
+		}
+
 		return $services;
 	}
 

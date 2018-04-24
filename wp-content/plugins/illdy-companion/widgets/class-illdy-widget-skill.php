@@ -6,9 +6,11 @@ class Illdy_Widget_Skill extends WP_Widget {
 	* Register widget with WordPress.
 	*/
 	function __construct() {
-		parent::__construct( 'illdy_skill', __( '[Illdy] - Skill', 'illdy-companion' ), array(
-			'description' => __( 'Add this widget in "Front page - About Sidebar".', 'illdy-companion' ),
-		) );
+		parent::__construct(
+			'illdy_skill', __( '[Illdy] - Skill', 'illdy-companion' ), array(
+				'description' => __( 'Add this widget in "Front page - About Sidebar".', 'illdy-companion' ),
+			)
+		);
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_footer-widgets.php', array( $this, 'print_scripts' ), 9999 );
@@ -85,23 +87,23 @@ class Illdy_Widget_Skill extends WP_Widget {
 		echo $args['before_widget'];
 
 		$defaults = array(
-			'title' => '',
+			'title'      => '',
 			'percentage' => '',
-			'icon' => '',
-			'color' => '',
+			'icon'       => '',
+			'color'      => '',
 		);
 		$instance = wp_parse_args( $instance, $defaults );
 
 		$output = '';
 
-		$output .= '<div class="skill" data-skill-progress-bar-width="' . esc_attr( $instance['percentage'] ) . '" data-skill-color="' . esc_attr( $instance['color'] ) . '">';
-		$output .= '<div class="skill-top clearfix">';
+		$output     .= '<div class="skill" data-skill-progress-bar-width="' . esc_attr( $instance['percentage'] ) . '" data-skill-color="' . esc_attr( $instance['color'] ) . '">';
+		$output     .= '<div class="skill-top clearfix">';
 			$output .= '<div class="skill-progress-bar"></div>';
-		$output .= '</div><!--/.skill-top.clearfix-->';
-		$output .= '<div class="skill-bottom">';
+		$output     .= '</div><!--/.skill-top.clearfix-->';
+		$output     .= '<div class="skill-bottom">';
 			$output .= '<i class="fa ' . esc_attr( $instance['icon'] ) . '"></i><span>' . esc_html( $instance['title'] ) . '</span>';
-		$output .= '</div><!--/.skill-bottom-->';
-		$output .= '</div><!--/.skill-->';
+		$output     .= '</div><!--/.skill-bottom-->';
+		$output     .= '</div><!--/.skill-->';
 
 		echo $output;
 
@@ -118,10 +120,10 @@ class Illdy_Widget_Skill extends WP_Widget {
 	public function form( $instance ) {
 
 		$defaults = array(
-			'title' => '',
+			'title'      => '',
 			'percentage' => '',
-			'icon' => '',
-			'color' => '',
+			'icon'       => '',
+			'color'      => '',
 		);
 		$instance = wp_parse_args( $instance, $defaults );
 
@@ -166,11 +168,11 @@ class Illdy_Widget_Skill extends WP_Widget {
 	* @return array Updated safe values to be saved.
 	*/
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? wp_kses_post( $new_instance['title'] ) : '';
+		$instance               = array();
+		$instance['title']      = ( ! empty( $new_instance['title'] ) ) ? wp_kses_post( $new_instance['title'] ) : '';
 		$instance['percentage'] = ( ! empty( $new_instance['percentage'] ) ? absint( $new_instance['percentage'] ) : '' );
-		$instance['icon'] = ( ! empty( $new_instance['icon'] ) ? sanitize_text_field( $new_instance['icon'] ) : '' );
-		$instance['color'] = ( ! empty( $new_instance['color'] ) ? sanitize_hex_color( $new_instance['color'] ) : '' );
+		$instance['icon']       = ( ! empty( $new_instance['icon'] ) ? sanitize_text_field( $new_instance['icon'] ) : '' );
+		$instance['color']      = ( ! empty( $new_instance['color'] ) ? sanitize_hex_color( $new_instance['color'] ) : '' );
 
 		return $instance;
 	}

@@ -17,7 +17,7 @@ if ( ( 'media_library' == $settings->audio_type ) && (is_array( $settings->audio
 } else {
 
 ?>
-	<div class="fl-audio fl-wp-audio" itemscope itemtype="http://schema.org/AudioObject">
+	<div class="fl-audio fl-wp-audio" itemscope itemtype="https://schema.org/AudioObject">
 		<?php
 
 			$audio_data = $module->get_data();

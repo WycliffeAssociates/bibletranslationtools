@@ -36,8 +36,9 @@ if ( $settings->mobile_breakpoint && 'expanded' != $settings->mobile_toggle ) {
 		'menu_class'	=> 'menu ' . $layout . $toggle,
 		'walker'		=> new FL_Menu_Module_Walker(),
 		);
-
+		add_filter( 'wp_nav_menu_objects',  'FLMenuModule::sort_nav_objects', 10, 2 );
 		wp_nav_menu( $defaults );
+		remove_filter( 'wp_nav_menu_objects', 'FLMenuModule::sort_nav_objects' );
 	}
 	?>
 </div>

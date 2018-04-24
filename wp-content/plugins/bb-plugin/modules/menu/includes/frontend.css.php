@@ -198,7 +198,7 @@ if ( $global_settings->responsive_enabled ) : ?>
 			text-align: left;
 		}
 
-		.fl-module[data-node] .fl-menu .sub-menu {
+		.fl-node-<?php echo $id; ?> .fl-menu .sub-menu {
 			background-color: transparent;
 			-webkit-box-shadow: none;
 			-ms-box-shadow: none;

@@ -1,5 +1,4 @@
 <?php
-	global $wp_locale;
 
 	// set defaults
 	$layout = isset( $settings->layout ) ? $settings->layout : 'default';
@@ -8,23 +7,10 @@
 	$number = ! empty( $settings->number ) && is_numeric( $settings->number ) ? $settings->number : 100;
 	$max    = ! empty( $settings->max_number ) && is_numeric( $settings->max_number ) ? $settings->max_number : $number;
 	$delay  = ! empty( $settings->delay ) && is_numeric( $settings->delay ) && $settings->delay > 0 ? $settings->delay : 0;
-	$format_decimal 	= '.';
-	$format_thousands 	= ',';
 
-	// Checking for i18n number format
-if ( $wp_locale ) {
-	$i18n_decimal = str_replace( array( ' ', '&nbsp;' ), '', $wp_locale->number_format['decimal_point'] );
-	$i18n_thousand = str_replace( array( ' ', '&nbsp;' ), '', $wp_locale->number_format['thousands_sep'] );
-	if ( ! empty( $i18n_decimal ) ) {
-		$format_decimal = $i18n_decimal;
-	}
+	$format = $module->get_i18n_number_format();
 
-	if ( ! empty( $i18n_thousand ) ) {
-		$format_thousands = $i18n_thousand;
-	}
-}
-
-	?>
+?>
 
 (function($) {
 
@@ -38,7 +24,10 @@ if ( $wp_locale ) {
 			max: <?php echo $max ?>,
 			speed: <?php echo $speed ?>,
 			delay: <?php echo $delay ?>,
-			format: { decimal: '<?php echo $format_decimal ?>', thousands_sep: '<?php echo $format_thousands ?>' }
+			format: {
+				decimal: '<?php echo $format['decimal'] ?>',
+				thousands_sep: '<?php echo $format['thousands'] ?>'
+			}
 		});
 
 	});

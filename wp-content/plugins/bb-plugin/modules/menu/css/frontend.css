@@ -22,9 +22,9 @@
 	text-decoration: none;
 }
 .fl-menu a:hover{
-	text-decoration: none;	
+	text-decoration: none;
 }
-.fl-menu .sub-menu{ 
+.fl-menu .sub-menu{
 	min-width: 220px;
 }
 
@@ -106,7 +106,8 @@
 }
 
 /* Mega menu general */
-li.mega-menu .hide-heading > a {
+li.mega-menu .hide-heading > a,
+li.mega-menu .hide-heading > .fl-has-submenu-container > a {
 	display: none;
 }
 

@@ -32,17 +32,16 @@
 	top        : 2px;
 	bottom     : 2px;
 	visibility : hidden\9; /* Target only IE7 and IE8 with this hack */
-	opacity    : .01; 
+	opacity    : .01;
 	-webkit-transition    : .2s;
 	-moz-transition       : .2s;
 	-o-transition         : .2s;
 	transition            : .2s;
 }
 .fl-nanoscroller > .fl-nanoscroller-pane > .fl-nanoscroller-slider {
-	background: #444;
+	background: #c9ced3;
 	border-radius: 10px;
-	background: rgba(0,0,0,.5);
-	position              : relative;
+	position: relative;
 }
 .fl-nanoscroller:hover > .fl-nanoscroller-pane, .fl-nanoscroller-pane.active, .fl-nanoscroller-pane.flashed {
 	visibility : visible\9; /* Target only IE7 and IE8 with this hack */

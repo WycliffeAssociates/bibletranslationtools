@@ -8,7 +8,7 @@ foreach ( $settings->icons as $icon ) {
 	}
 
 	$icon_settings = array(
-	'bg_color'       => $settings->bg_color,
+		'bg_color'       => $settings->bg_color,
 		'bg_hover_color' => $settings->bg_hover_color,
 		'color'          => $settings->color,
 		'exclude_wrapper' => true,

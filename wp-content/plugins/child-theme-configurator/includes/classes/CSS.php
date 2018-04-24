@@ -6,13 +6,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
     Class: ChildThemeConfiguratorCSS
     Plugin URI: http://www.childthemeconfigurator.com/
     Description: Handles all CSS input, output, parsing, normalization and storage
-    Version: 2.2.8.1
+    Version: 2.2.9
     Author: Lilaea Media
     Author URI: http://www.lilaeamedia.com/
     Text Domain: chld_thm_cfg
     Domain Path: /lang
     License: GPLv2
-    Copyright (C) 2014-2017 Lilaea Media
+    Copyright (C) 2014-2018 Lilaea Media
 */
 
 class ChildThemeConfiguratorCSS {
@@ -167,7 +167,7 @@ class ChildThemeConfiguratorCSS {
         $this->parnt            = '';
         $this->ignoreparnt      = 0;
         $this->qpriority        = 10;
-        $this->version          = '2.2.8.1';
+        $this->version          = '2.2.9';
         
         // do not set enqueue, not being set is used to flag old versions
 

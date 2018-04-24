@@ -12,9 +12,10 @@ class FLIconModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Icon', 'fl-builder' ),
 			'description'   	=> __( 'Display an icon and optional title.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Media', 'fl-builder' ),
 			'editor_export' 	=> false,
 			'partial_refresh'	=> true,
+			'icon'				=> 'star-filled.svg',
 		));
 	}
 }
@@ -126,6 +127,7 @@ FLBuilder::register_module('FLIconModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'align'         => array(
 						'type'          => 'select',

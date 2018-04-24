@@ -1,5 +1,5 @@
 <?php $module->add_fb_root(); ?>
-
+<?php $settings = $module->update( $settings ); ?>
 <div class="fl-social-buttons fl-social-buttons-<?php echo $settings->align; ?>">
 
 	<?php if ( $settings->show_facebook ) : ?>

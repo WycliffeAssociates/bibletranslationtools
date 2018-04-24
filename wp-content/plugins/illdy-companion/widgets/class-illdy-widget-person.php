@@ -6,9 +6,11 @@ class Illdy_Widget_Person extends WP_Widget {
 	 * Register widget with WordPress.
 	 */
 	function __construct() {
-		parent::__construct( 'illdy_person', __( '[Illdy] - Person', 'illdy-companion' ), array(
-			'description' => __( 'Add this widget in "Front page - Team Sidebar".', 'illdy-companion' ),
-		) );
+		parent::__construct(
+			'illdy_person', __( '[Illdy] - Person', 'illdy-companion' ), array(
+				'description' => __( 'Add this widget in "Front page - Team Sidebar".', 'illdy-companion' ),
+			)
+		);
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_footer-widgets.php', array( $this, 'print_scripts' ), 9999 );
@@ -71,39 +73,39 @@ class Illdy_Widget_Person extends WP_Widget {
 		echo $args['before_widget'];
 
 		$defaults = array(
-			'title' => '',
-			'image' => '',
-			'position' => '',
-			'entry' => '',
+			'title'        => '',
+			'image'        => '',
+			'position'     => '',
+			'entry'        => '',
 			'facebook_url' => '',
-			'twitter_url' => '',
+			'twitter_url'  => '',
 			'linkedin_url' => '',
-			'github_url' => '',
-			'color' => '#000000',
+			'github_url'   => '',
+			'color'        => '#000000',
 		);
 		$instance = wp_parse_args( $instance, $defaults );
 
-		$image_id = illdy_get_image_id_from_image_url( $instance['image'] );
+		$image_id                 = illdy_get_image_id_from_image_url( $instance['image'] );
 		$get_attachment_image_src = wp_get_attachment_image_src( $image_id, 'illdy-front-page-person' );
 
 		$output = '';
 
-		$output .= '<div class="person clearfix" data-person-color="' . esc_attr( $instance['color'] ) . '">';
-			$output .= '<div class="person-image">';
-				$output .= ( $image_id ? '<img src="' . $get_attachment_image_src[0] . '" alt="' . esc_attr( $instance['title'] ) . '" title="' . esc_attr( $instance['title'] ) . '" />' : ( $instance['image'] ? '<img src="' . $instance['image'] . '" alt="' . esc_attr( $instance['title'] ) . '" title="' . esc_html( $instance['title'] ) . '" />' : '' ) );
-			$output .= '</div><!--/.person-image-->';
-			$output .= '<div class="person-content">';
-				$output .= '<h6>' . esc_html( $instance['title'] ) . '</h6>';
-				$output .= '<p class="person-position">' . esc_html( $instance['position'] ) . '</p>';
-				$output .= '<p>' . wp_kses_post( $instance['entry'] ) . '</p>';
-				$output .= '<ul class="person-content-social clearfix">';
+		$output             .= '<div class="person clearfix" data-person-color="' . esc_attr( $instance['color'] ) . '">';
+			$output         .= '<div class="person-image">';
+				$output     .= ( $image_id ? '<img src="' . $get_attachment_image_src[0] . '" alt="' . esc_attr( $instance['title'] ) . '" title="' . esc_attr( $instance['title'] ) . '" />' : ( $instance['image'] ? '<img src="' . $instance['image'] . '" alt="' . esc_attr( $instance['title'] ) . '" title="' . esc_html( $instance['title'] ) . '" />' : '' ) );
+			$output         .= '</div><!--/.person-image-->';
+			$output         .= '<div class="person-content">';
+				$output     .= '<h6>' . esc_html( $instance['title'] ) . '</h6>';
+				$output     .= '<p class="person-position">' . esc_html( $instance['position'] ) . '</p>';
+				$output     .= '<p>' . wp_kses_post( $instance['entry'] ) . '</p>';
+				$output     .= '<ul class="person-content-social clearfix">';
 					$output .= ( $instance['facebook_url'] ) ? '<li><a href="' . esc_url( $instance['facebook_url'] ) . '" title="' . __( 'Facebook', 'illdy-companion' ) . '" target="_blank" rel="nofollow"><i class="fa fa-facebook"></i></a></li>' : '';
 					$output .= ( $instance['twitter_url'] ) ? '<li><a href="' . esc_url( $instance['twitter_url'] ) . '" title="' . __( 'Twitter', 'illdy-companion' ) . '"><i class="fa fa-twitter" target="_blank" rel="nofollow"></i></a></li>' : '';
 					$output .= ( $instance['linkedin_url'] ) ? '<li><a href="' . esc_url( $instance['linkedin_url'] ) . '" title="' . __( 'LinkedIn', 'illdy-companion' ) . '"><i class="fa fa-linkedin" target="_blank" rel="nofollow"></i></a></li>' : '';
 					$output .= ( $instance['github_url'] ) ? '<li><a href="' . esc_url( $instance['github_url'] ) . '" title="' . __( 'GitHub', 'illdy-companion' ) . '"><i class="fa fa-github" target="_blank" rel="nofollow"></i></a></li>' : '';
-				$output .= '</ul><!--/.person-content-social.clearfix-->';
-			$output .= '</div><!--/.person-content-->';
-		$output .= '</div><!--/.person.clearfix-->';
+				$output     .= '</ul><!--/.person-content-social.clearfix-->';
+			$output         .= '</div><!--/.person-content-->';
+		$output             .= '</div><!--/.person.clearfix-->';
 
 		echo $output;
 
@@ -120,15 +122,15 @@ class Illdy_Widget_Person extends WP_Widget {
 	public function form( $instance ) {
 
 		$defaults = array(
-			'title' => __( '[Illdy] - Person', 'illdy-companion' ),
-			'image' => get_template_directory_uri() . '/layout/images/front-page/front-page-project-1.jpg',
-			'position' => '',
-			'entry' => '',
+			'title'        => __( '[Illdy] - Person', 'illdy-companion' ),
+			'image'        => get_template_directory_uri() . '/layout/images/front-page/front-page-project-1.jpg',
+			'position'     => '',
+			'entry'        => '',
 			'facebook_url' => '',
-			'twitter_url' => '',
+			'twitter_url'  => '',
 			'linkedin_url' => '',
-			'github_url' => '',
-			'color' => '#000000',
+			'github_url'   => '',
+			'color'        => '#000000',
 		);
 		$instance = wp_parse_args( $instance, $defaults );
 
@@ -141,7 +143,7 @@ class Illdy_Widget_Person extends WP_Widget {
 
 		<p>
 			<label for="<?php echo $this->get_field_name( 'image' ); ?>"><?php _e( 'Image:', 'illdy-companion' ); ?></label>
-			<input type="text" class="widefat custom_media_url_<?php echo $this->get_field_id( 'image' ); ?>" name="<?php echo $this->get_field_name( 'image' ); ?>" id="<?php echo $this->get_field_id( 'image' ); ?>" value="<?php echo $instance['image'] ?>" style="margin-top:5px;">
+			<input type="text" class="widefat custom_media_url_<?php echo $this->get_field_id( 'image' ); ?>" name="<?php echo $this->get_field_name( 'image' ); ?>" id="<?php echo $this->get_field_id( 'image' ); ?>" value="<?php echo $instance['image']; ?>" style="margin-top:5px;">
 			<input type="button" class="button button-primary custom_media_button" id="custom_media_button_service" data-fieldid="<?php echo $this->get_field_id( 'image' ); ?>" name="<?php echo $this->get_field_name( 'image' ); ?>" value="<?php _e( 'Upload Image', 'illdy-companion' ); ?>" style="margin-top: 5px;">
 		</p>
 
@@ -152,9 +154,7 @@ class Illdy_Widget_Person extends WP_Widget {
 
 		<p class="illdy-editor-container">
 			<label for="<?php echo $this->get_field_id( 'entry' ); ?>"><?php _e( 'Entry:', 'illdy-companion' ); ?></label>
-			<textarea name="<?php echo esc_attr( $this->get_field_name( 'entry' ) ); ?>"
-					  id="<?php echo esc_attr( $this->get_field_id( 'entry' ) ); ?>"
-					  class="widefat"><?php echo wp_kses_post( $instance['entry'] ); ?></textarea>
+			<textarea name="<?php echo esc_attr( $this->get_field_name( 'entry' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'entry' ) ); ?>" class="widefat"><?php echo wp_kses_post( $instance['entry'] ); ?></textarea>
 		</p>
 
 		<p>
@@ -195,16 +195,16 @@ class Illdy_Widget_Person extends WP_Widget {
 	 * @return array Updated safe values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
-		$instance['image'] = ! empty( $new_instance['image'] ) ? esc_url_raw( $new_instance['image'] ) : '';
-		$instance['position'] = ( ! empty( $new_instance['position'] ) ) ? sanitize_text_field( $new_instance['position'] ) : '';
-		$instance['entry'] = ( ! empty( $new_instance['entry'] ) ) ? wp_kses_post( $new_instance['entry'] ) : '';
+		$instance                 = array();
+		$instance['title']        = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
+		$instance['image']        = ! empty( $new_instance['image'] ) ? esc_url_raw( $new_instance['image'] ) : '';
+		$instance['position']     = ( ! empty( $new_instance['position'] ) ) ? sanitize_text_field( $new_instance['position'] ) : '';
+		$instance['entry']        = ( ! empty( $new_instance['entry'] ) ) ? wp_kses_post( $new_instance['entry'] ) : '';
 		$instance['facebook_url'] = ( ! empty( $new_instance['facebook_url'] ) ? esc_url_raw( $new_instance['facebook_url'] ) : '' );
-		$instance['twitter_url'] = ( ! empty( $new_instance['twitter_url'] ) ? esc_url_raw( $new_instance['twitter_url'] ) : '' );
+		$instance['twitter_url']  = ( ! empty( $new_instance['twitter_url'] ) ? esc_url_raw( $new_instance['twitter_url'] ) : '' );
 		$instance['linkedin_url'] = ( ! empty( $new_instance['linkedin_url'] ) ? esc_url_raw( $new_instance['linkedin_url'] ) : '' );
-		$instance['github_url'] = ( ! empty( $new_instance['github_url'] ) ? esc_url_raw( $new_instance['github_url'] ) : '' );
-		$instance['color'] = ( ! empty( $new_instance['color'] ) ? sanitize_text_field( $new_instance['color'] ) : '' );
+		$instance['github_url']   = ( ! empty( $new_instance['github_url'] ) ? esc_url_raw( $new_instance['github_url'] ) : '' );
+		$instance['color']        = ( ! empty( $new_instance['color'] ) ? sanitize_text_field( $new_instance['color'] ) : '' );
 
 		return $instance;
 	}

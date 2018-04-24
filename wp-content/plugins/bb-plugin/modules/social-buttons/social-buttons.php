@@ -12,9 +12,10 @@ class FLSocialButtonModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Social Buttons', 'fl-builder' ),
 			'description'   	=> __( 'Displays social buttons.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Actions', 'fl-builder' ),
 			'editor_export' 	=> false,
 			'partial_refresh'	=> true,
+			'icon'				=> 'share-alt2.svg',
 		));
 	}
 

@@ -171,7 +171,7 @@ final class FLBuilderServiceMadMimi extends FLBuilderService {
 		);
 
 		foreach ( $lists->list as $list ) {
-			$options[ (string) $list['id'] ] = $list['name'];
+			$options[ (string) $list['id'] ] = (string) $list['name'];
 		}
 
 		FLBuilder::render_settings_field( 'list_id', array(

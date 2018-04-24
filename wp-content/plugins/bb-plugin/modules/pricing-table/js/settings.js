@@ -1,14 +1,13 @@
 (function($){
 
 	FLBuilder.registerModuleHelper('pricing-table', {
-		rules: {},
 
 		init: function()
 		{
-			$( 'input[name=btn_bg_color]' ).live( 'change', this._bgColorChange );			
+			$( 'input[name=btn_bg_color]' ).live( 'change', this._bgColorChange );
 			this._bgColorChange();
 		},
-		
+
 		_bgColorChange: function()
 		{
 			var bgColor = $( 'input[name=btn_bg_color]' ),

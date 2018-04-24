@@ -397,76 +397,67 @@
 		 */
 		_initBgVideo: function()
 		{
-			var wrap 		= $( this ),
-				width  		= wrap.data( 'width' ),
-				height  	= wrap.data( 'height' ),
-				mp4  		= wrap.data( 'mp4' ),
-				youtube 	= wrap.data( 'youtube'),
-				vimeo 		= wrap.data( 'vimeo'),
-				mp4Type  	= wrap.data( 'mp4-type' ),
-				webm  		= wrap.data( 'webm' ),
-				webmType  	= wrap.data( 'webm-type' ),
-				fallback  	= wrap.data( 'fallback' ),
-				loaded  	= wrap.data( 'loaded' ),
+			var wrap   = $( this ),
+				width       = wrap.data( 'width' ),
+				height      = wrap.data( 'height' ),
+				mp4         = wrap.data( 'mp4' ),
+				youtube     = wrap.data( 'youtube'),
+				vimeo       = wrap.data( 'vimeo'),
+				mp4Type     = wrap.data( 'mp4-type' ),
+				webm        = wrap.data( 'webm' ),
+				webmType    = wrap.data( 'webm-type' ),
+				fallback    = wrap.data( 'fallback' ),
+				loaded      = wrap.data( 'loaded' ),
 				fallbackTag = '',
-				videoTag	= null,
-				mp4Tag    	= null,
-				webmTag    	= null;
+				videoTag    = null,
+				mp4Tag      = null,
+				webmTag     = null;
 
 			// Return if the video has been loaded for this row.
 			if ( loaded ) {
 				return;
 			}
-			// Append the video tag for non-mobile.
-			else if ( ! FLBuilderLayout._isMobile() ) {
 
-				videoTag  = $( '<video autoplay loop muted preload></video>' );
+			videoTag  = $( '<video autoplay loop muted playsinline></video>' );
 
-				// MP4 Source Tag
-				if ( 'undefined' != typeof mp4 ) {
-
-					mp4Tag = $( '<source />' );
-					mp4Tag.attr( 'src', mp4 );
-					mp4Tag.attr( 'type', mp4Type );
-
-					if ( 'undefined' == typeof webm ) {
-						mp4Tag.on( 'error', FLBuilderLayout._videoBgSourceError );
-					}
-
-					videoTag.append( mp4Tag );
-				}
-
-				// WebM Source Tag
-				if ( 'undefined' != typeof webm ) {
-
-					webmTag = $( '<source />' );
-					webmTag.attr( 'src', webm );
-					webmTag.attr( 'type', webmType );
-
-					if ( 'undefined' != typeof mp4 ) {
-						webmTag.on( 'error', FLBuilderLayout._videoBgSourceError );
-					}
-
-					videoTag.append( webmTag );
-				}
-
-				// Check what video player we are going to load in a row
-				if ( 'undefined' != typeof youtube ) {
-					FLBuilderLayout._initYoutubeBgVideo.apply( this );
-				}
-				else if ( 'undefined' != typeof vimeo ) {
-					FLBuilderLayout._initVimeoBgVideo.apply( this );
-				}
-				else {
-					wrap.append( videoTag );
-				}
+			/**
+			 * Add poster image (fallback image)
+			 */
+			if( 'undefined' != typeof fallback && '' != fallback ) {
+				videoTag.attr( 'poster', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' )
+				videoTag.css( 'background', 'transparent url("' + fallback + '") no-repeat center center' )
+				videoTag.css( 'background-size', 'cover' )
+				videoTag.css( 'height', '100%' )
 			}
-			// Append the fallback tag for mobile.
-			else if ( '' !== fallback ) {
-				fallbackTag = $( '<div></div>' );
-				fallbackTag.addClass( 'fl-bg-video-fallback' );
-				fallbackTag.css( 'background-image', 'url(' + fallback + ')' );
-				wrap.append( fallbackTag );
+
+			// MP4 Source Tag
+			if ( 'undefined' != typeof mp4 && '' != mp4 ) {
+
+				mp4Tag = $( '<source />' );
+				mp4Tag.attr( 'src', mp4 );
+				mp4Tag.attr( 'type', mp4Type );
+
+				videoTag.append( mp4Tag );
+			}
+			// WebM Source Tag
+			if ( 'undefined' != typeof webm && '' != webm ) {
+
+				webmTag = $( '<source />' );
+				webmTag.attr( 'src', webm );
+				webmTag.attr( 'type', webmType );
+
+				videoTag.append( webmTag );
+			}
+
+			// Check what video player we are going to load in a row
+			if ( 'undefined' != typeof youtube && ! FLBuilderLayout._isMobile() ) {
+				FLBuilderLayout._initYoutubeBgVideo.apply( this );
+			}
+			else if ( 'undefined' != typeof vimeo && ! FLBuilderLayout._isMobile() ) {
+				FLBuilderLayout._initVimeoBgVideo.apply( this );
+			}
+			else {
+				wrap.append( videoTag );
 			}
 
 			// Mark this video as loaded.
@@ -589,7 +580,8 @@
 		 * @since 1.6.3.3
 		 * @access private
 		 * @method _videoBgSourceError
-		 * @param {Object} e An event object.
+		 * @param {Object} e An event object
+		 * @deprecated 2.0.3
 		 */
 		_videoBgSourceError: function( e )
 		{
@@ -599,7 +591,12 @@
 				fallback  	= wrap.data( 'fallback' ),
 				fallbackTag = '';
 
-			if ( '' !== fallback ) {
+			source.remove();
+
+			if ( vid.find( 'source' ).length ) {
+				// Don't show the fallback if we still have other sources to check.
+				return;
+			} else if ( '' !== fallback ) {
 				fallbackTag = $( '<div></div>' );
 				fallbackTag.addClass( 'fl-bg-video-fallback' );
 				fallbackTag.css( 'background-image', 'url(' + fallback + ')' );
@@ -709,6 +706,8 @@
 				vidWidth 	= video[0].videoWidth,
 				vidHeight 	= video[0].videoHeight,
 				newHeight   = Math.round(vidHeight * wrapWidth/vidWidth),
+				newWidth    = wrapWidth,
+				newLeft     = 0,
 				newTop 		= 0;
 
 			if(newHeight < wrapHeight) {
@@ -892,8 +891,7 @@
 				loc     = window.location,
 				id      = null,
 				element = null;
-
-			if ( 'undefined' != typeof href && href.indexOf( '#' ) > -1 ) {
+			if ( 'undefined' != typeof href && href.indexOf( '#' ) > -1 && link.closest('svg').length < 1 ) {
 
 				if ( loc.pathname.replace( /^\//, '' ) == this.pathname.replace( /^\//, '' ) && loc.hostname == this.hostname ) {
 

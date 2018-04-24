@@ -12,9 +12,10 @@ class FLIconGroupModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Icon Group', 'fl-builder' ),
 			'description'   	=> __( 'Display a group of linked Font Awesome icons.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Media', 'fl-builder' ),
 			'editor_export' 	=> false,
 			'partial_refresh'	=> true,
+			'icon'				=> 'star-filled.svg',
 		));
 	}
 }
@@ -93,6 +94,7 @@ FLBuilder::register_module('FLIconGroupModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'spacing'       => array(
 						'type'          => 'text',

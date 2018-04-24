@@ -5,13 +5,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
     Class: ChildThemeConfiguratorUI
     Plugin URI: http://www.childthemeconfigurator.com/
     Description: Handles the plugin User Interface
-    Version: 2.2.8.1
+    Version: 2.2.9
     Author: Lilaea Media
     Author URI: http://www.lilaeamedia.com/
     Text Domain: chld_thm_cfg
     Domain Path: /lang
     License: GPLv2
-    Copyright (C) 2014-2017 Lilaea Media
+    Copyright (C) 2014-2018 Lilaea Media
 */
 class ChildThemeConfiguratorUI {
 
@@ -267,7 +267,7 @@ class ChildThemeConfiguratorUI {
         $localize_array = apply_filters( 'chld_thm_cfg_localize_script', array(
             'converted'                 => $this->css()->get_prop( 'converted' ),
             'ssl'                       => is_ssl(),
-            'homeurl'                   => home_url( '/' ) . '?ModPagespeed=off&preview_ctc=1',
+            'homeurl'                   => home_url( '/' ) . '?ModPagespeed=off&ao_noptimize=1&preview_ctc=1',
             'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
             'theme_uri'                 => get_theme_root_uri(),
             'page'                      => CHLD_THM_CFG_MENU,

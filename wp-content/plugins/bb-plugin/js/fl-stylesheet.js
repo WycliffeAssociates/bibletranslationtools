@@ -7,23 +7,23 @@
 	 * @class FLStyleSheet
 	 * @since 1.3.3
 	 */
-	FLStyleSheet = function( o ) 
+	FLStyleSheet = function( o )
 	{
 		if ( 'object' == typeof o ) {
 			$.extend( this, o );
 		}
-		
+
 		this._createSheet();
 	};
-	
+
 	/**
 	 * Prototype for new instances.
 	 *
 	 * @since 1.3.3
 	 * @property {Object} prototype
-	 */ 
+	 */
 	FLStyleSheet.prototype = {
-		
+
 		/**
 		 * An ID for the stylesheet element.
 		 *
@@ -31,7 +31,7 @@
 		 * @property {String} id
 		 */
 		id              : null,
-		
+
 		/**
 		 * A reference to the stylesheet object.
 		 *
@@ -40,7 +40,7 @@
 		 * @property {Object} _sheet
 		 */
 		_sheet          : null,
-		
+
 		/**
 		 * A reference to the HTML style element.
 		 *
@@ -58,26 +58,26 @@
 		 * @param {String} selector The CSS selector to update.
 		 * @param {String} property The CSS property to update. Can also be an object of key/value pairs.
 		 * @param {String} value The value of the property to update. Can be omitted if property is an object.
-		 */   
+		 */
 		updateRule: function(selector, property, value)
 		{
 			var rules   = this._sheet.cssRules ? this._sheet.cssRules : this._sheet.rules,
 				rule    = null,
 				i       = 0;
-			
+
 			// Find the rule to update.
 			for( ; i < rules.length; i++) {
-				
+
 				if(rules[i].selectorText.toLowerCase() == selector.toLowerCase()) {
 					rule = rules[i];
 				}
 			}
-			
+
 			// Update the existing rule.
 			if(rule) {
-			
+
 				if(typeof property == 'object') {
-					
+
 					for(i in property) {
 						rule.style[this._toCamelCase(i)] = property[i];
 					}
@@ -86,13 +86,13 @@
 					rule.style[this._toCamelCase(property)] = value;
 				}
 			}
-			
+
 			// No rule found. Add a new one.
 			else {
 				this.addRule(selector, property, value);
 			}
 		},
-		
+
 		/**
 		 * Add a new rule to this stylesheet.
 		 *
@@ -101,14 +101,14 @@
 		 * @param {String} selector The CSS selector to add.
 		 * @param {String} property The CSS property to add. Can also be an object of key/value pairs.
 		 * @param {String} value The value of the property to add. Can be omitted if property is an object.
-		 */   
+		 */
 		addRule: function(selector, property, value)
 		{
 			var styles  = '',
 				i       = '';
-			
+
 			if(typeof property == 'object') {
-					
+
 				for(i in property) {
 					styles += i + ':' + property[i] + ';';
 				}
@@ -116,25 +116,25 @@
 			else {
 				styles = property + ':' + value + ';';
 			}
-		
+
 			if(this._sheet.insertRule) {
 				this._sheet.insertRule(selector + ' { ' + styles + ' }', this._sheet.cssRules.length);
 			}
 			else {
-				this._sheet.addRule(selector, styles);  
+				this._sheet.addRule(selector, styles);
 			}
 		},
-		
+
 		/**
-		 * Completely destroys the sheet by removing the 
+		 * Completely destroys the sheet by removing the
 		 * stylesheet element from the DOM and making the
 		 * stored object reference null.
 		 *
 		 * @since 1.9
 		 * @method destroy
-		 */   
-		destroy: function() 
-		{   
+		 */
+		destroy: function()
+		{
 			if(this._sheetElement) {
 				this._sheetElement.remove();
 				this._sheetElement = null;
@@ -143,29 +143,29 @@
 				this._sheet = null;
 			}
 		},
-		
+
 		/**
 		 * Disables the sheet by removing it from the DOM.
 		 *
 		 * @since 1.9
 		 * @method disable
-		 */   
-		disable: function() 
-		{   
+		 */
+		disable: function()
+		{
 			this._sheet.disabled = true;
 		},
-		
+
 		/**
 		 * Enables the sheet by adding it to the DOM.
 		 *
 		 * @since 1.9
 		 * @method enable
-		 */   
-		enable: function() 
+		 */
+		enable: function()
 		{
 			this._sheet.disabled = false;
 		},
-		
+
 		/**
 		 * Create the style element, add it to the DOM
 		 * and save references.
@@ -174,20 +174,21 @@
 		 * @access private
 		 * @method _createSheet
 		 */
-		_createSheet: function() 
+		_createSheet: function()
 		{
-			var id = this.id ? ' id="' + this.id + '"' : '';
-			
+			var id 		  = this.id ? ' id="' + this.id + '"' : '',
+				className = this.className ? ' class="' + this.className + '"' : '';
+
 			if ( ! this._sheet ) {
-			
-				this._sheetElement = $( '<style type="text/css"' + id + '></style>' );
-				
+
+				this._sheetElement = $( '<style type="text/css"' + id + className + '></style>' );
+
 				$( 'body' ).append( this._sheetElement );
-			
+
 				this._sheet = this._sheetElement[0].sheet;
 			}
 		},
-		
+
 		/**
 		 * Convert a string to camel case.
 		 *
@@ -195,9 +196,9 @@
 		 * @access private
 		 * @method _toCamelCase
 		 * @param {String} input The string to convert.
-		 */   
-		_toCamelCase: function(input) 
-		{ 
+		 */
+		_toCamelCase: function(input)
+		{
 			return input.toLowerCase().replace(/-(.)/g, function(match, group1) {
 				return group1.toUpperCase();
 			});

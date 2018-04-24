@@ -12,8 +12,9 @@ class FLTestimonialsModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Testimonials', 'fl-builder' ),
 			'description'   	=> __( 'An animated tesimonials area.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Media', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon' 				=> 'format-quote.svg',
 		));
 
 		$this->add_css( 'jquery-bxslider' );
@@ -92,6 +93,7 @@ FLBuilder::register_module('FLTestimonialsModule', array(
 						'default'       => '4',
 						'maxlength'     => '4',
 						'size'          => '5',
+						'sanitize'		=> 'absint',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' ),
 					),
 					'transition'    => array(
@@ -109,6 +111,7 @@ FLBuilder::register_module('FLTestimonialsModule', array(
 						'default'       => '0.5',
 						'maxlength'     => '4',
 						'size'          => '5',
+						'sanitize'		=> 'floatval',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' ),
 					),
 					'direction'   => array(
@@ -123,7 +126,7 @@ FLBuilder::register_module('FLTestimonialsModule', array(
 				),
 			),
 			'arrow_nav'       => array( // Section
-				'title'         => '',
+				'title'         => __( 'Arrows', 'fl-builder' ),
 				'fields'        => array( // Section Fields
 					'arrows'       => array(
 						'type'          => 'select',
@@ -153,7 +156,7 @@ FLBuilder::register_module('FLTestimonialsModule', array(
 				),
 			),
 			'dot_nav'       => array( // Section
-				'title'         => '', // Section Title
+				'title'         => __( 'Dots', 'fl-builder' ), // Section Title
 				'fields'        => array( // Section Fields
 					'dots'       => array(
 						'type'          => 'select',

@@ -43,6 +43,15 @@ FLBuilder::register_settings_form('row', array(
 								'type'            => 'none',
 							),
 						),
+						'max_content_width' => array(
+							'type'			=> 'unit',
+							'label'			=> __( 'Fixed Width', 'fl-builder' ),
+							'description'	=> 'px',
+							'placeholder'	=> $global_settings->row_width,
+							'preview'       => array(
+								'type'          => 'none',
+							),
+						),
 						'full_height'  => array(
 							'type'          => 'select',
 							'label'         => __( 'Height', 'fl-builder' ),
@@ -162,6 +171,7 @@ FLBuilder::register_settings_form('row', array(
 					'fields'        => array(
 						'bg_image'      => array(
 							'type'          => 'photo',
+							'show_remove'   => true,
 							'label'         => __( 'Photo', 'fl-builder' ),
 							'preview'         => array(
 								'type'            => 'none',
@@ -316,6 +326,7 @@ FLBuilder::register_settings_form('row', array(
 						),
 						'bg_video_fallback' => array(
 							'type'          => 'photo',
+							'show_remove'   => true,
 							'label'         => __( 'Fallback Photo', 'fl-builder' ),
 							'help'          => __( 'A photo that will be displayed if the video fails to load.', 'fl-builder' ),
 							'preview'         => array(
@@ -425,6 +436,7 @@ FLBuilder::register_settings_form('row', array(
 					'fields'        => array(
 						'bg_parallax_image' => array(
 							'type'          => 'photo',
+							'show_remove'   => true,
 							'label'         => __( 'Photo', 'fl-builder' ),
 							'preview'         => array(
 								'type'            => 'none',
@@ -515,16 +527,16 @@ FLBuilder::register_settings_form('row', array(
 									'fields'        => array(),
 								),
 								'solid'         => array(
-									'fields'        => array( 'border_color', 'border_opacity', 'border_top', 'border_bottom', 'border_left', 'border_right' ),
+									'fields'        => array( 'border_color', 'border_opacity', 'border' ),
 								),
 								'dashed'        => array(
-									'fields'        => array( 'border_color', 'border_opacity', 'border_top', 'border_bottom', 'border_left', 'border_right' ),
+									'fields'        => array( 'border_color', 'border_opacity', 'border' ),
 								),
 								'dotted'        => array(
-									'fields'        => array( 'border_color', 'border_opacity', 'border_top', 'border_bottom', 'border_left', 'border_right' ),
+									'fields'        => array( 'border_color', 'border_opacity', 'border' ),
 								),
 								'double'        => array(
-									'fields'        => array( 'border_color', 'border_opacity', 'border_top', 'border_bottom', 'border_left', 'border_right' ),
+									'fields'        => array( 'border_color', 'border_opacity', 'border' ),
 								),
 							),
 							'preview'         => array(
@@ -550,59 +562,10 @@ FLBuilder::register_settings_form('row', array(
 								'type'            => 'none',
 							),
 						),
-						'border_top'    => array(
-							'type'        => 'unit',
-							'label'       => __( 'Top Width', 'fl-builder' ),
+						'border' 	  => array(
+							'type'        => 'dimension',
+							'label'       => __( 'Border', 'fl-builder' ),
 							'description' => 'px',
-							'default'     => '1',
-							'preview'     => array(
-								'type' => 'none',
-							),
-							'responsive'  => array(
-								'placeholder' => array(
-									'default'    => '1',
-									'medium'     => '',
-									'responsive' => '',
-								),
-							),
-						),
-						'border_bottom' => array(
-							'type'        => 'unit',
-							'label'       => __( 'Bottom Width', 'fl-builder' ),
-							'description' => 'px',
-							'default'     => '1',
-							'preview'     => array(
-								'type' => 'none',
-							),
-							'responsive'  => array(
-								'placeholder' => array(
-									'default'    => '1',
-									'medium'     => '',
-									'responsive' => '',
-								),
-							),
-						),
-						'border_left'   => array(
-							'type'        => 'unit',
-							'label'       => __( 'Left Width', 'fl-builder' ),
-							'description' => 'px',
-							'default'     => '0',
-							'preview'     => array(
-								'type' => 'none',
-							),
-							'responsive'  => array(
-								'placeholder' => array(
-									'default'    => '0',
-									'medium'     => '',
-									'responsive' => '',
-								),
-							),
-						),
-						'border_right'  => array(
-							'type'        => 'unit',
-							'label'       => __( 'Right Width', 'fl-builder' ),
-							'description' => 'px',
-							'default'     => '0',
 							'preview'     => array(
 								'type' => 'none',
 							),
@@ -622,11 +585,11 @@ FLBuilder::register_settings_form('row', array(
 			'title'         => __( 'Advanced', 'fl-builder' ),
 			'sections'      => array(
 				'margins'       => array(
-					'title'         => __( 'Margins', 'fl-builder' ),
+					'title'         => __( 'Spacing', 'fl-builder' ),
 					'fields'        => array(
-						'margin_top' => array(
-							'type'        => 'unit',
-							'label'       => __( 'Top', 'fl-builder' ),
+						'margin' 		=> array(
+							'type'        => 'dimension',
+							'label'       => __( 'Margins', 'fl-builder' ),
 							'description' => 'px',
 							'preview'     => array(
 								'type' => 'none',
@@ -639,59 +602,9 @@ FLBuilder::register_settings_form('row', array(
 								),
 							),
 						),
-						'margin_bottom' => array(
-							'type'        => 'unit',
-							'label'       => __( 'Bottom', 'fl-builder' ),
-							'description' => 'px',
-							'preview'     => array(
-								'type' => 'none',
-							),
-							'responsive'  => array(
-								'placeholder' => array(
-									'default'    => $spacing_placeholders['row_margins'],
-									'medium'     => $spacing_placeholders['row_margins_medium'],
-									'responsive' => $spacing_placeholders['row_margins_responsive'],
-								),
-							),
-						),
-						'margin_left' => array(
-							'type'        => 'unit',
-							'label'       => __( 'Left', 'fl-builder' ),
-							'description' => 'px',
-							'preview'     => array(
-								'type' => 'none',
-							),
-							'responsive'  => array(
-								'placeholder' => array(
-									'default'    => $spacing_placeholders['row_margins'],
-									'medium'     => $spacing_placeholders['row_margins_medium'],
-									'responsive' => $spacing_placeholders['row_margins_responsive'],
-								),
-							),
-						),
-						'margin_right' => array(
-							'type'        => 'unit',
-							'label'       => __( 'Right', 'fl-builder' ),
-							'description' => 'px',
-							'preview'     => array(
-								'type' => 'none',
-							),
-							'responsive'  => array(
-								'placeholder' => array(
-									'default'    => $spacing_placeholders['row_margins'],
-									'medium'     => $spacing_placeholders['row_margins_medium'],
-									'responsive' => $spacing_placeholders['row_margins_responsive'],
-								),
-							),
-						),
-					),
-				),
-				'padding'       => array(
-					'title'         => __( 'Padding', 'fl-builder' ),
-					'fields'        => array(
-						'padding_top' => array(
-							'type'        => 'unit',
-							'label'       => __( 'Top', 'fl-builder' ),
+						'padding' 	  => array(
+							'type'        => 'dimension',
+							'label'       => __( 'Padding', 'fl-builder' ),
 							'description' => 'px',
 							'preview'     => array(
 								'type' => 'none',
@@ -701,51 +614,6 @@ FLBuilder::register_settings_form('row', array(
 									'default'    => $spacing_placeholders['row_padding'],
 									'medium'     => $spacing_placeholders['row_padding_medium'],
 									'responsive' => $spacing_placeholders['row_padding_tb_responsive'],
-								),
-							),
-						),
-						'padding_bottom' => array(
-							'type'        => 'unit',
-							'label'       => __( 'Bottom', 'fl-builder' ),
-							'description' => 'px',
-							'preview'     => array(
-								'type' => 'none',
-							),
-							'responsive'  => array(
-								'placeholder' => array(
-									'default'    => $spacing_placeholders['row_padding'],
-									'medium'     => $spacing_placeholders['row_padding_medium'],
-									'responsive' => $spacing_placeholders['row_padding_tb_responsive'],
-								),
-							),
-						),
-						'padding_left' => array(
-							'type'        => 'unit',
-							'label'       => __( 'Left', 'fl-builder' ),
-							'description' => 'px',
-							'preview'     => array(
-								'type' => 'none',
-							),
-							'responsive'  => array(
-								'placeholder' => array(
-									'default'    => $spacing_placeholders['row_padding'],
-									'medium'     => $spacing_placeholders['row_padding_medium'],
-									'responsive' => $spacing_placeholders['row_padding_lr_responsive'],
-								),
-							),
-						),
-						'padding_right' => array(
-							'type'        => 'unit',
-							'label'       => __( 'Right', 'fl-builder' ),
-							'description' => 'px',
-							'preview'     => array(
-								'type' => 'none',
-							),
-							'responsive'  => array(
-								'placeholder' => array(
-									'default'    => $spacing_placeholders['row_padding'],
-									'medium'     => $spacing_placeholders['row_padding_medium'],
-									'responsive' => $spacing_placeholders['row_padding_lr_responsive'],
 								),
 							),
 						),

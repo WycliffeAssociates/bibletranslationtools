@@ -24,19 +24,21 @@ final class FLBuilderIcons {
 	 * @return array An array of data for each icon set.
 	 */
 	static public function get_sets() {
+		$switched = false;
 		// Return the sets if already registered.
 		if ( self::$sets ) {
 			return self::$sets;
 		}
-
+		global $blog_id;
 		// Check to see if we should pull sets from the main site.
 		if ( is_multisite() ) {
 
-			$blog_id		= defined( 'BLOG_ID_CURRENT_SITE' ) ? BLOG_ID_CURRENT_SITE : 1;
+			$id		= defined( 'BLOG_ID_CURRENT_SITE' ) ? BLOG_ID_CURRENT_SITE : 1;
 			$enabled_icons	= get_option( '_fl_builder_enabled_icons' );
 
-			if ( empty( $enabled_icons ) ) {
-				switch_to_blog( $blog_id );
+			if ( ( $id != $blog_id ) && empty( $enabled_icons ) ) {
+				switch_to_blog( $id );
+				$switched = true;
 			}
 		}
 
@@ -45,7 +47,7 @@ final class FLBuilderIcons {
 		self::register_core_sets();
 
 		// Revert to the current site if we pulled from the main site.
-		if ( is_multisite() && empty( $enabled_icons ) ) {
+		if ( is_multisite() && $switched ) {
 			restore_current_blog();
 		}
 
@@ -188,16 +190,16 @@ final class FLBuilderIcons {
 		foreach ( $folders as $folder ) {
 
 			// Make sure we have a directory.
-			if ( ! is_dir( $folder ) ) {
+			if ( ! fl_builder_filesystem()->is_dir( $folder ) ) {
 				continue;
 			}
 
 			$folder = trailingslashit( $folder );
 
 			// This is an Icomoon font.
-			if ( file_exists( $folder . 'selection.json' ) ) {
+			if ( fl_builder_filesystem()->file_exists( $folder . 'selection.json' ) ) {
 
-				$data = json_decode( file_get_contents( $folder . 'selection.json' ) );
+				$data = json_decode( fl_builder_filesystem()->file_get_contents( $folder . 'selection.json' ) );
 				$key  = basename( $folder );
 				$url  = str_ireplace( $upload_info['path'], $upload_info['url'], $folder );
 
@@ -232,9 +234,9 @@ final class FLBuilderIcons {
 					}
 				}
 			} // End if().
-			elseif ( file_exists( $folder . 'config.json' ) ) {
+			elseif ( fl_builder_filesystem()->file_exists( $folder . 'config.json' ) ) {
 
-				$data  = json_decode( file_get_contents( $folder . 'config.json' ) );
+				$data  = json_decode( fl_builder_filesystem()->file_get_contents( $folder . 'config.json' ) );
 				$key   = basename( $folder );
 				$name  = empty( $data->name ) ? 'Fontello' : $data->name;
 				$url   = str_ireplace( $upload_info['path'], $upload_info['url'], $folder );

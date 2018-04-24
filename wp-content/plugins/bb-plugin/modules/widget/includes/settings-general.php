@@ -24,22 +24,38 @@ if ( isset( $widget_class ) && class_exists( $widget_class ) ) {
 	}
 
 	// Widget title
-	echo '<h3 class="fl-builder-settings-title">' . $widget_instance->name . '</h3>';
+	$widget_title = $widget_instance->name;
 
 	// Widget form
-	echo '<div class="fl-field" data-preview=\'{"type":"widget"}\'>';
-
+	ob_start();
 	FLWidgetModule::render_form( $widget_class, $widget_instance, $widget_settings );
-
-	// Uncommenting this will display custom fields from plugins like ACF, but we don't have a way to save them, yet..
-	//do_action_ref_array( 'in_widget_form', array( &$widget_instance, true, $widget_settings ) );
-
 	echo '<input type="hidden" name="widget" value="' . $widget_class . '" />';
-	echo '</div>';
+	$widget_form = ob_get_clean();
+
 } elseif ( isset( $widget_class ) ) {
 
 	// Widget doesn't exist!
+	$widget_title = __( 'Widget', 'fl-builder' );
+
+	// Widget form
+	ob_start();
 	echo '<div class="fl-builder-widget-missing">';
 	printf( _x( '%s no longer exists.', '%s stands for widget slug.', 'fl-builder' ), $widget_class );
 	echo '</div>';
+	$widget_form = ob_get_clean();
 }
+?>
+<h3 class="fl-builder-settings-title">
+	<span class="fl-builder-settings-title-text-wrap"><?php echo $widget_title; ?></span>
+</h3>
+<table class="fl-form-table">
+	<tbody>
+		<tr class="fl-field" data-preview='{"type":"widget"}'>
+			<td class="fl-field-control">
+				<div class="fl-field-control-wrapper">
+					<?php echo $widget_form; ?>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>

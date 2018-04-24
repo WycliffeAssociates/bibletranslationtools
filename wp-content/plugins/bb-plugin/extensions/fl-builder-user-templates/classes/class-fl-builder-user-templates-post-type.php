@@ -60,6 +60,7 @@ final class FLBuilderUserTemplatesPostType {
 			'menu_position'		=> 64,
 			'publicly_queryable' 	=> $can_edit || $can_edit_global,
 			'exclude_from_search'	=> true,
+			'show_in_rest'			=> true,
 		) );
 
 		register_post_type( 'fl-builder-template', $args );

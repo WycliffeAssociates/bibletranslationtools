@@ -99,7 +99,7 @@ add_action( 'after_setup_theme', 'fl_builder_option_tree_support' );
  * @since 1.10.2
  */
 function fl_admin_ssl_upload_fix() {
-	if ( defined( 'FORCE_SSL_ADMIN' ) && ! is_ssl() && is_admin() && defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+	if ( defined( 'FORCE_SSL_ADMIN' ) && ! is_ssl() && is_admin() && FLBuilderAJAX::doing_ajax() ) {
 		if ( isset( $_POST['action'] ) && 'upload-attachment' === $_POST['action'] && true === apply_filters( 'fl_admin_ssl_upload_fix', true ) ) {
 			force_ssl_admin( false );
 		}
@@ -248,3 +248,85 @@ function fl_builder_template_meta_add( $meta_id, $object_id, $meta_key, $meta_va
 	update_post_meta( $object_id, '_fl_builder_template_id', $template_id );
 }
 add_action( 'added_post_meta', 'fl_builder_template_meta_add', 10, 4 );
+
+/**
+ * Stop bw-minify from optimizing when builder is open.
+ * @since 1.10.9
+ */
+function fl_bwp_minify_is_loadable_filter( $args ) {
+	if ( FLBuilderModel::is_builder_active() ) {
+		return false;
+	}
+	return $args;
+}
+add_filter( 'bwp_minify_is_loadable', 'fl_bwp_minify_is_loadable_filter' );
+
+/**
+ * Stop autoptimize from optimizing when builder is open.
+ * @since 1.10.9
+ */
+function fl_autoptimize_filter_noptimize_filter( $args ) {
+	if ( FLBuilderModel::is_builder_active() ) {
+		return true;
+	}
+	return $args;
+}
+add_filter( 'autoptimize_filter_noptimize', 'fl_autoptimize_filter_noptimize_filter' );
+
+/**
+ * Plugin Enjoy Instagram loads its js and css on all frontend pages breaking the builder.
+ * @since 2.0.1
+ */
+add_action( 'template_redirect', 'fix_aggiungi_script_instafeed_owl', 1000 );
+function fix_aggiungi_script_instafeed_owl() {
+	if ( FLBuilderModel::is_builder_active() ) {
+		remove_action( 'wp_enqueue_scripts', 'aggiungi_script_instafeed_owl' );
+	}
+}
+
+/**
+* Siteground cache captures shutdown and breaks our dynamic js loading.
+* @since 2.0.4.2
+*/
+add_action( 'plugins_loaded', 'fl_fix_sg_cache', 9 );
+function fl_fix_sg_cache() {
+	if ( isset( $_GET['fl_builder_load_settings_config'] ) ) {
+		remove_action( 'plugins_loaded', 'sg_cachepress_start' );
+	}
+}
+
+/**
+ * Remove Activemember360 shortcodes from saved post content to stop them rendering twice.
+ * @since 2.0.6
+ */
+add_filter( 'fl_builder_editor_content', 'fl_activemember_shortcode_fix' );
+function fl_activemember_shortcode_fix( $content ) {
+	return preg_replace( '#\[mbr.*?\]#', '', $content );
+}
+
+/**
+ * Remove iMember360 shortcodes from saved post content to stop them rendering twice.
+ * @since 2.0.6
+ */
+add_filter( 'fl_builder_editor_content', 'fl_imember_shortcode_fix' );
+function fl_imember_shortcode_fix( $content ) {
+	return preg_replace( '#\[i4w.*?\]#', '', $content );
+}
+
+/**
+ * Fix javascript issue caused by nextgen gallery when adding modules in the builder.
+ * @since 2.0.6
+ */
+add_action( 'plugins_loaded', 'fl_fix_nextgen_gallery' );
+function fl_fix_nextgen_gallery() {
+	if ( isset( $_GET['fl_builder'] ) || isset( $_POST['fl_builder_data'] ) || FLBuilderAJAX::doing_ajax() ) {
+		define( 'NGG_DISABLE_RESOURCE_MANAGER', true );
+	}
+}
+add_action( 'template_redirect', 'fl_fix_tasty_recipes' );
+function fl_fix_tasty_recipes() {
+	if ( FLBuilderModel::is_builder_active() ) {
+		remove_action( 'wp_enqueue_editor', array( 'Tasty_Recipes\Assets', 'action_wp_enqueue_editor' ) );
+		remove_action( 'media_buttons',     array( 'Tasty_Recipes\Editor', 'action_media_buttons' ) );
+	}
+}

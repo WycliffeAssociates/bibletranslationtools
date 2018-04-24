@@ -28,9 +28,9 @@
 			// if screen width is resized, reload the menu
 		    if( width != this.currentBrowserWidth ){
 
+				this.currentBrowserWidth = width;
 				this._initMenu();
  				this._clickOrHover();
-		    	this.currentBrowserWidth = width;
 			}
 
 		}, this ) );
@@ -90,6 +90,7 @@
 		 * @see    this._menuOnCLick()
 		 * @see    this._clickOrHover()
 		 * @see    this._submenuOnRight()
+		 * @see    this._submenuRowZindexFix()
 		 * @see    this._toggleForMobile()
 		 * @since  1.6.1
 		 * @return void
@@ -110,6 +111,7 @@
 			} else {
 				$( this.wrapperClass ).off( 'click' );
 				this._submenuOnRight();
+				this._submenuRowZindexFix();
 			}
 
 			if( this.mobileToggle != 'expanded' ){
@@ -166,10 +168,10 @@
 				if ($(this.wrapperClass).hasClass('fl-menu-accordion-collapse')) {
 
 					if ( !$link.parents('.menu-item').hasClass('fl-active') ) {
-						$('.fl-active', this.wrapperClass).not($link).removeClass('fl-active');
+						$('.menu .fl-active', this.wrapperClass).not($link).removeClass('fl-active');
 					}
 					else if ($link.parents('.menu-item').hasClass('fl-active') && $link.parent('.sub-menu').length) {
-						$('.fl-active', this.wrapperClass).not($link).not($activeParent).removeClass('fl-active');
+						$('.menu .fl-active', this.wrapperClass).not($link).not($activeParent).removeClass('fl-active');
 					}
 
 					$('.sub-menu', this.wrapperClass).not($subMenu).not($subMenuParents).slideUp('normal');
@@ -281,6 +283,37 @@
 		},
 
 		/**
+		 * Logic to prevent submenus to go behind the next overlay row.
+		 *
+		 * @since  1.10.9
+		 * @return void
+		 */
+		_submenuRowZindexFix: function( e ){
+
+			$( this.wrapperClass )
+				.on( 'mouseenter', 'ul.menu > .fl-has-submenu', $.proxy( function( e ){
+
+					if( $ ( e.currentTarget ).find('.sub-menu').length === 0 ) {
+						return;
+					}
+
+					$( this.nodeClass )
+						.closest( '.fl-row' )
+						.find( '.fl-row-content' )
+						.css( 'z-index', '10' );
+
+				}, this ) )
+				.on( 'mouseleave', 'ul.menu > .fl-has-submenu', $.proxy( function( e ){
+
+					$( this.nodeClass )
+						.closest( '.fl-row' )
+						.find( '.fl-row-content' )
+						.css( 'z-index', '' );
+
+				}, this ) );
+		},
+
+		/**
 		 * Logic for the mobile menu button.
 		 *
 		 * @since  1.6.1
@@ -293,7 +326,7 @@
 
 			if( this._isMenuToggle() ){
 
-				if ( this.mobileBelowRow ) {
+				if ( this._isMobileBelowRowEnabled() ) {
 					this._placeMobileMenuBelowRow();
 					$wrapper = $( this.wrapperClass );
 					$menu    = $( this.nodeClass + '-clone' );
@@ -338,7 +371,7 @@
 			}
 			else {
 
-				if ( this.mobileBelowRow ) {
+				if ( this._isMobileBelowRowEnabled() ) {
 					this._removeMenuFromBelowRow();
 				}
 
@@ -361,7 +394,6 @@
 			var module     = $( this.nodeClass ),
 				rowContent = module.closest( '.fl-row-content' ),
 				rowWidth   = rowContent.width(),
-				rowOffset  = rowContent.offset().left,
 				megas      = module.find( '.mega-menu' ),
 				disabled   = module.find( '.mega-menu-disabled' ),
 				isToggle   = this._isMenuToggle();
@@ -375,6 +407,16 @@
 				module.find( 'li.mega-menu > ul.sub-menu' ).css( 'width', rowWidth + 'px' );
 				rowContent.css( 'position', 'relative' );
 			}
+		},
+
+		/**
+		 * Check to see if Below Row should be enabled.
+		 *
+		 * @since  	1.11
+		 * @return boolean
+		 */
+		_isMobileBelowRowEnabled: function() {
+			return this.mobileBelowRow && $( this.nodeClass ).closest( '.fl-col' ).length;
 		},
 
 		/**

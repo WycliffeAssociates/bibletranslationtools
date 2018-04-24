@@ -12,8 +12,9 @@ class FLButtonModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Button', 'fl-builder' ),
 			'description'   	=> __( 'A simple call to action button.', 'fl-builder' ),
-			'category'      	=> __( 'Basic Modules', 'fl-builder' ),
+			'category'      	=> __( 'Basic', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'button.svg',
 		));
 	}
 
@@ -57,6 +58,26 @@ class FLButtonModule extends FLBuilderModule {
 
 		return $classname;
 	}
+
+	/**
+	 * Returns button link rel based on settings
+	 * @since 1.10.9
+	 */
+	public function get_rel() {
+		$rel = array();
+		if ( '_blank' == $this->settings->link_target ) {
+			$rel[] = 'noopener';
+		}
+		if ( isset( $this->settings->link_nofollow ) && 'yes' == $this->settings->link_nofollow ) {
+			$rel[] = 'nofollow';
+		}
+		$rel = implode( ' ', $rel );
+		if ( $rel ) {
+			$rel = ' rel="' . $rel . '" ';
+		}
+		return $rel;
+	}
+
 }
 
 /**
@@ -199,6 +220,7 @@ FLBuilder::register_module('FLButtonModule', array(
 						'preview'       => array(
 							'type'          => 'none',
 						),
+						'connections'         => array( 'custom_field' ),
 					),
 				),
 			),
@@ -268,6 +290,7 @@ FLBuilder::register_module('FLButtonModule', array(
 						'maxlength'     => '3',
 						'size'          => '5',
 						'placeholder'   => '0',
+						'sanitize'		=> 'absint',
 					),
 					'bg_opacity'    => array(
 						'type'          => 'text',
@@ -277,6 +300,7 @@ FLBuilder::register_module('FLButtonModule', array(
 						'maxlength'     => '3',
 						'size'          => '5',
 						'placeholder'   => '0',
+						'sanitize'		=> 'absint',
 					),
 					'bg_hover_opacity'    => array(
 						'type'          => 'text',
@@ -286,6 +310,7 @@ FLBuilder::register_module('FLButtonModule', array(
 						'maxlength'     => '3',
 						'size'          => '5',
 						'placeholder'   => '0',
+						'sanitize'		=> 'absint',
 					),
 					'button_transition'         => array(
 						'type'          => 'select',
@@ -345,6 +370,7 @@ FLBuilder::register_module('FLButtonModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'padding'       => array(
 						'type'          => 'text',
@@ -353,6 +379,7 @@ FLBuilder::register_module('FLButtonModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'border_radius' => array(
 						'type'          => 'text',
@@ -361,6 +388,7 @@ FLBuilder::register_module('FLButtonModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 				),
 			),

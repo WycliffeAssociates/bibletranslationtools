@@ -15,7 +15,6 @@ var illdyCompanionImporter = {
       * Import demo content
       */
       importDemoContent: function() {
-          var self = this;
           jQuery( '#add_default_sections' ).click( function( e ) {
             var container = jQuery( this ).parents( '.action-required-box' ),
                 checkboxes = container.find( ':checkbox' ),
@@ -42,7 +41,7 @@ var illdyCompanionImporter = {
                   data: { action: 'welcome_screen_ajax_callback', args: args },
                   dataType: 'json',
                   url: ajaxurl,
-                  success: function( json ) {
+                  success: function() {
                     location.reload();
                   },
                   /**

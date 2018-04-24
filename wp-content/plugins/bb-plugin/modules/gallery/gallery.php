@@ -12,9 +12,10 @@ class FLGalleryModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Gallery', 'fl-builder' ),
 			'description'   	=> __( 'Display multiple photos in a gallery view.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Media', 'fl-builder' ),
 			'editor_export'  	=> false,
 			'partial_refresh'	=> true,
+			'icon'				=> 'format-gallery.svg',
 		));
 
 		$this->add_styles_scripts();
@@ -280,6 +281,7 @@ FLBuilder::register_module('FLGalleryModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'show_captions' => array(
 						'type'          => 'select',
@@ -301,9 +303,19 @@ FLBuilder::register_module('FLGalleryModule', array(
 							'lightbox'      => __( 'Lightbox', 'fl-builder' ),
 							'link'          => __( 'Photo Link', 'fl-builder' ),
 						),
+						'toggle'		=> array(
+							'lightbox'		=> array(
+								'fields' => array( 'lightbox_image_size' ),
+							),
+						),
 						'preview'       => array(
 							'type'          => 'none',
 						),
+					),
+					'lightbox_image_size' => array(
+						'type' 			=> 'photo-sizes',
+						'label'			=> __( 'Lightbox Photo Size', 'fl-builder' ),
+						'default'		=> 'large',
 					),
 				),
 			),

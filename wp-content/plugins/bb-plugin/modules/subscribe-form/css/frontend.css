@@ -24,3 +24,31 @@
 	padding-top: 15px;
 	width: auto;
 }
+.fl-terms-checkbox-wrap {
+	display: inline-flex;
+	vertical-align: middle;
+}
+.fl-form-field.fl-terms-checkbox input[type="checkbox"] {
+	height: 23px !important;
+	width: 23px;
+	margin: 0px 10px 0 1px;
+	padding: 0!important;
+	-ms-transform: scale(1.5);
+	-moz-transform: scale(1.5);
+	-webkit-transform: scale(1.5);
+	-o-transform: scale(1.5);
+	vertical-align: middle;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-margin-start: 2px;
+}
+.fl-form-field.fl-terms-checkbox {
+	width: 100%;
+}
+.fl-form-field.fl-terms-checkbox label {
+	word-wrap: break-word;
+}
+.fl-form-field .fl-terms-checkbox-text {
+	margin: 10px 0;
+}

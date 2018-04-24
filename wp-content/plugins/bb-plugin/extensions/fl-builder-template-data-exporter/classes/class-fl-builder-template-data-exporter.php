@@ -309,7 +309,7 @@ final class FLBuilderTemplateDataExporter {
 
 			// Get the template thumbnail.
 			if ( has_post_thumbnail( $post->ID ) ) {
-				$attachment_image_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'medium' );
+				$attachment_image_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'medium_large' );
 				$template->image      = apply_filters( 'fl_builder_exporter_template_thumb_src', $attachment_image_src[0], $post, $template );
 			}
 

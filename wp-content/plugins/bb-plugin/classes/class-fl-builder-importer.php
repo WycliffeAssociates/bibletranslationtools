@@ -88,7 +88,11 @@ class FLBuilderImportParserRegex extends WXR_Parser_Regex {
 				}
 				if ( false !== strpos( $importline, '</item>' ) ) {
 					$in_post = false;
+
+					$this->set_pcre_limit( '23001337' );
 					$this->posts[] = $this->process_post( $post );
+					$this->set_pcre_limit( 'default' );
+
 					continue;
 				}
 				if ( $in_post ) {
@@ -124,6 +128,31 @@ class FLBuilderImportParserRegex extends WXR_Parser_Regex {
 			'base_url' => $this->base_url,
 			'version' => $wxr_version,
 		);
+	}
+
+	/**
+	 * Try increasing PCRE limit to avoid failing of importing huge postmeta data.
+	 *
+	 * @since 1.10.9
+	 * @param string $value
+	 */
+	function set_pcre_limit( $value ) {
+		$default_backtrack_limit = @ini_get( 'pcre.backtrack_limit' ); // @codingStandardsIgnoreLine
+		$default_recursion_limit = @ini_get( 'pcre.recursion_limit' ); // @codingStandardsIgnoreLine
+
+		if ( 'default' != $value ) {
+			@ini_set( 'pcre.backtrack_limit', $value ); // @codingStandardsIgnoreLine
+			@ini_set( 'pcre.recursion_limit', $value ); // @codingStandardsIgnoreLine
+		} else {
+			// Reset limit back to default.
+			if ( is_numeric( $default_backtrack_limit ) ) {
+				@ini_set( 'pcre.backtrack_limit', $default_backtrack_limit ); // @codingStandardsIgnoreLine
+			}
+
+			if ( is_numeric( $default_recursion_limit ) ) {
+				@ini_set( 'pcre.recursion_limit', $default_recursion_limit ); // @codingStandardsIgnoreLine
+			}
+		}
 	}
 }
 

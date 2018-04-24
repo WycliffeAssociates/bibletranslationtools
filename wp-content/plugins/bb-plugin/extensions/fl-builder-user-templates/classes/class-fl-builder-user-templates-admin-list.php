@@ -17,6 +17,7 @@ final class FLBuilderUserTemplatesAdminList {
 		/* Actions */
 		add_action( 'plugins_loaded',                                  __CLASS__ . '::redirect' );
 		add_action( 'wp',                  				               __CLASS__ . '::page_heading' );
+		add_action( 'pre_get_posts',                                   __CLASS__ . '::pre_get_posts' );
 		add_action( 'admin_enqueue_scripts',          	               __CLASS__ . '::admin_enqueue_scripts' );
 		add_action( 'manage_fl-builder-template_posts_custom_column',  __CLASS__ . '::add_column_content', 10, 2 );
 
@@ -100,6 +101,22 @@ final class FLBuilderUserTemplatesAdminList {
 			} elseif ( 'module' == $_GET['fl-builder-template-type'] ) {
 				$wp_post_types['fl-builder-template']->labels->name = __( 'Saved Modules', 'fl-builder' );
 			}
+		}
+	}
+
+	/**
+	 * Orders templates by title.
+	 *
+	 * @since 2.0.6
+	 * @param object $query
+	 * @return void
+	 */
+	static public function pre_get_posts( $query ) {
+		if ( ! isset( $_GET['post_type'] ) || 'fl-builder-template' != $_GET['post_type'] ) {
+			return;
+		} elseif ( $query->is_main_query() && ! $query->get( 'orderby' ) ) {
+			$query->set( 'orderby', 'title' );
+			$query->set( 'order', 'ASC' );
 		}
 	}
 

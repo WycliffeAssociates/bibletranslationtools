@@ -178,6 +178,9 @@
 	min-height: 100vh;
 
 }
+.fl-builder-edit .fl-row-full-height .fl-row-content-wrap {
+	min-height: calc( 100vh - 48px );
+}
 .fl-row-full-height .fl-row-content {
   -webkit-box-flex: 1 1 auto;
   	 -moz-box-flex: 1 1 auto;
@@ -191,7 +194,7 @@
 }
 
 /* IE 11 - Row full height - vertical alignment center/bottom fix */
-.fl-builder-ie-11 .fl-row.fl-row-full-height {
+.fl-builder-ie-11 .fl-row.fl-row-full-height:not(.fl-visible-medium):not(.fl-visible-medium-mobile):not(.fl-visible-mobile) {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -292,6 +295,11 @@
     	-ms-flex-wrap: wrap;
     		flex-wrap: wrap;
 }
+.fl-col-group-equal-height.fl-col-group-has-child-loading {
+    -webkit-flex-wrap: nowrap;
+    	-ms-flex-wrap: nowrap;
+    		flex-wrap: nowrap;
+}
 .fl-col-group-equal-height .fl-col,
 .fl-col-group-equal-height .fl-col-content{
   -webkit-box-flex: 1 1 auto;
@@ -347,8 +355,11 @@
 }
 
 /* IE11 fix for images with height:auto in equal height columns. */
+.fl-builder-ie-11 .fl-col-group-equal-height,
+.fl-builder-ie-11 .fl-col-group-equal-height .fl-col,
+.fl-builder-ie-11 .fl-col-group-equal-height .fl-col-content,
 .fl-builder-ie-11 .fl-col-group-equal-height .fl-module,
-.fl-col-group-equal-height.fl-col-group-align-center .fl-col-group  {
+.fl-col-group-equal-height.fl-col-group-align-center .fl-col-group {
 	min-height: 1px;
 }
 
@@ -688,6 +699,7 @@ img.mfp-img {
 }
 .fl-builder-mobile .fl-animation,
 .fl-builder-edit .fl-animation,
+.fl-builder-preview .fl-animation,
 .fl-animated {
 	opacity: 1;
 }

@@ -316,8 +316,12 @@ final class FLBuilderServiceActiveCampaign extends FLBuilderService {
 				$data['form'] = $settings->form_id;
 			} else {
 				$data['p']                 = array( $settings->list_id );
-				$data['status']            = 1;
-				$data['instantresponders'] = array( 1 );
+				$data['status']            = array(
+					$settings->list_id => 1,
+				);
+				$data['instantresponders'] = array(
+					$settings->list_id => 1,
+				);
 			}
 
 			// Name

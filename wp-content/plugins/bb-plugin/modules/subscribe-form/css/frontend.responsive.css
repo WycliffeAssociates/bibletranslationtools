@@ -11,3 +11,6 @@
 	float: none;
 	width: 100%;
 }
+.fl-form-field.fl-terms-checkbox input[type=checkbox] {
+	-webkit-margin-start: 5px;
+}

@@ -12,9 +12,10 @@ class FLSlideshowModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Slideshow', 'fl-builder' ),
 			'description'   	=> __( 'Display multiple photos in a slideshow view.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Media', 'fl-builder' ),
 			'editor_export' 	=> false,
 			'partial_refresh'	=> true,
+			'icon'				=> 'slides.svg',
 		));
 
 		$this->add_js( 'yui3' );
@@ -290,6 +291,7 @@ FLBuilder::register_module('FLSlideshowModule', array(
 						'maxlength'     => '4',
 						'size'          => '5',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 					'color'         => array(
 						'type'          => 'select',
@@ -376,6 +378,7 @@ FLBuilder::register_module('FLSlideshowModule', array(
 						'label'         => __( 'Speed', 'fl-builder' ),
 						'default'       => '3',
 						'size'          => '5',
+						'sanitize'		=> 'absint',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' ),
 					),
 					'transition'     => array(
@@ -401,6 +404,7 @@ FLBuilder::register_module('FLSlideshowModule', array(
 						'label'         => __( 'Transition Speed', 'fl-builder' ),
 						'default'       => '1',
 						'size'          => '5',
+						'sanitize'		=> 'absint',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' ),
 					),
 					'randomize'     => array(
@@ -586,6 +590,7 @@ FLBuilder::register_module('FLSlideshowModule', array(
 						'maxlength'     => '3',
 						'size'          => '5',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 					),
 				),
 			),

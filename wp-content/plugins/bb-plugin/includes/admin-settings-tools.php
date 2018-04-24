@@ -23,7 +23,7 @@
 	<?php $header = ( $debug ) ? __( 'Debug Mode Enabled', 'fl-builder' ) : __( 'Debug Mode Disabled', 'fl-builder' ); ?>
 	<h3 class="fl-settings-form-header"><?php echo $header ?></h3>
 
-	<form id="cache-form" action="<?php FLBuilderAdminSettings::render_form_action( 'tools' ); ?>" method="post">
+	<form id="debug-form" action="<?php FLBuilderAdminSettings::render_form_action( 'tools' ); ?>" method="post">
 		<div class="fl-settings-form-content">
 			<?php if ( ! $debug ) : ?>
 			<p><?php _e( 'Enable debug mode to generate a unique support url.', 'fl-builder' ); ?></p>

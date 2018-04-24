@@ -12,8 +12,9 @@ class FLCountdownModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Countdown', 'fl-builder' ),
 			'description'   	=> __( 'Render a Countdown module.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Info', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'clock.svg',
 		));
 	}
 
@@ -34,12 +35,11 @@ class FLCountdownModule extends FLBuilderModule {
 		$hours      = isset( $this->settings->time['hours'] ) ? str_pad( $this->settings->time['hours'], 2, '0', STR_PAD_LEFT ) : '00';
 		$minutes    = isset( $this->settings->time['minutes'] ) ? str_pad( $this->settings->time['minutes'], 2, '0', STR_PAD_LEFT ) : '00';
 		$day_period = isset( $this->settings->time['day_period'] ) ? $this->settings->time['day_period'] : 'AM';
-		$zone       = isset( $this->settings->time_zone ) ? $this->settings->time_zone : date( 'e', current_time( 'timestamp', 1 ) );
+		$zone       = isset( $this->settings->time_zone ) && '' != $this->settings->time_zone ? $this->settings->time_zone : date( 'e', current_time( 'timestamp', 1 ) );
 		$time       = date( 'H:i:s', strtotime( $hours . ':' . $minutes . ':00 ' . strtoupper( $day_period ) ) );
 
 		$timestamp = $date . ' ' . $time;
-
-		$timezone = new DateTimeZone( $this->settings->time_zone );
+		$timezone = new DateTimeZone( $zone );
 		$date = new DateTime( $timestamp, $timezone );
 
 		return $date->format( 'c' );

@@ -5,7 +5,7 @@ $preload  = FLBuilderModel::is_builder_active() ? ' preload="none"' : '';
 
 ?>
 
-<div class="fl-video fl-<?php echo ( 'media_library' == $settings->video_type ) ? 'wp' : 'embed'; ?>-video" itemscope itemtype="http://schema.org/VideoObject">
+<div class="fl-video fl-<?php echo ( 'media_library' == $settings->video_type ) ? 'wp' : 'embed'; ?>-video" itemscope itemtype="https://schema.org/VideoObject">
 	<?php
 
 		global $wp_embed;

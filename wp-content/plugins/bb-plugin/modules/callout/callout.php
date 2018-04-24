@@ -12,8 +12,9 @@ class FLCalloutModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Callout', 'fl-builder' ),
 			'description'   	=> __( 'A heading and snippet of text with an optional link, icon and image.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Actions', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'megaphone.svg',
 		));
 	}
 
@@ -120,9 +121,9 @@ class FLCalloutModule extends FLBuilderModule {
 				'font_size'         => $this->settings->btn_font_size,
 				'icon'              => $this->settings->btn_icon,
 				'icon_position'     => $this->settings->btn_icon_position,
-				'icon_animation'	=> $this->settings->btn_icon_animation,
+				'icon_animation'    => $this->settings->btn_icon_animation,
 				'link'              => $this->settings->link,
-				'link_nofollow'		=> $this->settings->link_nofollow,
+				'link_nofollow'     => $this->settings->link_nofollow,
 				'link_target'       => $this->settings->link_target,
 				'padding'           => $this->settings->btn_padding,
 				'style'             => $this->settings->btn_style,
@@ -289,6 +290,7 @@ FLBuilder::register_module('FLCalloutModule', array(
 						'maxlength'         => '3',
 						'size'              => '4',
 						'description'       => 'px',
+						'sanitize'			=> 'absint',
 					),
 				),
 			),
@@ -326,6 +328,7 @@ FLBuilder::register_module('FLCalloutModule', array(
 				'fields'        => array(
 					'photo'         => array(
 						'type'          => 'photo',
+						'show_remove'   => true,
 						'label'         => __( 'Photo', 'fl-builder' ),
 						'connections'   => array( 'photo' ),
 					),

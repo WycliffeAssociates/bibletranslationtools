@@ -12,8 +12,9 @@ class FLPricingTableModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Pricing Table', 'fl-builder' ),
 			'description'   	=> __( 'A simple pricing table generator.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'Layout', 'fl-builder' ),
 			'partial_refresh'	=> true,
+			'icon'				=> 'editor-table.svg',
 		));
 	}
 
@@ -31,9 +32,9 @@ class FLPricingTableModule extends FLBuilderModule {
 			'font_size'         => $this->settings->pricing_columns[ $column ]->btn_font_size,
 			'icon'              => $this->settings->pricing_columns[ $column ]->btn_icon,
 			'icon_position'     => $this->settings->pricing_columns[ $column ]->btn_icon_position,
-			'icon_animation'	=> $this->settings->pricing_columns[ $column ]->btn_icon_animation,
+			'icon_animation'    => $this->settings->pricing_columns[ $column ]->btn_icon_animation,
 			'link'              => $this->settings->pricing_columns[ $column ]->button_url,
-			'link_nofollow' 	=> $this->settings->pricing_columns[ $column ]->btn_link_nofollow,
+			'link_nofollow'     => $this->settings->pricing_columns[ $column ]->btn_link_nofollow,
 			'link_target'       => $this->settings->pricing_columns[ $column ]->btn_link_target,
 			'padding'           => $this->settings->pricing_columns[ $column ]->btn_padding,
 			'style'             => $this->settings->pricing_columns[ $column ]->btn_style,

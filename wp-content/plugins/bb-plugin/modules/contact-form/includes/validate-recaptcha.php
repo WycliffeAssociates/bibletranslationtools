@@ -3,7 +3,12 @@
 // Do recaptcha validation here so we can only load for php 5.3 and above.
 require_once FL_BUILDER_DIR . 'includes/vendor/recaptcha/autoload.php';
 
-$recaptcha = new \ReCaptcha\ReCaptcha( $settings->recaptcha_secret_key );
+if ( function_exists( 'curl_exec' ) ) {
+	$recaptcha = new \ReCaptcha\ReCaptcha( $settings->recaptcha_secret_key, new \ReCaptcha\RequestMethod\CurlPost() );
+} else {
+	$recaptcha = new \ReCaptcha\ReCaptcha( $settings->recaptcha_secret_key );
+}
+
 $resp = $recaptcha->verify( $recaptcha_response, $_SERVER['REMOTE_ADDR'] );
 
 if ( $resp->isSuccess() ) {

@@ -32,9 +32,9 @@ final class FLBuilderUserTemplatesAdminMenu {
 
 		$parent       = 'edit.php?post_type=fl-builder-template';
 		$cap          = 'edit_posts';
-		$list_url     = admin_url( '/edit.php?post_type=fl-builder-template&fl-builder-template-type=' );
-		$add_url      = admin_url( '/post-new.php?post_type=fl-builder-template' );
-		$cats_url     = admin_url( 'edit-tags.php?taxonomy=fl-builder-template-category&post_type=fl-builder-template' );
+		$list_url     = 'edit.php?post_type=fl-builder-template&fl-builder-template-type=';
+		$add_url      = 'post-new.php?post_type=fl-builder-template';
+		$cats_url     = 'edit-tags.php?taxonomy=fl-builder-template-category&post_type=fl-builder-template';
 		$add_new_hook = 'fl-builder-template_page_fl-builder-add-new';
 
 		$submenu[ $parent ] = array();
@@ -72,16 +72,15 @@ final class FLBuilderUserTemplatesAdminMenu {
 			$submenu_file = 'fl-builder-add-new';
 		} elseif ( isset( $_GET['fl-builder-template-type'] ) && $list_url == $parent_file ) {
 			$type = sanitize_text_field( $_GET['fl-builder-template-type'] );
-			$submenu_file = admin_url( $parent_file . '&fl-builder-template-type=' . $type );
+			$submenu_file = $parent_file . '&fl-builder-template-type=' . $type;
 		} elseif ( 'post.php' == $pagenow && 'fl-builder-template' == $screen->post_type ) {
 			$type = FLBuilderModel::get_user_template_type( $post->ID );
-			$submenu_file = admin_url( 'edit.php?post_type=fl-builder-template&fl-builder-template-type=' . $type );
+			$submenu_file = 'edit.php?post_type=fl-builder-template&fl-builder-template-type=' . $type;
 		} elseif ( 'edit-tags.php' == $pagenow && 'fl-builder-template-category' == $screen->taxonomy ) {
-			$submenu_file = admin_url( 'edit-tags.php?taxonomy=fl-builder-template-category&post_type=fl-builder-template' );
+			$submenu_file = 'edit-tags.php?taxonomy=fl-builder-template-category&post_type=fl-builder-template';
 		} elseif ( 'term.php' == $pagenow && 'fl-builder-template-category' == $screen->taxonomy ) {
-			$submenu_file = admin_url( 'edit-tags.php?taxonomy=fl-builder-template-category&post_type=fl-builder-template' );
+			$submenu_file = 'edit-tags.php?taxonomy=fl-builder-template-category&post_type=fl-builder-template';
 		}
-
 		return $submenu_file;
 	}
 }

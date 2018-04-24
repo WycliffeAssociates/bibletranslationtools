@@ -56,7 +56,7 @@ final class FLUpdater {
 
 		if ( 'plugin' == $settings['type'] ) {
 			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update_check' ) );
-			add_filter( 'plugins_api', array( $this, 'plugin_info' ), 10, 3 );
+			add_filter( 'plugins_api', array( $this, 'plugin_info' ), 99, 3 );
 			add_action( 'in_plugin_update_message-' . self::get_plugin_file( $settings['slug'] ), array( $this, 'update_message' ), 1, 2 );
 		} elseif ( 'theme' == $settings['type'] ) {
 			add_filter( 'pre_set_site_transient_update_themes', array( $this, 'update_check' ) );
@@ -128,6 +128,11 @@ final class FLUpdater {
 					$transient->response[ $plugin ]->url 			= $response->homepage;
 					$transient->response[ $plugin ]->package 		= $response->package;
 					$transient->response[ $plugin ]->tested 		= $response->tested;
+					$transient->response[ $plugin ]->icons = apply_filters( 'fl_updater_icon', array(
+						'1x' => FL_BUILDER_URL . 'img/beaver-128.png',
+						'2x' => FL_BUILDER_URL . 'img/beaver-256.png',
+						'default' => FL_BUILDER_URL . 'img/beaver-256.png',
+					), $response, $this->settings );
 
 					if ( empty( $response->package ) ) {
 						$transient->response[ $plugin ]->upgrade_notice = FLUpdater::get_update_error_message();
@@ -183,8 +188,7 @@ final class FLUpdater {
 			$info->last_updated		= $response->last_updated;
 			$info->download_link	= $response->package;
 			$info->sections 		= (array) $response->sections;
-
-			return $info;
+			return apply_filters( 'fl_plugin_info_data', $info, $response );
 		}
 
 		return $false;
@@ -343,7 +347,7 @@ final class FLUpdater {
 	 */
 	static private function get_update_error_message( $plugin_data = null ) {
 		$message  = '';
-		$message .= '<p style="padding:10px 20px; margin-top: 10px; background: #d54e21; color: #fff;">';
+		$message .= '<span style="display:block;padding:10px 20px;margin:10px 0; background: #d54e21; color: #fff;">';
 		$message .= __( '<strong>UPDATE UNAVAILABLE!</strong>', 'fl-builder' );
 		$message .= '&nbsp;&nbsp;&nbsp;';
 		$message .= __( 'Please subscribe to enable automatic updates for this plugin.', 'fl-builder' );
@@ -353,9 +357,7 @@ final class FLUpdater {
 			$message .= __( 'Subscribe Now', 'fl-builder' );
 			$message .= ' &raquo;</a>';
 		}
-
-		$message .= '</p>';
-
+		$message .= '</span>';
 		return $message;
 	}
 

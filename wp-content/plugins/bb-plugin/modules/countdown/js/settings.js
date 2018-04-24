@@ -2,18 +2,6 @@
 
 	FLBuilder.registerModuleHelper('countdown', {
 
-		rules: {
-			day: {
-				required: true
-			},
-			month: {
-				required: true
-			},
-			year: {
-				required: true
-			}
-		},
-		
 		submit: function(){
 
 			var self = this;
@@ -28,13 +16,13 @@
 
 			if( !this._validateDate( day, 'day' ) ){
 				FLBuilder.alert( FLBuilderStrings.enterValidDay );
-				return false;				
+				return false;
 			} else if( !this._validateDate( month, 'month' ) ){
 				FLBuilder.alert( FLBuilderStrings.enterValidMonth );
-				return false;				
+				return false;
 			} else if( !this._validateDate( year, 'year' ) ){
 				FLBuilder.alert( FLBuilderStrings.enterValidYear );
-				return false;				
+				return false;
 			} else if( Date.parse( date ) <= Date.now() ) {
 				FLBuilder.alert( FLBuilderStrings.countdownDateisInThePast );
 				return false;
@@ -69,10 +57,10 @@
 					case 'year':
 						return date >= new Date().getFullYear();
 						break;
-				}				
+				}
 			}
 		},
-	
+
 	});
 
 })(jQuery);

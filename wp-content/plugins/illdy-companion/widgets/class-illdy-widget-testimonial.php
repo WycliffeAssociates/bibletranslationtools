@@ -6,9 +6,11 @@ class Illdy_Widget_Testimonial extends WP_Widget {
 	 * Register widget with WordPress.
 	 */
 	function __construct() {
-		parent::__construct( 'illdy_testimonial', __( '[Illdy] - Testimonial', 'illdy-companion' ), array(
-			'description' => __( 'Add this widget in "Front page - Testimonial Sidebar".', 'illdy-companion' ),
-		) );
+		parent::__construct(
+			'illdy_testimonial', __( '[Illdy] - Testimonial', 'illdy-companion' ), array(
+				'description' => __( 'Add this widget in "Front page - Testimonial Sidebar".', 'illdy-companion' ),
+			)
+		);
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
@@ -35,20 +37,20 @@ class Illdy_Widget_Testimonial extends WP_Widget {
 		$lightbox = get_theme_mod( 'illdy_projects_lightbox', false );
 
 		$defaults = array(
-			'name' => '',
-			'image' => '',
+			'name'        => '',
+			'image'       => '',
 			'testimonial' => '',
 		);
 		$instance = wp_parse_args( $instance, $defaults );
 
-		$image_id = illdy_get_image_id_from_image_url( $instance['image'] );
+		$image_id                 = illdy_get_image_id_from_image_url( $instance['image'] );
 		$get_attachment_image_src = wp_get_attachment_image_src( $image_id, 'illdy-front-page-projects' );
 
 		?>
 
 		<div class="carousel-testimonial">
 			<div class="testimonial-image">
-				<img src="<?php echo $image_id ? esc_url( $get_attachment_image_src[0] ) : esc_url( $instance['image'] ) ?>">
+				<img src="<?php echo $image_id ? esc_url( $get_attachment_image_src[0] ) : esc_url( $instance['image'] ); ?>">
 			</div><!--/.testimonial-image-->
 			<div class="testimonial-content">
 				<blockquote><q><?php echo wp_kses_post( $instance['testimonial'] ); ?></q></blockquote>
@@ -73,8 +75,8 @@ class Illdy_Widget_Testimonial extends WP_Widget {
 	 */
 	public function form( $instance ) {
 		$defaults = array(
-			'name' => '',
-			'image' => get_template_directory_uri() . '/layout/images/front-page/front-page-project-1.jpg',
+			'name'        => '',
+			'image'       => get_template_directory_uri() . '/layout/images/front-page/front-page-project-1.jpg',
 			'testimonial' => '',
 		);
 		$instance = wp_parse_args( $instance, $defaults );
@@ -87,7 +89,7 @@ class Illdy_Widget_Testimonial extends WP_Widget {
 
 		<p>
 			<label for="<?php echo $this->get_field_name( 'image' ); ?>"><?php _e( 'Image:', 'illdy-companion' ); ?></label>
-			<input type="text" class="widefat custom_media_url_<?php echo $this->get_field_id( 'image' ); ?>" name="<?php echo $this->get_field_name( 'image' ); ?>" id="<?php echo $this->get_field_id( 'image' ); ?>" value="<?php echo esc_attr( $instance['image'] ) ?>" style="margin-top:5px;">
+			<input type="text" class="widefat custom_media_url_<?php echo $this->get_field_id( 'image' ); ?>" name="<?php echo $this->get_field_name( 'image' ); ?>" id="<?php echo $this->get_field_id( 'image' ); ?>" value="<?php echo esc_attr( $instance['image'] ); ?>" style="margin-top:5px;">
 			<input type="button" class="button button-primary custom_media_button" id="custom_media_button_service" data-fieldid="<?php echo $this->get_field_id( 'image' ); ?>" name="<?php echo $this->get_field_name( 'image' ); ?>" value="<?php _e( 'Upload Image', 'illdy-companion' ); ?>" style="margin-top: 5px;">
 		</p>
 
@@ -111,9 +113,9 @@ class Illdy_Widget_Testimonial extends WP_Widget {
 	 * @return array Updated safe values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
-		$instance['name'] = ( ! empty( $new_instance['name'] ) ) ? sanitize_text_field( $new_instance['name'] ) : '';
-		$instance['image'] = ! empty( $new_instance['image'] ) ? esc_url_raw( $new_instance['image'] ) : '';
+		$instance                = array();
+		$instance['name']        = ( ! empty( $new_instance['name'] ) ) ? sanitize_text_field( $new_instance['name'] ) : '';
+		$instance['image']       = ! empty( $new_instance['image'] ) ? esc_url_raw( $new_instance['image'] ) : '';
 		$instance['testimonial'] = ( ! empty( $new_instance['testimonial'] ) ? wp_kses_post( $new_instance['testimonial'] ) : '' );
 
 		return $instance;

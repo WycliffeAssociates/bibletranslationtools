@@ -4,7 +4,7 @@
 	<div class="fl-input-group fl-name">
 		<label for="fl-name"><?php _ex( 'Name', 'Contact form field label.', 'fl-builder' );?></label>
 		<span class="fl-contact-error"><?php _e( 'Please enter your name.', 'fl-builder' );?></span>
-		<input type="text" id="fl-name" name="fl-name" value="" placeholder="<?php esc_attr_e( 'Your name', 'fl-builder' ); ?>" />
+		<input type="text" id="fl-name" name="fl-name" value="" placeholder="<?php echo esc_attr( $settings->name_placeholder ); ?>" />
 	</div>
 	<?php endif; ?>
 
@@ -12,7 +12,7 @@
 	<div class="fl-input-group fl-subject">
 		<label for="fl-subject"><?php _e( 'Subject', 'fl-builder' );?></label>
 		<span class="fl-contact-error"><?php _e( 'Please enter a subject.', 'fl-builder' );?></span>
-		<input type="text" id="fl-subject" name="fl-subject" value="" placeholder="<?php esc_attr_e( 'Subject', 'fl-builder' ); ?>" />
+		<input type="text" id="fl-subject" name="fl-subject" value="" placeholder="<?php echo esc_attr( $settings->subject_placeholder ); ?>" />
 	</div>
 	<?php endif; ?>
 
@@ -20,7 +20,7 @@
 	<div class="fl-input-group fl-email">
 		<label for="fl-email"><?php _e( 'Email', 'fl-builder' );?></label>
 		<span class="fl-contact-error"><?php _e( 'Please enter a valid email.', 'fl-builder' );?></span>
-		<input type="email" id="fl-email" name="fl-email" value="" placeholder="<?php esc_attr_e( 'Your email', 'fl-builder' ); ?>" />
+		<input type="email" id="fl-email" name="fl-email" value="" placeholder="<?php echo esc_attr( $settings->email_placeholder ); ?>" />
 	</div>
 	<?php endif; ?>
 
@@ -28,22 +28,34 @@
 	<div class="fl-input-group fl-phone">
 		<label for="fl-phone"><?php _e( 'Phone', 'fl-builder' );?></label>
 		<span class="fl-contact-error"><?php _e( 'Please enter a valid phone number.', 'fl-builder' );?></span>
-		<input type="tel" id="fl-phone" name="fl-phone" value="" placeholder="<?php esc_attr_e( 'Your phone', 'fl-builder' ); ?>" />
+		<input type="tel" id="fl-phone" name="fl-phone" value="" placeholder="<?php echo esc_attr( $settings->phone_placeholder ); ?>" />
 	</div>
 	<?php endif; ?>
 
 	<div class="fl-input-group fl-message">
 		<label for="fl-message"><?php _e( 'Your Message', 'fl-builder' );?></label>
 		<span class="fl-contact-error"><?php _e( 'Please enter a message.', 'fl-builder' );?></span>
-		<textarea id="fl-message" name="fl-message" placeholder="<?php esc_attr_e( 'Your message', 'fl-builder' ); ?>"></textarea>
+		<textarea id="fl-message" name="fl-message" placeholder="<?php echo esc_attr( $settings->message_placeholder ); ?>"></textarea>
 	</div>
+
+	<?php if ( 'show' == $settings->terms_checkbox ) : ?>
+		<div class="fl-input-group fl-terms-checkbox">
+			<?php if ( isset( $settings->terms_text ) && ! empty( $settings->terms_text ) ) : ?>
+				<div class="fl-terms-checkbox-text"><?php echo $settings->terms_text; ?></div>
+			<?php endif; ?>
+			<label for="fl-terms-checkbox-<?php echo $id; ?>">
+				<input type="checkbox" class="checkbox-inline" id="fl-terms-checkbox-<?php echo $id; ?>" name="fl-terms-checkbox" value="1" /> <?php echo $settings->terms_checkbox_text; ?>
+			</label>
+			<span class="fl-contact-error"><?php _e( 'Terms and Conditions checkbox is required.', 'fl-builder' );?></span>
+		</div>
+	<?php endif; ?>
 
 	<?php
 	if ( 'show' == $settings->recaptcha_toggle && (isset( $settings->recaptcha_site_key ) && ! empty( $settings->recaptcha_site_key )) ) :
 	?>
 	<div class="fl-input-group fl-recaptcha">
 		<span class="fl-contact-error"><?php _e( 'Please check the captcha to verify you are not a robot.', 'fl-builder' );?></span>
-		<div id="<?php echo $id; ?>-fl-grecaptcha" class="fl-grecaptcha" data-sitekey="<?php echo $settings->recaptcha_site_key; ?>"></div>
+		<div id="<?php echo $id; ?>-fl-grecaptcha" class="fl-grecaptcha" data-sitekey="<?php echo $settings->recaptcha_site_key; ?>"<?php if ( isset( $settings->recaptcha_validate_type ) ) { echo ' data-validate="' . $settings->recaptcha_validate_type . '"';} ?><?php if ( isset( $settings->recaptcha_theme ) ) { echo ' data-theme="' . $settings->recaptcha_theme . '"';} ?>></div>
 	   </div>
 	<?php endif; ?>
 

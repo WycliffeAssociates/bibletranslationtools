@@ -2,52 +2,16 @@
 
 	FLBuilder.registerModuleHelper('audio', {
 
-		rules: {
-			link: {
-				required: true
-			},
-			audio: {
-				required: true
-			},
-		},
-
 		init: function()
 		{
 			var form  		= $('.fl-builder-settings'),
 				type  		= form.find('select[name=audio_type]'),
 				audioField  = form.find('input[name=audios]');
-			
-			type.on('change', this._typeChanged);			
-			this._typeChanged();
 
 			type.on('change', $.proxy(this._audioFieldChanged, this));
-			audioField.on('change', $.proxy(this._audioFieldChanged, this));			
+			audioField.on('change', $.proxy(this._audioFieldChanged, this));
 			this._audioFieldChanged();
-			
-		},
-		
-		_typeChanged: function()
-		{
-			var form      = $('.fl-builder-settings'),
-				link      = form.find('input[name=link]'),
-				audio     = form.find('input[name=audios]'),
-				type      = form.find('select[name=audio_type]').val();
-				
-			link.rules('remove');
-			audio.rules('remove');
-			
-			if(type == 'link') {
-				link.rules('add', {
-					required: true
-				});
-			} 
-			else {				
-				audio.rules('add', {
-					required: true
-				});
 
-
-			}
 		},
 
 		_audioFieldChanged: function()
@@ -60,10 +24,10 @@
 				playlistFields 	  = [],
 				singleAudioFields = [],
 				i       		  = 0;
-			
+
 			if (typeof toggle !== 'undefined') {
-				
-				toggle = JSON.parse(toggle);				
+
+				toggle = JSON.parse(toggle);
 				playlistFields 		= toggle['playlist'].fields;
 				singleAudioFields	= toggle['single_audio'].fields;
 
@@ -71,7 +35,7 @@
 				if (count > 1 && type == 'media_library') {
 					this._showhide(singleAudioFields, 'hide');
 					this._showhide(playlistFields, 'show');
-				} 
+				}
 				else if ((count == 1 && type == 'media_library') || (type == 'link')) {
 					this._showhide(playlistFields, 'hide');
 					this._showhide(singleAudioFields, 'show');
@@ -82,7 +46,7 @@
 					this._showhide(singleAudioFields, 'hide');
 				}
 			}
-			
+
 		},
 
 		_showhide: function(fieldArray, method) {

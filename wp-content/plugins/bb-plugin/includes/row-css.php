@@ -66,7 +66,7 @@
 }
 <?php endif; ?>
 
-<?php if ( 'photo' == $row->settings->bg_type && ! empty( $row->settings->bg_image ) ) : // Background Photo ?>
+<?php if ( 'photo' == $row->settings->bg_type && ! empty( $row->settings->bg_image_src ) ) : // Background Photo ?>
 .fl-node-<?php echo $row->node; ?> > .fl-row-content-wrap {
 	background-image: url(<?php echo $row->settings->bg_image_src; ?>);
 	background-repeat: <?php echo $row->settings->bg_repeat; ?>;
@@ -107,3 +107,21 @@
 	<?php endif; ?>
 }
 <?php endif; ?>
+
+<?php
+// Row resize support
+$has_max_width = ! empty( $row->settings->max_content_width );
+$is_row_fixed = ( 'fixed' === $row->settings->width );
+$is_row_content_fixed = ( 'fixed' === $row->settings->content_width );
+$are_both_full_width = ( ! $is_row_fixed && ! $is_row_content_fixed );
+
+if ( $has_max_width && ! $are_both_full_width ) {
+	if ( $is_row_fixed ) {
+		print '.fl-node-' . $row->node . ".fl-row-fixed-width,\n .fl-node-" . $row->node . " .fl-row-fixed-width {\n";
+	} else {
+		print '.fl-node-' . $row->node . " .fl-row-content {\n";
+	}
+	print "\tmax-width: " . $row->settings->max_content_width . "px;\n";
+	print "}\n";
+}
+?>

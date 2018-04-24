@@ -112,30 +112,32 @@ if ( ! class_exists( 'Epsilon_Dashboard' ) ) {
 			$feed->set_cache_duration( apply_filters( 'wp_feed_cache_transient_lifetime', 7200, $this->feeds ) );
 			do_action_ref_array( 'wp_feed_options', array( $feed, $this->feeds ) );
 			$feed->strip_comments( true );
-			$feed->strip_htmltags( array(
-				'base',
-				'blink',
-				'body',
-				'doctype',
-				'embed',
-				'font',
-				'form',
-				'frame',
-				'frameset',
-				'html',
-				'iframe',
-				'input',
-				'marquee',
-				'meta',
-				'noscript',
-				'object',
-				'param',
-				'script',
-				'style',
-			) );
+			$feed->strip_htmltags(
+				array(
+					'base',
+					'blink',
+					'body',
+					'doctype',
+					'embed',
+					'font',
+					'form',
+					'frame',
+					'frameset',
+					'html',
+					'iframe',
+					'input',
+					'marquee',
+					'meta',
+					'noscript',
+					'object',
+					'param',
+					'script',
+					'style',
+				)
+			);
 			$feed->init();
 			$feed->handle_content_type();
-			$items = $feed->get_items( 0, 5 );
+			$items       = $feed->get_items( 0, 5 );
 			$this->items = array();
 			foreach ( (array) $items as $item ) {
 				$this->items[] = array(

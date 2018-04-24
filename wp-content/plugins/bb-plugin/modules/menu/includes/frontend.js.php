@@ -18,8 +18,8 @@
 			mobile: '<?php echo $mobile ?>',
 			mobileBelowRow: <?php echo $below_row ?>,
 			breakPoints: {
-				medium: <?php echo $global_settings->medium_breakpoint ?>,
-				small: <?php echo $global_settings->responsive_breakpoint ?>
+				medium: <?php echo FLBuilderUtils::sanitize_number( $global_settings->medium_breakpoint );?>,
+				small: <?php echo FLBuilderUtils::sanitize_number( $global_settings->responsive_breakpoint ); ?>
 			},
 			mobileBreakpoint: '<?php echo $mobile_breakpoint ?>'
 		});

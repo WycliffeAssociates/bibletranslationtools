@@ -241,19 +241,6 @@ final class FLBuilderUserAccess {
 	static public function current_user_can( $key ) {
 		$user	  = wp_get_current_user();
 		$settings = self::get_saved_settings();
-		$caps     = apply_filters( 'fl_builder_user_access_capabilities', array( 'edit_posts' ) );
-		$user_can = false;
-
-		// Return false for users that can't edit posts.
-		foreach ( $caps as $cap ) {
-			if ( current_user_can( $cap ) ) {
-				$user_can = true;
-			}
-		}
-
-		if ( ! $user_can ) {
-			return false;
-		}
 
 		// Return false if no settings saved.
 		if ( ! isset( $settings[ $key ] ) ) {

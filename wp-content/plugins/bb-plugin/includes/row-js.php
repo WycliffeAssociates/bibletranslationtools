@@ -20,6 +20,7 @@ YUI({'logExclude': { 'yui': true } }).use('fl-slideshow', function(Y) {
 			loadingImageEnabled : false,
 			randomize           : <?php echo $settings->ss_randomize; ?>,
 			responsiveThreshold : 0,
+			touchSupport        : false,
 			source              : [{<?php echo $source; ?>}],
 			speed               : <?php echo $settings->ss_speed * 1000; ?>,
 			stretchy            : true,
@@ -32,7 +33,9 @@ YUI({'logExclude': { 'yui': true } }).use('fl-slideshow', function(Y) {
 		oldSlideshow.remove(true);
 	}
 
-	newSlideshow.render('.fl-node-<?php echo $id; ?> .fl-bg-slideshow');
+	jQuery( '.fl-node-<?php echo $id; ?>' ).imagesLoaded( function(){
+		newSlideshow.render('.fl-node-<?php echo $id; ?> .fl-bg-slideshow');
+	} );
 });
 <?php
 

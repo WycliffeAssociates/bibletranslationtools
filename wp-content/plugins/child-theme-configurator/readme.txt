@@ -3,8 +3,8 @@ Contributors: lilaeamedia
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8QE5YJ8WE96AJ
 Tags: child, theme, child theme, child themes, custom styles, customize styles, customize theme, css, responsive, css editor, child theme editor, child theme generator, child theme creator, style, stylesheet, customizer, childtheme, childthemes
 Requires at least: 4.0
-Tested up to: 4.8
-Stable tag: 2.2.8.1
+Tested up to: 4.9
+Stable tag: 2.2.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -287,6 +287,9 @@ https://www.youtube.com/watch?v=iBiiAgsK4G4
 7. Files tab
 
 == Changelog ==
+= 2.2.9 =
+Modified preview to include all registered stylesheets in queue
+Disable Autoptimize in preview
 = 2.2.8.1 =
 Added support for General Sibling Selector (~)
 = 2.2.8 =
@@ -748,4 +751,4 @@ Go to http://www.childthemeconfigurator.com/
 
 Serbo-Croatian translation courtesy of Borisa Djuraskovic borisad@webhostinghub.com http://www.webhostinghub.com
 
-Copyright: (C) 2014-2017 Lilaea Media
+Copyright: (C) 2014-2018 Lilaea Media

@@ -252,7 +252,7 @@ final class FLBuilderServiceMailChimp extends FLBuilderService {
 		} else {
 
 			$api     = $this->get_api( $account_data['api_key'] );
-			$double  = apply_filters( 'fl_builder_mailchimp_double_option', true );
+			$double  = apply_filters( 'fl_builder_mailchimp_double_option', false );
 			$welcome = apply_filters( 'fl_builder_mailchimp_welcome', true );
 			$email   = array(
 				'email' => $email,

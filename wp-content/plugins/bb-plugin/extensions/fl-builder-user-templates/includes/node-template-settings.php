@@ -1,7 +1,6 @@
 <?php
 
 FLBuilder::register_settings_form('node_template', array(
-	'title' => _x( 'Save %s', '%s stands for the type of node template being saved.', 'fl-builder' ),
 	'tabs' => array(
 		'general'  => array(
 			'title'         => __( 'General', 'fl-builder' ),

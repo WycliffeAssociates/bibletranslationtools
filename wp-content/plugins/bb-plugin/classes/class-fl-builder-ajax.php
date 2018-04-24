@@ -80,17 +80,9 @@ final class FLBuilderAJAX {
 	 * @return void
 	 */
 	static private function add_actions() {
-		// FLBuilder
-		self::add_action( 'render_settings_form', 'FLBuilder::render_settings_form', array( 'type', 'settings' ) );
-		self::add_action( 'render_row_settings', 'FLBuilder::render_row_settings', array( 'node_id' ) );
-		self::add_action( 'render_column_settings', 'FLBuilder::render_column_settings', array( 'node_id' ) );
-		self::add_action( 'render_module_settings', 'FLBuilder::render_module_settings', array( 'node_id', 'type', 'parent_id' ) );
-		self::add_action( 'render_layout_settings', 'FLBuilder::render_layout_settings' );
-		self::add_action( 'render_global_settings', 'FLBuilder::render_global_settings' );
-		self::add_action( 'render_template_selector', 'FLBuilder::render_template_selector' );
-		self::add_action( 'render_icon_selector', 'FLBuilder::render_icon_selector' );
 
 		// FLBuilderModel
+		self::add_action( 'get_node_settings', 'FLBuilderModel::get_node_settings', array( 'node_id' ) );
 		self::add_action( 'delete_node', 'FLBuilderModel::delete_node', array( 'node_id' ) );
 		self::add_action( 'delete_col', 'FLBuilderModel::delete_col', array( 'node_id', 'new_width' ) );
 		self::add_action( 'reorder_node', 'FLBuilderModel::reorder_node', array( 'node_id', 'position' ) );
@@ -99,6 +91,7 @@ final class FLBuilderAJAX {
 		self::add_action( 'move_col', 'FLBuilderModel::move_col', array( 'node_id', 'new_parent', 'position', 'resize' ) );
 		self::add_action( 'resize_cols', 'FLBuilderModel::resize_cols', array( 'col_id', 'col_width', 'sibling_id', 'sibling_width' ) );
 		self::add_action( 'reset_col_widths', 'FLBuilderModel::reset_col_widths', array( 'group_id' ) );
+		self::add_action( 'resize_row_content', 'FLBuilderModel::resize_row_content', array( 'node', 'width' ) );
 		self::add_action( 'save_settings', 'FLBuilderModel::save_settings', array( 'node_id', 'settings' ) );
 		self::add_action( 'save_layout_settings', 'FLBuilderModel::save_layout_settings', array( 'settings' ) );
 		self::add_action( 'save_global_settings', 'FLBuilderModel::save_global_settings', array( 'settings' ) );
@@ -111,15 +104,28 @@ final class FLBuilderAJAX {
 		self::add_action( 'save_draft', 'FLBuilderModel::save_draft' );
 		self::add_action( 'clear_draft_layout', 'FLBuilderModel::clear_draft_layout' );
 		self::add_action( 'disable_builder', 'FLBuilderModel::disable' );
+		self::add_action( 'clear_cache', 'FLBuilderModel::delete_all_asset_cache' );
 
 		// FLBuilderAJAXLayout
 		self::add_action( 'render_layout', 'FLBuilderAJAXLayout::render' );
+		self::add_action( 'render_node', 'FLBuilderAJAXLayout::render', array( 'node_id' ) );
 		self::add_action( 'render_new_row', 'FLBuilderAJAXLayout::render_new_row', array( 'cols', 'position', 'template_id', 'template_type' ) );
-		self::add_action( 'copy_row', 'FLBuilderAJAXLayout::copy_row', array( 'node_id' ) );
+		self::add_action( 'copy_row', 'FLBuilderAJAXLayout::copy_row', array( 'node_id', 'settings', 'settings_id' ) );
 		self::add_action( 'render_new_column_group', 'FLBuilderAJAXLayout::render_new_column_group', array( 'node_id', 'cols', 'position' ) );
 		self::add_action( 'render_new_columns', 'FLBuilderAJAXLayout::render_new_columns', array( 'node_id', 'insert', 'type', 'nested' ) );
+		self::add_action( 'copy_col', 'FLBuilderAJAXLayout::copy_col', array( 'node_id', 'settings', 'settings_id' ) );
 		self::add_action( 'render_new_module', 'FLBuilderAJAXLayout::render_new_module', array( 'parent_id', 'position', 'type', 'alias', 'template_id', 'template_type' ) );
-		self::add_action( 'copy_module', 'FLBuilderAJAXLayout::copy_module', array( 'node_id' ) );
+		self::add_action( 'copy_module', 'FLBuilderAJAXLayout::copy_module', array( 'node_id', 'settings' ) );
+
+		// FLBuilderUISettingsForms
+		self::add_action( 'render_legacy_settings', 'FLBuilderUISettingsForms::render_legacy_settings', array( 'data', 'form', 'group', 'lightbox' ) );
+		self::add_action( 'render_settings_form', 'FLBuilderUISettingsForms::render_settings_form', array( 'type', 'settings' ) );
+		self::add_action( 'render_icon_selector', 'FLBuilderUISettingsForms::render_icon_selector' );
+
+		// FLBuilderRevisions
+		self::add_action( 'render_revision_preview', 'FLBuilderRevisions::render_preview', array( 'revision_id' ) );
+		self::add_action( 'restore_revision', 'FLBuilderRevisions::restore', array( 'revision_id' ) );
+		self::add_action( 'refresh_revision_items', 'FLBuilderRevisions::get_config', array( 'post_id' ) );
 
 		// FLBuilderServices
 		self::add_action( 'render_service_settings', 'FLBuilderServices::render_settings' );
@@ -130,6 +136,7 @@ final class FLBuilderAJAX {
 
 		// FLBuilderAutoSuggest
 		self::add_action( 'fl_builder_autosuggest', 'FLBuilderAutoSuggest::init' );
+		self::add_action( 'get_autosuggest_values', 'FLBuilderAutoSuggest::get_values', array( 'fields' ) );
 	}
 
 	/**
@@ -237,6 +244,21 @@ final class FLBuilderAJAX {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Is this an AJAX response?
+	 * @since 2.0.7
+	 * @return bool
+	 */
+	static public function doing_ajax() {
+		if ( function_exists( 'wp_doing_ajax' ) ) {
+			return wp_doing_ajax();
+		}
+		if ( defined( 'DOING_AJAX' ) ) {
+			return DOING_AJAX;
+		}
+		return false;
 	}
 }
 

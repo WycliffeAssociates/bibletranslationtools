@@ -6,56 +6,11 @@ FLBuilder::register_settings_form('module_advanced', array(
 	'title'         => __( 'Advanced', 'fl-builder' ),
 	'sections'      => array(
 		'margins'       => array(
-			'title'         => __( 'Margins', 'fl-builder' ),
+			'title'         => __( 'Spacing', 'fl-builder' ),
 			'fields'        => array(
-				'margin_top' => array(
-					'type'        => 'unit',
-					'label'       => __( 'Top', 'fl-builder' ),
-					'description' => 'px',
-					'preview'     => array(
-						'type' => 'none',
-					),
-					'responsive'  => array(
-						'placeholder' => array(
-							'default'    => ( isset( $global_settings->module_margins ) ) ? $global_settings->module_margins : '',
-							'medium'     => ( isset( $global_settings->module_margins_medium ) ) ? $global_settings->module_margins_medium : '',
-							'responsive' => ( isset( $global_settings->module_margins_responsive ) ) ? $global_settings->module_margins_responsive : '',
-						),
-					),
-				),
-				'margin_bottom' => array(
-					'type'        => 'unit',
-					'label'       => __( 'Bottom', 'fl-builder' ),
-					'description' => 'px',
-					'preview'     => array(
-						'type' => 'none',
-					),
-					'responsive'  => array(
-						'placeholder' => array(
-							'default'    => ( isset( $global_settings->module_margins ) ) ? $global_settings->module_margins : '',
-							'medium'     => ( isset( $global_settings->module_margins_medium ) ) ? $global_settings->module_margins_medium : '',
-							'responsive' => ( isset( $global_settings->module_margins_responsive ) ) ? $global_settings->module_margins_responsive : '',
-						),
-					),
-				),
-				'margin_left' => array(
-					'type'        => 'unit',
-					'label'       => __( 'Left', 'fl-builder' ),
-					'description' => 'px',
-					'preview'     => array(
-						'type' => 'none',
-					),
-					'responsive'  => array(
-						'placeholder' => array(
-							'default'    => ( isset( $global_settings->module_margins ) ) ? $global_settings->module_margins : '',
-							'medium'     => ( isset( $global_settings->module_margins_medium ) ) ? $global_settings->module_margins_medium : '',
-							'responsive' => ( isset( $global_settings->module_margins_responsive ) ) ? $global_settings->module_margins_responsive : '',
-						),
-					),
-				),
-				'margin_right' => array(
-					'type'        => 'unit',
-					'label'       => __( 'Right', 'fl-builder' ),
+				'margin' 		=> array(
+					'type'        => 'dimension',
+					'label'       => __( 'Margins', 'fl-builder' ),
 					'description' => 'px',
 					'preview'     => array(
 						'type' => 'none',

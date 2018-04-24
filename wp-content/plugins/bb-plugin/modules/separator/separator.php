@@ -12,9 +12,10 @@ class FLSeparatorModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'Separator', 'fl-builder' ),
 			'description'   	=> __( 'A divider line to separate content.', 'fl-builder' ),
-			'category'      	=> __( 'Basic Modules', 'fl-builder' ),
+			'category'      	=> __( 'Basic', 'fl-builder' ),
 			'editor_export' 	=> false,
 			'partial_refresh'	=> true,
+			'icon'				=> 'minus.svg',
 		));
 	}
 }
@@ -60,6 +61,7 @@ FLBuilder::register_module('FLSeparatorModule', array(
 						'maxlength'     => '2',
 						'size'          => '3',
 						'description'   => 'px',
+						'sanitize'		=> 'absint',
 						'preview'       => array(
 							'type'          => 'css',
 							'selector'      => '.fl-separator',

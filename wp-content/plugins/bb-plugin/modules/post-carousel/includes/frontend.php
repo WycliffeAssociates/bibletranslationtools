@@ -15,7 +15,7 @@ if ( $query->have_posts() ) :
 
 ?>
 
-	<div class="fl-post-carousel fl-post-carousel-<?php echo $layout ?>" itemscope="itemscope" itemtype="http://schema.org/Blog">
+	<div class="fl-post-carousel fl-post-carousel-<?php echo $layout ?>" itemscope="itemscope" itemtype="https://schema.org/Blog">
 		<div class="fl-post-carousel-wrapper">
 			<?php
 

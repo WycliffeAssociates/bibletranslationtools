@@ -1,6 +1,6 @@
 <div class="fl-lightbox-header">
 	<h1><?php _e( 'Select Icon', 'fl-builder' ); ?></h1>
-	<div class="fl-icons-filter fl-builder-settings-fields">
+	<div class="fl-icons-filter">
 		<select class="fl-icons-filter-select">
 			<option value="all"><?php _ex( 'All Libraries', 'Select option for showing all icon libraries.', 'fl-builder' ); ?></option>
 			<?php foreach ( $icon_sets as $set_key => $set_data ) : ?>

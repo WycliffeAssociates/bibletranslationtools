@@ -14,7 +14,7 @@ class FLWooCommerceModule extends FLBuilderModule {
 		parent::__construct(array(
 			'name'          	=> __( 'WooCommerce', 'fl-builder' ),
 			'description'   	=> __( 'Display products or categories from your WooCommerce store.', 'fl-builder' ),
-			'category'      	=> __( 'Advanced Modules', 'fl-builder' ),
+			'category'      	=> __( 'WooCommerce', 'fl-builder' ),
 			'enabled'       	=> $enabled,
 			'partial_refresh'	=> true,
 		));

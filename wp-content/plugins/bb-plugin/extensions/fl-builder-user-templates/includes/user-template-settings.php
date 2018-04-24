@@ -5,7 +5,7 @@ FLBuilder::register_settings_form('user_template', array(
 	'tabs' => array(
 		'general'  => array(
 			'title'         => __( 'General', 'fl-builder' ),
-			'description'   => __( 'Save the current layout as a template that can be reused under <strong>Templates &rarr; Your Templates</strong>.', 'fl-builder' ),
+			'description'   => __( 'Save the current layout as a template that can be reused under <strong>Templates &rarr; Saved Templates</strong>.', 'fl-builder' ),
 			'sections'      => array(
 				'general'       => array(
 					'title'         => '',

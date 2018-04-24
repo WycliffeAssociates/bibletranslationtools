@@ -2,7 +2,7 @@
 // https://github.com/bgrins/spectrum
 // Author: Brian Grinstead
 // License: MIT
-// Modifications for CTC (c) 2017 Lilaea Media LLC
+// Modifications for CTC (c) 2018 Lilaea Media LLC
 
 (function (factory) {
     "use strict";

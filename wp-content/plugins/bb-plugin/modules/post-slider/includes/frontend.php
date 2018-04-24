@@ -14,7 +14,7 @@ if ( $query->have_posts() ) :
 
 ?>
 
-	<div class="fl-post-slider" itemscope="itemscope" itemtype="http://schema.org/Blog">
+	<div class="fl-post-slider" itemscope="itemscope" itemtype="https://schema.org/Blog">
 		<div class="fl-post-slider-wrapper">
 
 			<?php

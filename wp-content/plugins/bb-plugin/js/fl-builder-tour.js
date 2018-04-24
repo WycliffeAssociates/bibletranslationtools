@@ -1,5 +1,5 @@
 (function( $ ) {
-	
+
 	/**
 	 * Logic for the builder's help tour.
 	 *
@@ -7,7 +7,7 @@
 	 * @since 1.4.9
 	 */
 	FLBuilderTour = {
-	
+
 		/**
 		 * A reference to the Bootstrap Tour object.
 		 *
@@ -16,7 +16,7 @@
 		 * @property {Tour} _tour
 		 */
 		_tour: null,
-		
+
 		/**
 		 * Starts the tour or restarts it if it
 		 * has already run.
@@ -33,10 +33,15 @@
 			else {
 				FLBuilderTour._tour.restart();
 			}
-			
+
+			// Save existing settings first if any exist. Don't proceed if it fails.
+			if ( ! FLBuilder._triggerSettingsSave( false, true ) ) {
+				return;
+			}
+
 			FLBuilderTour._tour.start();
 		},
-		
+
 		/**
 		 * Returns a config object for the tour.
 		 *
@@ -57,47 +62,32 @@
 				steps       : [
 					{
 						animation   : false,
-						element     : '.fl-builder-bar',
-						placement   : 'bottom',
+						element     : '.fl-builder--content-library-panel',
+						placement   : 'left',
 						title       : FLBuilderStrings.tourTemplatesTitle,
 						content     : FLBuilderStrings.tourTemplates,
-						onShown     : function() {
-							if ( 0 === $( '.fl-template-selector' ).length ) {
-								$( '.popover[class*=tour-]' ).css( 'visibility', 'hidden' );
-								FLBuilder._showTemplateSelector();
-							}
-							else {
-								FLBuilderTour._templateSelectorLoaded();
-							}
-						}
+						onShow		: function() {
+							FLBuilder.ContentPanel.show('templates');
+						},
 					},
 					{
 						animation   : false,
-						element     : '#fl-builder-blocks-rows .fl-builder-blocks-section-title',
+						element     : '.fl-builder--content-library-panel',
 						placement   : 'left',
 						title       : FLBuilderStrings.tourAddRowsTitle,
 						content     : FLBuilderStrings.tourAddRows,
 						onShow      : function() {
-							FLBuilderTour._dimSection( 'body' );
-							FLBuilderTour._dimSection( '.fl-builder-bar' );
-							FLBuilder._showPanel();
-							$( '.fl-template-selector .fl-builder-settings-cancel' ).trigger( 'click' );
-							$( '#fl-builder-blocks-rows .fl-builder-blocks-section-title' ).trigger( 'click' );
+							FLBuilder.ContentPanel.show('rows');
 						}
 					},
 					{
 						animation   : false,
-						element     : '#fl-builder-blocks-basic .fl-builder-blocks-section-title',
+						element     : '.fl-builder--content-library-panel',
 						placement   : 'left',
 						title       : FLBuilderStrings.tourAddContentTitle,
 						content     : FLBuilderStrings.tourAddContent,
 						onShow      : function() {
-							FLBuilderTour._dimSection( 'body' );
-							FLBuilderTour._dimSection( '.fl-builder-bar' );
-							FLBuilder._showPanel();
-							$( '#fl-builder-blocks-basic .fl-builder-blocks-section-title' ).trigger( 'click' );
-							$( '.fl-row' ).eq( 0 ).trigger( 'mouseleave' );
-							$( '.fl-module' ).eq( 0 ).trigger( 'mouseleave' );
+							FLBuilder.ContentPanel.show('modules');
 						}
 					},
 					{
@@ -128,14 +118,14 @@
 					},
 					{
 						animation   : false,
-						element     : '.fl-builder-add-content-button',
+						element     : '.fl-builder-content-panel-button',
 						placement   : 'bottom',
 						title       : FLBuilderStrings.tourAddContentButtonTitle,
 						content     : FLBuilderStrings.tourAddContentButton,
 						onShow      : function() {
 							FLBuilderTour._dimSection( 'body' );
 							$( '.fl-row' ).eq( 0 ).trigger( 'mouseleave' );
-							$( '.fl-module' ).eq( 0 ).trigger( 'mouseleave' );  
+							$( '.fl-module' ).eq( 0 ).trigger( 'mouseleave' );
 						}
 					},
 					{
@@ -178,7 +168,7 @@
 					}
 				]
 			};
-			
+
 			// Remove the first step if no templates.
 			if( FLBuilderConfig.lite ) {
 				config.steps.shift();
@@ -189,10 +179,9 @@
 			else if ( 'fl-builder-template' == FLBuilderConfig.postType ) {
 				config.steps.shift();
 			}
-			
 			return config;
 		},
-		
+
 		/**
 		 * Callback for when the tour starts.
 		 *
@@ -203,17 +192,17 @@
 		_onStart: function()
 		{
 			var body = $( 'body' );
-			
+			body.scrollTop(0);
+
 			body.append( '<div class="fl-builder-tour-mask"></div>' );
-			body.on( 'fl-builder.template-selector-loaded', FLBuilderTour._templateSelectorLoaded );
-			
+
 			if ( 0 === $( '.fl-row' ).length && 'module' != FLBuilderConfig.userTemplateType ) {
 				$( '.fl-builder-content' ).append( '<div class="fl-builder-tour-demo-content fl-row fl-row-fixed-width fl-row-bg-none"> <div class="fl-row-content-wrap"> <div class="fl-row-content fl-row-fixed-width fl-node-content"> <div class="fl-col-group"> <div class="fl-col" style="width:100%"> <div class="fl-col-content fl-node-content"> <div class="fl-module fl-module-rich-text" data-type="rich-text" data-name="Text Editor"> <div class="fl-module-content fl-node-content"> <div class="fl-rich-text"> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pellentesque ut lorem non cursus. Sed mauris nunc, porttitor iaculis lorem a, sollicitudin lacinia sapien. Proin euismod orci lacus, et sollicitudin leo posuere ac. In hac habitasse platea dictumst. Maecenas elit magna, consequat in turpis suscipit, ultrices rhoncus arcu. Phasellus finibus sapien nec elit tempus venenatis. Maecenas tincidunt sapien non libero maximus, in aliquam felis tincidunt. Mauris mollis ultricies facilisis. Duis condimentum dignissim tortor sit amet facilisis. Aenean gravida lacus eu risus molestie egestas. Donec ut dolor dictum, fringilla metus malesuada, viverra nunc. Maecenas ut purus ac justo aliquet lacinia. Cras vestibulum elementum tincidunt. Maecenas mattis tortor neque, consectetur dignissim neque tempor nec.</p></div> </div> </div> </div> </div> </div> </div> </div> </div>' );
 				FLBuilder._setupEmptyLayout();
 				FLBuilder._highlightEmptyCols();
 			}
 		},
-		
+
 		/**
 		 * Callback for when the tour is navigated
 		 * to the previous step.
@@ -226,7 +215,7 @@
 		{
 			$( '.fl-builder-tour-dimmed' ).remove();
 		},
-		
+
 		/**
 		 * Callback for when the tour is navigated
 		 * to the next step.
@@ -239,7 +228,7 @@
 		{
 			$( '.fl-builder-tour-dimmed' ).remove();
 		},
-		
+
 		/**
 		 * Callback for when the tour ends.
 		 *
@@ -259,7 +248,7 @@
 			FLBuilder._showPanel();
 			FLBuilder._initTemplateSelector();
 		},
-		
+
 		/**
 		 * Dims a section of the page.
 		 *
@@ -272,26 +261,6 @@
 		{
 			$( selector ).find( '.fl-builder-tour-dimmed' ).remove();
 			$( selector ).append( '<div class="fl-builder-tour-dimmed"></div>' );
-		},
-		
-		/**
-		 * Fires when the template selector loads
-		 * and positions the popup.
-		 *
-		 * @since 1.4.9
-		 * @access private
-		 * @method _templateSelectorLoaded
-		 */
-		_templateSelectorLoaded: function()
-		{
-			var header = $( '.fl-builder-settings-lightbox .fl-lightbox-header' ),
-				height = header.height(),
-				top    = header.offset().top + 75;
-			
-			$( '.popover[class*=tour-]' ).css({
-				top: ( top + height) + 'px',
-				visibility: 'visible'
-			});
 		}
 	};
 

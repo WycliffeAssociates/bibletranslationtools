@@ -389,6 +389,7 @@ ul {
 }
 #translations-container .lang-list-title {
 	margin-top: 0;
+        margin-bottom: 15px;
 }
 #translations-container .lang-selector {
 	padding-left: 1rem;

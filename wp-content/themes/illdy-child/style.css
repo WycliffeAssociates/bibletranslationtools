@@ -375,9 +375,21 @@ ul {
 #translations-container .lang-list {
 	overflow-y: auto;
         height: 100vh; /* Needed for IE to render scrollbar in lang list */
+        margin-top: 1rem;
+}
+#translations-container .lang-list-filter {
+    background-image: url('layout/images/magnifying-glass-24x24.png');
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 90%;
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin: auto;
 }
 #translations-container .lang-list-title {
 	margin-top: 0;
+        margin-bottom: 15px;
 }
 #translations-container .lang-selector {
 	padding-left: 1rem;

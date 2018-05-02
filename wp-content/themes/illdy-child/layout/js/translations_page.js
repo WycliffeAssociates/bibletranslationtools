@@ -161,10 +161,29 @@ var TranslationsPage = (function(window, $) {
       var title = create('h5', 'lang-list-title');
       title.innerText = 'Languages';
 
-      var list = create('ul', 'lang-list');
+      var filter = create('input', 'lang-list-filter', 'lang-list-filter');
+      filter.setAttribute('type', 'text');
+      filter.setAttribute('placeholder', 'Search languages or codes...');
+
+      var list = create('ul', 'lang-list', 'lang-list');
+
+      filter.onkeyup = function() {
+            searchText = filter.value.toUpperCase();
+            items = list.getElementsByTagName('li');
+            for (i = 0; i < items.length; i++) {
+                item = items[i];
+                langText = item.innerText.toUpperCase();
+                if (langText.indexOf(searchText) > -1) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            }
+      }
 
       var container = create('div', 'lang-list-container sticky');
       container.appendChild(title);
+      container.appendChild(filter);
       container.appendChild(list);
 
       this.createListItemEls().forEach(function(item) {

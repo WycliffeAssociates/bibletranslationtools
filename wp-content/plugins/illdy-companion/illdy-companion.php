@@ -3,7 +3,7 @@
  * Plugin Name:       Illdy Companion
  * Plugin URI:        https://colorlib.com/wp/themes/illdy/
  * Description:       Illdy Companion is a companion for Illdy theme.
- * Version:           2.0.5
+ * Version:           2.1.1
  * Author:            Colorlib
  * Author URI:        https://colorlib.com/
  * License:           GPL-2.0+
@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'ILLDY_COMPANION', '2.0.5' );
+define( 'ILLDY_COMPANION', '2.1.0' );
 define( 'ILLDY_COMPANION_ASSETS_DIR', plugins_url( '/assets/', __FILE__ ) );
 
 /**

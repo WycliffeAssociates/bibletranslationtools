@@ -28,7 +28,7 @@
 			<?php if ( ! $debug ) : ?>
 			<p><?php _e( 'Enable debug mode to generate a unique support url.', 'fl-builder' ); ?></p>
 		<?php else : ?>
-			<p><?php _e( 'Copy this unique support URL and send it to Support as directed.', 'fl-builder' ); ?></p>
+			<p><?php _e( 'Copy this unique URL and send it to support as directed.', 'fl-builder' ); ?></p>
 		<?php endif; ?>
 			<?php if ( $debug ) :
 				$url = add_query_arg( array(
@@ -44,6 +44,34 @@
 			<?php wp_nonce_field( 'debug', 'fl-debug-nonce' ); ?>
 		</p>
 	</form>
+
+<?php
+if ( FLBuilderUsage::show_settings() ) {
+	$usage = get_site_option( 'fl_builder_usage_enabled', false );
+
+	$endpoint = is_network_admin() ? 'settings.php?page=fl-builder-multisite-settings#tools' : 'options-general.php?page=fl-builder-settings#tools';
+	$url   = wp_nonce_url( network_admin_url( $endpoint ), 'stats_enable' );
+	if ( '1' == $usage ) {
+		$text = __( 'Disable', 'fl-builder' );
+		$url  = add_query_arg( array(
+			'fl_usage' => 0,
+		), $url );
+	} else {
+		$text = __( 'Enable', 'fl-builder' );
+		$url  = add_query_arg( array(
+			'fl_usage' => 1,
+		), $url );
+	}
+	$btn = sprintf( '<a class="button button-primary" href="%s">%s</a>', $url, $text ); ?>
+	<hr />
+	<h3 class="fl-settings-form-header"><?php echo __( 'Send Usage Data', 'fl-builder' ) ?></h3>
+
+	<p><?php _e( 'If enabled we will send anonymous usage stats to help improve the plugin.', 'fl-builder' ); ?></p>
+
+	<p><?php echo $btn; ?></p>
+
+	<?php echo FLBuilderUsage::data_demo(); ?>
+	<?php } ?>
 
 	<?php if ( is_network_admin() || ! self::multisite_support() ) : ?>
 

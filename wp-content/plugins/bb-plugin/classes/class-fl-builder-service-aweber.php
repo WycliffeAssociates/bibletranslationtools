@@ -68,8 +68,7 @@ final class FLBuilderServiceAWeber extends FLBuilderService {
 		// Make sure we have an authorization code.
 		if ( ! isset( $fields['auth_code'] ) || empty( $fields['auth_code'] ) ) {
 			$response['error'] = __( 'Error: You must provide an Authorization Code.', 'fl-builder' );
-		} // End if().
-		elseif ( 6 != count( explode( '|', $fields['auth_code'] ) ) ) {
+		} elseif ( 6 != count( explode( '|', $fields['auth_code'] ) ) ) {
 			$response['error'] = __( 'Error: Please enter a valid Authorization Code.', 'fl-builder' );
 		} // Try to connect and store the connection data.
 		else {
@@ -270,7 +269,7 @@ final class FLBuilderServiceAWeber extends FLBuilderService {
 					$e->getMessage()
 				);
 			}
-		}// End if().
+		}
 
 		return $response;
 	}

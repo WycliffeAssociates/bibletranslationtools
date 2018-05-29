@@ -47,8 +47,13 @@
 				accordion.find( '.fl-accordion-button' ).attr('aria-expanded', 'false');
 				accordion.find( '.fl-accordion-content' ).attr('aria-hidden', 'true');
 				allContent.slideUp('normal');
-				allIcons.removeClass('fa-minus');
-				allIcons.addClass('fa-plus');
+
+				if( allIcons.find('svg').length > 0 ) {
+					allIcons.find('svg').attr("data-icon",'plus');
+				} else {
+					allIcons.removeClass('fa-minus');
+					allIcons.addClass('fa-plus');
+				}
 			}
 
 			if(content.is(':hidden')) {
@@ -56,16 +61,26 @@
 				item.addClass( 'fl-accordion-item-active' );
 				item.find( '.fl-accordion-content' ).attr('aria-hidden', 'false');
 				content.slideDown('normal', this._slideDownComplete);
-				icon.addClass('fa-minus');
-				icon.removeClass('fa-plus');
+
+				if( icon.find('svg').length > 0 ) {
+					icon.find('svg').attr("data-icon",'minus');
+				} else {
+					icon.addClass('fa-minus');
+					icon.removeClass('fa-plus');
+				}
 			}
 			else {
 				button.attr('aria-expanded', 'false');
 				item.removeClass( 'fl-accordion-item-active' );
 				item.find( '.fl-accordion-content' ).attr('aria-hidden', 'true');
 				content.slideUp('normal', this._slideUpComplete);
-				icon.addClass('fa-plus');
-				icon.removeClass('fa-minus');
+
+				if( icon.find('svg').length > 0 ) {
+					icon.find('svg').attr("data-icon",'plus');
+				} else {
+					icon.addClass('fa-plus');
+					icon.removeClass('fa-minus');
+				}
 			}
 		},
 

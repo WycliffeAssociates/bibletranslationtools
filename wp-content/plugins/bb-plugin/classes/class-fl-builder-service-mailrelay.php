@@ -75,8 +75,7 @@ final class FLBuilderServiceMailrelay extends FLBuilderService {
 		// Make sure we have the Host.
 		if ( ! isset( $fields['api_host'] ) || empty( $fields['api_host'] ) ) {
 			$response['error'] = __( 'Error: You must provide a Host.', 'fl-builder' );
-		} // End if().
-		elseif ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
+		} elseif ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API key.', 'fl-builder' );
 		} // Try to connect and store the connection data.
 		else {

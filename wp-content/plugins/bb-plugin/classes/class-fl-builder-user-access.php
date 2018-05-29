@@ -76,11 +76,7 @@ final class FLBuilderUserAccess {
 		$groups   = array();
 		$settings = self::$registered_settings;
 
-		/**
-		 * Sort the groups based on priority.
-		 * TODO update when were 5.3+ in PHP.
-		 */
-		uasort( $settings, create_function( '$a,$b', 'return $a["order"] > $b["order"];' ) );
+		uasort( $settings, array( __CLASS__, 'sort' ) );
 
 		foreach ( $settings as $key => $data ) {
 
@@ -90,6 +86,14 @@ final class FLBuilderUserAccess {
 			$groups[ $data['group'] ][ $key ] = $data;
 		}
 		return $groups;
+	}
+
+	/**
+	 * Custom sort function instead of create_function which is deprecated in php 7.2
+	 * @since 1.11
+	 */
+	private static function sort( $a, $b ) {
+		return $a['order'] > $b['order'];
 	}
 
 	/**
@@ -272,12 +276,20 @@ final class FLBuilderUserAccess {
 	 * @return void
 	 */
 	static function register_default_settings() {
+		self::register_setting( 'builder_access', array(
+			'default'     => 'all',
+			'group'       => __( 'Frontend', 'fl-builder' ),
+			'label'       => __( 'Builder Access', 'fl-builder' ),
+			'description' => __( 'The selected roles will have access to the builder for editing posts, pages, and CPTs.', 'fl-builder' ),
+			'order'       => '1',
+		) );
+
 		self::register_setting( 'unrestricted_editing', array(
 			'default'     => 'all',
 			'group'       => __( 'Frontend', 'fl-builder' ),
 			'label'       => __( 'Unrestricted Editing', 'fl-builder' ),
-			'description' => __( 'The selected roles will have unrestricted access to all editing features.', 'fl-builder' ),
-			'order'       => '1',
+			'description' => __( 'The selected roles will have unrestricted access to all editing features within the builder.', 'fl-builder' ),
+			'order'       => '2',
 		) );
 	}
 }

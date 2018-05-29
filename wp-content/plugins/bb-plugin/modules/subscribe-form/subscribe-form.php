@@ -97,7 +97,7 @@ class FLSubscribeFormModule extends FLBuilderModule {
 			// Validate terms and conditions if enabled
 			if ( ( isset( $settings->terms_checkbox ) && 'show' == $settings->terms_checkbox ) && ! $terms_checked ) {
 				$result = array(
-					'error' => __( 'Terms and Conditions is required!', 'fl-builder' ),
+					'error' => __( 'You must accept the Terms and Conditions.', 'fl-builder' ),
 				);
 			}
 
@@ -124,8 +124,7 @@ class FLSubscribeFormModule extends FLBuilderModule {
 				// Check for an error from the service.
 				if ( $response['error'] ) {
 					$result['error'] = $response['error'];
-				} // End if().
-				else {
+				} else {
 
 					$result['action'] = $settings->success_action;
 
@@ -140,7 +139,7 @@ class FLSubscribeFormModule extends FLBuilderModule {
 			}
 		} else {
 			$result['error'] = __( 'There was an error subscribing. Please try again.', 'fl-builder' );
-		}// End if().
+		}
 
 		echo json_encode( $result );
 
@@ -276,6 +275,10 @@ FLBuilder::register_module( 'FLSubscribeFormModule', array(
 						'type'          => 'text',
 						'label'         => __( 'Button Text', 'fl-builder' ),
 						'default'       => __( 'Subscribe!', 'fl-builder' ),
+						'preview'		=> array(
+							'type'			=> 'text',
+							'selector'		=> '.fl-button-text',
+						),
 					),
 					'btn_icon'      => array(
 						'type'          => 'icon',

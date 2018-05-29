@@ -41,11 +41,11 @@ final class FLBuilderServiceMailerLite extends FLBuilderService {
 		if ( $this->api_instance ) {
 			return $this->api_instance;
 		}
-		if ( ! class_exists( 'ML_Rest' ) ) {
-			require_once FL_BUILDER_DIR . 'includes/vendor/mailerlite/ML_Rest.php';
+		if ( ! class_exists( 'FL_ML_Rest' ) ) {
+			require_once FL_BUILDER_DIR . 'includes/vendor/mailerlite/FL_ML_Rest.php';
 		}
 
-		$this->api_instance = new ML_Rest( $api_key );
+		$this->api_instance = new FL_ML_Rest( $api_key );
 		$this->api_instance->setUrl( $this->api_url );
 
 		return $this->api_instance;
@@ -72,8 +72,7 @@ final class FLBuilderServiceMailerLite extends FLBuilderService {
 		// Make sure we have an API token.
 		if ( ! isset( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API token.', 'fl-builder' );
-		} // End if().
-		else {
+		} else {
 
 			$api = $this->get_api( $fields['api_key'] );
 			$api->setPath( 'groups' );
@@ -233,12 +232,12 @@ final class FLBuilderServiceMailerLite extends FLBuilderService {
 			// Add new
 			$api->setPath( 'groups/' . $settings->list_id . '/subscribers' );
 			$api->add( $data );
-			$response = $api->getResponseInfo();
+			$result = $api->getResponseInfo();
 
-			if ( 200 !== $response['http_code'] ) {
-				$response['error'] = sprintf( __( 'There was an error subscribing to MailerLite. Code: %s', 'fl-builder' ), $response['http_code'] );
+			if ( 200 !== $result['http_code'] ) {
+				$response['error'] = sprintf( __( 'There was an error subscribing to MailerLite. Code: %s', 'fl-builder' ), $result['http_code'] );
 			}
-		}// End if().
+		}
 
 		return $response;
 	}

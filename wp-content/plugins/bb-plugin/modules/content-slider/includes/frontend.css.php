@@ -107,8 +107,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 			// Content wrap height
 			echo '.fl-node-' . $id . ' .fl-slide-' . $i . ' .fl-slide-content-wrap ';
 			echo '{ min-height: ' . $settings->height . 'px; }';
-		} // End if().
-		else {
+		} else {
 			echo 'margin-top: ' . $slide->text_margin_top . 'px; ';
 			echo 'margin-bottom: ' . $slide->text_margin_bottom . 'px; }';
 		}
@@ -137,7 +136,12 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 		$b = hexdec( substr( $slide->text_bg_color,4,2 ) );
 		$a = $slide->text_bg_opacity / 100;
 		echo '.fl-node-' . $id . ' .fl-slide-' . $i . ' .fl-slide-content ';
-		echo '{ background-color: rgba(' . $r . ',' . $g . ',' . $b . ',' . $a . '); padding: 30px; }';
+		echo '{ background-color: rgba(' . $r . ',' . $g . ',' . $b . ',' . $a . ');';
+
+		echo 'padding-top: ' . $slide->text_padding_top . 'px;';
+		echo 'padding-right: ' . $slide->text_padding_right . 'px;';
+		echo 'padding-bottom: ' . $slide->text_padding_bottom . 'px;';
+		echo 'padding-left: ' . $slide->text_padding_left . 'px;}';
 	}
 
 	// Text Shadow
@@ -181,7 +185,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 		echo '{ text-shadow: none; }';
 
 		echo ' }';
-	}// End if().
+	}
 
 	// Button Styles
 	if ( 'button' == $slide->cta_type ) {
@@ -212,4 +216,4 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 			'width'             => 'auto',
 		));
 	}
-}// End for().
+}

@@ -126,6 +126,12 @@ class ChildThemeConfiguratorPreview {
             endif;
         endforeach;
         echo 'END CTC IRREGULAR' . LF;
+        if ( defined( 'WP_CACHE' ) && WP_CACHE )
+            echo 'HAS_WP_CACHE' . LF;
+        if ( defined( 'AUTOPTIMIZE_PLUGIN_DIR' ) )
+            echo 'HAS_AUTOPTIMIZE' . LF;
+        if ( defined( 'WP_ROCKET_VERSION' ) )
+            echo 'HAS_WP_ROCKET' . LF;
         echo ']]>*/</script>' . LF;
     }
     

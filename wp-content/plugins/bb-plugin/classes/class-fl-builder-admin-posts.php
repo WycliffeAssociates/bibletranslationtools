@@ -24,6 +24,30 @@ final class FLBuilderAdminPosts {
 	}
 
 	/**
+	 * WordPress doesn't have a "right way" to get the current
+	 * post type being edited and the new editor doesn't make
+	 * this any easier. This method attempts to fix that.
+	 *
+	 * @since 2.1
+	 * @return void
+	 */
+	static public function get_post_type() {
+		global $post, $typenow, $current_screen;
+
+		if ( is_object( $post ) && $post->post_type ) {
+			return $post->post_type;
+		} elseif ( $typenow ) {
+			return $typenow;
+		} elseif ( is_object( $current_screen ) && $current_screen->post_type ) {
+			return $current_screen->post_type;
+		} elseif ( isset( $_REQUEST['post_type'] ) ) {
+			return sanitize_key( $_REQUEST['post_type'] );
+		}
+
+		return null;
+	}
+
+	/**
 	 * Sets the body class, loads assets and renders the UI
 	 * if we are on a post type that supports the builder.
 	 *
@@ -37,9 +61,8 @@ final class FLBuilderAdminPosts {
 
 			$render_ui  = apply_filters( 'fl_builder_render_admin_edit_ui', true );
 			$post_types = FLBuilderModel::get_post_types();
-			$screen		= get_current_screen();
 
-			if ( $render_ui && in_array( $screen->post_type, $post_types ) ) {
+			if ( $render_ui && in_array( self::get_post_type(), $post_types ) ) {
 				add_filter( 'admin_body_class',         __CLASS__ . '::body_class', 99 );
 				add_action( 'admin_enqueue_scripts',    __CLASS__ . '::styles_scripts' );
 				add_action( 'edit_form_after_title',    __CLASS__ . '::render' );
@@ -121,10 +144,10 @@ final class FLBuilderAdminPosts {
 		if ( 'trash' != $post->post_status && current_user_can( 'edit_post', $post->ID ) && wp_check_post_lock( $post->ID ) === false ) {
 
 			$is_post_editable = (bool) apply_filters( 'fl_builder_is_post_editable', true, $post );
-
+			$user_access = FLBuilderUserAccess::current_user_can( 'builder_access' );
 			$post_types = FLBuilderModel::get_post_types();
 
-			if ( in_array( $post->post_type, $post_types ) && $is_post_editable ) {
+			if ( in_array( $post->post_type, $post_types ) && $is_post_editable && $user_access ) {
 				$enabled = get_post_meta( $post->ID, '_fl_builder_enabled', true );
 				$dot = ' <span style="color:' . ( $enabled ? '#6bc373' : '#d9d9d9' ) . '; font-size:18px;">&bull;</span>';
 				$actions['fl-builder'] = '<a href="' . FLBuilderModel::get_edit_url() . '">' . FLBuilderModel::get_branding() . $dot . '</a>';
@@ -143,7 +166,7 @@ final class FLBuilderAdminPosts {
 	 */
 	static public function redirect_post_location( $location ) {
 		if ( isset( $_POST['fl-builder-redirect'] ) ) {
-			$location = $_POST['fl-builder-redirect'];
+			$location = FLBuilderModel::get_edit_url( absint( $_POST['fl-builder-redirect'] ) );
 		}
 
 		return $location;

@@ -696,6 +696,14 @@
   "700"
  ]
 }, {
+ "Black And White Picture": [
+  "regular"
+ ]
+}, {
+ "Black Han Sans": [
+  "regular"
+ ]
+}, {
  "Black Ops One": [
   "regular"
  ]
@@ -1187,6 +1195,10 @@
   "700italic"
  ]
 }, {
+ "Cute Font": [
+  "regular"
+ ]
+}, {
  "Cutive": [
   "regular"
  ]
@@ -1267,6 +1279,14 @@
   "regular"
  ]
 }, {
+ "Do Hyeon": [
+  "regular"
+ ]
+}, {
+ "Dokdo": [
+  "regular"
+ ]
+}, {
  "Domine": [
   "regular",
   "700"
@@ -1320,6 +1340,10 @@
  ]
 }, {
  "Eagle Lake": [
+  "regular"
+ ]
+}, {
+ "East Sea Dokdo": [
   "regular"
  ]
 }, {
@@ -1731,6 +1755,12 @@
   "regular"
  ]
 }, {
+ "Gaegu": [
+  "300",
+  "regular",
+  "700"
+ ]
+}, {
  "Gafata": [
   "regular"
  ]
@@ -1744,6 +1774,10 @@
  ]
 }, {
  "Galindo": [
+  "regular"
+ ]
+}, {
+ "Gamja Flower": [
   "regular"
  ]
 }, {
@@ -1816,6 +1850,18 @@
   "700"
  ]
 }, {
+ "Gothic A1": [
+  "100",
+  "200",
+  "300",
+  "regular",
+  "500",
+  "600",
+  "700",
+  "800",
+  "900"
+ ]
+}, {
  "Goudy Bookletter 1911": [
   "regular"
  ]
@@ -1848,6 +1894,10 @@
   "regular",
   "italic",
   "700"
+ ]
+}, {
+ "Gugi": [
+  "regular"
  ]
 }, {
  "Gurajada": [
@@ -1914,6 +1964,10 @@
  ]
 }, {
  "Herr Von Muellerhoff": [
+  "regular"
+ ]
+}, {
+ "Hi Melody": [
   "regular"
  ]
 }, {
@@ -2033,6 +2087,7 @@
   "500italic",
   "600",
   "600italic",
+  "700",
   "700italic"
  ]
 }, {
@@ -2203,6 +2258,10 @@
   "regular"
  ]
 }, {
+ "Jua": [
+  "regular"
+ ]
+}, {
  "Judson": [
   "regular",
   "italic",
@@ -2345,6 +2404,10 @@
   "600",
   "700",
   "800"
+ ]
+}, {
+ "Kirang Haerang": [
+  "regular"
  ]
 }, {
  "Kite One": [
@@ -3560,6 +3623,10 @@
   "regular"
  ]
 }, {
+ "Poor Story": [
+  "regular"
+ ]
+}, {
  "Poppins": [
   "100",
   "100italic",
@@ -4271,6 +4338,10 @@
   "regular"
  ]
 }, {
+ "Song Myung": [
+  "regular"
+ ]
+}, {
  "Sonsie One": [
   "regular"
  ]
@@ -4410,6 +4481,10 @@
   "regular"
  ]
 }, {
+ "Stylish": [
+  "regular"
+ ]
+}, {
  "Sue Ellen Francisco": [
   "regular"
  ]
@@ -4420,6 +4495,12 @@
 }, {
  "Sumana": [
   "regular",
+  "700"
+ ]
+}, {
+ "Sunflower": [
+  "300",
+  "500",
   "700"
  ]
 }, {
@@ -4455,6 +4536,16 @@
  "Syncopate": [
   "regular",
   "700"
+ ]
+}, {
+ "Tajawal": [
+  "200",
+  "300",
+  "regular",
+  "500",
+  "700",
+  "800",
+  "900"
  ]
 }, {
  "Tangerine": [
@@ -4800,6 +4891,10 @@
  ]
 }, {
  "Yellowtail": [
+  "regular"
+ ]
+}, {
+ "Yeon Sung": [
   "regular"
  ]
 }, {

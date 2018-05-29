@@ -6,8 +6,8 @@
 .fl-node-<?php echo $col->node; ?> {
 	color: #<?php echo $col->settings->text_color; ?>;
 }
-.fl-builder-content .fl-node-<?php echo $col->node; ?> *:not(input):not(textarea):not(select):not(a):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not(.fl-heading-text):not(.fl-menu-mobile-toggle) {
-	color: inherit;
+.fl-builder-content .fl-node-<?php echo $col->node; ?> *:not(input):not(textarea):not(select):not(a):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not(.fl-menu-mobile-toggle) {
+	color: #<?php echo $col->settings->text_color; ?>;
 }
 <?php endif; ?>
 

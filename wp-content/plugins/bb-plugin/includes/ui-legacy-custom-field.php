@@ -29,7 +29,7 @@
 	?>
 	<?php if ( isset( $field['help'] ) ) : ?>
 	<span class="fl-help-tooltip">
-		<i class="fl-help-tooltip-icon fa fa-question-circle"></i>
+		<i class="fl-help-tooltip-icon fas fa-question-circle"></i>
 		<span class="fl-help-tooltip-text"><?php echo $field['help']; ?></span>
 	</span>
 	<?php endif; ?>
@@ -74,7 +74,7 @@
 		if ( $responsive ) {
 			echo '</div>';
 		}
-	}// End foreach().
+	}
 
 	?>
 	<?php if ( isset( $field['description'] ) ) : ?>

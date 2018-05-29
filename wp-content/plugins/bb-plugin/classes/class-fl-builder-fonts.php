@@ -319,9 +319,9 @@ final class FLBuilderFonts {
 								}
 							}
 						}
-					}// End if().
-				}// End if().
-			}// End foreach().
+					}
+				}
+			}
 
 			// Start combining all enqueued google fonts
 			if ( count( $enqueued_google_fonts ) > 0 ) {
@@ -355,7 +355,7 @@ final class FLBuilderFonts {
 					$enqueued_google_fonts = array();
 				}
 			}
-		}// End if().
+		}
 	}
 
 }

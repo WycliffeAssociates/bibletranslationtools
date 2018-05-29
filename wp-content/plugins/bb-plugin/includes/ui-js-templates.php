@@ -3,19 +3,19 @@
 		<div class="fl-block-overlay-header">
 			<div class="fl-block-overlay-actions">
 				<# if ( data.global && ! FLBuilderConfig.userCanEditGlobalTemplates ) { #>
-				<i class="fa fa-lock fl-tip" title="<?php _e( 'Locked', 'fl-builder' ); ?>"></i>
+				<i class="fas fa-lock fl-tip" title="<?php _e( 'Locked', 'fl-builder' ); ?>"></i>
 				<# } else { #>
 				<?php if ( ! FLBuilderModel::is_post_user_template( 'row' ) && ! $simple_ui ) : ?>
-				<i class="fl-block-move fa fa-arrows fl-tip" title="<?php _e( 'Move', 'fl-builder' ); ?>"></i>
+				<i class="fl-block-move fas fa-arrows-alt fl-tip" title="<?php _e( 'Move', 'fl-builder' ); ?>"></i>
 				<?php endif; ?>
-				<i class="fl-block-settings fa fa-wrench fl-tip" title="<?php _e( 'Row Settings', 'fl-builder' ); ?>"></i>
+				<i class="fl-block-settings fas fa-wrench fl-tip" title="<?php _e( 'Row Settings', 'fl-builder' ); ?>"></i>
 				<?php if ( ! FLBuilderModel::is_post_user_template( 'row' ) && ! $simple_ui ) : ?>
-				<i class="fl-block-copy fa fa-clone fl-tip" title="<?php _e( 'Duplicate', 'fl-builder' ); ?>"></i>
+				<i class="fl-block-copy far fa-clone fl-tip" title="<?php _e( 'Duplicate', 'fl-builder' ); ?>"></i>
 				<?php endif; ?>
 				<?php if ( ! $simple_ui ) : ?>
 				<# if ( ! data.global || ( data.global && 'row' == FLBuilderConfig.userTemplateType ) ) { #>
 				<span class="fl-builder-has-submenu">
-					<i class="fl-block-col-settings fa fa-bars fl-tip" title="<?php _e( 'Row Actions', 'fl-builder' ); ?>"></i>
+					<i class="fl-block-col-settings fas fa-bars fl-tip" title="<?php _e( 'Row Actions', 'fl-builder' ); ?>"></i>
 					<ul class="fl-builder-submenu fl-block-col-submenu">
 						<li><a class="fl-block-col-reset" href="javascript:void(0);"><?php _e( 'Reset Column Widths', 'fl-builder' ); ?></a></li>
 						<li><a class="fl-block-row-reset" href="javascript:void(0);"><?php _e( 'Reset Row Width', 'fl-builder' ); ?></a></li>
@@ -24,7 +24,7 @@
 				<# } #>
 				<?php endif; ?>
 				<?php if ( ! FLBuilderModel::is_post_user_template( 'row' ) && ! $simple_ui ) : ?>
-				<i class="fl-block-remove fa fa-times fl-tip" title="<?php _e( 'Remove', 'fl-builder' ); ?>"></i>
+				<i class="fl-block-remove fas fa-times fl-tip" title="<?php _e( 'Remove', 'fl-builder' ); ?>"></i>
 				<?php endif; ?>
 				<# } #>
 			</div>
@@ -38,13 +38,19 @@
 	<div class="fl-col-overlay fl-block-overlay<# if ( data.global ) { #> fl-block-overlay-global<# } #>">
 		<div class="fl-block-overlay-header">
 			<div class="fl-block-overlay-actions">
+				<# if ( data.global && ! FLBuilderConfig.userCanEditGlobalTemplates ) { #>
+				<i class="fas fa-lock fl-tip" title="<?php _e( 'Locked', 'fl-builder' ); ?>"></i>
+				<# } else { #>
 				<?php if ( ! $simple_ui ) : ?>
-				<i class="fl-block-move fa fa-arrows fl-tip" title="<?php _e( 'Move', 'fl-builder' ); ?>"></i>
-				<# if ( ( ! data.hasParentCol && data.numCols < 12 ) || ( data.hasParentCol && data.numCols < 4 ) ) { #>
-				<i class="fl-block-copy fl-block-col-copy fa fa-clone fl-tip" title="<?php _e( 'Duplicate', 'fl-builder' ); ?>"></i>
+				<# if ( ! data.isRootCol ) { #>
+					<i class="fl-block-move fas fa-arrows-alt fl-tip" title="<?php _e( 'Move', 'fl-builder' ); ?>"></i>
+					<# if ( ( ! data.hasParentCol && data.numCols < 12 ) || ( data.hasParentCol && data.numCols < 4 ) ) { #>
+					<i class="fl-block-copy fl-block-col-copy far fa-clone fl-tip" title="<?php _e( 'Duplicate', 'fl-builder' ); ?>"></i>
+					<# } #>
 				<# } #>
 				<span class="fl-builder-has-submenu">
-					<i class="fl-block-settings fa fa-columns fl-tip" title="<?php _e( 'Edit Column', 'fl-builder' ); ?>"></i>
+					<i class="fl-block-settings fas fa-columns fl-tip" title="<?php _e( 'Edit Column', 'fl-builder' ); ?>"></i>
+					<# if ( ! data.global || ( data.global && FLBuilderConfig.userTemplateType ) ) { #>
 					<ul class="fl-builder-submenu fl-block-col-submenu">
 						<li><a class="fl-block-col-edit" href="javascript:void(0);"><?php _e( 'Column Settings', 'fl-builder' ); ?></a></li>
 						<# if ( data.numCols > 1 || ( data.hasParentCol && data.numParentCols > 1 ) ) { #>
@@ -55,13 +61,19 @@
 						<# } #>
 						<# if ( data.hasParentCol ) { #>
 						<li class="fl-builder-submenu-sep"><div></div></li>
-						<li><a class="fl-block-col-move-parent" href="javascript:void(0);"><?php _e( 'Move Parent', 'fl-builder' ); ?><i class="fa fa-arrows"></i></a></li>
+						<# if ( 'column' != FLBuilderConfig.userTemplateType ) { #>
+						<li><a class="fl-block-col-move-parent" href="javascript:void(0);"><?php _e( 'Move Parent', 'fl-builder' ); ?><i class="fas fa-arrows-alt"></i></a></li>
+						<# } #>
 						<li><a class="fl-block-col-edit-parent" href="javascript:void(0);"><?php _e( 'Parent Settings', 'fl-builder' ); ?></a></li>
 						<# } #>
 					</ul>
+					<# } #>
 				</span>
-				<i class="fl-block-remove fa fa-times fl-tip" title="<?php _e( 'Remove', 'fl-builder' ); ?>"></i>
+				<# if ( ! data.isRootCol ) { #>
+				<i class="fl-block-remove fas fa-times fl-tip" title="<?php _e( 'Remove', 'fl-builder' ); ?>"></i>
+				<# } #>
 				<?php endif; ?>
+				<# } #>
 			</div>
 			<div class="fl-clear"></div>
 		</div>
@@ -116,18 +128,19 @@
 		<div class="fl-block-overlay-header">
 			<div class="fl-block-overlay-actions">
 				<# if ( data.global && ! FLBuilderConfig.userCanEditGlobalTemplates ) { #>
-				<i class="fa fa-lock fl-tip" title="<?php _e( 'Locked', 'fl-builder' ); ?>"></i>
+				<i class="fas fa-lock fl-tip" title="<?php _e( 'Locked', 'fl-builder' ); ?>"></i>
 				<# } else { #>
 				<?php if ( ! FLBuilderModel::is_post_user_template( 'module' ) && ! $simple_ui ) : ?>
-				<i class="fl-block-move fa fa-arrows fl-tip" title="<?php _e( 'Move', 'fl-builder' ); ?>"></i>
+				<i class="fl-block-move fas fa-arrows-alt fl-tip" title="<?php _e( 'Move', 'fl-builder' ); ?>"></i>
 				<?php endif; ?>
-				<i class="fl-block-settings fa fa-wrench fl-tip" title="<?php printf( __( '%s Settings', 'fl-builder' ), '{{data.moduleName}}' ); ?>"></i>
+				<i class="fl-block-settings fas fa-wrench fl-tip" title="<?php printf( __( '%s Settings', 'fl-builder' ), '{{data.moduleName}}' ); ?>"></i>
 				<?php if ( ! FLBuilderModel::is_post_user_template( 'module' ) && ! $simple_ui ) : ?>
-				<i class="fl-block-copy fa fa-clone fl-tip" title="<?php _e( 'Duplicate', 'fl-builder' ); ?>"></i>
+				<i class="fl-block-copy far fa-clone fl-tip" title="<?php _e( 'Duplicate', 'fl-builder' ); ?>"></i>
 				<span class="fl-builder-has-submenu">
-					<i class="fl-block-col-settings fa fa-columns fl-tip" title="<?php _e( 'Edit Column', 'fl-builder' ); ?>"></i>
+					<i class="fl-block-col-settings fas fa-columns fl-tip" title="<?php _e( 'Edit Column', 'fl-builder' ); ?>"></i>
+					<# if ( ! data.isRootCol ) { #>
 					<ul class="fl-builder-submenu fl-block-col-submenu">
-						<li><a class="fl-block-col-move" href="javascript:void(0);"><?php _e( 'Move Column', 'fl-builder' ); ?><i class="fa fa-arrows"></i></a></li>
+						<li><a class="fl-block-col-move" href="javascript:void(0);"><?php _e( 'Move Column', 'fl-builder' ); ?><i class="fas fa-arrows-alt"></i></a></li>
 						<li><a class="fl-block-col-edit" href="javascript:void(0);"><?php _e( 'Column Settings', 'fl-builder' ); ?></a></li>
 						<# if ( ( ! data.hasParentCol && data.numCols < 12 ) || ( data.hasParentCol && data.numCols < 4 ) ) { #>
 						<li><a class="fl-block-col-copy" href="javascript:void(0);"><?php _e( 'Duplicate Column', 'fl-builder' ); ?></a></li>
@@ -141,19 +154,22 @@
 						<# } #>
 						<# if ( data.hasParentCol ) { #>
 						<li class="fl-builder-submenu-sep"><div></div></li>
-						<li><a class="fl-block-col-move-parent" href="javascript:void(0);"><?php _e( 'Move Parent', 'fl-builder' ); ?><i class="fa fa-arrows"></i></a></li>
+						<# if ( 'column' != FLBuilderConfig.userTemplateType ) { #>
+						<li><a class="fl-block-col-move-parent" href="javascript:void(0);"><?php _e( 'Move Parent', 'fl-builder' ); ?><i class="fas fa-arrows-alt"></i></a></li>
+						<# } #>
 						<li><a class="fl-block-col-edit-parent" href="javascript:void(0);"><?php _e( 'Parent Settings', 'fl-builder' ); ?></a></li>
 						<# } #>
 					</ul>
+					<# } #>
 				</span>
-				<i class="fl-block-remove fa fa-times fl-tip" title="<?php _e( 'Remove', 'fl-builder' ); ?>"></i>
+				<i class="fl-block-remove fas fa-times fl-tip" title="<?php _e( 'Remove', 'fl-builder' ); ?>"></i>
 				<?php endif; ?>
 				<# } #>
 			</div>
 			<div class="fl-clear"></div>
 		</div>
 		<?php if ( ! FLBuilderModel::is_post_user_template( 'module' ) && ! $simple_ui ) : ?>
-		<# if ( ! data.groupLoading ) { #>
+		<# if ( ! data.groupLoading && ! data.isRootCol ) { #>
 			<# if ( ( ! data.colFirst && data.contentWidth > 40 ) || ( data.hasParentCol && data.colFirst && ! data.parentFirst ) ) { #>
 			<div class="fl-block-col-resize fl-block-col-resize-w<# if ( data.hasParentCol && data.colFirst && ! data.parentFirst ) { #> fl-block-col-resize-parent<# } #>">
 				<div class="fl-block-col-resize-handle-wrap">
@@ -200,15 +216,15 @@
 
 <script type="text/html" id="tmpl-fl-overlay-overflow-menu">
 	<span class="fl-builder-has-submenu">
-		<i class="fl-block-overflow-menu fa fa-bars fl-tip" title="<?php _e( 'More', 'fl-builder' ); ?>"></i>
+		<i class="fl-block-overflow-menu fas fa-bars fl-tip" title="<?php _e( 'More', 'fl-builder' ); ?>"></i>
 		<ul class="fl-builder-submenu">
 			<# for( var i = 0; i < data.length; i++ ) { #>
 				<# if ( 'submenu' == data[ i ].type ) { #>
-				<li class="fl-builder-has-submenu"><a href="javascript:void(0);">{{data[ i ].label}}<i class="fa fa-caret-right"></i></a>
+				<li class="fl-builder-has-submenu"><a href="javascript:void(0);">{{data[ i ].label}}<i class="fas fa-caret-right"></i></a>
 					{{{data[ i ].submenu}}}
 				</li>
 				<# } else { #>
-				<li><a class="{{data[ i ].className}}" href="javascript:void(0);">{{data[ i ].label}}<# if ( data[ i ].className.indexOf( 'fl-block-move' ) > -1 ) { #><i class="fa fa-arrows"></i><# } #></a>
+				<li><a class="{{data[ i ].className}}" href="javascript:void(0);">{{data[ i ].label}}<# if ( data[ i ].className.indexOf( 'fl-block-move' ) > -1 ) { #><i class="fas fa-arrows-alt"></i><# } #></a>
 				<# } #>
 			<# } #>
 		</ul>
@@ -377,7 +393,7 @@
 						break;
 					case "link":
 						#>
-						<a class="fl-builder--menu-item" href="{{{item.url}}}" data-type="link" target="_blank">{{item.label}} <span class="fl-builder--menu-item-accessory"><i class="fa fa-external-link"></i></span></a>
+						<a class="fl-builder--menu-item" href="{{{item.url}}}" data-type="link" target="_blank">{{item.label}} <span class="fl-builder--menu-item-accessory"><i class="fas fa-external-link-alt"></i></span></a>
 						<#
 						break;
 					case "view":
@@ -524,6 +540,9 @@
 				</svg>
 			</i>
 		</button>
+		<div class="fl-builder--panel-no-settings">
+			<div><?php _e( 'No settings selected.', 'fl-builder' ); ?></div>
+		</div>
 	</div>
 </script>
 <!-- #tmpl-fl-content-panel-base -->
@@ -663,7 +682,7 @@
 		}
 	}
 	if (FLBuilderConfig.lite) { #>
-	<div class="fl-builder--panel-cta"><a href="https://www.wpbeaverbuilder.com/?utm_medium=bb-lite&amp;utm_source=builder-ui&amp;utm_campaign=modules-panel-cta" target="_blank"><i class="fa fa-external-link-square"></i> <?php _e( 'Get more time-saving features, modules, and expert support.', 'fl-builder' ) ?></a></div>
+	<div class="fl-builder--panel-cta"><a href="https://www.wpbeaverbuilder.com/?utm_medium=bb-lite&amp;utm_source=builder-ui&amp;utm_campaign=modules-panel-cta" target="_blank"><i class="fas fa-external-link-alt"></i> <?php _e( 'Get more time-saving features, modules, and expert support.', 'fl-builder' ) ?></a></div>
 	<# } #>
 </script>
 <!-- #tmpl-fl-content-panel-modules-view -->
@@ -696,7 +715,7 @@
 		<# } #>
 
 		<# if (FLBuilderConfig.lite) { #>
-		<div class="fl-builder--panel-cta"><a href="https://www.wpbeaverbuilder.com/?utm_medium=bb-lite&amp;utm_source=builder-ui&amp;utm_campaign=modules-panel-cta" target="_blank"><i class="fa fa-external-link-square"></i> <?php _e( 'Get more time-saving features, modules, and expert support.', 'fl-builder' ) ?></a></div>
+		<div class="fl-builder--panel-cta"><a href="https://www.wpbeaverbuilder.com/?utm_medium=bb-lite&amp;utm_source=builder-ui&amp;utm_campaign=modules-panel-cta" target="_blank"><i class="fas fa-external-link-alt"></i> <?php _e( 'Get more time-saving features, modules, and expert support.', 'fl-builder' ) ?></a></div>
 		<# } #>
 	</div>
 </script>
@@ -706,7 +725,7 @@
 	<# if (FLBuilderConfig.lite) { #>
 	<div class="fl-builder--panel-message">
 		<p><?php _ex( 'Save and reuse your layouts or kick-start your creativity with dozens of professionally designed templates.', 'Upgrade message that displays in the templates tab in lite installs.', 'fl-builder' ) ?></p>
-		<a class="fl-builder-upgrade-button fl-builder-button" href="{{FLBuilderConfig.upgradeUrl}}" target="_blank"><?php _ex( 'Learn More', 'Link to learn more about premium page builder', 'fl-builder' )?> <i class="fa fa-external-link-square"></i></a>
+		<a class="fl-builder-upgrade-button fl-builder-button" href="{{FLBuilderConfig.upgradeUrl}}" target="_blank"><?php _ex( 'Learn More', 'Link to learn more about premium page builder', 'fl-builder' )?> <i class="fas fa-external-link-alt"></i></a>
 	</div>
 	<# } #>
 	<#
@@ -884,7 +903,7 @@
 <script type="text/html" id="tmpl-fl-content-lite-templates-upgrade-view">
 	<div class="fl-builder--panel-message">
 		<p><?php _ex( 'Save and reuse your layouts or kick-start your creativity with dozens of professionally designed templates.', 'Upgrade message that displays in the templates tab in lite installs.', 'fl-builder' ) ?></p>
-		<a class="fl-builder-upgrade-button fl-builder-button" href="{{FLBuilderConfig.upgradeUrl}}" target="_blank"><?php _ex( 'Learn More', 'Link to learn more about premium page builder', 'fl-builder' )?> <i class="fa fa-external-link-square"></i></a>
+		<a class="fl-builder-upgrade-button fl-builder-button" href="{{FLBuilderConfig.upgradeUrl}}" target="_blank"><?php _ex( 'Learn More', 'Link to learn more about premium page builder', 'fl-builder' )?> <i class="fas fa-external-link-alt"></i></a>
 	</div>
 </script>
 <!-- #tmpl-fl-content-lite-templates-upgrade-view -->

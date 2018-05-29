@@ -380,7 +380,7 @@
 
 					// Get sibling rows.
 					if ( this._data.nodeParent.hasClass( 'fl-builder-content' ) ) {
-						siblings = this._data.nodeParent.find( '.fl-row' );
+						siblings = this._data.nodeParent.find( ' > .fl-row' );
 					}
 					// Get sibling column groups.
 					else if ( this._data.nodeParent.hasClass( 'fl-row-content' ) ) {
@@ -425,8 +425,10 @@
 			// Refresh preview HTML of nodes within other nodes (such as modules in a row) to ensure
 			// any changes to the nested node are preserved after we've inserted the new HTML.
 			if ( FLBuilder.preview && this._data.nodeId && this._data.nodeId != FLBuilder.preview.nodeId ) {
-				if ( $( FLBuilder.preview.classes.node ).length ) {
-					$( FLBuilder.preview.classes.node ).html( FLBuilder.preview.elements.node.html() );
+				var previewNode = $( FLBuilder.preview.classes.node );
+				var isChild = previewNode.closest( '.fl-node-' + this._data.nodeId ).length;
+				if ( isChild ) {
+					previewNode.html( FLBuilder.preview.elements.node.html() );
 				}
 			}
 		},

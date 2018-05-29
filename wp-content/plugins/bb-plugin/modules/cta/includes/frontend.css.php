@@ -7,7 +7,7 @@
 .fl-node-<?php echo $id; ?> {
 	color: #<?php echo $settings->text_color; ?>;
 }
-.fl-node-<?php echo $id; ?> * {
+.fl-builder-content .fl-row .fl-col .fl-node-<?php echo $id; ?> * {
 	color: #<?php echo $settings->text_color; ?>;
 }
 <?php endif; ?>

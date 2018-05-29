@@ -17,8 +17,17 @@ class FLTestimonialsModule extends FLBuilderModule {
 			'icon' 				=> 'format-quote.svg',
 		));
 
+	}
+
+
+	/**
+ * @method enqueue_scripts
+ */
+	public function enqueue_scripts() {
+		if ( $this->settings && 'compact' == $this->settings->layout && $this->settings->arrows ) {
+			$this->add_css( 'font-awesome-5' );
+		}
 		$this->add_css( 'jquery-bxslider' );
-		$this->add_css( 'font-awesome' );
 		$this->add_js( 'jquery-bxslider' );
 	}
 }

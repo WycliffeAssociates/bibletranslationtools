@@ -23,7 +23,7 @@ class Epsilon_Control_Slider extends WP_Customize_Control {
 	/**
 	 * Min/Max/Step options
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public $choices = array();
@@ -54,13 +54,21 @@ class Epsilon_Control_Slider extends WP_Customize_Control {
 		$json['value']          = $this->value();
 		$json['sliderControls'] = $this->choices;
 
+		$slider_defaults = array(
+			'min'  => 0,
+			'max'  => 10,
+			'step' => 1,
+		);
+
+		$json['sliderControls'] = wp_parse_args( $this->choices, $slider_defaults );
+
 		return $json;
 	}
 
 	/**
 	 * Epsilon_Control_Slider constructor.
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 *
 	 * @param WP_Customize_Manager $manager
 	 * @param string               $id
@@ -94,7 +102,7 @@ class Epsilon_Control_Slider extends WP_Customize_Control {
 		</label>
 		<div class="slider-container">
 			<input disabled type="text" class="rl-slider" id="input_{{ data.id }}" value="{{ data.value }}" {{{ data.link }}}/>
-			<div id="slider_{{{ data.id }}}" data-attr-min="{{ data.sliderControls.min }}" data-attr-max="{{ data.sliderControls.max }}" data-attr-step="{{ data.sliderControls.step }}" class="ss-slider"></div>
+			<div id="slider_{{{ data.id }}}" class="ss-slider"></div>
 		</div>
 		<?php
 		//@formatter:on

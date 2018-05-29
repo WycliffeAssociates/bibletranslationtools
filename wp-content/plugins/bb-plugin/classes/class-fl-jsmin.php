@@ -131,7 +131,7 @@ class FLJSMin {
 
 					$this->b = $this->next();
 				}
-		}// End switch().
+		}
 	}
 
 	protected function get() {
@@ -234,9 +234,9 @@ class FLJSMin {
 						default:
 							$this->action( 1 );
 							break;
-					}// End switch().
-			}// End switch().
-		}// End while().
+					}
+			}
+		}
 
 		return $this->output;
 	}

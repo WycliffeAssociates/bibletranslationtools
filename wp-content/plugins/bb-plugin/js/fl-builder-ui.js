@@ -1107,8 +1107,9 @@
             this.$el.find('.fl-builder-buy-button').on('click', FLBuilder._upgradeClicked);
 			this.$el.find('.fl-builder-upgrade-button').on('click', FLBuilder._upgradeClicked);
 
-            // Old search controller
-            //SearchUI.init();
+            this.$el.find('#fl-builder-toggle-notifications').on('click', this.onNotificationsButtonClicked.bind(this) );
+
+            FLBuilder.addHook('notificationsLoaded', this.onNotificationsLoaded.bind(this));
         },
 
         /**
@@ -1143,6 +1144,20 @@
 				defaultPosition: 'bottom',
 				edgeOffset: 6
 			});
+        },
+
+        onNotificationsButtonClicked: function() {
+            FLBuilder.triggerHook('toggleNotifications');
+        },
+
+        onNotificationsLoaded: function() {
+            $('body').removeClass('fl-builder-has-new-notifications');
+
+            var data = {
+	                action: 'fl_builder_notifications',
+	                read: true,
+	            }
+            FLBuilder.ajax(data);
         }
     };
 

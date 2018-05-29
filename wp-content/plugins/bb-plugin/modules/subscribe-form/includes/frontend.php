@@ -22,7 +22,7 @@
 					<input type="checkbox" id="fl-terms-checkbox-<?php echo $id; ?>" name="fl-terms-checkbox" value="1" />
 					<label for="fl-terms-checkbox-<?php echo $id; ?>"><?php echo $settings->terms_checkbox_text; ?></label>
 				</div>
-				<div class="fl-form-error-message"><?php _e( 'Terms and Conditions checkbox is required.', 'fl-builder' );?></div>
+				<div class="fl-form-error-message"><?php _e( 'You must accept the Terms and Conditions.', 'fl-builder' );?></div>
 			</div>
 		<?php endif; ?>
 
@@ -71,7 +71,7 @@
 					<input type="checkbox" id="fl-terms-checkbox-<?php echo $id; ?>" name="fl-terms-checkbox" value="1" />
 					<label for="fl-terms-checkbox-<?php echo $id; ?>"><?php echo $settings->terms_checkbox_text; ?></label>
 				</div>
-				<div class="fl-form-error-message"><?php _e( 'Terms and Conditions checkbox is required.', 'fl-builder' );?></div>
+				<div class="fl-form-error-message"><?php _e( 'You must accept the Terms and Conditions.', 'fl-builder' );?></div>
 			</div>
 		<?php endif; ?>
 

@@ -19,6 +19,7 @@
 		{
 			this._setupAddNewButton();
 			this._setupSearch();
+			this._fixCategories();
 		},
 
 		/**
@@ -48,11 +49,20 @@
 		{
 			var type  = FLBuilderConfig.userTemplateType,
 				input = '<input type="hidden" name="fl-builder-template-type" value="' + type + '">'
-			
+
 			$( '.search-box' ).after( input );
+		},
+
+		_fixCategories: function() {
+			$('.type-fl-builder-template').each( function( i,v ) {
+
+				el = $(v).find('.taxonomy-fl-builder-template-category a');
+				url = el.attr('href') + '&fl-builder-template-type=' + FLBuilderConfig.userTemplateType
+				el.attr('href', url)
+			})
 		}
 	};
-	
+
 	// Initialize
 	$( function() { FLBuilderUserTemplatesAdminList._init(); } );
 

@@ -65,8 +65,7 @@ final class FLBuilderServiceMadMimi extends FLBuilderService {
 		// Make sure we have an email address.
 		if ( ! isset( $fields['api_email'] ) || empty( $fields['api_email'] ) ) {
 			$response['error'] = __( 'Error: You must provide an email address.', 'fl-builder' );
-		} // End if().
-		elseif ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
+		} elseif ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API key.', 'fl-builder' );
 		} // Try to connect and store the connection data.
 		else {

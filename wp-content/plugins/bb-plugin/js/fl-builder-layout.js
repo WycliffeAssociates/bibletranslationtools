@@ -101,17 +101,14 @@
 		reloadSlider: function( element )
 		{
 			var $element 	= 'undefined' == typeof element ? $( 'body' ) : $( element ),
-				bxContent	= $element.find('.bx-viewport .fl-post-carousel-wrapper'),
+				bxContent	= $element.find('.bx-viewport > div').eq(0),
 				bxObject   	= null;
 
 			if ( bxContent.length ) {
-				bxContent.each(function(){
-					bxObject = $(this).data( 'bxSlider');
-					if ( bxObject ) {
-						bxObject.reloadSlider();
-					}
-				})
-
+				bxObject = bxContent.data( 'bxSlider');
+				if ( bxObject ) {
+					bxObject.reloadSlider();
+				}
 			}
 		},
 
@@ -477,10 +474,11 @@
 				videoId 	= playerWrap.data('video-id'),
 				videoPlayer = playerWrap.find('.fl-bg-video-player'),
 				enableAudio = playerWrap.data('enable-audio'),
+				startTime 	= 'undefined' !== typeof playerWrap.data('t') ? playerWrap.data('t') : 0,
+				loop 		= 'undefined' !== typeof playerWrap.data('loop') ? playerWrap.data('loop') : 1,
 				player;
 
 			if ( videoId ) {
-
 				FLBuilderLayout._onYoutubeApiReady( function( YT ) {
 					setTimeout( function() {
 
@@ -502,20 +500,44 @@
 									event.target.playVideo();
 								},
 								onStateChange: function( event ) {
-									if ( event.data === YT.PlayerState.ENDED ) {
-										player.seekTo( 0 );
+									if ( event.data === YT.PlayerState.ENDED && 1 === loop ) {
+										player.seekTo( startTime );
 									}
+								},
+								onError: function(event) {
+									console.info('YT Error: ' + event.data)
+									FLBuilderLayout._onErrorYoutubeVimeo(playerWrap)
 								}
 							},
 							playerVars: {
 								controls: 0,
 								showinfo: 0,
-								rel : 0
+								rel : 0,
+								start: startTime,
+								loop: loop,
+								playlist: 1 === loop ? videoId : '',
 							}
 						} );
 					}, 1 );
 				} );
 			}
+		},
+
+		/**
+		 * On youtube or vimeo error show the fallback image if available.
+		 * @since 2.0.7
+		 */
+		_onErrorYoutubeVimeo: function(playerWrap) {
+
+			fallback = playerWrap.data('fallback') || false
+			if( ! fallback ) {
+				return false;
+			}
+			playerWrap.find('iframe').remove()
+			fallbackTag = $( '<div></div>' );
+			fallbackTag.addClass( 'fl-bg-video-fallback' );
+			fallbackTag.css( 'background-image', 'url(' + playerWrap.data('fallback') + ')' );
+			playerWrap.append( fallbackTag );
 		},
 
 		/**
@@ -556,9 +578,11 @@
 			if ( typeof Vimeo !== 'undefined' && videoId )	{
 				player = new Vimeo.Player(videoPlayer[0], {
 					id: videoId,
-			        loop: true,
-			        title: false,
-			        portrait: false
+							loop: true,
+							title: false,
+							portrait: false,
+							background: true,
+							autopause: false
 				});
 
 				playerWrap.data('VMPlayer', player);
@@ -569,7 +593,9 @@
 					player.setVolume(1);
 				}
 
-				player.play();
+				player.play().catch(function(error) {
+					FLBuilderLayout._onErrorYoutubeVimeo(playerWrap)
+				});
 			}
 		},
 
@@ -590,7 +616,6 @@
 				vid		    = wrap.find( 'video' ),
 				fallback  	= wrap.data( 'fallback' ),
 				fallbackTag = '';
-
 			source.remove();
 
 			if ( vid.find( 'source' ).length ) {
@@ -774,7 +799,12 @@
 						nodeTop = node.offset().top,
 						winHeight = $( window ).height(),
 						bodyHeight = $( 'body' ).height(),
+						waypoint = FLBuilderLayoutConfig.waypoint,
 						offset = '80%';
+
+					if ( typeof waypoint.offset !== undefined ) {
+						offset = FLBuilderLayoutConfig.waypoint.offset + '%';
+					}
 
 					if ( bodyHeight - nodeTop < winHeight * 0.2 ) {
 						offset = '100%';

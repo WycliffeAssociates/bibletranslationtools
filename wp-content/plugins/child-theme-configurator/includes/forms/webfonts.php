@@ -15,10 +15,15 @@ $ctcpage = apply_filters( 'chld_thm_cfg_admin_page', CHLD_THM_CFG_MENU );
             name="ctc_save_imports" value="<?php _e( 'Save', 'child-theme-configurator' ); ?>"  disabled />
         </div>
         <strong>
-        <?php _e( 'Linked Stylesheets', 'child-theme-configurator' ); ?>
+        <?php _e( 'Additional Linked Stylesheets', 'child-theme-configurator' ); ?>
         </strong>
         <p><?php _e( 'Use <code>@import url( [path] );</code> to link additional stylesheets. Child Theme Configurator uses the <code>@import</code> keyword to identify them and convert them to <code>&lt;link&gt;</code> tags. <strong>Example:</strong>');?></p> 
         <p><code>@import url(http://fonts.googleapis.com/css?family=Oswald);</code></p> 
+        <strong>
+        <?php _e( 'RTL (Right-to-Left) Stylesheets', 'child-theme-configurator' ); ?>
+        </strong>
+        <p><?php _e( 'If RTL is not automatically loading in the child theme, you can link it here. <strong>Example:</strong>');?></p> 
+        <p><code>@import url(../twentyseventeen/rtl.css);</code></p> 
       </div>
       <div class="ctc-input-cell-wide">
         <textarea id="ctc_child_imports" name="ctc_child_imports" wrap="off"><?php 

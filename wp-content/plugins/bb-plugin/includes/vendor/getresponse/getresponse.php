@@ -1,576 +1,406 @@
 <?php
 
 /**
- * GetResponsePHP is a PHP5 implementation of the GetResponse API
- * @internal This wrapper is incomplete and subject to change.
- * @authors Ben Tadiar <ben@bentadiar.co.uk>, Robert Staddon <robert@abundantdesigns.com>
- * @copyright Copyright (c) 2010 Assembly Studios
- * @link http://www.assemblystudios.co.uk
- * @package GetResponsePHP
- * @version 0.1.1
- */
-
-/**
- * GetResponse Class
- * @package GetResponsePHP
+ * GetResponse API v3 client library
+ *
+ * @author Pawel Maslak <pawel.maslak@getresponse.com>
+ * @author Grzegorz Struczynski <grzegorz.struczynski@implix.com>
+ *
+ * @see http://apidocs.getresponse.com/en/v3/resources
+ * @see https://github.com/GetResponse/getresponse-api-php
  */
 class GetResponse
-{	
-	/**
-	 * GetResponse API key
-	 * http://www.getresponse.com/my_api_key.html
-	 * @var string
-	 */
-	public $apiKey = 'PASS_API_KEY_WHEN_INSTANTIATING_CLASS';
-	
-	/**
-	 * GetResponse API URL
-	 * @var string
-	 * @access private
-	 */
-	private $apiURL = 'http://api2.getresponse.com';
-	
-	/**
-	 * Text comparison operators used to filter results
-	 * @var array
-	 * @access private
-	 */
-	private $textOperators = array('EQUALS', 'NOT_EQUALS', 'CONTAINS', 'NOT_CONTAINS', 'MATCHES');
-	
-	/**
-	 * Check cURL extension is loaded and that an API key has been passed
-	 * @param string $apiKey GetResponse API key
-	 * @return void
-	 */
-	public function __construct($apiKey = null)
-	{
-		if(!extension_loaded('curl')) trigger_error('GetResponsePHP requires PHP cURL', E_USER_ERROR);
-		if(is_null($apiKey)) trigger_error('API key must be supplied', E_USER_ERROR);
-		$this->apiKey = $apiKey;
-	}
-	
-	/**
-	 * Test connection to the API, returns "pong" on success
-	 * @return string
-	 */
-	public function ping()
-	{
-		$request  = $this->prepRequest('ping');
-		$response = $this->execute($request);
-		return $response->ping;
-	}
-	
-	/**
-	 * Get basic user account information
-	 * @return object
-	 */
-	public function getAccountInfo()
-	{
-		$request  = $this->prepRequest('get_account_info');
-		$response = $this->execute($request);
-		return $response;
-	}
+{
 
-	/**
-	 * Get list of email addresses assigned to account
-	 * @return object
-	 */
-	public function getAccountFromFields()
-	{
-		$request  = $this->prepRequest('get_account_from_fields');
-		$response = $this->execute($request);
-		return $response;
-	}
+    private $api_key;
+    private $api_url = 'https://api.getresponse.com/v3';
+    private $timeout = 8;
+    public $http_status;
 
-	/**
-	 * Get single email address assigned to an account using the account From Field ID
-	 * @param string $id
-	 * @return object
-	 */
-	public function getAccountFromFieldByID($id)
-	{
-		$request  = $this->prepRequest('get_account_from_field', array('account_from_field' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Get single email address assigned to an account using an email address
-	 * @param string $email
-	 * @return object
-	 */
-	public function getAccountFromFieldsByEmail($email)
-	{
-		$request  = $this->prepRequest('get_account_from_fields');
-		$response = $this->execute($request);
-		foreach($response as $key => $account) if($account->email!=$email) unset($response->$key);
-		return $response;
-	}
-	
-	/**
-	 * Get a list of active campaigns, optionally filtered
-	 * @param string $operator Comparison operator
-	 * @param string $comparison Text/expression to compare against
-	 * @return object 
-	 */
-	public function getCampaigns($operator = 'CONTAINS', $comparison = '%')
-	{
-		$params = null;
-		if(in_array($operator, $this->textOperators)) $params = array('name' => array($operator => $comparison));
-		$request  = $this->prepRequest('get_campaigns', $params);
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Return a campaign by ID
-	 * @param string $id Campaign ID
-	 * @return object
-	 */
-	public function getCampaignByID($id)
-	{
-		$request  = $this->prepRequest('get_campaign', array('campaign' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Return a campaign ID by name
-	 * @param string $name Campaign Name
-	 * @return string Campaign ID
-	 */
-	public function getCampaignByName($name)
-	{
-		$request  = $this->prepRequest('get_campaigns', array('name' => array('EQUALS' => $name)));
-		$response = $this->execute($request);
-		return key($response);
-	}
+    /**
+     * X-Domain header value if empty header will be not provided
+     * @var string|null
+     */
+    private $enterprise_domain = null;
 
-	/**
-	 * Return a list of messages, optionally filtered by multiple conditions
-	 * @todo Implement all conditions, this is unfinished
-	 * @param array|null $campaigns  Optional argument to narrow results by campaign ID
-	 * @param string|null $type  Optional argument to narrow results by "newsletter", "autoresponder", or "draft"
-	 * @param string $operator
-	 * @param string $comparison
-	 * @return object
-	 */
-	public function getMessages($campaigns = null, $type = null, $operator = 'CONTAINS', $comparison = '%')
-	{
-		$params = null;
-		if(is_array($campaigns)) $params['campaigns'] = $campaigns;
-		if(is_string($type)) $params['type'] = $type;
-		$request  = $this->prepRequest('get_messages', $params);
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Return a message by ID
-	 * @param string $id Message ID
-	 * @return object
-	 */
-	public function getMessageByID($id)
-	{
-		$request  = $this->prepRequest('get_message', array('message' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
+    /**
+     * X-APP-ID header value if empty header will be not provided
+     * @var string|null
+     */
+    private $app_id = null;
 
-	/**
-	 * Return an autoresponder message from a campaign by Cycle Day
-	 * @param string $campaign Campaign ID
-	 * @param string $cycle_day Cycle Day
-	 * @return object
-	 */
-	public function getMessageByCycleDay($campaign, $cycle_day)
-	{
-		$params['campaigns'] = array($campaign);
-		$params['type'] = "autoresponder";
-		$request  = $this->prepRequest('get_messages', $params);
-		$response = $this->execute($request);
-		foreach($response as $key => $message) if($message->day_of_cycle!=$cycle_day) unset($response->$key);
-		return $response;
-	}
-	
-	/**
-	 * Return message contents by ID
-	 * @param string $id Message ID
-	 * @return object
-	 */
-	public function getMessageContents($id)
-	{
-		$request  = $this->prepRequest('get_message_contents', array('message' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
+    /**
+     * Set api key and optionally API endpoint
+     * @param      $api_key
+     * @param null $api_url
+     */
+    public function __construct($api_key, $api_url = null)
+    {
+        $this->api_key = $api_key;
 
-	/**
-	 * Return message statistics
-	 * @param string $message Message ID
-	 * @param string $grouping grouping
-	 * @return object|null
-	 */
-	public function getMessageStats($message, $grouping = "yearly")
-	{
-		$params['message'] = $message;
-		$params['grouping'] = $grouping;
-		$request  = $this->prepRequest('get_message_stats', $params);
-		$response = $this->execute($request);
-		return $response;
-	}
+        if (!empty($api_url)) {
+            $this->api_url = $api_url;
+        }
+    }
 
-	/**
-	 * Return autoresponder message contents by Cycle Day
-	 * @param string $campaign Campaign ID
-	 * @param string $cycle_day Cycle Day
-	 * @return object|null
-	 */
-	public function getMessageContentsByCycleDay($campaign, $cycle_day)
-	{
-		$params['campaigns'] = array($campaign);
-		$params['type'] = "autoresponder";
-		$request  = $this->prepRequest('get_messages', $params);
-		$response = $this->execute($request);
-		foreach($response as $key => $message) if($message->day_of_cycle==$cycle_day) return $this->getMessageContents($key);
-		return null;
-	}
-	
-	/**
-	 * Add autoresponder to a campaign at a specific day of cycle
-	 * @param string $campaign Campaign ID
-	 * @param string $subject Subject of message
-	 * @param array $contents Allowed keys are "plain" and "html", at least one is mandatory
-	 * @param int $cycle_day
-	 * @param string $from_field From Field ID obtained through getAccountFromFields()
-	 * @param array $flags Enables extra functionality for a message: "clicktrack", "subscription_reminder", "openrate", "google_analytics"
-	 * @return object
-	 */
-	public function addAutoresponder($campaign, $subject, $cycle_day, $html = null, $plain = null, $from_field = null, $flags = null)
-	{
-		$params = array('campaign' => $campaign, 'subject' => $subject, 'day_of_cycle' => $cycle_day);
-		if(is_string($html)) $params['contents']['html'] = $html;
-		if(is_string($plain)) $params['contents']['plain'] = $plain;
-		if(is_string($from_field)) $params['from_field'] = $from_field;
-		if(is_array($flags)) $params['flags'] = $flags;
-		$request  = $this->prepRequest('add_autoresponder', $params);
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Delete an autoresponder
-	 * @param string $id
-	 * @return object
-	 */
-	public function deleteAutoresponder($id)
-	{
-		$request  = $this->prepRequest('delete_autoresponder', array('message' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Return a list of contacts, optionally filtered by multiple conditions
-	 * @todo Implement all conditions, this is unfinished
-	 * @param array|null $campaigns Optional argument to narrow results by campaign ID
-	 * @param string $operator Optional argument to change operator (default is 'CONTAINS')
-	 *		See https://github.com/GetResponse/DevZone/tree/master/API#operators for additional operator options
-	 * @param string $comparison
-	 * @param array $fields (an associative array, the keys of which should enable/disable comparing name or email)
-	 * @return object
-	 */
-	public function getContacts($campaigns = null, $operator = 'CONTAINS', $comparison = '%', $fields = array('name' => true, 'email' => false))
-	{
-		$params = null;
-		if(is_array($campaigns)) $params['campaigns'] = $campaigns;
-		if($fields['name']) $params['name'] = $this->prepTextOp($operator, $comparison);
-		if($fields['email']) $params['email'] = $this->prepTextOp($operator, $comparison);
-		$request  = $this->prepRequest('get_contacts', $params);
-		$response = $this->execute($request);
-		return $response;
-	}
+    /**
+     * We can modify internal settings
+     * @param $key
+     * @param $value
+     */
+    function __set($key, $value)
+    {
+        $this->{$key} = $value;
+    }
 
-	/**
-	 * Return a list of contacts by email address (optionally narrowed by campaign)
-	 * @param string $email Email Address of Contact (or a string contained in the email address)
-	 * @param array|null $campaigns Optional argument to narrow results by campaign ID 
-	 * @param string $operator Optional argument to change operator (default is 'CONTAINS')
-	 *		See https://github.com/GetResponse/DevZone/tree/master/API#operators for additional operator options
-	 * @return object 
-	 */
-	public function getContactsByEmail($email, $campaigns = null, $operator = 'CONTAINS')
-	{
-		$params = null;
-		$params['email'] = $this->prepTextOp($operator, $email);
-		if(is_array($campaigns)) $params['campaigns'] = $campaigns;
-		$request  = $this->prepRequest('get_contacts', $params);
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Return a list of contacts filtered by custom contact information
-	 * $customs is an associative arrays, the keys of which should correspond to the
-	 * custom field names of the customers you wish to retrieve.
-	 * @param array|null $campaigns Optional argument to narrow results by campaign ID 
-	 * @param string $operator
-	 * @param array $customs
-	 * @param string $comparison
-	 * @return object
-	 */
-	public function getContactsByCustoms($campaigns = null, $customs, $operator = 'EQUALS')
-	{
-		$params = null;
-		if(is_array($campaigns)) $params['campaigns'] = $campaigns;
-		if(!is_array($customs)) trigger_error('Second argument must be an array', E_USER_ERROR);
-		foreach($customs as $key => $val) $params['customs'][] = array('name' => $key, 'content' => $this->prepTextOp($operator, $val));
-		$request  = $this->prepRequest('get_contacts', $params);
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Return a contact by ID
-	 * @param string $id User ID
-	 * @return object
-	 */
-	public function getContactByID($id)
-	{
-		$request  = $this->prepRequest('get_contact', array('contact' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
+    /**
+     * get account details
+     *
+     * @return mixed
+     */
+    public function accounts()
+    {
+        return $this->call('accounts');
+    }
 
-	
-	/**
-	 * Set a contact name
-	 * @param string $id User ID
-	 * @return object
-	 */
-	public function setContactName($id, $name)
-	{
-		$request  = $this->prepRequest('set_contact_name', array('contact' => $id, 'name' => $name));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Set a contact cycle
-	 * @param string $id User ID
-	 * @param int $cycle_day Cycle Day
-	 * @return object
-	 */
-	public function setContactCycle($id, $cycle_day)
-	{
-		$request  = $this->prepRequest('set_contact_cycle', array('contact' => $id, 'cycle_day' => $cycle_day));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Set a contact campaign
-	 * @param string $id User ID
-	 * @param string $campaign Campaign ID
-	 * @return object
-	 */
-	public function setContactCampaign($id, $campaign)
-	{
-		$request  = $this->prepRequest('move_contact', array('contact' => $id, 'campaign' => $campaign));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Return a contacts custom information
-	 * @param string $id User ID
-	 * @return object
-	 */
-	public function getContactCustoms($id)
-	{
-		$request  = $this->prepRequest('get_contact_customs', array('contact' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
+    /**
+     * @return mixed
+     */
+    public function ping()
+    {
+        return $this->accounts();
+    }
 
-	/**
-	 * Set custom contact information
-	 * $customs is an associative array, the keys of which should correspond to the
-	 * custom field name you wish to add/modify/remove.
-	 * Actions: added if not present, updated if present, removed if value is null
-	 * @todo Implement multivalue customs.
-	 * @param string $id User ID
-	 * @param array $customs
-	 * @return object
-	 */
-	public function setContactCustoms($id, $customs)
-	{
-		if(!is_array($customs)) trigger_error('Second argument must be an array', E_USER_ERROR);
-		foreach($customs as $key => $val) $params[] = array('name' => $key, 'content' => $val);
-		$request  = $this->prepRequest('set_contact_customs', array('contact' => $id, 'customs' => $params));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Return a contacts GeoIP
-	 * @param string $id User ID
-	 * @return object
-	 */
-	public function getContactGeoIP($id)
-	{
-		$request  = $this->prepRequest('get_contact_geoip', array('contact' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * List dates when the messages were opened by contacts
-	 * @param string $id User ID
-	 * @return object
-	 */
-	public function getContactOpens($id)
-	{
-		$request  = $this->prepRequest('get_contact_opens', array('contact' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * List dates when the links in messages were clicked by contacts
-	 * @param string $id User ID
-	 * @return object
-	 */
-	public function getContactClicks($id)
-	{
-		$request  = $this->prepRequest('get_contact_clicks', array('contact' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Add contact to the specified list (Requires email verification by contact)
-	 * The return value of this function will be "queued", and on subsequent
-	 * submission of the same email address will be "duplicated".
-	 * @param string $campaign Campaign ID
-	 * @param string $name Name of contact
-	 * @param string $email Email address of contact
-	 * @param string $action Standard, insert or update
-	 * @param int $cycle_day
-	 * @param array $customs
-	 * @return object
-	 */
-	public function addContact($campaign, $name, $email, $action = 'standard', $cycle_day = 0, $customs = array())
-	{
-		$params = array('campaign' => $campaign, 'action' => $action, 'name' => $name,
-						'email' => $email, 'cycle_day' => $cycle_day, 'ip' => $_SERVER['REMOTE_ADDR']);
-		if(!empty($customs)) {
-			foreach($customs as $key => $val) $c[] = array('name' => $key, 'content' => $val);
-			$params['customs'] = $c;
-		}
-		$request  = $this->prepRequest('add_contact', $params);
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Delete a contact
-	 * @param string $id
-	 * @return object
-	 */
-	public function deleteContact($id)
-	{
-		$request  = $this->prepRequest('delete_contact', array('contact' => $id));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Get blacklist masks on account level
-	 * Account is determined by API key
-	 * @return object
-	 */
-	public function getAccountBlacklist()
-	{
-		$request  = $this->prepRequest('get_account_blacklist');
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Adds blacklist mask on account level
-	 * @param string $mask
-	 * @return object
-	 */
-	public function addAccountBlacklist($mask)
-	{
-		$request  = $this->prepRequest('add_account_blacklist', array('mask' => $mask));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Delete blacklist mask on account level
-	 * @param string $mask
-	 * @return object
-	 */
-	public function deleteAccountBlacklist($mask)
-	{
-		$request  = $this->prepRequest('delete_account_blacklist', array('mask' => $mask));
-		$response = $this->execute($request);
-		return $response;
-	}
-	
-	/**
-	 * Return a key => value array for text comparison
-	 * @param string $operator
-	 * @param mixed $comparison
-	 * @return array
-	 * @access private
-	 */
-	private function prepTextOp($operator, $comparison)
-	{
-		if(!in_array($operator, $this->textOperators)) trigger_error('Invalid text operator', E_USER_ERROR);
-		if($operator === 'CONTAINS') $comparison = '%'.$comparison.'%';
-		return array($operator => $comparison);
-	}
-	
-	/**
-	 * Return array as a JSON encoded string
-	 * @param string $method API method to call
-	 * @param array  $params Array of parameters
-	 * @return string JSON encoded string
-	 * @access private
-	 */
-	private function prepRequest($method, $params = null, $id = null)
-	{
-		$array = array($this->apiKey);
-		if(!is_null($params)) $array[1] = $params;
-		$request = json_encode(array('method' => $method, 'params' => $array, 'id' => $id));
-		return $request;
-	}
-	
-	/**
-	 * Executes an API call
-	 * @param string $request JSON encoded array
-	 * @return object
-	 * @access private
-	 */
-	private function execute($request)
-	{
-		$handle = curl_init($this->apiURL);
-		curl_setopt($handle, CURLOPT_POST, 1);
-		curl_setopt($handle, CURLOPT_POSTFIELDS, $request);
-		curl_setopt($handle, CURLOPT_HEADER, 'Content-type: application/json');
-		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);	  			   
-		$response = json_decode(curl_exec($handle));
-		if(curl_error($handle)) trigger_error(curl_error($handle), E_USER_ERROR);
-		$httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-		if(!(($httpCode == '200') || ($httpCode == '204'))) trigger_error('API call failed. Server returned status code '.$httpCode, E_USER_ERROR);
-		curl_close($handle);
-		if(!$response->error) return $response->result;
-	}
+    /**
+     * Return all campaigns
+     * @return mixed
+     */
+    public function getCampaigns()
+    {
+        return $this->call('campaigns');
+    }
+
+    /**
+     * get single campaign
+     * @param string $campaign_id retrieved using API
+     * @return mixed
+     */
+    public function getCampaign($campaign_id)
+    {
+        return $this->call('campaigns/' . $campaign_id);
+    }
+
+    /**
+     * adding campaign
+     * @param $params
+     * @return mixed
+     */
+    public function createCampaign($params)
+    {
+        return $this->call('campaigns', 'POST', $params);
+    }
+
+    /**
+     * list all RSS newsletters
+     * @return mixed
+     */
+    public function getRSSNewsletters()
+    {
+        $this->call('rss-newsletters', 'GET', null);
+    }
+
+    /**
+     * send one newsletter
+     *
+     * @param $params
+     * @return mixed
+     */
+    public function sendNewsletter($params)
+    {
+        return $this->call('newsletters', 'POST', $params);
+    }
+
+    /**
+     * @param $params
+     * @return mixed
+     */
+    public function sendDraftNewsletter($params)
+    {
+        return $this->call('newsletters/send-draft', 'POST', $params);
+    }
+
+    /**
+     * add single contact into your campaign
+     *
+     * @param $params
+     * @return mixed
+     */
+    public function addContact($params)
+    {
+        return $this->call('contacts', 'POST', $params);
+    }
+
+    /**
+     * retrieving contact by id
+     *
+     * @param string $contact_id - contact id obtained by API
+     * @return mixed
+     */
+    public function getContact($contact_id)
+    {
+        return $this->call('contacts/' . $contact_id);
+    }
+
+
+    /**
+     * search contacts
+     *
+     * @param $params
+     * @return mixed
+     */
+    public function searchContacts($params = null)
+    {
+        return $this->call('search-contacts?' . $this->setParams($params));
+    }
+
+    /**
+     * retrieve segment
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function getContactsSearch($id)
+    {
+        return $this->call('search-contacts/' . $id);
+    }
+
+    /**
+     * add contacts search
+     *
+     * @param $params
+     * @return mixed
+     */
+    public function addContactsSearch($params)
+    {
+        return $this->call('search-contacts/', 'POST', $params);
+    }
+
+    /**
+     * add contacts search
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function deleteContactsSearch($id)
+    {
+        return $this->call('search-contacts/' . $id, 'DELETE');
+    }
+
+    /**
+     * get contact activities
+     * @param $contact_id
+     * @return mixed
+     */
+    public function getContactActivities($contact_id)
+    {
+        return $this->call('contacts/' . $contact_id . '/activities');
+    }
+
+    /**
+     * retrieving contact by params
+     * @param array $params
+     *
+     * @return mixed
+     */
+    public function getContacts($params = array())
+    {
+        return $this->call('contacts?' . $this->setParams($params));
+    }
+
+    /**
+     * updating any fields of your subscriber (without email of course)
+     * @param       $contact_id
+     * @param array $params
+     *
+     * @return mixed
+     */
+    public function updateContact($contact_id, $params = array())
+    {
+        return $this->call('contacts/' . $contact_id, 'POST', $params);
+    }
+
+    /**
+     * drop single user by ID
+     *
+     * @param string $contact_id - obtained by API
+     * @return mixed
+     */
+    public function deleteContact($contact_id)
+    {
+        return $this->call('contacts/' . $contact_id, 'DELETE');
+    }
+
+    /**
+     * retrieve account custom fields
+     * @param array $params
+     *
+     * @return mixed
+     */
+    public function getCustomFields($params = array())
+    {
+        return $this->call('custom-fields?' . $this->setParams($params));
+    }
+
+    /**
+     * add custom field
+     *
+     * @param $params
+     * @return mixed
+     */
+    public function setCustomField($params)
+    {
+        return $this->call('custom-fields', 'POST', $params);
+    }
+
+    /**
+     * retrieve single custom field
+     *
+     * @param string $cs_id obtained by API
+     * @return mixed
+     */
+    public function getCustomField($custom_id)
+    {
+        return $this->call('custom-fields/' . $custom_id, 'GET');
+    }
+
+    /**
+     * retrieving billing information
+     *
+     * @return mixed
+     */
+    public function getBillingInfo()
+    {
+        return $this->call('accounts/billing');
+    }
+
+    /**
+     * get single web form
+     *
+     * @param int $w_id
+     * @return mixed
+     */
+    public function getWebForm($w_id)
+    {
+        return $this->call('webforms/' . $w_id);
+    }
+
+    /**
+     * retrieve all webforms
+     * @param array $params
+     *
+     * @return mixed
+     */
+    public function getWebForms($params = array())
+    {
+        return $this->call('webforms?' . $this->setParams($params));
+    }
+
+    /**
+     * get single form
+     *
+     * @param int $form_id
+     * @return mixed
+     */
+    public function getForm($form_id)
+    {
+        return $this->call('forms/' . $form_id);
+    }
+
+    /**
+     * retrieve all forms
+     * @param array $params
+     *
+     * @return mixed
+     */
+    public function getForms($params = array())
+    {
+        return $this->call('forms?' . $this->setParams($params));
+    }
+
+    /**
+     * Curl run request
+     *
+     * @param null $api_method
+     * @param string $http_method
+     * @param array $params
+     * @return mixed
+     * @throws Exception
+     */
+    private function call($api_method = null, $http_method = 'GET', $params = array())
+    {
+        if (empty($api_method)) {
+            return (object)array(
+                'httpStatus' => '400',
+                'code' => '1010',
+                'codeDescription' => 'Error in external resources',
+                'message' => 'Invalid api method'
+            );
+        }
+
+        $params = json_encode($params);
+        $url = $this->api_url . '/' . $api_method;
+
+        $options = array(
+            CURLOPT_URL => $url,
+            CURLOPT_ENCODING => 'gzip,deflate',
+            CURLOPT_FRESH_CONNECT => 1,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_TIMEOUT => $this->timeout,
+            CURLOPT_HEADER => false,
+            CURLOPT_USERAGENT => 'PHP GetResponse client 0.0.2',
+            CURLOPT_HTTPHEADER => array('X-Auth-Token: api-key ' . $this->api_key, 'Content-Type: application/json'),
+        );
+
+        if (!empty($this->enterprise_domain)) {
+            $options[CURLOPT_HTTPHEADER][] = 'X-Domain: ' . $this->enterprise_domain;
+        }
+
+        if (!empty($this->app_id)) {
+            $options[CURLOPT_HTTPHEADER][] = 'X-APP-ID: ' . $this->app_id;
+        }
+
+        if ($http_method == 'POST') {
+            $options[CURLOPT_POST] = 1;
+            $options[CURLOPT_POSTFIELDS] = $params;
+        } else if ($http_method == 'DELETE') {
+            $options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
+        }
+
+        $curl = curl_init();
+        curl_setopt_array($curl, $options);
+
+        $response = json_decode(curl_exec($curl));
+
+        $this->http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        curl_close($curl);
+        return (object)$response;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return string
+     */
+    private function setParams($params = array())
+    {
+        $result = array();
+        if (is_array($params)) {
+            foreach ($params as $key => $value) {
+                $result[$key] = $value;
+            }
+        }
+        return http_build_query($result);
+    }
+
 }
-
-?>

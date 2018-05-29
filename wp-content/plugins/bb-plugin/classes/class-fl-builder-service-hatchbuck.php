@@ -45,8 +45,7 @@ final class FLBuilderServiceHatchbuck extends FLBuilderService {
 		// Make sure we have an API key.
 		if ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API key.', 'fl-builder' );
-		} // End if().
-		else {
+		} else {
 
 			$result = wp_remote_post( $this->api_url . 'search?api_key=' . $fields['api_key'], array(
 				'method'	=> 'POST',
@@ -185,8 +184,7 @@ final class FLBuilderServiceHatchbuck extends FLBuilderService {
 			if ( 401 == $result['response']['code'] ) {
 				$response['error'] = __( 'There was an error subscribing to Hatchbuck. The API key is invalid.', 'fl-builder' );
 				return $response; // Invalid API key.
-			} // End if().
-			elseif ( 200 == $result['response']['code'] ) {
+			} elseif ( 200 == $result['response']['code'] ) {
 				$result_data = json_decode( $result['body'] );
 				$contact_id  = $result_data[0]->contactId;
 			} // Generic error. Contact not found should be 400.
@@ -231,7 +229,7 @@ final class FLBuilderServiceHatchbuck extends FLBuilderService {
 				$result_data = json_decode( $result['body'] );
 				// @codingStandardsIgnoreLine
 				$contact_id  = $result_data->contactId;
-			}// End if().
+			}
 
 			// Add the tag to the contact.
 			$result = wp_remote_post( $this->api_url . $contact_id . '/Tags?api_key=' . $account_data['api_key'], array(
@@ -246,7 +244,7 @@ final class FLBuilderServiceHatchbuck extends FLBuilderService {
 					),
 				) ),
 			) );
-		}// End if().
+		}
 
 		return $response;
 	}

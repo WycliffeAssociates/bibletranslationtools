@@ -14,6 +14,9 @@
 	}
 }
 <?php elseif ( 'columns' == $settings->layout ) : ?>
+.fl-node-<?php echo $id; ?> .fl-module-content {
+	overflow: hidden;
+}
 .fl-node-<?php echo $id; ?> .fl-post-grid {
 	margin-left: -<?php echo $settings->post_spacing / 2; ?>px;
 	margin-right: -<?php echo $settings->post_spacing / 2; ?>px;

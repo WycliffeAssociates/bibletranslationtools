@@ -21,7 +21,7 @@
 
 			<# if ( data.field.help ) { #>
 			<span class="fl-help-tooltip">
-				<i class="fl-help-tooltip-icon fa fa-question-circle"></i>
+				<i class="fl-help-tooltip-icon fas fa-question-circle"></i>
 				<span class="fl-help-tooltip-text">{{{data.field.help}}}</span>
 			</span>
 			<# } #>

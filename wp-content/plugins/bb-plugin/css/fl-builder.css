@@ -646,6 +646,10 @@ body .fl-theme-builder-preview-select-item-child:hover {
 	font-size: 1em;
 	font-style:italic;
 	color: #676f7a;
+	align-items: center;
+	line-height: 1.2;
+	min-width: 180px;
+	justify-content: flex-end;
 }
 .fl-builder--saving-indicator:hover {
 	color: #676f7a;
@@ -662,8 +666,8 @@ body .fl-theme-builder-preview-select-item-child:hover {
 	color: #fff !important;
 	text-decoration: none;
 }
-.fl-builder-buy-button i.fa-external-link-square,
-.fl-builder-upgrade-button i.fa-external-link-square {
+.fl-builder-buy-button i.fa-external-link-alt,
+.fl-builder-upgrade-button i.fa-external-link-alt {
 	color: #FFC733;
 	margin: 0 0 0 6px;
 }
@@ -708,6 +712,9 @@ body .fl-theme-builder-preview-select-item-child:hover {
 		border-right: transparent !important;
 		border-bottom: transparent !important;
 		max-height: calc(100% - 44px) !important;
+	}
+	.fl-builder--panel-arrow {
+		display:none;
 	}
 	.fl-builder-bar-title {
 		flex: 0 0 100px !important;
@@ -980,6 +987,37 @@ body .fl-theme-builder-preview-select-item-child:hover {
 .fl-builder-draggable-is-dragging .fl-builder-panel .fl-lightbox,
 .fl-builder-draggable-is-dragging .fl-builder-content {
 	pointer-events: none;
+}
+
+/* Pinned - Simple UI */
+.fl-builder-simple-pinned .fl-builder--content-library-panel .fl-builder--panel-header {
+	background: transparent;
+    border: none;
+	z-index: 10;
+}
+.fl-builder-simple-pinned .fl-builder--content-library-panel .fl-builder--tab-wrap,
+.fl-builder-simple-pinned .fl-builder--content-library-panel .fl-builder--panel-controls,
+.fl-builder-simple-pinned .fl-builder--content-library-panel .fl-builder--panel-content {
+	display: none;
+}
+.fl-builder-simple-pinned .fl-builder--content-library-panel .fl-lightbox-wrap {
+	top: 0;
+}
+.fl-builder-simple-pinned .fl-builder--content-library-panel .fl-lightbox-header h1 {
+	padding: 14px 28px 15px !important;
+}
+.fl-builder--panel-no-settings {
+	display: none;
+}
+.fl-builder-simple-pinned .fl-builder--panel-no-settings {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 
 /* @endgroup Pinned UI */
@@ -1269,12 +1307,14 @@ body.fl-builder-draggable-is-dragging .fl-builder--panel-arrow {
 	height:84px;
 }
 .fl-builder-block.fl-builder-block-saved-row.fl-builder-block-has-thumbnail,
+.fl-builder-block.fl-builder-block-saved-column.fl-builder-block-has-thumbnail,
 .fl-builder-block.fl-builder-block-saved-module.fl-builder-block-has-thumbnail,
 .fl-builder-block.fl-builder-block-row-template.fl-builder-block-has-thumbnail,
 .fl-builder-block.fl-builder-block-module-template.fl-builder-block-has-thumbnail  {
 	padding:10px;
 }
 .fl-builder-block.fl-builder-block-saved-row.fl-builder-block-has-thumbnail,
+.fl-builder-block.fl-builder-block-saved-column.fl-builder-block-has-thumbnail,
 .fl-builder-block.fl-builder-block-saved-module.fl-builder-block-has-thumbnail,
 .fl-builder-block.fl-builder-block-row-template.fl-builder-block-has-thumbnail,
 .fl-builder-block.fl-builder-block-module-template.fl-builder-block-has-thumbnail  {
@@ -1306,6 +1346,7 @@ body.fl-builder-draggable-is-dragging .fl-builder--panel-arrow {
 }
 
 .fl-builder-block.fl-builder-block-saved-row.fl-builder-block-has-thumbnail .fl-builder-block-content,
+.fl-builder-block.fl-builder-block-saved-column.fl-builder-block-has-thumbnail .fl-builder-block-content,
 .fl-builder-block.fl-builder-block-saved-module.fl-builder-block-has-thumbnail .fl-builder-block-content,
 .fl-builder-block.fl-builder-block-row-template.fl-builder-block-has-thumbnail .fl-builder-block-content,
 .fl-builder-block.fl-builder-block-module-template.fl-builder-block-has-thumbnail .fl-builder-block-content  {
@@ -1353,6 +1394,8 @@ body.fl-builder-draggable-is-dragging .fl-builder--panel-arrow {
 
 .fl-builder-block-saved-module.fl-builder-block-global .fl-builder-block-title,
 .fl-builder-block-saved-module:hover .fl-builder-block-title,
+.fl-builder-block-saved-column.fl-builder-block-global .fl-builder-block-title,
+.fl-builder-block-saved-column:hover .fl-builder-block-title,
 .fl-builder-block-saved-row.fl-builder-block-global .fl-builder-block-title,
 .fl-builder-block-saved-row:hover .fl-builder-block-title {
 	margin-right: 70px;
@@ -2005,6 +2048,7 @@ button.fl-builder-button.fl-builder-bar-title-caret:focus {
 	padding: 0 20px;
 }
 .fl-builder-block-saved-row.fl-builder-block-drag-helper:hover .fl-builder-block-content,
+.fl-builder-block-saved-column.fl-builder-block-drag-helper:hover .fl-builder-block-content,
 .fl-builder-block-saved-module.fl-builder-block-drag-helper:hover .fl-builder-block-content {
 	padding: 14px 20px;
 }
@@ -2309,7 +2353,7 @@ button.fl-builder-button.fl-builder-bar-title-caret:focus {
 	float: left;
 	font-size: 16px !important;
 	height: 28px !important;
-	font-weight: 100 !important;
+	/* font-weight: 100 !important; */
 	line-height: 28px !important;
 	opacity: 0.8;
 	filter: alpha(opacity = 80);
@@ -2476,7 +2520,8 @@ button.fl-builder-button.fl-builder-bar-title-caret:focus {
 }
 
 /* Disabled Overlays */
-.fl-node-disabled .fl-row-content-wrap {
+.fl-node-disabled .fl-row-content-wrap,
+.fl-node-disabled > .fl-col-content {
 	opacity: 0.3;
 }
 
@@ -2599,7 +2644,9 @@ button.fl-builder-button.fl-builder-bar-title-caret:focus {
 }
 
 /* Nested Submenus */
-.fl-builder-has-submenu .fl-builder-submenu .fa {
+.fl-builder-has-submenu .fl-builder-submenu .fa,
+.fl-builder-has-submenu .fl-builder-submenu .fas,
+.fl-builder-has-submenu .fl-builder-submenu .far {
 	float: right;
 	height: 12px !important;
 	line-height: 12px !important;
@@ -2636,12 +2683,15 @@ button.fl-builder-button.fl-builder-bar-title-caret:focus {
 }
 
 /* Submenu Move Icons */
-.fl-builder-submenu .fa-arrows {
+.fl-builder-submenu .fa-arrows-alt {
 	cursor: move;
 	display: none !important;
 }
-.fl-builder-submenu a:hover .fa-arrows {
+.fl-builder-submenu a:hover .fa-arrows-alt {
 	display: block !important;
+	float:right;
+	line-height: 12px !important;
+	height: 12px !important;
 }
 
 /* Global Submenus */
@@ -3822,7 +3872,8 @@ span.select2-container.select2-container--open {
 	font-weight: bold;
 	margin: 7px 0 5px 11px;
 }
-.fl-video-field .fl-video-replace {
+.fl-video-field .fl-video-replace,
+.fl-video-field .fl-video-remove {
 	margin: 0 0 0 11px;
 }
 
@@ -4008,7 +4059,7 @@ span.select2-container.select2-container--open {
 .fl-help-tooltip-icon {
 	color: #999 !important;
 	cursor: pointer;
-	font-family: FontAwesome;
+	/* font-family: Font Awesome\ 5 Free; */
 	font-size: 15px !important;
 	padding: 5px;
 	vertical-align: middle;
@@ -4457,7 +4508,7 @@ body > .fl-builder-tour-dimmed {
 	align-items: center;
 	justify-content: center;
 	content: "\f002";
-	font: normal normal normal 14px/1 FontAwesome;
+	font: normal normal normal 14px/1 Font Awesome\ 5 Free;
 	text-align: center;
 	width: 100%;
 	height:100%;

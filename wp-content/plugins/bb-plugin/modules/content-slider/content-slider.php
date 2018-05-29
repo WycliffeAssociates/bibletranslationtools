@@ -28,8 +28,7 @@ class FLContentSliderModule extends FLBuilderModule {
 		// Background photo
 		if ( 'photo' == $slide->bg_layout && ! empty( $slide->bg_photo_src ) ) {
 			echo '<div class="fl-slide-bg-photo" style="background-image: url(' . $slide->bg_photo_src . ');"></div>';
-		} // End if().
-		elseif ( 'video' == $slide->bg_layout && ! empty( $slide->bg_video ) ) {
+		} elseif ( 'video' == $slide->bg_layout && ! empty( $slide->bg_video ) ) {
 			echo '<div class="fl-slide-bg-video">' . $slide->bg_video . '</div>';
 		}
 
@@ -93,8 +92,7 @@ class FLContentSliderModule extends FLBuilderModule {
 
 			echo '</div>';
 			echo '</div>';
-		} // End if().
-		elseif ( 'video' == $slide->content_layout && ! empty( $slide->fg_video ) ) {
+		} elseif ( 'video' == $slide->content_layout && ! empty( $slide->fg_video ) ) {
 			echo '<div class="fl-slide-photo-wrap">';
 			echo '<div class="fl-slide-photo">' . $slide->fg_video . '</div>';
 			echo '</div>';
@@ -130,8 +128,7 @@ class FLContentSliderModule extends FLBuilderModule {
 				echo '<img class="fl-slide-mobile-photo-img wp-image-' . $id . '" src="' . $src . '" alt="' . esc_attr( $alt ) . '" />';
 				echo '</div>';
 			}
-		} // End if().
-		elseif ( 'video' == $slide->content_layout && ! empty( $slide->fg_video ) ) {
+		} elseif ( 'video' == $slide->content_layout && ! empty( $slide->fg_video ) ) {
 			echo '<div class="fl-slide-mobile-photo">' . $slide->fg_video . '</div>';
 		} // BG Photo
 		elseif ( 'photo' == $slide->bg_layout ) {
@@ -251,6 +248,15 @@ FLBuilder::register_module('FLContentSliderModule', array(
 							'1'             => array(
 								'fields'        => array( 'play_pause' ),
 							),
+						),
+					),
+					'auto_hover'     => array(
+						'type'          => 'select',
+						'label'         => __( 'Pause On Hover', 'fl-builder' ),
+						'default'       => '1',
+						'options'       => array(
+							'0'             => __( 'No', 'fl-builder' ),
+							'1'             => __( 'Yes', 'fl-builder' ),
 						),
 					),
 					'delay'         => array(
@@ -574,9 +580,14 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							'maxlength'     => '3',
 							'size'          => '5',
 						),
+					),
+				),
+				'text_margins'	=> array(
+					'title'     	=> __( 'Text Margins', 'fl-builder' ),
+					'fields'		=> array(
 						'text_margin_top' => array(
 							'type'          => 'text',
-							'label'         => __( 'Top Margin', 'fl-builder' ),
+							'label'         => __( 'Top', 'fl-builder' ),
 							'default'       => '60',
 							'description'   => 'px',
 							'maxlength'     => '4',
@@ -584,7 +595,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 						),
 						'text_margin_bottom' => array(
 							'type'          => 'text',
-							'label'         => __( 'Bottom Margin', 'fl-builder' ),
+							'label'         => __( 'Bottom', 'fl-builder' ),
 							'default'       => '60',
 							'description'   => 'px',
 							'maxlength'     => '4',
@@ -592,7 +603,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 						),
 						'text_margin_left' => array(
 							'type'          => 'text',
-							'label'         => __( 'Left Margin', 'fl-builder' ),
+							'label'         => __( 'Left', 'fl-builder' ),
 							'default'       => '60',
 							'description'   => 'px',
 							'maxlength'     => '4',
@@ -600,8 +611,45 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 						),
 						'text_margin_right' => array(
 							'type'          => 'text',
-							'label'         => __( 'Right Margin', 'fl-builder' ),
+							'label'         => __( 'Right', 'fl-builder' ),
 							'default'       => '60',
+							'description'   => 'px',
+							'maxlength'     => '4',
+							'size'          => '5',
+						),
+					),
+				),
+				'text_paddings'	=> array(
+					'title'     	=> __( 'Text Padding', 'fl-builder' ),
+					'fields'		=> array(
+						'text_padding_top' => array(
+							'type'          => 'text',
+							'label'         => __( 'Top', 'fl-builder' ),
+							'default'       => '30',
+							'description'   => 'px',
+							'maxlength'     => '4',
+							'size'          => '5',
+						),
+						'text_padding_bottom' => array(
+							'type'          => 'text',
+							'label'         => __( 'Bottom', 'fl-builder' ),
+							'default'       => '30',
+							'description'   => 'px',
+							'maxlength'     => '4',
+							'size'          => '5',
+						),
+						'text_padding_left' => array(
+							'type'          => 'text',
+							'label'         => __( 'Left', 'fl-builder' ),
+							'default'       => '30',
+							'description'   => 'px',
+							'maxlength'     => '4',
+							'size'          => '5',
+						),
+						'text_padding_right' => array(
+							'type'          => 'text',
+							'label'         => __( 'Right', 'fl-builder' ),
+							'default'       => '30',
 							'description'   => 'px',
 							'maxlength'     => '4',
 							'size'          => '5',

@@ -53,7 +53,7 @@ final class FLBuilderAJAXLayout {
 		do_action( 'fl_builder_after_render_ajax_layout' );
 
 		// Return the response.
-		return array(
+		return apply_filters( 'fl_builder_ajax_layout_response', array(
 			'partial'			=> $partial_refresh_data['is_partial_refresh'],
 			'nodeId'			=> $partial_refresh_data['node_id'],
 			'nodeType'			=> $partial_refresh_data['node_type'],
@@ -62,7 +62,7 @@ final class FLBuilderAJAXLayout {
 			'scriptsStyles'		=> $scripts_styles,
 			'css'  				=> $assets['css'],
 			'js'   				=> $assets['js'],
-		);
+		) );
 	}
 
 	/**
@@ -91,8 +91,7 @@ final class FLBuilderAJAXLayout {
 				'layout' => self::render( $row->node ),
 				'config' => FLBuilderUISettingsForms::get_node_js_config(),
 			);
-		} // End if().
-		else {
+		} else {
 
 			// Add the row.
 			$row = FLBuilderModel::add_row( $cols, $position );
@@ -181,6 +180,44 @@ final class FLBuilderAJAXLayout {
 	}
 
 	/**
+	 * Renders a new column template.
+	 *
+	 * @since 2.1
+	 * @param string $template_id The ID of a column template to render.
+	 * @param string $parent_id A column node ID.
+	 * @param int $position The new column position.
+	 * @param string $template_type The type of template. Either "user" or "core".
+	 * @return array
+	 */
+	static public function render_new_col_template( $template_id, $parent_id = null, $position = false, $template_type = 'user' ) {
+		if ( 'core' == $template_type ) {
+			$template = FLBuilderModel::get_template( $template_id, 'column' );
+			$column   = FLBuilderModel::apply_node_template( $template_id, $parent_id, $position, $template );
+		} else {
+			$column = FLBuilderModel::apply_node_template( $template_id, $parent_id, $position );
+		}
+
+		// Get the new column parent.
+		$parent = ! $parent_id ? null : FLBuilderModel::get_node( $parent_id );
+
+		// Get the node to render.
+		if ( ! $parent ) {
+			$row 		= FLBuilderModel::get_col_parent( 'row', $column );
+			$render_id 	= $row->node;
+		} elseif ( 'row' == $parent->type ) {
+			$group 		= FLBuilderModel::get_col_parent( 'column-group', $column );
+			$render_id 	= $group->node;
+		} elseif ( 'column-group' == $parent->type ) {
+			$render_id 	= $parent->node;
+		} else {
+			$render_id = $column->node;
+		}
+
+		// Return the response.
+		return self::render( $render_id );
+	}
+
+	/**
 	 * Renders the layout data for a copied column.
 	 *
 	 * @since 2.0
@@ -217,8 +254,7 @@ final class FLBuilderAJAXLayout {
 			} else {
 				$module = FLBuilderModel::apply_node_template( $template_id, $parent_id, $position );
 			}
-		} // End if().
-		else {
+		} else {
 			$defaults = FLBuilderModel::get_module_alias_settings( $alias );
 			$module   = FLBuilderModel::add_default_module( $parent_id, $type, $position, $defaults );
 		}
@@ -297,8 +333,7 @@ final class FLBuilderAJAXLayout {
 					$node 				= FLBuilderModel::get_module( $node_id );
 					$node_type 			= 'module';
 					$partial_refresh 	= $node->partial_refresh;
-				} // End if().
-				elseif ( $node ) {
+				} elseif ( $node ) {
 					$node_type 			= $node->type;
 					$partial_refresh 	= self::node_modules_support_partial_refresh( $node );
 				}
@@ -315,7 +350,7 @@ final class FLBuilderAJAXLayout {
 				'node'				 => $node,
 				'node_type'			 => $node_type,
 			);
-		}// End if().
+		}
 
 		// Return the data.
 		return self::$partial_refresh_data;
@@ -371,7 +406,7 @@ final class FLBuilderAJAXLayout {
 					}
 				}
 			}
-		}// End if().
+		}
 
 		return true;
 	}
@@ -413,8 +448,7 @@ final class FLBuilderAJAXLayout {
 					FLBuilder::render_module( $partial_refresh_data['node'] );
 				break;
 			}
-		} // End if().
-		else {
+		} else {
 			FLBuilder::render_nodes();
 		}
 
@@ -489,7 +523,7 @@ final class FLBuilderAJAXLayout {
 		} else {
 			FLBuilder::render_js();
 			$assets['js'] = $asset_info['js_url'] . '?ver=' . $asset_ver;
-		}// End if().
+		}
 
 		// Render the CSS.
 		FLBuilder::render_css();

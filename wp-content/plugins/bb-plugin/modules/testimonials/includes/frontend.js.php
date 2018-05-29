@@ -16,8 +16,8 @@
 		pager : <?php echo ( 'wide' == $settings->layout ) ? $settings->dots : 0; ?>,
 		nextSelector : '.fl-node-<?php echo $id; ?> .fl-slider-next',
 		prevSelector : '.fl-node-<?php echo $id; ?> .fl-slider-prev',
-		nextText: '<i class="fa fa-chevron-circle-right"></i>',
-		prevText: '<i class="fa fa-chevron-circle-left"></i>',
+		nextText: '<i class="fas fa-chevron-circle-right"></i>',
+		prevText: '<i class="fas fa-chevron-circle-left"></i>',
 		controls : <?php echo ( 'compact' == $settings->layout ) ? $settings->arrows : 0; ?>,
 		onSliderLoad: function() {
 			$('.fl-node-<?php echo $id; ?> .fl-testimonials').addClass('fl-testimonials-loaded');

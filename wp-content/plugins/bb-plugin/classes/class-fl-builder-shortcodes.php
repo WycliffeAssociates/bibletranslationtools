@@ -52,6 +52,12 @@ final class FLBuilderShortcodes {
 			return;
 		}
 
+		$render = apply_filters( 'fl_builder_insert_layout_render', true, $attrs, $args );
+
+		if ( ! $render ) {
+			return;
+		}
+
 		// Render and return the layout.
 		ob_start();
 

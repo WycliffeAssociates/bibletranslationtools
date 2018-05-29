@@ -1,7 +1,251 @@
+<h4>2.1.2.2 - 05/17/2018</h4>
+<strong>Bug Fixes</strong>
+<ul>
+	<li>Reverted menu accessibility code added in 2.1.2.</li>
+</ul>
+
+<h4>2.1.2.1 - 05/16/2018</h4>
+<strong>Bug Fixes</strong>
+<ul>
+	<li>Fixed a JS error preventing settings from opening.</li>
+</ul>
+
+<h4>2.1.2 - 05/16/2018</h4>
+<strong>Enhancements</strong>
+<ul>
+	<li>Updated Font Awesome 5 icons</li>
+	<li>Added support for new WP 4.9.6 Privacy Page and data exporter.</li>
+	<li>Added Themer support to Audio module</li>
+	<li>Added is_writable method to filesystem class</li>
+	<li>Added Ontraport support to Subscribe Module</li>
+	<li>Settings lightbox will now resize height when first opening if they are taller than the window</li>
+	<li>Improved accessibility in Menu Module</li>
+	<li>Limit revisions in Builder UI to 25 for performance reasons <code>fl_builder_revisions_number</code> also added</li>
+	<li>Hide overlays when right clicked so the underlying node can be inspected.</li>
+	<li>Remove panel caret when less than 500px</li>
+</ul>
+<strong>Bug Fixes</strong>
+<ul>
+	<li>Fixed a compatibility issues with Enjoy Plugin for Instagram and MailerLite plugin</li>
+	<li>Fixed gap underneath menu items on Themer menu module</li>
+	<li>Fixed Builder permissions appearing blank if Themer plugin is enabled first</li>
+	<li>Fixed a JS error thrown while resizing rows</li>
+	<li>Fixed a PHP warning if no default icon sets are available</li>
+	<li>Fixed a PHP warning on debug page if there are no deactivated plugins installed</li>
+	<li>Fixed an issue where archive pages would enqueue a layout css/js file for every post in the archive</li>
+	<li>Fixed saved columns still showing if Enable Core Templates Only is selected</li>
+	<li>Fixed PHP warnings in Subscribe Module when using Infusionsoft</li>
+</ul>
+
+<h4>2.1.1.3 - 05/10/2018</h4>
+<p><strong>Hot Fix</strong></p>
+<ul>
+	<li>Make sure Font Awesome 5 icons are enqueued when builder is open.</li>
+	<li>Disable Hummingbird cache minification while editing.</li>
+	<li>Fix editing issues introduced in WP 4.9.6.</li>
+	<li>Fixed a PHP notice in Subscribe Module.</li>
+</ul>
+
+<h4>2.1.1.2 - 05/07/2018</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>Added <code>fl_code_checking_enabled</code> filter to disable all code checking.</li>
+	<li>Added <code>fl_builder_get_layout_metadata</code> filter for filtering layout data when it comes out of the database.</li>
+	<li>Disabled notifications in restricted editing mode.</li>
+	<li>Updated Font Awesome to 5.0.12.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed characters being encoded in text inputs when using inline editing.</li>
+	<li>Fixed invalid code errors preventing saving of code fields.</li>
+	<li>Fixed a fatal error with corrupted global rows.</li>
+</ul>
+
+<h4>2.1.1.1 - 05/02/2018</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>Font Awesome PRO support added! See <code>https://kb.wpbeaverbuilder.com/article/645-font-awesome-5-icons</code> for instructions.</li>
+</ul>
+
+<h4>2.1.1 - 05/02/2018</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>New filter <code>fl_inline_editing_enabled</code> to disable inline editing.</li>
+	<li>Removed obsolete Event Espresso code now covered by their official addon found at <code>https://github.com/eventespresso/eea-beaver-builder</code></li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed JS error when canceling out of a settings form during responsive preview.</li>
+	<li>Fixed various icon issues and added a compatibility function to make sure css files are loaded in right order.</li>
+</ul>
+
+<h4>2.1.0.2 - 04/27/2018</h4>
+<p><strong>Hot Fix</strong></p>
+<ul>
+	<li>Fixed more compression issues with loading the settings JS.</li>
+	<li>Fixed a branding issue with Agency package, you can now use 'Page Builder' again.</li>
+	<li>Fixed issue with YouTube row backgrounds not looping.</li>
+</ul>
+<h4>2.1.0.1 - 04/26/2018</h4>
+<p><strong>Hot Fix</strong></p>
+<ul>
+	<li>Fixed compression issues with loading the settings JS.</li>
+	<li>Fixed CSS/JS assets returning a 404 after the builder has launched.</li>
+	<li>Fixed the button module not accepting 0 for style settings.</li>
+	<li>Fixed translation issues.</li>
+	<li>Fixed Font Awesome not loading for some modules.</li>
+</ul>
+
+<h4>2.1 - 04/25/2018</h4>
+<p>Beaver Builder 2.1 "Redridge" is here! Check out the <a href="https://www.wpbeaverbuilder.com/beaver-builder-2-1-redridge/">blog post</a> for more info.</p>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>You can now pin the settings panel in restricted editing mode and when editing module templates.</li>
+	<li>Changed default button settings so they can be customized via the Customizer in the next theme update.</li>
+	<li>Added featured image support for templates in all versions.</li>
+	<li>Update translations.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed caching issues with the iframe layout preview.</li>
+</ul>
+
+<h4>2.1-beta.4 - 04/20/2018</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>Update UI icons to use Font Awesome 5</li>
+	<li>New filter <code>fl_disable_notifications</code> added to disable notifications.</li>
+	<li>Debug info will now show htaccess content.</li>
+	<li>Waypoints offset added to js config.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed fatal errors in GetResonse and Mailerlite api.</li>
+	<li>Fixed background YouTube and Vimeo videos not using fallback image.</li>
+	<li>Fixed AJAX shortcode issue with Ninjaforms.</li>
+	<li>Fixed percent not working for the preview unit.</li>
+	<li>Fixed contact form field connections not working when sending email because connections aren't connected when wp_ajax runs.</li>
+</ul>
+
+<h4>2.1-beta.3 - 04/06/2018</h4>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed broken links on the plugins page.</li>
+</ul>
+
+<h4>2.1-beta.2 - 04/05/2018</h4>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed white labeling issues.</li>
+	<li>Fixed usage stats admin message redirecting to the dashboard.</li>
+	<li>Fixed WPML translations not linking when creating new templates in wp-admin.</li>
+	<li>Fixed WPML issue with the builder launching for the default language instead of the current translation.</li>
+</ul>
+
+<h4>2.1-beta.1 - 04/04/2018</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>Added support for enabling Font Awesome 5 in the icon settings. Note: you can't have 4 and 5 active at the same time as they are not compatible with each other.</li>
+	<li>Added underline to the inline editing formatting tools.</li>
+	<li>Added setting to exclude the current post in the posts module.</li>
+	<li>Add support for rendering layout CSS and JS inline on the page instead of enqueuing using the <code>fl_builder_render_assets_inline</code> filter.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed multiple issues with inline editing.</li>
+	<li>Fixed usage stats opt-in not working on multisite.</li>
+	<li>Fixed JS settings config not fully loading on some servers with response size limits.</li>
+</ul>
+
+<h4>2.1-alpha.6 - 03/13/2018</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>Added the ability to save standard and global column templates.</li>
+</ul>
+
+<h4>2.1-alpha.5 - 03/07/2018</h4>
+<ul>
+	<li>Reworked Beaver Builder for Gutenberg block to support API changes in Gutenberg 2.3.0.</li>
+	<li>Updated wording in warning when switching from Beaver Builder to Gutenberg.</li>
+	<li>Fixed inline editing not working in Safari.</li>
+</ul>
+
+<h4>2.1-alpha.4 - 02/22/2018</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>Add title tags when present to images in various modules.</li>
+	<li>Added the option to show category meta to Posts module.</li>
+	<li>Added improved RTL support to the Posts module.</li>
+	<li>Added YouTube video background support for start position and looping parameters.</li>
+	<li>Added video field parameter for enabling the remove button.</li>
+	<li>Added mobile background color option to all layouts in the Menu module.</li>
+	<li>Added option to disable autoplay on hover to the Content Slider module.</li>
+	<li>Added default change callback to trigger preview refresh on fields that don't have a preview defined.</li>
+	<li>Disable auto play and hide the pager if there's only one slide in the Testimonials module.</li>
+	<li>Updated GetResponse library to version 3.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed video background alignment in older browsers that require vendor prefixes for CSS transforms.</li>
+	<li>Fixed repeater fields not working in row and column settings.</li>
+	<li>Fixed submenus in the menu module's vertical layout going off the page.</li>
+	<li>Fixed menu module smooth scrolling issues when clicking an anchor link.</li>
+	<li>Fixed issues with duplicating rows that contain another row inserted via shortcode.</li>
+	<li>Fixed issue with inactive tabs showing when resizing the browser.</li>
+	<li>Fixed various issues with row and column colors overriding module text colors.</li>
+	<li>Fixed layout shortcode rendering on search result pages.</li>
+	<li>Fixed videos not playing in the content slider.</li>
+</ul>
+
+<h4>2.1-alpha.3 - 02/20/2018</h4>
+<ul>
+	<li>Reworked Beaver Builder for Gutenberg block to support API changes in Gutenberg 2.2.0.</li>
+	<li>Updated opt-in usage stats with theme info.</li>
+</ul>
+
+<h4>2.1-alpha.2 - 02/16/2018</h4>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed inline editing breaking when you have more than one layout on the same page.</li>
+	<li>Fixed white labeling issues.</li>
+</ul>
+
+<h4>2.1-alpha.1 - 02/15/2018</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>Added inline text editing to all modules (core and 3rd party) that support live text preview.</li>
+	<li>Added support for Gutenberg via the new Beaver Builder block.</li>
+	<li>Added a new user access setting for restricting all builder access for certain roles.</li>
+	<li>Added a notification center within the builder (disabled when white labeled).</li>
+	<li>Added opt-in usage tracking for things like PHP version, settings and module usage.</li>
+	<li>Added validation check for all code fields to prevent bad code from breaking the builder.</li>
+	<li>Added WPML support for global nodes.</li>
+	<li>Added the ability to add your license key via WP-CLI.</li>
+	<li>Added filtering for Theme Layouts, Templates, Saved Rows and Saved Modules on the admin list screen.</li>
+	<li>Added text padding options to the Content Slider module.</li>
+	<li>Added `fl_contact_form_from` filter to allow users to filter the from header.</li>
+	<li>Added logic for registering admin pointers.</li>
+	<li>Upgrade MailChimp API to v3.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed builder not working if both Event Espresso and Beaver Themer are active.</li>
+	<li>Fixed Posts module columns padding going outside of the module container on mobile.</li>
+	<li>Fixed Posts module first page of numbered pagination missing the trailing slash in URL.</li>
+	<li>Fixed video background proportions by removing potential max-width styles.</li>
+	<li>Fixed images with captions going out of the container when reverse stacking is enabled.</li>
+	<li>Fixed current menu class not being applied to the menu module when inserted via shortcode.</li>
+	<li>Fixed RTL issues with the Posts Carousel.</li>
+	<li>Fixed Content Slider module top/bottom margins not working when text background height is 100%.</li>
+	<li>Fixed sliders not displaying properly when inserted via shortcode in Tab/Accordion modules.</li>
+	<li>Now using a custom sort function instead of create_function which is deprecated in php 7.2.</li>
+	<li>Removed WPML language switcher widget from the content panel since it requires being in a registered sidebar to work.</li>
+</ul>
+
 <h4>2.0.6.4 - 03/27/2018</h4>
 <p><strong>Enhancements</strong></p>
 <ul>
-	<li>Added optional Terms and Conditions to Contact and Subcribe Modules to comply with GDPR.</li>
+	<li>Added optional Terms and Conditions to Contact and Subscribe Modules to comply with GDPR.</li>
 </ul>
 <p><strong>Bug Fixes</strong></p>
 <ul>
@@ -179,7 +423,7 @@
 	<li>Fixed bug with layout settings getting encoded when the modsec fix is enabled.</li>
 	<li>Fixed Posts module - Columns layout broken when using load more pagination.</li>
 	<li>Fixed Subscribe Module - Issues when same forms loaded on a page.</li>
-	<li>Fixed issue with <code><textarea></code> HTML being stripped when settings are saved.</li>
+	<li>Fixed issue with <code>textarea</code> HTML being stripped when settings are saved.</li>
 	<li>Fixed issue with column widths on mobile when reverse stacking is enabled.</li>
 	<li>Fixed issue when pasting color into a colorpicker field.</li>
 	<li>Fixed a conflict with Fancybox3.</li>
@@ -389,7 +633,7 @@
 
 <h4>2.0-alpha.3 - 08/07/2017</h4>
 <ul>
-	<li>Settings forms now load instantly! We've completely rewritten the settings forms in JavaScript so they don’t need to be loaded from the server anymore. The only time something needs to load is if you’re using a third party add-on that introduces legacy PHP fields. We’ll have docs on the new JavaScript settings APIs when 2.0 is released and hope that all major add-on authors will convert their fields to JavaScript so everything loads instantly! :)</li>
+	<li>Settings forms now load instantly! We've completely rewritten the settings forms in JavaScript so they donâ€™t need to be loaded from the server anymore. The only time something needs to load is if youâ€™re using a third party add-on that introduces legacy PHP fields. Weâ€™ll have docs on the new JavaScript settings APIs when 2.0 is released and hope that all major add-on authors will convert their fields to JavaScript so everything loads instantly! :)</li>
 	<li>Added an initial set of core row templates.</li>
 	<li>Various bug fixes and style tweaks.</li>
 </ul>
@@ -596,8 +840,8 @@
 </ul>
 <p><strong>Bug Fixes</strong></p>
 <ul>
-    <li>Removed the new core media widgets from the builder since they don’t work in the builder and we have modules that do the same thing.</li>
-    <li>Fixed the core text widget form in the builder so the legacy form loads since the new form in 4.8 doesn’t. The text widget is also removed from the module list in favor of the Text Editor and HTML modules. Sites previously using the text widget will still render and they can still be edited, they just won’t be able to add new text widgets.</li>
+    <li>Removed the new core media widgets from the builder since they donâ€™t work in the builder and we have modules that do the same thing.</li>
+    <li>Fixed the core text widget form in the builder so the legacy form loads since the new form in 4.8 doesnâ€™t. The text widget is also removed from the module list in favor of the Text Editor and HTML modules. Sites previously using the text widget will still render and they can still be edited, they just wonâ€™t be able to add new text widgets.</li>
     <li>Fixed Slideshow module not showing in the Tabs module.</li>
     <li>Fixed JS error in Row > Background > Slideshow  on touch-enabled devices.</li>
     <li>Increased the video ratio to 16:9 to fix the top/bottom black border on responsive layout.</li>
@@ -747,15 +991,15 @@
 </ul>
 <p><strong>Post Module Enhancements</strong></p>
 <ul>
-	<li>Added “columns” layout to the layout setting.</li>
+	<li>Added â€œcolumnsâ€ layout to the layout setting.</li>
 	<li>Added more layout and styling settings.</li>
-	<li>The “no results” message is now shown when no posts are found.</li>
+	<li>The â€œno resultsâ€ message is now shown when no posts are found.</li>
 	<li>Added a setting to show a search form if no posts are found.</li>
 	<li>Added the ability to exclude posts in the content filter for the query.</li>
 </ul>
 <p><strong>Menu Module Enhancements</strong></p>
 <ul>
-	<li>Added “below row" option for mobile menu position.</li>
+	<li>Added â€œbelow row" option for mobile menu position.</li>
 	<li>Added font family setting.</li>
 	<li>Misc CSS improvements.</li>
 </ul>
@@ -799,7 +1043,7 @@
 <h4>1.9.5.1 - 3/21/2017</h4>
 <p><strong>Bug Fixes</strong></p>
 <ul>
-	<li>Rolled back change in 1.9.5 that fixed some photos not going full width on mobile. That was causing all photos to go full width on mobile even when not intended. We’ll revisit that fix in 1.10.</li>
+	<li>Rolled back change in 1.9.5 that fixed some photos not going full width on mobile. That was causing all photos to go full width on mobile even when not intended. Weâ€™ll revisit that fix in 1.10.</li>
 </ul>
 
 <h4>1.9.5 - 3/20/2017</h4>

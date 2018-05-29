@@ -8,13 +8,23 @@
 final class FLBuilderIframePreview {
 
 	/**
-	 * Initialize hooks.
+	 * Initialize on plugins loaded.
 	 *
 	 * @since 2.0.6
 	 * @return void
 	 */
 	static public function init() {
-		if ( ! isset( $_GET['fl_builder_preview'] ) ) {
+		add_action( 'plugins_loaded', __CLASS__ . '::hook' );
+	}
+
+	/**
+	 * Setup hooks.
+	 *
+	 * @since 2.1
+	 * @return void
+	 */
+	static public function hook() {
+		if ( ! FLBuilderModel::is_builder_draft_preview() ) {
 			return;
 		}
 

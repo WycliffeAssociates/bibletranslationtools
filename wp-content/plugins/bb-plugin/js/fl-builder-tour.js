@@ -58,7 +58,7 @@
 				onPrev      : FLBuilderTour._onPrev,
 				onNext      : FLBuilderTour._onNext,
 				onEnd       : FLBuilderTour._onEnd,
-				template    : '<div class="popover" role="tooltip"> <i class="fa fa-times" data-role="end"></i> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation clearfix"> <button class="fl-builder-button fl-builder-button-primary fl-builder-tour-next" data-role="next">' + FLBuilderStrings.tourNext + '</button> </div> </div>',
+				template    : '<div class="popover" role="tooltip"> <i class="fas fa-times" data-role="end"></i> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation clearfix"> <button class="fl-builder-button fl-builder-button-primary fl-builder-tour-next" data-role="next">' + FLBuilderStrings.tourNext + '</button> </div> </div>',
 				steps       : [
 					{
 						animation   : false,
@@ -164,7 +164,7 @@
 						backdrop    : true,
 						title       : FLBuilderStrings.tourFinishedTitle,
 						content     : FLBuilderStrings.tourFinished,
-						template    : '<div class="popover" role="tooltip"> <div class="arrow"></div> <i class="fa fa-times" data-role="end"></i> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation clearfix"> <button class="fl-builder-button fl-builder-button-primary fl-builder-tour-next" data-role="end">' + FLBuilderStrings.tourEnd + '</button> </div> </div>',
+						template    : '<div class="popover" role="tooltip"> <div class="arrow"></div> <i class="fas fa-times" data-role="end"></i> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation clearfix"> <button class="fl-builder-button fl-builder-button-primary fl-builder-tour-next" data-role="end">' + FLBuilderStrings.tourEnd + '</button> </div> </div>',
 					}
 				]
 			};

@@ -74,8 +74,7 @@ function fl_export_wp( $post_ids = array() ) {
 		// Multisite: the base URL.
 		if ( is_multisite() ) {
 			return network_home_url();
-		} // End if().
-		else { 			return get_bloginfo_rss( 'url' );
+		} else { 			return get_bloginfo_rss( 'url' );
 		}
 	}
 
@@ -444,9 +443,9 @@ foreach ( $c_meta as $meta ) :
 <?php	endforeach; ?>
 		</item>
 	<?php
-		}// End foreach().
-	}// End while().
-}// End if().
+		}
+	}
+}
 	?>
 </channel>
 </rss>

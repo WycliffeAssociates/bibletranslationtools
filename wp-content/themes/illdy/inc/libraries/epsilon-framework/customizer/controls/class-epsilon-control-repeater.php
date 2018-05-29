@@ -6,7 +6,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Class Epsilon_Control_Repeater
  *
- * @since 1.2.0
+ * @since 1.0.0
  */
 class Epsilon_Control_Repeater extends WP_Customize_Control {
 	/**
@@ -18,22 +18,22 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 	 */
 	public $type = 'epsilon-repeater';
 	/**
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public $choices = array();
 	/**
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @var array|mixed
 	 */
 	public $fields = array();
 	/**
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public $row_label = array();
 	/**
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $button_label = null;
@@ -45,11 +45,16 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 	 * @var array
 	 */
 	protected $filtered_value = array();
-
+	/**
+	 * Save as meta
+	 *
+	 * @var string
+	 */
+	public $save_as_meta = '';
 	/**
 	 * Icons array
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @var array
 	 */
 	protected $icons = array();
@@ -57,7 +62,7 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 	/**
 	 * Epsilon_Control_Repeater constructor.
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 *
 	 * @param WP_Customize_Manager $manager
 	 * @param string               $id
@@ -71,7 +76,7 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 	/**
 	 * Load the necessary styles and scripts
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 */
 	public function enqueue() {
 		wp_enqueue_script( 'jquery-ui-sortable' );
@@ -86,14 +91,15 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 	public function json() {
 		$json = parent::json();
 
-		$json['id']          = $this->id;
-		$json['link']        = $this->get_link();
-		$json['value']       = $this->value();
-		$json['choices']     = $this->choices;
-		$json['fields']      = $this->get_fields();
-		$json['rowLabel']    = $this->get_row_label();
-		$json['buttonLabel'] = ( isset( $this->button_label ) ) ? $this->button_label : __( 'Add', 'epsilon-framework' );
-		$json['default']     = ( isset( $this->default ) ) ? $this->default : $this->setting->default;
+		$json['id']           = $this->id;
+		$json['link']         = $this->get_link();
+		$json['value']        = $this->value();
+		$json['choices']      = $this->choices;
+		$json['fields']       = $this->get_fields();
+		$json['rowLabel']     = $this->get_row_label();
+		$json['save_as_meta'] = $this->save_as_meta;
+		$json['buttonLabel']  = ( isset( $this->button_label ) ) ? $this->button_label : __( 'Add', 'epsilon-framework' );
+		$json['default']      = ( isset( $this->default ) ) ? $this->default : $this->setting->default;
 
 		return $json;
 	}
@@ -132,15 +138,17 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 	/**
 	 * Set defaults, label and add an ID for the fields
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @return array|mixed
 	 */
 	public function get_fields() {
 		if ( empty( $this->fields ) || ! is_array( $this->fields ) ) {
 			$this->fields = array();
 		}
-		$sizes = Epsilon_Framework::get_image_sizes();
+		$sizes = Epsilon_Helper::get_image_sizes();
 		foreach ( $this->fields as $key => $value ) {
+			$this->fields[ $key ]['metaId'] = ! empty( $this->save_as_meta ) ? $this->save_as_meta : '';
+
 			if ( ! isset( $value['default'] ) ) {
 				$this->fields[ $key ]['default'] = '';
 			}
@@ -174,6 +182,14 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 				$this->fields[ $key ]['choices'] = wp_parse_args( $this->fields[ $key ]['choices'], $default );
 			}
 
+			if ( 'epsilon-button-group' === $value['type'] ) {
+				if ( ! isset( $this->fields[ $key ]['choices'] ) ) {
+					$this->fields[ $key ]['choices'] = array();
+				}
+
+				$this->fields[ $key ]['groupType'] = $this->set_group_type( $this->fields[ $key ]['choices'] );
+			}
+
 			/**
 			 * Epsilon Image
 			 */
@@ -200,9 +216,24 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 	}
 
 	/**
+	 * Set group type
+	 */
+	public function set_group_type( $choices = array() ) {
+		$arr = array(
+			0 => 'none',
+			1 => 'one',
+			2 => 'two',
+			3 => 'three',
+			4 => 'four',
+		);
+
+		return $arr[ count( $choices ) ];
+	}
+
+	/**
 	 * Setup the row's label
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @return array
 	 */
 	public function get_row_label() {
@@ -227,7 +258,7 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 	/**
 	 * As it should be
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 */
 	public function render_content() {
 
@@ -236,7 +267,7 @@ class Epsilon_Control_Repeater extends WP_Customize_Control {
 	/**
 	 * Displays the control content.
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 */
 	public function content_template() {
 		//@formatter:off  ?>

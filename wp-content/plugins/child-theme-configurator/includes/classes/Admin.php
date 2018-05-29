@@ -6,7 +6,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
     Class: ChildThemeConfiguratorAdmin
     Plugin URI: http://www.childthemeconfigurator.com/
     Description: Main Controller Class
-    Version: 2.2.9
+    Version: 2.3.0
     Author: Lilaea Media
     Author URI: http://www.lilaeamedia.com/
     Text Domain: child-theme-configurator
@@ -176,6 +176,7 @@ class ChildThemeConfiguratorAdmin {
     }
     
     function load_config() {
+
         $this->css = new ChildThemeConfiguratorCSS();
         if ( FALSE !== $this->css->load_config() ):
             $this->debug( 'config exists', __FUNCTION__, __CLASS__, __CLASS__ );
@@ -225,7 +226,7 @@ class ChildThemeConfiguratorAdmin {
              *
             if ( $this->get( 'max_sel' ) ):
                 $this->debug( 'Max selectors exceeded.', __FUNCTION__, __CLASS__, __CLASS__ );
-                //$this->errors[] = __( 'Maximum number of styles exceeded.', 'child-theme-configurator' );
+                //$this->errors[] = 26; //__( 'Maximum number of styles exceeded.', 'child-theme-configurator' );
                 add_action( 'chld_thm_cfg_admin_notices', array( $this, 'max_styles_notice' ) ); 
             endif;
             */
@@ -358,6 +359,7 @@ class ChildThemeConfiguratorAdmin {
         $path = ( preg_match( "/^[\.\/]/", $pathinfo[ 'dirname' ] ) ? '' : $pathinfo[ 'dirname' ] . '/' ) . $pathinfo[ 'filename' ];
         return array( $path, $pathinfo[ 'extension' ] );
     }
+    
     /**
      * Handles processing for all form submissions.
      * Moved conditions to switch statement with the main setup logic in a separate function.
@@ -375,7 +377,10 @@ class ChildThemeConfiguratorAdmin {
             if ( empty( $actionfield ) ) return FALSE;
             
             // make sure post passes security checkpoint        
-            if ( $this->validate_post( apply_filters( 'chld_thm_cfg_action', 'ctc_update' ) ) ):
+            if ( !$this->validate_post( apply_filters( 'chld_thm_cfg_action', 'ctc_update' ) ) ):
+                // if you end up here you are persona non grata
+                $this->errors[] = 2; //__( 'You do not have permission to configure child themes.', 'child-theme-configurator' );
+            else:
                 // reset debug log
                 delete_site_transient( CHLD_THM_CFG_OPTIONS . '_debug' );
                 // handle uploaded file before checking filesystem
@@ -386,16 +391,16 @@ class ChildThemeConfiguratorAdmin {
                 endif;
                 // now we need to check filesystem access 
                 $args = preg_grep( "/nonce/", array_keys( $_POST ), PREG_GREP_INVERT );
+                $msg = FALSE;
                 $this->verify_creds( $args );
                 if ( $this->fs ):
-                    $msg = FALSE;
                     // we have filesystem access so proceed with specific actions
                     switch( $actionfield ):
                         case 'export_child_zip':
                         case 'export_theme':
                             $this->export_theme();
                             // if we get here the zip failed
-                            $this->errors[] = __( 'Zip file creation failed.', 'child-theme-configurator' );
+                            $this->errors[] = 1; //__( 'Zip file creation failed.', 'child-theme-configurator' );
                             break;
                         case 'load_styles':
                             // main child theme setup function
@@ -420,8 +425,7 @@ class ChildThemeConfiguratorAdmin {
                                 foreach ( $_POST[ 'ctc_file_child' ] as $file ):
                                     list( $path, $ext ) = $this->get_pathinfo( sanitize_text_field( $file ) );
                                     if ( 'functions' == $path ):
-                                        $this->errors[] = 
-                                            __( 'The Functions file is required and cannot be deleted.', 'child-theme-configurator' );
+                                        $this->errors[] = 4; // __( 'The Functions file is required and cannot be deleted.', 'child-theme-configurator' );
                                         continue; 
                                     else:
                                         $this->delete_child_file( $path, $ext );
@@ -489,21 +493,19 @@ class ChildThemeConfiguratorAdmin {
                             $msg = '8&tab=file_options';
                     endswitch;
                 endif; // end filesystem condition
-                if ( empty( $this->errors ) && empty( $this->fs_prompt ) ):
-                    $this->processdone = TRUE;
-                    //die( '<pre><code><small>' . print_r( $_POST, TRUE ) . '</small></code></pre>' );
-                    // no errors so we redirect with confirmation message
-                    $this->update_redirect( $msg );
-                endif;
-                // otherwise fail gracefully
-                $msg = NULL;
-                return FALSE;
             endif; // end post validation condition
-            // if you end up here you are persona non grata
-            $msg = NULL;
-            $this->errors[] = __( 'You do not have permission to configure child themes.', 'child-theme-configurator' );
+            // if we have errors, redirect failure
+            if ( $this->errors ):
+                $this->update_redirect( 0 );
+            // if we have filesystem access, redirect successful
+            elseif ( empty( $this->fs_prompt ) ):
+                $this->processdone = TRUE;
+                //die( '<pre><code><small>' . print_r( $_POST, TRUE ) . '</small></code></pre>' );
+                // no errors so we redirect with confirmation message
+                $this->update_redirect( $msg );
+            endif;
         endif; // end request method condition
-        return FALSE;
+        // if we are here, then this is either a get request or we need filesystem access
     }
     
     /**
@@ -533,25 +535,23 @@ class ChildThemeConfiguratorAdmin {
         // validate parent and child theme inputs
         if ( $parnt ):
             if ( ! $this->check_theme_exists( $parnt ) ):
-                $this->errors[] = sprintf( 
-                    __( '%s does not exist. Please select a valid Parent Theme.', 'child-theme-configurator' ), $parnt );
+                $this->errors[] = '3:' . $parnt; //sprintf( __( '%s does not exist. Please select a valid Parent Theme.', 'child-theme-configurator' ), $parnt );
             endif;
         else:
-            $this->errors[] = __( 'Please select a valid Parent Theme.', 'child-theme-configurator' );
+            $this->errors[] = 5; // __( 'Please select a valid Parent Theme.', 'child-theme-configurator' );
         endif;
 
         // if this is reset, duplicate or existing, we must have a child theme
         if ( 'new' != $type && empty( $child ) ):
-            $this->errors[] = __( 'Please select a valid Child Theme.', 'child-theme-configurator' );
+            $this->errors[] = 6; //__( 'Please select a valid Child Theme.', 'child-theme-configurator' );
         // if this is a new or duplicate child theme we must validate child theme directory
         elseif ( 'new' == $type || 'duplicate' == $type ):
             if ( empty( $template ) && empty( $name ) ):
-                $this->errors[] = __( 'Please enter a valid Child Theme directory name.', 'child-theme-configurator' );
+                $this->errors[] = 7; // __( 'Please enter a valid Child Theme directory name.', 'child-theme-configurator' );
             else:
                 $template_sanitized = preg_replace( "%[^\w\-]%", '', empty( $template ) ? $name : $template );
                 if ( $this->check_theme_exists( $template_sanitized ) ):
-                    $this->errors[] = sprintf( 
-                        __( '<strong>%s</strong> exists. Please enter a different Child Theme template name.', 'child-theme-configurator' ), $template_sanitized );
+                    $this->errors[] = '8:' . $template_sanitized; //sprintf( __( '<strong>%s</strong> exists. Please enter a different Child Theme template name.', 'child-theme-configurator' ), $template_sanitized );
                 elseif ( 'duplicate' == $type ):
                     // clone existing child theme
                     $this->clone_child_theme( $child, $template_sanitized );
@@ -570,8 +570,7 @@ class ChildThemeConfiguratorAdmin {
         // verify_child_dir creates child theme directory if it doesn't exist.
         if ( FALSE === $this->verify_child_dir( $child ) ):
             // if it returns false then it could not create directory.
-            $this->errors[] = __( 'Your theme directories are not writable.', 'child-theme-configurator' );
-            add_action( 'chld_thm_cfg_admin_notices', array( $this, 'writable_notice' ) );     
+            $this->errors[] = 9; //__( 'Your theme directories are not writable.', 'child-theme-configurator' );
             return FALSE;
         endif;
     
@@ -651,7 +650,7 @@ class ChildThemeConfiguratorAdmin {
                     $this->backup_or_restore_file( 'style.css', TRUE, 'ctc-genesis.css' ) ):
                     $this->delete_child_file( 'ctc-genesis', 'css' );
                 else:
-                    $this->errors[] = __( 'Could not upgrade child theme', 'child-theme-configurator' );
+                    $this->errors[] = 10; //__( 'Could not upgrade child theme', 'child-theme-configurator' );
                 endif;
             endif;
 
@@ -733,8 +732,7 @@ class ChildThemeConfiguratorAdmin {
             $this->debug( 'Writing new CSS...', __FUNCTION__, __CLASS__ );
             if ( FALSE === $this->css->write_css() ):
                 //$this->debug( print_r( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ), TRUE ), __FUNCTION__, __CLASS__ );
-                $this->errors[] = __( 'Your stylesheet is not writable.', 'child-theme-configurator' );
-                add_action( 'chld_thm_cfg_admin_notices', array( $this, 'writable_notice' ) );     
+                $this->errors[] = 11; //__( 'Your stylesheet is not writable.', 'child-theme-configurator' );
                 return FALSE;
             endif; 
             // get files to reload templates in new css object
@@ -772,7 +770,7 @@ class ChildThemeConfiguratorAdmin {
             $screen = get_current_screen()->id;
             wp_safe_redirect(
                 ( strstr( $screen, '-network' ) ? network_admin_url( 'themes.php' ) : admin_url( 'tools.php' ) ) 
-                    . '?page=' . $ctcpage . ( $msg ? '&updated=' . $msg : '' ) );
+                    . '?page=' . $ctcpage . ( $msg ? '&updated=' . $msg : ( $this->errors ? '&error=' . implode( ',', $this->errors ) : '' ) ) );
             die();
         endif;
     }
@@ -887,6 +885,8 @@ if ( !defined( 'ABSPATH' ) ) exit;
             . ' ignoreparnt: ' . $ignoreparnt . ' priority: ' . $priority . ' childtype: ' . $this->childtype, __FUNCTION__, __CLASS__ );
          // enqueue parent stylesheet 
         if ( 'enqueue' == $enq && $hasstyles && !$parntloaded && !$ignoreparnt ):
+            // Sanity check: remove dependency to parent css handle to avoid loop v2.3.0
+            $deps = array_diff( $deps, array( 'chld_thm_cfg_parent' ) );
             $code .= "
 if ( !function_exists( 'chld_thm_cfg_parent_css' ) ):
     function chld_thm_cfg_parent_css() {
@@ -924,17 +924,23 @@ add_action( 'wp_head', 'chld_thm_cfg_add_parent_dep', 2 );
                 endif;
             endforeach;
         endif;
+        
+        
         // if child not loaded, enqueue it and add it to dependencies
         if ( 'separate' != $handling && ( ( $csswphead || $cssunreg || $cssnotheme ) 
             || ( 'new' != $this->childtype && !$childloaded ) 
             ) ): 
             $deps = array_merge( $deps, $this->get( 'child_deps' ) );
+            // Sanity check: remove dependency to child css handle to avoid loop v2.3.0
+            $deps = array_diff( $deps, array( 'chld_thm_cfg_child' ) );
             $enqueues[] = "        wp_enqueue_style( 'chld_thm_cfg_child', trailingslashit( get_stylesheet_directory_uri() ) . 'style.css', array( " . implode( ',', $deps ) . " ) );";
             // if loading child theme stylesheet, reset deps and add child stylesheet
             $deps = array( "'chld_thm_cfg_child'" );
         endif;
         if ( 'separate' == $handling ):
             $deps = array_merge( $deps, $this->get( 'child_deps' ) );
+            // Sanity check: remove dependency to separate css handle to avoid loop v2.3.0
+            $deps = array_diff( $deps, array( 'chld_thm_cfg_separate' ) );
             $enqueues[] = "        wp_enqueue_style( 'chld_thm_cfg_separate', trailingslashit( get_stylesheet_directory_uri() ) . 'ctc-style.css', array( " . implode( ',', $deps ) . " ) );";
         endif;
         if ( count( $enqueues ) ):
@@ -945,7 +951,7 @@ if ( !function_exists( 'child_theme_configurator_css' ) ):
             $code .= "
     }
 endif;
-add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css' );" . LF;
+add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', " . ( $priority + 10 ) . " );" . LF;
         endif;
         if ( $ignoreparnt )
             $code .= "
@@ -1064,7 +1070,7 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
                 // verify there is no PHP close tag at end of file
                 if ( ! $phpopen ):
                     $this->debug( 'PHP not open', __FUNCTION__, __CLASS__ );
-                    //$this->errors[] = __( 'A closing PHP tag was detected in Child theme functions file so "Parent Stylesheet Handling" option was not configured. Closing PHP at the end of the file is discouraged as it can cause premature HTTP headers. Please edit <code>functions.php</code> to remove the final <code>?&gt;</code> tag and click "Generate/Rebuild Child Theme Files" again.', 'child-theme-configurator' );
+                    //$this->errors[] = 12 //__( 'A closing PHP tag was detected in Child theme functions file so "Parent Stylesheet Handling" option was not configured. Closing PHP at the end of the file is discouraged as it can cause premature HTTP headers. Please edit <code>functions.php</code> to remove the final <code>?&gt;</code> tag and click "Generate/Rebuild Child Theme Files" again.', 'child-theme-configurator' );
                     //return FALSE;
                     $newfile .= '<?php' . LF;
                 endif;
@@ -1136,6 +1142,7 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
     }
     
     function copy_parent_file( $file, $ext = 'php' ) {
+        
         if ( !$this->fs ): 
             $this->debug( 'No filesystem access.', __FUNCTION__, __CLASS__ );
             return FALSE; // return if no filesystem access
@@ -1144,17 +1151,22 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
         $parent_file = NULL;
         if ( 'screenshot' == $file ):
             foreach ( array_keys( $this->imgmimes ) as $extreg ): 
-                foreach( explode( '|', $extreg ) as $ext ):
-                    if ( $parent_file = $this->css->is_file_ok( $this->css->get_parent_source( 'screenshot.' . $ext ) ) ) break;
-                endforeach; 
+                foreach( explode( '|', $extreg ) as $ext )
+                    if ( !( $parent_file = $this->css->is_file_ok( $this->css->get_parent_source( 'screenshot.' . $ext ) ) ) ) 
+                        continue;
                 if ( $parent_file ):
                     $parent_file = $this->fspath( $parent_file );
                     break;
                 endif;
             endforeach;
+            if ( !$parent_file ):
+                $this->debug( 'No screenshot found.', __FUNCTION__, __CLASS__ );
+                return;
+            endif;
         else:
             $parent_file = $this->fspath( $this->css->is_file_ok( $this->css->get_parent_source( $file . '.' . $ext ) ) );
         endif;
+        
         // get child theme + file + ext ( passing empty string and full child path to theme_basename )
         $child_file = $this->css->get_child_target( $file . '.' . $ext );
         // return true if file already exists
@@ -1168,7 +1180,8 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
             $this->debug( 'Filesystem copy successful', __FUNCTION__, __CLASS__ );
             return TRUE;
         endif;
-        $this->errors[] = __( 'Could not copy file:' . $parent_file, 'child-theme-configurator' );
+        
+        $this->errors[] = '13:' . $parent_file; //__( 'Could not copy file:' . $parent_file, 'child-theme-configurator' );
     }
     
     function delete_child_file( $file, $ext = 'php' ) {
@@ -1181,11 +1194,14 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
         $file = ( 'img' == $ext ? $file : $file . '.' . $ext );
         if ( $child_file  = $this->css->is_file_ok( $this->css->get_child_target( $file ), 'write' ) ):
             if ( $wp_filesystem->exists( $this->fspath( $child_file ) ) ):
+                
                 if ( $wp_filesystem->delete( $this->fspath( $child_file ) ) ):
                     return TRUE;
                 else:
-                    $this->errors[] = __( 'Could not delete ' . $ext . ' file.', 'child-theme-configurator' );
+                
+                    $this->errors[] = '14:' . $ext; //__( 'Could not delete ' . $ext . ' file.', 'child-theme-configurator' );
                     $this->debug( 'Could not delete ' . $ext . ' file', __FUNCTION__, __CLASS__ );
+        
                 endif;
             endif;
         endif;
@@ -1315,10 +1331,10 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
         if ( $this->fs ): // filesystem access
             if ( is_writable( $file ) ) return;
             global $wp_filesystem;
-            if ( $file && $wp_filesystem->chmod( $this->fspath( $file ), 0666 ) ) return;
+            if ( $file && $wp_filesystem->chmod( $this->fspath( $file ), 0666 ) ) 
+                return;
         endif;
-        $this->errors[] = __( 'Could not set write permissions.', 'child-theme-configurator' );
-        add_action( 'chld_thm_cfg_admin_notices', array( $this, 'writable_notice' ) );     
+        $this->errors[] = 28; //__( 'Could not set write permissions.', 'child-theme-configurator' );
         return FALSE;
     }
     
@@ -1341,10 +1357,10 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
             $this->debug( 'Verifying child dir... ', __FUNCTION__, __CLASS__ );
             if ( $this->verify_child_dir( is_dir( $file ) ? $newfile : dirname( $newfile ) ) ):
                 if ( is_file( $file ) && !@$wp_filesystem->copy( $childpath, $newpath ) ):
-                    $errors[] = 'could not copy ' . $newpath;
+                    $this->errors[] = '15:' . $newpath; //'could not copy ' . $newpath;
                 endif;
             else:
-                $errors[] = 'invalid dir: ' . $newfile;
+                $this->errors[] = '16:' . $newfile; //'invalid dir: ' . $newfile;
             endif;
         endforeach;
     }
@@ -1380,10 +1396,10 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
                 $this->debug( 'Verifying child dir... ' . $file, __FUNCTION__, __CLASS__ );
                 if ( $this->verify_child_dir( is_dir( $file ) ? $newfile : dirname( $newfile ) ) ):
                     if ( is_file( $file ) && !$wp_filesystem->copy( $childpath, $newpath ) ):
-                        $errors[] = 'could not copy ' . $newpath;
+                        $errors[] = '15:' . $newpath; //'could not copy ' . $newpath;
                     endif;
                 else:
-                    $errors[] = 'invalid dir: ' . $newfile;
+                    $errors[] = '16:' . $newfile; //'invalid dir: ' . $newfile;
                 endif;
             else:
                 $wp_filesystem->chmod( $this->fspath( $file ) );
@@ -1411,15 +1427,14 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
                     endif;
                 endforeach;
                 if ( $deletedfiles != count( $oldfiles ) ):
-                    $errors[] = 'deleted: ' . $deletedfiles . ' != ' . count( $oldfiles ) . ' files';
+                    $errors[] = '17:' . $deletedfiles . ':' . count( $oldfiles ); //'deleted: ' . $deletedfiles . ' != ' . count( $oldfiles ) . ' files';
                 endif;
             else:
-                $errors[] = 'newfiles != files';
+                $errors[] = 18; //'newfiles != files';
             endif;
         endif;
         if ( count( $errors ) ):
-            $this->errors[] = __( 'There were errors while resetting permissions.', 'child-theme-configurator' ) ;
-            add_action( 'chld_thm_cfg_admin_notices', array( $this, 'writable_notice' ) );     
+            $this->errors[] = 19; //__( 'There were errors while resetting permissions.', 'child-theme-configurator' ) ;
         endif;
     }
     
@@ -1433,10 +1448,11 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
             'test_form' => FALSE,
             'mimes' => ( is_array( $mimes ) ? $mimes : NULL )
         );
-        if ( ! function_exists( 'wp_handle_upload' ) ) require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        if ( ! function_exists( 'wp_handle_upload' ) ) 
+            require_once( ABSPATH . 'wp-admin/includes/file.php' );
         $movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
         if ( isset( $movefile[ 'error' ] ) ):
-            $this->errors[] = $movefile[ 'error' ];
+            $this->errors[] = '27:' . $movefile[ 'error' ];
             return FALSE;
         endif;
         $_POST[ 'movefile' ] = $this->uploads_basename( $movefile[ 'file' ] );        
@@ -1492,7 +1508,7 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
             $this->debug( 'Could not verify child dir', __FUNCTION__ );
         endif;
         
-        $this->errors[] = __( 'Could not upload file.', 'child-theme-configurator' );        
+        $this->errors[] = 20; //__( 'Could not upload file.', 'child-theme-configurator' );        
     }
     
     /**
@@ -1518,7 +1534,7 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
                 return FALSE;
             endif;
         else:
-            $this->errors = __( 'Invalid theme root directory.', 'child-theme-configurator' );
+            $this->errors[] = 21; //__( 'Invalid theme root directory.', 'child-theme-configurator' );
         endif;
     }
     
@@ -1530,7 +1546,7 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
             $uploads = wp_upload_dir();
             $tmpdir = $uploads[ 'basedir' ];
             if ( !is_writable( $tmpdir ) ):
-                $this->errors[] = __( 'No writable temp directory.', 'child-theme-configurator' );
+                $this->errors[] = 22; //__( 'No writable temp directory.', 'child-theme-configurator' );
                 return FALSE;
             endif;
         endif;
@@ -1560,7 +1576,7 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
             unlink( $file );
             die();
         else:
-            $this->errors[] = __( 'PclZip returned zero bytes.', 'child-theme-configurator' );
+            $this->errors[] = 23; //__( 'PclZip returned zero bytes.', 'child-theme-configurator' );
         endif;
     }
     /*
@@ -1568,7 +1584,7 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
      */
     function verify_creds( $args = array() ) {
         $this->fs_prompt = $this->fs = FALSE;
-        //fs prompt does not support arrays as post data - serialize arrays
+        // fs prompt does not support arrays as post data - serialize arrays
         $this->serialize_postarrays();
         // generate callback url
         $ctcpage = apply_filters( 'chld_thm_cfg_admin_page', CHLD_THM_CFG_MENU );
@@ -1590,10 +1606,10 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
             WP_Filesystem();
         endif;
         // if form was generated, store it
-        $this->fs_prompt = ob_get_contents();
+        $this->fs_prompt = ob_get_clean();
+        $this->debug( 'FS: ' . $this->fs . ' PROMPT: ' . $this->fs_prompt, __FUNCTION__, __CLASS__ );
         // now we can read/write if fs is TRUE otherwise fs_prompt will contain form
-        ob_end_clean();
-         //fs prompt does not support arrays as post data - unserialize arrays
+        // fs prompt does not support arrays as post data - unserialize arrays
         $this->unserialize_postarrays();
    }
     
@@ -2067,21 +2083,27 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
         if ( isset( $analysis->{ $baseline } ) ):
             if ( isset( $analysis->{ $baseline }->deps ) ):
                 foreach ( $analysis->{ $baseline }->deps[ 0 ] as $deparray ):
+                    // avoid endless loop from renamed parent link (e.g., WP Rocket)
+                    if ( 'chld_thm_cfg_parent' == $deparray[ 0 ] )
+                        continue;
                     if ( !in_array( $deparray[ 0 ], $unregs ) ):
                           $this->css->parnt_deps[] = $deparray[ 0 ];
                     endif;
-                    if ( !preg_match( "/^style([\-\.]min)?\.css$/", $deparray[ 1 ] ) ):
+                    if ( !preg_match( "/^style.*?\.css$/", $deparray[ 1 ] ) ):
                         // bootstrap wastes memory among other resources
                         //if ( !preg_match( "/bootstrap/i", $deparray[ 0 ] ) && !preg_match( "/bootstrap/i", $deparray[ 1 ] ) )
                             $this->css->addl_css[] = sanitize_text_field( $deparray[ 1 ] );
                     endif;
                 endforeach;
                 foreach ( $analysis->{ $baseline }->deps[ 1 ] as $deparray ):
+                    // avoid endless loop from renamed child link
+                    if ( 'chld_thm_cfg_child' == $deparray[ 0 ] )
+                        continue;
                     if ( !in_array( $deparray[ 0 ], $unregs ) ):
                         $this->css->child_deps[] = $deparray[ 0 ];
                     endif;
                     if ( 'separate' == $this->get( 'handling' ) || !empty( $analysis->{ $baseline }->signals->ctc_child_loaded ) ):
-                        if ( !preg_match( "/^style([\-\.]min)?\.css$/", $deparray[ 1 ] ) ):
+                        if ( !preg_match( "/^style.*?\.css$/", $deparray[ 1 ] ) ):
                             //if ( !preg_match( "/bootstrap/", $deparray[ 0 ] ) && !preg_match( "/bootstrap/", $deparray[ 1 ] ) )
                                 $this->css->addl_css[] = sanitize_text_field( $deparray[ 1 ] );
                         endif;

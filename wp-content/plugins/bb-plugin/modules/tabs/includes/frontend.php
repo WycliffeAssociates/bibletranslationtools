@@ -16,7 +16,7 @@
 		<div class="fl-tabs-panel"<?php if ( ! empty( $settings->id ) ) { echo ' id="' . sanitize_html_class( $settings->id ) . '-' . $i . '"';} ?>>
 			<div class="fl-tabs-label fl-tabs-panel-label<?php if ( 0 == $i ) { echo ' fl-tab-active';} ?>" data-index="<?php echo $i; ?>" tabindex="0">
 				<span><?php echo $settings->items[ $i ]->label; ?></span>
-				<i class="fa<?php if ( $i > 0 ) { echo ' fa-plus';} ?>"></i>
+				<i class="fas<?php if ( $i > 0 ) { echo ' fa-plus';} ?>"></i>
 			</div>
 			<div class="fl-tabs-panel-content fl-clearfix<?php if ( 0 == $i ) { echo ' fl-tab-active';} ?>" id="<?php echo 'fl-tabs-' . $module->node . '-panel-' . $i; ?>" data-index="<?php echo $i; ?>"<?php if ( $i > 0 ) { echo ' aria-hidden="true"';} ?> aria-labelledby="<?php echo 'fl-tabs-' . $module->node . '-label-' . $i; ?>" role="tabpanel" aria-live="polite">
 				<?php echo wpautop( $wp_embed->autoembed( $settings->items[ $i ]->content ) ); ?>

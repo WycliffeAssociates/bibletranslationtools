@@ -57,7 +57,7 @@ final class FLBuilderUserTemplates {
 	 */
 	static public function register_user_access_settings() {
 		FLBuilderUserAccess::register_setting( 'builder_admin', array(
-			'default'     => false,
+			'default'     => array( 'administrator' ),
 			'group'       => __( 'Admin', 'fl-builder' ),
 			'label'       => __( 'Builder Admin', 'fl-builder' ),
 			'description' => __( 'The selected roles will be able to access the builder admin menu.', 'fl-builder' ),
@@ -197,6 +197,7 @@ final class FLBuilderUserTemplates {
 
 			$saved_layouts = FLBuilderModel::get_user_templates( 'layout' );
 			$saved_rows    = FLBuilderModel::get_user_templates( 'row' );
+			$saved_cols    = FLBuilderModel::get_user_templates( 'column' );
 			$saved_modules = FLBuilderModel::get_user_templates( 'module' );
 
 			// Saved modules view
@@ -233,10 +234,49 @@ final class FLBuilderUserTemplates {
 				}
 			}
 
+			$is_col_template = FLBuilderModel::is_post_user_template( 'column' );
+
+			if ( ! $is_col_template ) {
+
+				// Saved columns view
+				$data['tabs']['rows']['views'][] = array(
+					'type' => 'separator',
+				);
+
+				$data['tabs']['rows']['views'][] = array(
+					'handle' => 'savedColumns',
+					'name' => __( 'Saved Columns', 'fl-builder' ),
+					'templateName' => 'fl-content-panel-saved-columns',
+					'query' => array(
+						'kind' => 'template',
+						'type' => 'user',
+						'content' => 'column',
+						'categorized' => true,
+					),
+				);
+			}
+
+			if ( count( $saved_cols['categorized'] ) > 1 ) {
+				foreach ( $saved_cols['categorized'] as $handle => $category ) {
+					$data['tabs']['columns']['views'][] = array(
+						'handle' => 'user-' . $handle,
+						'name' => $category['name'],
+						'templateName' => 'fl-content-panel-saved-columns',
+						'isSubItem' => true,
+						'query' => array(
+							'kind' => 'template',
+							'type' => 'user',
+							'content' => 'column',
+							'category' => $handle,
+						),
+					);
+				}
+			}
+
 			$is_row_template = FLBuilderModel::is_post_user_template( 'row' );
 			$is_module_template = FLBuilderModel::is_post_user_template( 'module' );
 
-			if ( ! $is_row_template && ! $is_module_template ) {
+			if ( ! $is_row_template && ! $is_col_template && ! $is_module_template ) {
 
 				// Saved rows view
 				$data['tabs']['rows']['views'][] = array(
@@ -306,7 +346,7 @@ final class FLBuilderUserTemplates {
 						);
 					}
 				}
-			}// End if().
+			}
 
 			// Saved tab view
 			$data['tabs']['saved'] = array(
@@ -324,7 +364,7 @@ final class FLBuilderUserTemplates {
 					),
 				),
 			);
-		}// End if().
+		}
 
 		return $data;
 	}
@@ -347,6 +387,13 @@ final class FLBuilderUserTemplates {
 		$row_templates = $rows['templates'];
 
 		foreach ( $row_templates as $template ) {
+			$data['template'][] = $template;
+		}
+
+		$cols = FLBuilderModel::get_user_templates( 'column' );
+		$col_templates = $cols['templates'];
+
+		foreach ( $col_templates as $template ) {
 			$data['template'][] = $template;
 		}
 
@@ -399,7 +446,7 @@ final class FLBuilderUserTemplates {
 			if ( $global ) {
 				$config['badges']['global'] = _x( 'Global', 'Indicator for global node templates.', 'fl-builder' );
 			}
-			if ( ( $is_row || $is_module ) && ! $global && ! FLBuilderModel::is_post_node_template() && FLBuilderModel::node_templates_enabled() ) {
+			if ( ( $is_row || $is_col || $is_module ) && ! $global && ! FLBuilderModel::is_post_node_template() && FLBuilderModel::node_templates_enabled() ) {
 				$config['buttons'][] = 'save-as';
 			}
 		}
@@ -441,6 +488,15 @@ final class FLBuilderUserTemplates {
 		if ( FLBuilderModel::is_post_user_template( 'module' ) ) {
 			FLBuilder::render_modules();
 			return false;
+		} elseif ( FLBuilderModel::is_post_user_template( 'column' ) ) {
+
+			$root_node = FLBuilderModel::get_node_template_root( 'column' );
+
+			// Renders the column root node.
+			if ( $root_node ) {
+				FLBuilder::render_column( $root_node );
+				return false;
+			}
 		}
 
 		return $render;
@@ -488,6 +544,10 @@ final class FLBuilderUserTemplates {
 		if ( $global && $active ) {
 			$attrs['data-template'] = $col->template_id;
 			$attrs['data-template-node'] = $col->template_node_id;
+
+			if ( isset( $col->template_root_node ) ) {
+				$attrs['data-template-url'] = FLBuilderModel::get_node_template_edit_url( $col->template_id );
+			}
 		}
 
 		return $attrs;

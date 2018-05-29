@@ -4,6 +4,9 @@
 body.rtl .fl-module-post-carousel .bx-viewport {
 	direction: ltr;
 }
+body.rtl .fl-post-carousel-post {
+	direction: rtl;
+}
 .fl-module-post-carousel .bx-wrapper {
 	max-width: 100% !important;
 	margin: 0 auto 40px;
@@ -211,10 +214,10 @@ body .fl-post-carousel-grid .fl-post-carousel-meta {
 .fl-post-carousel-gallery .fl-post-carousel-text,
 .fl-post-carousel-gallery .fl-post-carousel-link:hover .fl-post-carousel-text,
 .fl-post-carousel-gallery .fl-post-carousel-post.fl-post-no-thumb .fl-post-carousel-text{
-	-webkit-transform: translate3d(-50%,-50%,0); 
-	   -moz-transform: translate3d(-50%,-50%,0); 
-	    -ms-transform: translate(-50%,-50%); 
-			transform: translate3d(-50%,-50%,0); 
+	-webkit-transform: translate3d(-50%,-50%,0);
+	   -moz-transform: translate3d(-50%,-50%,0);
+	    -ms-transform: translate(-50%,-50%);
+			transform: translate3d(-50%,-50%,0);
 }
 
 /* Common Styles */

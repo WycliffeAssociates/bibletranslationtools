@@ -14,8 +14,7 @@ $pages = array(
 // WooCommerce Pages
 if ( isset( $pages[ $settings->layout ] ) ) {
 	echo $pages[ $settings->layout ];
-} // End if().
-elseif ( 'product' == $settings->layout ) {
+} elseif ( 'product' == $settings->layout ) {
 	add_filter( 'post_class', array( $module, 'single_product_post_class' ) );
 	echo '[product id="' . $settings->product_id . '" columns="1"]';
 	remove_filter( 'post_class', array( $module, 'single_product_post_class' ) );
@@ -37,8 +36,7 @@ elseif ( 'products' == $settings->layout ) {
 	// Product IDs
 	if ( 'ids' == $settings->products_source ) {
 		echo '[products ids="' . $settings->product_ids . '" columns="' . $settings->columns . '" orderby="' . $settings->orderby . '" order="' . $settings->order . '"]';
-	} // End if().
-	elseif ( 'category' == $settings->products_source ) {
+	} elseif ( 'category' == $settings->products_source ) {
 		echo '[product_category category="' . $settings->category_slug . '" per_page="' . $settings->num_products . '" columns="' . $settings->columns . '" orderby="' . $settings->orderby . '" order="' . $settings->order . '"]';
 	} // Recent Products
 	elseif ( 'recent' == $settings->products_source ) {

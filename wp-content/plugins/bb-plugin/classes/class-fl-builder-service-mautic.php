@@ -74,7 +74,7 @@ final class FLBuilderServiceMautic extends FLBuilderService {
 		}
 		// Make sure we have a username
 		if ( ! isset( $fields['api_username'] ) || empty( $fields['api_username'] ) ) {
-			$response['error'] = __( 'Error: You must provide you Mautic app username.', 'fl-builder' );
+			$response['error'] = __( 'Error: You must provide your Mautic app username.', 'fl-builder' );
 		}
 		// Make sure we have password
 		if ( ! isset( $fields['api_password'] ) || empty( $fields['api_password'] ) ) {
@@ -140,7 +140,7 @@ final class FLBuilderServiceMautic extends FLBuilderService {
 			'class'         => 'fl-builder-service-connect-input',
 			'type'          => 'text',
 			'label'         => __( 'Mautic Username', 'fl-builder' ),
-			'help'          => __( 'Username from your Mautic application. Make sure it has `Full system access`. Best practise would be to set up a new user for each external site.', 'fl-builder' ),
+			'help'          => __( 'Username from your Mautic application. Make sure it has `Full system access`. Best practice would be to set up a new user for each external site.', 'fl-builder' ),
 			'preview'       => array(
 				'type'          => 'none',
 			),

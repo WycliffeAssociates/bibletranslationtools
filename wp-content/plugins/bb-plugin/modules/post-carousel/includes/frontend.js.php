@@ -34,6 +34,7 @@
 			<?php endif; ?>
 				pause: <?php echo $autoplay ?>,
 				speed: <?php echo $speed ?>,
+				autoDirection: '<?php echo $settings->direction ?>',
 			<?php if ( isset( $settings->carousel_loop ) ) : ?>
 				infiniteLoop: <?php echo $settings->carousel_loop ?>,
 			<?php else : ?>

@@ -46,7 +46,7 @@
 			<label for="fl-terms-checkbox-<?php echo $id; ?>">
 				<input type="checkbox" class="checkbox-inline" id="fl-terms-checkbox-<?php echo $id; ?>" name="fl-terms-checkbox" value="1" /> <?php echo $settings->terms_checkbox_text; ?>
 			</label>
-			<span class="fl-contact-error"><?php _e( 'Terms and Conditions checkbox is required.', 'fl-builder' );?></span>
+			<span class="fl-contact-error"><?php _e( 'You must accept the Terms and Conditions.', 'fl-builder' );?></span>
 		</div>
 	<?php endif; ?>
 

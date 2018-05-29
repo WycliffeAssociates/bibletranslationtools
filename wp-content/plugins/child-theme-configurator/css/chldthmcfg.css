@@ -638,11 +638,13 @@ h3.theme-name {
     -webkit-border-radius: 3px;
     border-radius: 3px;
 }
-/* fixed position debug output */
+/* debug output - commented fixed position v.2.3.0 */
 #ctc_main textarea#ctc_debug_box {
+    /*
     position: fixed;
     bottom: 0;
     z-index: 10000;
+    */
     width: 82%;
     height: 170px;
     font-size:11px;

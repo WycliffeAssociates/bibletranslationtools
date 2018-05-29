@@ -69,6 +69,10 @@ FLBuilder::register_module('FLIconModule', array(
 						'label'         => '',
 						'media_buttons' => false,
 						'connections'   => array( 'string' ),
+						'preview'		=> array(
+							'type'			=> 'text',
+							'selector'		=> '.fl-icon-text',
+						),
 					),
 				),
 			),

@@ -107,6 +107,7 @@ FLBuilder::register_module('FLAudioModule', array(
 					'link'       => array(
 						'type'          => 'text',
 						'label'         => __( 'Link', 'fl-builder' ),
+						'connections' => array( 'url' ),
 					),
 
 					/**

@@ -3,8 +3,9 @@ Contributors: lilaeamedia
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8QE5YJ8WE96AJ
 Tags: child, theme, child theme, child themes, custom styles, customize styles, customize theme, css, responsive, css editor, child theme editor, child theme generator, child theme creator, style, stylesheet, customizer, childtheme, childthemes
 Requires at least: 4.0
+Requires PHP: 5.6.36
 Tested up to: 4.9
-Stable tag: 2.2.9
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -287,41 +288,36 @@ https://www.youtube.com/watch?v=iBiiAgsK4G4
 7. Files tab
 
 == Changelog ==
-= 2.2.9 =
-Modified preview to include all registered stylesheets in queue
-Disable Autoptimize in preview
-= 2.2.8.1 =
-Added support for General Sibling Selector (~)
-= 2.2.8 =
+
+= 2.3.0 =
+* Added ability to rename @media query 
+* Added height/Width for theme images on Files Tab
+* Added test for RTL in Analyzer
+* Added test cases for WP Rocket and AutOptimize plugins in Analyzer
+* Added redirect for error condition after configurator POST
+* Clarified descriptions for certain Analyzer signal conditions
+* Set priority of child theme css hook to force load after parent
+* Remove pruned selectors from menu
+
+= 2.2.x =
+* Modified preview to include all registered stylesheets in queue
+* Disable Autoptimize in preview
+* Added support for General Sibling Selector (~)
 * Fixed CSS class loading FALSE for dictionaries on fresh install
 * Fixed using wrong nonce for plugin mode preview (Pro)
 * Fixed error thrown when packing negative integers (Pro)
-
-= 2.2.7 =
 * Disable Pagespeed in preview
-
-= 2.2.6 =
 * Fixed Preview and Analyzer for some child theme configurations by removing nonce requirement 
 * Fixed header not being repaired on first pass with "Repair Header" selected
 * Fixed styles being pruned before new "Raw CSS" styles are added
-
-= 2.2.4.1 =
 * Fix bug in parent dependencies
-
-= 2.2.4 =
 * Fix bug where stylesheet dependency arrays are not being initialized
 * Add action hook to extend copy theme settings feature
 * Display non active tabs, enable upgrade/register before config data is created
-
-= 2.2.3 =
 * Show raw results after Analysis to help debugging
 * Fix javascript not escaping quotes in input fields
 * Restored original ajax preview and added fallback method for cross-domain preview
-
-= 2.2.1 =
 * Fix in javascript affecting Pro users
-
-= 2.2.0 =
 * Cross domain Parse error
 * Showing "reconfigure" message on new install
 * Manual upgrade Pro from plugin
@@ -331,10 +327,8 @@ Added support for General Sibling Selector (~)
 * Identify and handle imported stylesheets, convert to links
 * Fixes related to testing if CTC Pro is installed
 
-= 2.1.1 =
+= 2.1.x =
 * change packer class to use standard < 5.4 array syntax
-
-= 2.1.0 =
 * Loading dictionaries on demand
 * Reversed key/value dictionary structure for huge memory improvement
 * Added packer class to flatten multidim arrays for huge memory improvement
@@ -344,36 +338,24 @@ Added support for General Sibling Selector (~)
 * Move html output to separate view includes
 * Move theme mod routines to own functions
 
-= 2.0.6 =
+= 2.0.x =
 * Fix: preview not parsing parent styles correctly when minimized.
 * Fix: cast argument to array in sort functions.
 * Updated Child Theme Configurator language template.
-
-= 2.0.5 =
 * Updated child theme preview class to use is_theme_active and other methods to eliminate conflicts with Jetpack and any other plugin that references the customize manager.
-
-= 2.0.4 =
 * Updated child theme preview class to send origin headers and run customize_preview_init action along with some other actions.
-
-= 2.0.3 =
 * Added logic conditions in preview class to help prevent Analyzer from failing in some cases
 * Enabled theme zip file export for any selected theme independent of theme currently loaded in Configurator
 * Fixed bugs present with servers not running Apache with SuExec
 * Fixed issue with Windows servers that do not return C: with filesystem paths
-
-= 2.0.2 =
 * Automatically set priority of enqueue hook based on value from parent theme
 * Made file scan routine more efficient
 * Support for background-image as base64 data
 * Tweaked analyzer signals 
-
-= 2.0.1 =
 * Updated language template and de_DE files
 * Fix: case where child stylesheet link was not being added resulting in "This child theme does not load a Configurator stylesheet" notice
 * Fix: fatal error in debug mode
 * Minor bug fixes
-
-= 2.0.0 =
 * New Theme Analyzer automatically checks for issues and determines correct settings
 * Step by step setup of Parent/Child settings
 * Simplified parent stylesheet handling options
@@ -383,117 +365,73 @@ Added support for General Sibling Selector (~)
 * Parses parent theme files and only displays templates that can be be overridden by child themes
 * Numerous minor bug fixes 
 
-= 1.7.9.1 =
+= 1.7.x =
 * Fix: regression bug in 1.7.9 causing new property menu to fail
-
-= 1.7.9 =
 * Fix: use nonce when retrieving front-end html to parse default additional stylesheets
 * Refactored classes to make Child Theme Configurator more lightweight on front end
-
-= 1.7.8 =
 * Fix: disable autoload on configuration data options
 * Fix: normalize media query and add to menu when added via raw css
-
-= 1.7.7 =
 * Fix: Margin and Padding shorthand generated incorrectly.
-
-= 1.7.6.1 =
 * Addressed case where parent or child theme is in subdirectory.
 * Minimized admin CSS.
-
-= 1.7.6 =
 * Sanitize child theme slug
 * Remove cascade load order comments from generated CSS
 * Set admin background to prevent theme override
-
-= 1.7.5.1 =
 * Refactored background normalization function to better follow CSS specification.
 * Check child theme exists function case-insensitive.
 * Changed chldthmcfg.init() call to fire on load instead of .ready() to prevent JS conflicts
-
-= 1.7.5 =
 * Uses spectrum color picker to support transparency and named colors.
 * Refactored entire system to support fallback values for any property.
 * Fix path when duplicating child theme on first run
 * New Feature: "delete child values" button - easily revert custom styles in child theme stylesheet
-
-= 1.7.4.2 =
 * Will not write child theme stylesheet if error detected in functions.php 
-
-= 1.7.4.1 =
 * Fixed minified JS 
-
-= 1.7.4 =
 * Restored multisite admin menu link under Tools by popular demand
 * Automatically Network enables new child theme on creation
 * Fix for FTP notice - now uses PHP_OS constant to detect win vs nix
 * Added duplicate child theme feature 
-
-= 1.7.3 =
-* 1.7.3.1 added dismiss option to warnings by popular demand.
+* added dismiss option to warnings by popular demand.
 * Changed @import tab to "Web Fonts." @import statements are automatically converted to enqueued external links.
 * Added "Enqueue both parent and child stylesheets" option to enable child theme overrides without using @import.
 * Added checks for hard-coded link tags in header template to help resolve incorrect stylesheet load order.
 * Fix: "Enqueue child stylesheet" now passes correct value.
-
-= 1.7.2.1 = 
 * Fix: hide called before iris init
 * Fix: @import not being written on rebuild/configure
 * Fix: min height on property/value panel
 * Only prune child theme selectors on rename
-
-= 1.7.1 = 
 * Removed conflicting wistia javascript link
-
-= 1.7.0 =
 * New Feature: Enqueue child theme stylesheet option for themes that do not load it.
 * New Feature: Child Theme and Author website, description and tag fields.
 * Fix: Redesigned UI Javascript using jQuery objects for better browser memory management.
 * Fix: Child Theme Stylesheet version is timestamped to force browser reload after changes.
 
-= 1.6.5.2 =
+= 1.6.x =
 * Fix: Empty functions file created causing inserted markers to be output to browser.
 * Fix: check for closed PHP tag in functions file prior to inserting markers
-
-= 1.6.5.1 =
 * Fix: undefined constant LILAEAMEDIA_URL
 * Fix: logic to determine whether to display config notice
-
-= 1.6.5 =
 * Fix: incorrect path generation and validation on Windows servers
 * Added error handling and notification to prevent jQuery conflicts and out of memory conditions
 * Fix: removed max-height on property/value overlay
 * Added debug option
-
-= 1.6.4 = 
 * New Feature: Copy selector button for Raw CSS textarea on Query/Selector tab.
 * Fix: Menus rendering incorrectly for RTL locales
 * Fix: Border-top etc. not being written correctly to stylesheet
 * Fix: Refactored ajax semaphore logic and flow
-
-= 1.6.3 = 
 * New Feature: Better child theme handling for multisite. Moved interface to Themes menu and check for network enabled.
 * Fix: Restrict child theme configurator access to install_themes capability
 * Fix: Preview links to Themes admin if not network enabled to prevent 'Cheatin, uh?' error.
 * Fix: only users with "install_themes" capability have access to Child Theme Configurator. This resolves permission issues with both multisite and single site installs. **MULTISITE USERS:** The Admin HAS MOVED to Network Admin > Themes > Child Themes for better handling for multisite (network) installs.
-
-= 1.6.2.1 = 
 * Fix: Regular expression introduced in version 1.6.2 parses selectors incorrectly.
-
-= 1.6.2 =
 * Fix: replaced wp_normalize_path with class method to support legacy WP versions
 * Fix: support for multiple layered background images
 * Fix: background:none being parsed into gradient origin parameter
 * Fix: support for data URIs
 * Fix: support for *= and ^= notation in selectors 
-
-= 1.6.1 = 
 * Fix: add check if theme uses hard-wired stylesheet link and alert to use @import instead of link option
 * Fix: conflicts with using jQuery UI from CDN - using local version of 1.11.2 Widget/Menu/Selectmenu instead
 * Fix: using wp-color-picker handle instead of iris as dependency to make sure wpColorPicker() methods are loaded
 * Fix: copy parent theme widgets logic is different when child theme is active
-
-= 1.6.0 = 
 * New Feature: option to load parent stylesheet using wp_enqueue_style (link), @import or none. 
 * Thanks to cmwwebfx and Shapeshifter3 for pushing me on this 
 * New Feature: automatically-generated slug and name
@@ -504,75 +442,47 @@ Added support for General Sibling Selector (~)
 * Fix: parent CSS preview to correctly display all parsed parent stylesheets in sequence
 * Fix: Refactored throughout for maintainability
 
-= 1.5.4 =
+= 1.5.x =
 * New Feature: Load imported stylesheets into the CTC admin so web fonts can be previewed.
 * Set preview swatch to z-index -1 to prevent it from covering up the controls
 * Spread config data across multiple option records to prevent out of memory errors with large stylesheets.
 * Do not automatically select Bootstrap CSS files as additional stylesheets to (greatly) reduce overhead.
 * Add jQuery UI styles that are no longer being loaded by default in the WP admin (autoselect menus).
-
-= 1.5.3 =
 * Fixed a bug in the way zero values are handled that was breaking css output in certain situations
 * Added regex filter for non-printable (e.g., null) characters in input strings
-
-= 1.5.2.2 =
 * Fixed a bug introduced in v1.5.2(.1) that copied all of the parent styles to the child theme stylesheet. This should only be an issue for 'background-image' styles that reference images in the parent theme and do not have child theme overrides.
 * Rolled back changes to the javascript controller that introduced a number of type errors.
 * Tweaked preview ajax call to handle ssl.
-
-= 1.5.2.1 =
 * Automatically set additional stylesheets to parse based on parent theme links in head.
 * Render parent CSS including additional stylesheets 
-
-= 1.5.1 =
 * Added copy option to Parent/Child tab to assign menu locations, sidebars/widgets, custom header, background, and other options to new Child Themes. 
-
-= 1.5.0 =
 * Refactored CTC to use the WP_Filesystem API. 
 * Non suExec configurations will now require user credentials to add, remove or update Child Theme files. 
 * Added the ability for you to make the files writable while editing and then make them read-only when you are done.
 * You can also set your credentials in wp-config.php: http://codex.wordpress.org/Editing_wp-config.php#WordPress_Upgrade_Constants
 
-= 1.4.8 =
+= 1.4.x =
 * Removed backreference in main CSS parser regex due to high memory usage.
-
-= 1.4.7 =
 * Fixed uninitialized variable in files UI.
-
-= 1.4.6 =
 * Feature: export child themes as zip archive
 * Added transform to list of vendor properties
 * Bug fixed: parser not loading multiple instances of same @media rulesets
 * Refactored uploader to use wp core functions for compatibility and security
 * Increased CHLD_THM_CFG_MAX_RECURSE_LOOPS to 1000 to accommodate complex parent frameworks
-
-= 1.4.5.2 = 
 * Fix: javascript bug
-
-= 1.4.5.1 = 
 * Fix: regression bug - sanitizing broke raw input selectors
-
-= 1.4.5 = 
 * Fix: escape quotes in text inputs. This has bugged me for a while now.
 * Fix: Escape backslash for octal content values. Thanks Laurent for reporting this.
 * Fix: Normalize colors to lowercase and short form when possible to prevent duplicate entries in the data
-
-= 1.4.4 = 
 * Refactored the way CTC caches updates and returns them to the UI controller to reduce memory consumption. 
 * Prevent out of memory fatals when generating new child themes.
 * Changed "Scan Parent for Additional Stylesheets" to individual checkbox options for each file with a toggle to show/hide in the Parent/Child tab.
 * Added automatic update of form when Parent Theme is changed.
 * Pre-populate Parent/Child form when parent slug is passed to CTC options.
-
-= 1.4.3 = 
 * updated parser to match selectors containing parentheses and empty media rulesets
-
-= 1.4.2 =
 * Tweaked the Files tab options and added check for DISALLOW_FILE_EDIT
 * Removed automatic @import rules for additional stylesheets that are loaded.
 * Fixed bug caused by new jQuery .css function handling of empty css values (preview swatch).
-
-= 1.4.0 =
 * New Feature: Theme Files tab: 
 * Copy parent templates to child themes to be edited using the Theme Editor.
 * Remove child theme templates. 
@@ -580,65 +490,35 @@ Added support for General Sibling Selector (~)
 * Remove child theme images.
 * Upload child theme screenshot.
 
-= 1.3.5 =
+= 1.3.x =
 * Fixes a bug with the way the @import data is stored that threw errors on php 5.3 and corrupted v1.3.2 @import data.
-
-= 1.3.3 =
 * New Feature: option to scan parent theme for additional stylesheets. This allows CTC to be used with themes such as "Responsive" by CyberChimps.
 * New Feature: automatically copies parent theme screenshot to child. 
-
-= 1.3.2 =
 * Fixed unquoted regex pattern in file path security check function. Thanks to buzcuz for reporting this.
-
-= 1.3.1 =
 * Updated help tab content. Added additional sanitization of source and target file paths.
-
-= 1.3.0 =
 * Changed CSS preview to retrieve directly from WordPress Admin instead of remote http GET to prevent caching issues.
 * Added loading icon for CSS preview.
 * Fixed JS type error on backup toggle.
 * Improved extensibility throughout.
 
-= 1.2.3 =
+= 1.2.x =
 * Replace PHP short tags with standard codes.
-
-= 1.2.2 = 
 * New Features: You can now rename selectors in place from the Query/Selector panel. Made stylesheet backup optional. Bugs fixed: Incorrect parsing of background position when '0', fixed type error when background image url value is removed.
-
-= 1.2.1 =
 * Bugs fixed: "star hack" properties no longer throwing js error. Important flag now works on borders and gradients.
-
-= 1.2.0 =
 * New features: Link to Query/Selector tab from specific Property/Value selector, new property focus on adding new property. Bugs fixed: clear Query/Selector inputs when loaded selector is empty, use latest min.js script.
 
-= 1.1.9 =
+= 1.1.x =
 * Added check for writability before attempting to create child theme files to avoid fatal error on servers not running suEXEC. Fixed a bug in the ctc_update_cache function that was throwing a fatal JS error when new media queries were saved via the Raw CSS input. Configurator now adds functions.php file to child theme when it does not exist.
-
-= 1.1.8 =
 * Added reorder sequence and important flag functionality. Fixed bug where multiple inputs with same selector/property combo were assigned the same id. Fixed bug in the shorthand encoding routine. 
-
-= 1.1.7 =
 * Added tutorial video to help tabs.
-
-= 1.1.6 =
 * Added call to reset_updates() before update_option() to prevent serialization errors.
-
-= 1.1.5 =
 * Query/Selector panel now defaults to 'base'
 * Fixed bug causing background-image with full urls (http://) to be parsed as gradients
 * Fixed bug causing property menu to throw error when selector has no properties
-
-= 1.1.4 =
 * Fixed sort bug in shorthand parser that was returning properties in wrong order
-
-= 1.1.3 = 
 * Fixed bug that assumed lowercase only for theme slugs. (Thanks to timk)
 * Fixed update redirect to execute on first run
-
-= 1.1.2 =
 * Small bug fix to javascript (casting number to string)
-
-= 1.1.1 =
 * Fixed major bug where inputs containing '0' were being ignored
 * Removed "no leading digits" requirement for theme slug
 * Change query sort function to keep parent order of queries without device width rules
@@ -648,8 +528,6 @@ Added support for General Sibling Selector (~)
 * Fixed duplicate "new property" bug on Query/Selector panel
 * added timestamp to backup file 
 * Added encode_shorthand function to recombine margin/padding values when all 4 sides are present
-
-= 1.1.0 =
 * Corrected parsing for certain backgrounds and gradients (e.g., supports hsla color syntax)
 * Handle empty selectors
 * Ajax load for menus and updates
@@ -660,7 +538,7 @@ Added support for General Sibling Selector (~)
 * Initial release.
 
 == Upgrade Notice ==
-2.2.8 Several bug fixes. See changelog for details.
+2.3.0 Several bug fixes and functionality improvements. See changelog for details.
  
 == Query/Selector Tab ==
 

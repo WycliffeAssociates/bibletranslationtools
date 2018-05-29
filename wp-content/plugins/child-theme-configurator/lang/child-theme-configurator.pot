@@ -1,234 +1,164 @@
-# Copyright (C) 2017 Child Theme Configurator
+# Copyright (C) 2018 Child Theme Configurator
 # This file is distributed under the same license as the Child Theme Configurator package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Child Theme Configurator 2.2.3\n"
+"Project-Id-Version: Child Theme Configurator 2.3.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/child-theme-configurator\n"
-"POT-Creation-Date: 2017-01-20 13:19:33+00:00\n"
+"POT-Creation-Date: 2018-05-23 23:45:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: includes/classes/Admin.php:395
-msgid "Zip file creation failed."
-msgstr ""
-
-#: includes/classes/Admin.php:421
-msgid "The Functions file is required and cannot be deleted."
-msgstr ""
-
-#: includes/classes/Admin.php:501
-msgid "You do not have permission to configure child themes."
-msgstr ""
-
-#: includes/classes/Admin.php:534
-msgid "%s does not exist. Please select a valid Parent Theme."
-msgstr ""
-
-#: includes/classes/Admin.php:537
-msgid "Please select a valid Parent Theme."
-msgstr ""
-
-#: includes/classes/Admin.php:542
-msgid "Please select a valid Child Theme."
-msgstr ""
-
-#: includes/classes/Admin.php:546
-msgid "Please enter a valid Child Theme directory name."
-msgstr ""
-
-#: includes/classes/Admin.php:551
-msgid ""
-"<strong>%s</strong> exists. Please enter a different Child Theme template "
-"name."
-msgstr ""
-
-#: includes/classes/Admin.php:570
-msgid "Your theme directories are not writable."
-msgstr ""
-
-#: includes/classes/Admin.php:651
-msgid "Could not upgrade child theme"
-msgstr ""
-
-#: includes/classes/Admin.php:733
-msgid "Your stylesheet is not writable."
-msgstr ""
-
-#: includes/classes/Admin.php:1317
-msgid "Could not set write permissions."
-msgstr ""
-
-#: includes/classes/Admin.php:1418
-msgid "There were errors while resetting permissions."
-msgstr ""
-
-#: includes/classes/Admin.php:1492
-msgid "Could not upload file."
-msgstr ""
-
-#: includes/classes/Admin.php:1518
-msgid "Invalid theme root directory."
-msgstr ""
-
-#: includes/classes/Admin.php:1530
-msgid "No writable temp directory."
-msgstr ""
-
-#: includes/classes/Admin.php:1560
-msgid "PclZip returned zero bytes."
-msgstr ""
-
-#. #-#-#-#-#  child-theme-configurator.pot (Child Theme Configurator 2.2.3)  #-#-#-#-#
+#. #-#-#-#-#  child-theme-configurator.pot (Child Theme Configurator 2.3.0)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: includes/classes/Core.php:94 includes/classes/Core.php:105
+#: includes/classes/Core.php:97 includes/classes/Core.php:108
 #: includes/forms/main.php:35
 msgid "Child Theme Configurator"
 msgstr ""
 
-#: includes/classes/Core.php:95 includes/classes/Core.php:106
-#: includes/classes/Core.php:117
+#: includes/classes/Core.php:98 includes/classes/Core.php:109
+#: includes/classes/Core.php:120
 msgid "Child Themes"
 msgstr ""
 
-#: includes/classes/Core.php:135
+#: includes/classes/Core.php:138
 msgid "Child Theme Configurator requires WordPress version %s or later."
 msgstr ""
 
-#: includes/classes/UI.php:35
+#: includes/classes/UI.php:36
 msgid "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 msgstr ""
 
-#: includes/classes/UI.php:98
+#: includes/classes/UI.php:116
 msgid ""
 "The Theme editor has been disabled. Template files must be edited offline."
 msgstr ""
 
-#: includes/classes/UI.php:102
+#: includes/classes/UI.php:120
 msgid "Click here to edit template files using the Theme Editor"
 msgstr ""
 
-#: includes/classes/UI.php:269
+#: includes/classes/UI.php:288
 msgid "URL/None"
 msgstr ""
 
-#: includes/classes/UI.php:270
+#: includes/classes/UI.php:289
 msgid "Origin"
 msgstr ""
 
-#: includes/classes/UI.php:271
+#: includes/classes/UI.php:290
 msgid "Color 1"
 msgstr ""
 
-#: includes/classes/UI.php:272
+#: includes/classes/UI.php:291
 msgid "Color 2"
 msgstr ""
 
-#: includes/classes/UI.php:273
+#: includes/classes/UI.php:292
 msgid "Width/None"
 msgstr ""
 
-#: includes/classes/UI.php:274
+#: includes/classes/UI.php:293
 msgid "Style"
 msgstr ""
 
-#: includes/classes/UI.php:275
+#: includes/classes/UI.php:294
 msgid "Color"
 msgstr ""
 
-#: includes/classes/UI.php:277
+#: includes/classes/UI.php:296
 msgid ""
 "Are you sure you wish to RESET? This will destroy any work you have done in "
 "the Configurator."
 msgstr ""
 
-#: includes/classes/UI.php:278
+#: includes/classes/UI.php:297
 msgid "<span style=\"font-size:10px\">!</span>"
 msgstr ""
 
-#: includes/classes/UI.php:279 includes/forms/rule-value.php:33
+#: includes/classes/UI.php:298 includes/forms/rule-value.php:33
 msgid "Selectors"
 msgstr ""
 
-#: includes/classes/UI.php:280
+#: includes/classes/UI.php:299
 msgid "Close"
 msgstr ""
 
-#: includes/classes/UI.php:281
+#: includes/classes/UI.php:300
 msgid "Edit Selector"
 msgstr ""
 
-#: includes/classes/UI.php:282
+#: includes/classes/UI.php:301
 msgid "Cancel"
 msgstr ""
 
-#: includes/classes/UI.php:283
+#: includes/classes/UI.php:302
 msgid "Rename"
 msgstr ""
 
-#: includes/classes/UI.php:284
+#: includes/classes/UI.php:303
 msgid "The stylesheet cannot be displayed."
 msgstr ""
 
-#: includes/classes/UI.php:285
+#: includes/classes/UI.php:304
 msgid "(Child Only)"
 msgstr ""
 
-#: includes/classes/UI.php:286
+#: includes/classes/UI.php:305
 msgid "Please enter a valid Child Theme."
 msgstr ""
 
-#: includes/classes/UI.php:287
+#: includes/classes/UI.php:306
 msgid "Please enter a valid Child Theme name."
 msgstr ""
 
-#: includes/classes/UI.php:288
+#: includes/classes/UI.php:307
 msgid "<strong>%s</strong> exists. Please enter a different Child Theme"
 msgstr ""
 
-#: includes/classes/UI.php:289
+#: includes/classes/UI.php:308
 msgid "The page could not be loaded correctly."
 msgstr ""
 
-#: includes/classes/UI.php:290
+#: includes/classes/UI.php:309
 msgid ""
 "Conflicting or out-of-date jQuery libraries were loaded by another plugin:"
 msgstr ""
 
-#: includes/classes/UI.php:291
+#: includes/classes/UI.php:310
 msgid "Deactivating or replacing plugins may resolve this issue."
 msgstr ""
 
-#: includes/classes/UI.php:292
+#: includes/classes/UI.php:311
 msgid "%sWhy am I seeing this?%s"
 msgstr ""
 
-#: includes/classes/UI.php:295
+#: includes/classes/UI.php:314
 msgid "No Styles Available. Check Parent/Child settings."
 msgstr ""
 
-#: includes/classes/UI.php:296
+#: includes/classes/UI.php:315
 msgid "Updating"
 msgstr ""
 
-#: includes/classes/UI.php:297
+#: includes/classes/UI.php:316
 msgid "Checking"
 msgstr ""
 
-#: includes/classes/UI.php:298
+#: includes/classes/UI.php:317
 msgid "The theme \"%s\" generated unexpected PHP debug output."
 msgstr ""
 
-#: includes/classes/UI.php:299
+#: includes/classes/UI.php:318
 msgid ""
 "The theme \"%s\" could not be analyzed because the preview did not render "
 "correctly."
 msgstr ""
 
-#: includes/classes/UI.php:300
+#: includes/classes/UI.php:319
 msgid ""
 "<p>First, verify you can <a href=\"%s\">preview your home page with the "
 "Customizer</a> and try analyzing again.</p><p>If that does not work, try "
@@ -236,42 +166,45 @@ msgid ""
 "<strong>force redirects between HTTP and HTTPS</strong>.</p>"
 msgstr ""
 
-#: includes/classes/UI.php:301
+#: includes/classes/UI.php:320
 msgid "Click to show/hide PHP debug output"
 msgstr ""
 
-#: includes/classes/UI.php:302
+#: includes/classes/UI.php:322
 msgid ""
-"<p>Please contact this Theme's author and report the items inside the box "
-"above. You may or may not be able to use this Theme as a Child Theme while "
-"these conditions exist.</p><p>It is possible that this theme has specific "
-"requirements to work correctly as a child theme. Please make sure you are "
-"using the latest version of this theme and check your theme's documentation "
-"for more information.</p>"
+"<p><strong>PLEASE NOTE:</strong></p><p><em>The analyzer reveals errors that "
+"may otherwise go undetected. Unless this is a fatal error, WordPress may "
+"appear to work correctly; however, PHP will continue to log the error until "
+"it is resolved. Please contact the author of any theme or plugin</em> "
+"<strong>mentioned above</strong> <em>and cut/paste the error from the text "
+"area.</em> <strong>Do not use a screen capture as it may cut off part of the "
+"error text.</strong> <em>Additional information about the error may also be "
+"available in the <a href=\"http://www.childthemeconfigurator.com/child-theme-"
+"faqs/\" target=\"_blank\">CTC documentation</a>.</em></p>"
 msgstr ""
 
-#: includes/classes/UI.php:303
+#: includes/classes/UI.php:323
 msgid "Do Not Activate \"%s\"! A PHP FATAL ERROR has been detected."
 msgstr ""
 
-#: includes/classes/UI.php:304
+#: includes/classes/UI.php:324
 msgid "This theme loads stylesheets after the wp_styles queue."
 msgstr ""
 
-#: includes/classes/UI.php:305
+#: includes/classes/UI.php:325
 msgid ""
 "<p>This makes it difficult for plugins to override these styles. You can try "
 "to resolve this using the  \"Repair header template\" option (Step 6, "
 "\"Additional handling options\", below).</p>"
 msgstr ""
 
-#: includes/classes/UI.php:306
+#: includes/classes/UI.php:326
 msgid ""
 "This theme loads the parent theme's <code>style.css</code> file outside the "
 "wp_styles queue."
 msgstr ""
 
-#: includes/classes/UI.php:307
+#: includes/classes/UI.php:327
 msgid ""
 "<p>This is common with older themes but requires the use of <code>@import</"
 "code>, which is no longer recommended. You can try to resolve this using the "
@@ -279,41 +212,41 @@ msgid ""
 "\", below).</p>"
 msgstr ""
 
-#: includes/classes/UI.php:308
+#: includes/classes/UI.php:328
 msgid "This child theme does not load a Configurator stylesheet."
 msgstr ""
 
-#: includes/classes/UI.php:309
+#: includes/classes/UI.php:329
 msgid ""
 "<p>If you want to customize styles using this plugin, please click "
 "\"Configure Child Theme\" again to add this to the settings.</p>"
 msgstr ""
 
-#: includes/classes/UI.php:310
+#: includes/classes/UI.php:330
 msgid ""
 "This child theme uses the parent stylesheet but does not load the parent "
 "theme's <code>style.css</code> file."
 msgstr ""
 
-#: includes/classes/UI.php:311
+#: includes/classes/UI.php:331
 msgid ""
 "<p>Please select a stylesheet handling method or check \"Ignore parent theme "
 "stylesheets\" (see step 6, below).</p>"
 msgstr ""
 
-#: includes/classes/UI.php:312
+#: includes/classes/UI.php:332
 msgid "This child theme appears to be functioning correctly."
 msgstr ""
 
-#: includes/classes/UI.php:313
+#: includes/classes/UI.php:333
 msgid "This theme appears OK to use as a Child theme."
 msgstr ""
 
-#: includes/classes/UI.php:314
+#: includes/classes/UI.php:334
 msgid "This Child Theme has not been configured for this plugin."
 msgstr ""
 
-#: includes/classes/UI.php:315
+#: includes/classes/UI.php:335
 msgid ""
 "<p>The Configurator makes significant modifications to the child theme, "
 "including stylesheet changes and additional php functions. Please consider "
@@ -321,79 +254,110 @@ msgid ""
 "original as a backup.</p>"
 msgstr ""
 
-#: includes/classes/UI.php:316
+#: includes/classes/UI.php:336
 msgid ""
 "This child theme uses <code>@import</code> to load the parent theme's "
 "<code>style.css</code> file."
 msgstr ""
 
-#: includes/classes/UI.php:317
+#: includes/classes/UI.php:337
 msgid ""
 "<p>Please consider selecting \"Use the WordPress style queue\" for the "
 "parent stylesheet handling option (see step 6, below).</p>"
 msgstr ""
 
-#: includes/classes/UI.php:318
+#: includes/classes/UI.php:338
 msgid ""
 "This theme loads additional stylesheets after the <code>style.css</code> "
 "file:"
 msgstr ""
 
-#: includes/classes/UI.php:319
+#: includes/classes/UI.php:339
 msgid ""
 "<p>Consider saving new custom styles to a \"Separate stylesheet\" (see step "
 "5, below) so that you can customize these styles.</p>"
 msgstr ""
 
-#: includes/classes/UI.php:320
+#: includes/classes/UI.php:340
 msgid ""
 "The parent theme's <code>style.css</code> file is being loaded automatically."
 msgstr ""
 
-#: includes/classes/UI.php:321
+#: includes/classes/UI.php:341
 msgid ""
 "<p>The Configurator selected \"Do not add any parent stylesheet handling\" "
 "for the \"Parent stylesheet handling\" option (see step 6, below).</p>"
 msgstr ""
 
-#: includes/classes/UI.php:322
+#: includes/classes/UI.php:342
 msgid ""
 "This theme does not require the parent theme's <code>style.css</code> file "
 "for its appearance."
 msgstr ""
 
-#: includes/classes/UI.php:323
-msgid "This Child Theme was configured with an earlier version."
-msgstr ""
-
-#: includes/classes/UI.php:324
+#: includes/classes/UI.php:343
 msgid ""
-"<p>The selected stylesheet handling method is no longer used. Please update "
-"the configuration using the \"Repair header template\" option (see step 6, "
-"\"Additional handling options\", below).</p>"
+"This Child Theme was configured to accomodate a hard-coded stylesheet link."
 msgstr ""
 
-#: includes/classes/UI.php:325
+#: includes/classes/UI.php:344
+msgid ""
+"<p>This workaround was used in earlier versions of CTC and can be eliminated "
+"by using the \"Repair header template\" option (see step 6, \"Additional "
+"handling options\", below).</p>"
+msgstr ""
+
+#: includes/classes/UI.php:345
 msgid ""
 "Click to show/hide raw analysis data. Please include contents below with any "
 "support requests."
 msgstr ""
 
-#: includes/classes/UI.php:326
+#: includes/classes/UI.php:346
 msgid ""
 "This child theme was configured using the CTC Pro \"Genesis stylesheet "
 "handling\" method."
 msgstr ""
 
-#: includes/classes/UI.php:327
+#: includes/classes/UI.php:347
 msgid ""
 "<p>This method has been replaced by the \"Separate stylesheet\" and \"Ignore "
 "Parent Theme\" options ( selected below ) for broader framework "
 "compatability.</p>"
 msgstr ""
 
-#: includes/classes/UI.php:328
+#: includes/classes/UI.php:348
 msgid "<p>%1Click Here%2 to view the theme as viewed by the Analyzer.</p>"
+msgstr ""
+
+#: includes/classes/UI.php:349
+msgid ""
+"This theme uses a RTL (right-to-left) stylesheet that is not being loaded in "
+"the child theme."
+msgstr ""
+
+#: includes/classes/UI.php:350
+msgid ""
+"Use the Web Fonts tab to add a link to the parent RTL stylesheet. See the "
+"documentation for more information.</p>"
+msgstr ""
+
+#: includes/classes/UI.php:351
+msgid "Both WP Rocket and Autoptimize plugins are enabled."
+msgstr ""
+
+#: includes/classes/UI.php:352
+msgid ""
+"The combination of these two plugins interferes with the Analysis results. "
+"Please temporarily deactivate one of them and Analyze again."
+msgstr ""
+
+#: includes/classes/UI.php:353
+msgid ""
+"<p><strong>The WordPress configuration file has been modified incorrectly.</"
+"strong> Please see <a href=\"http://www.childthemeconfigurator.com/child-"
+"theme-faqs/#constants\" target=\"_blank\">this FAQ</a> for more information."
+"</p>"
 msgstr ""
 
 #: includes/classes/Upgrade.php:60
@@ -595,7 +559,7 @@ msgstr ""
 msgid "Tutorial Videos"
 msgstr ""
 
-#: includes/forms/addl_tabs.php:8
+#: includes/forms/addl_tabs.php:7
 msgid "Upgrade"
 msgstr ""
 
@@ -613,6 +577,125 @@ msgstr ""
 
 #: includes/forms/debug-toggle.php:8
 msgid "Debug"
+msgstr ""
+
+#: includes/forms/errorstrings.php:6
+msgid "Zip file creation failed."
+msgstr ""
+
+#: includes/forms/errorstrings.php:7
+msgid "You do not have permission to configure child themes."
+msgstr ""
+
+#: includes/forms/errorstrings.php:8
+msgid "%s does not exist. Please select a valid Parent Theme."
+msgstr ""
+
+#: includes/forms/errorstrings.php:9
+msgid "The Functions file is required and cannot be deleted."
+msgstr ""
+
+#: includes/forms/errorstrings.php:10
+msgid "Please select a valid Parent Theme."
+msgstr ""
+
+#: includes/forms/errorstrings.php:11
+msgid "Please select a valid Child Theme."
+msgstr ""
+
+#: includes/forms/errorstrings.php:12
+msgid "Please enter a valid Child Theme directory name."
+msgstr ""
+
+#: includes/forms/errorstrings.php:13
+msgid ""
+"<strong>%s</strong> exists. Please enter a different Child Theme template "
+"name."
+msgstr ""
+
+#: includes/forms/errorstrings.php:14
+msgid "Your theme directories are not writable."
+msgstr ""
+
+#: includes/forms/errorstrings.php:16
+msgid "Could not upgrade child theme"
+msgstr ""
+
+#: includes/forms/errorstrings.php:17
+msgid "Your stylesheet is not writable."
+msgstr ""
+
+#: includes/forms/errorstrings.php:19
+msgid ""
+"A closing PHP tag was detected in Child theme functions file so \"Parent "
+"Stylesheet Handling\" option was not configured. Closing PHP at the end of "
+"the file is discouraged as it can cause premature HTTP headers. Please edit "
+"<code>functions.php</code> to remove the final <code>?&gt;</code> tag and "
+"click \"Generate/Rebuild Child Theme Files\" again."
+msgstr ""
+
+#: includes/forms/errorstrings.php:20
+msgid "Could not copy file: %s"
+msgstr ""
+
+#: includes/forms/errorstrings.php:21
+msgid "Could not delete %s file."
+msgstr ""
+
+#: includes/forms/errorstrings.php:22
+msgid "could not copy %s"
+msgstr ""
+
+#: includes/forms/errorstrings.php:23
+msgid "invalid dir: %s"
+msgstr ""
+
+#: includes/forms/errorstrings.php:24
+msgid "deleted: %s != %s files"
+msgstr ""
+
+#: includes/forms/errorstrings.php:25
+msgid "newfiles != files"
+msgstr ""
+
+#: includes/forms/errorstrings.php:26
+msgid "There were errors while resetting permissions."
+msgstr ""
+
+#: includes/forms/errorstrings.php:28
+msgid "Could not upload file."
+msgstr ""
+
+#: includes/forms/errorstrings.php:29
+msgid "Invalid theme root directory."
+msgstr ""
+
+#: includes/forms/errorstrings.php:30
+msgid "No writable temp directory."
+msgstr ""
+
+#: includes/forms/errorstrings.php:31
+msgid "PclZip returned zero bytes."
+msgstr ""
+
+#: includes/forms/errorstrings.php:32
+msgid "Unpack failed -- %s"
+msgstr ""
+
+#: includes/forms/errorstrings.php:33
+msgid "Pack failed -- %s"
+msgstr ""
+
+#: includes/forms/errorstrings.php:34
+msgid "Maximum number of styles exceeded."
+msgstr ""
+
+#: includes/forms/errorstrings.php:35
+msgid "Error moving file: %s"
+msgstr ""
+
+#: includes/forms/errorstrings.php:36
+msgid "Could not set write permissions."
 msgstr ""
 
 #: includes/forms/file-form-buttons.php:9
@@ -837,131 +920,131 @@ msgid ""
 "export your themes."
 msgstr ""
 
-#: includes/forms/parent-child.php:22
+#: includes/forms/parent-child.php:19
 msgid "Select an action:"
 msgstr ""
 
-#: includes/forms/parent-child.php:30
+#: includes/forms/parent-child.php:27
 msgid "CREATE a new Child Theme"
 msgstr ""
 
-#: includes/forms/parent-child.php:33
+#: includes/forms/parent-child.php:30
 msgid ""
 "Install a new customizable child theme using an installed theme as a parent."
 msgstr ""
 
-#: includes/forms/parent-child.php:46
+#: includes/forms/parent-child.php:43
 msgid "CONFIGURE an existing Child Theme"
 msgstr ""
 
-#: includes/forms/parent-child.php:49
+#: includes/forms/parent-child.php:46
 msgid ""
 "Set up a previously installed child theme for use with the Configurator or "
 "to modify current settings."
 msgstr ""
 
-#: includes/forms/parent-child.php:60
+#: includes/forms/parent-child.php:57
 msgid "DUPLICATE an existing Child Theme"
 msgstr ""
 
-#: includes/forms/parent-child.php:63
+#: includes/forms/parent-child.php:60
 msgid ""
 "Make a complete copy of an existing Child Theme in a new directory, "
 "including any menus, widgets and other Customizer settings. The option to "
 "copy the Parent Theme settings (step 8, below) is disabled with this action."
 msgstr ""
 
-#: includes/forms/parent-child.php:74
+#: includes/forms/parent-child.php:71
 msgid ""
 "RESET an existing Child Theme (this will destroy any work you have done in "
 "the Configurator)"
 msgstr ""
 
-#: includes/forms/parent-child.php:77
+#: includes/forms/parent-child.php:74
 msgid ""
 "Revert the Child theme stylesheet and functions files to their state before "
 "the initial configuration or last reset. Additional child theme files will "
 "not be removed, but you can delete them under the Files tab."
 msgstr ""
 
-#: includes/forms/parent-child.php:88
+#: includes/forms/parent-child.php:85
 msgid "Select a Parent Theme:"
 msgstr ""
 
-#: includes/forms/parent-child.php:92 includes/forms/parent-child.php:120
+#: includes/forms/parent-child.php:89 includes/forms/parent-child.php:117
 msgid "Click here to save a backup of the selected theme."
 msgstr ""
 
-#: includes/forms/parent-child.php:98 includes/forms/parent-child.php:126
+#: includes/forms/parent-child.php:95 includes/forms/parent-child.php:123
 msgid "Analyze"
 msgstr ""
 
-#: includes/forms/parent-child.php:102
+#: includes/forms/parent-child.php:99
 msgid "Analyze Parent Theme"
 msgstr ""
 
-#: includes/forms/parent-child.php:105 includes/forms/parent-child.php:133
+#: includes/forms/parent-child.php:102 includes/forms/parent-child.php:130
 msgid ""
 "Click \"Analyze\" to determine stylesheet dependencies and other potential "
 "issues."
 msgstr ""
 
-#: includes/forms/parent-child.php:116
+#: includes/forms/parent-child.php:113
 msgid "Select a Child Theme:"
 msgstr ""
 
-#: includes/forms/parent-child.php:130
+#: includes/forms/parent-child.php:127
 msgid "Analyze Child Theme"
 msgstr ""
 
-#: includes/forms/parent-child.php:145
+#: includes/forms/parent-child.php:142
 msgid "Name the new theme directory:"
 msgstr ""
 
-#: includes/forms/parent-child.php:149
+#: includes/forms/parent-child.php:146
 msgid "Directory Name"
 msgstr ""
 
-#: includes/forms/parent-child.php:153 includes/forms/parent-child.php:402
+#: includes/forms/parent-child.php:150 includes/forms/parent-child.php:399
 msgid "NOTE:"
 msgstr ""
 
-#: includes/forms/parent-child.php:155
+#: includes/forms/parent-child.php:152
 msgid ""
 "This is NOT the name of the Child Theme. You can customize the name, "
 "description, etc. in step 7, below."
 msgstr ""
 
-#: includes/forms/parent-child.php:162
+#: includes/forms/parent-child.php:159
 msgid "Verify Child Theme directory:"
 msgstr ""
 
-#: includes/forms/parent-child.php:172
+#: includes/forms/parent-child.php:169
 msgid ""
 "For verification only (you cannot modify the directory of an existing Child "
 "Theme)."
 msgstr ""
 
-#: includes/forms/parent-child.php:185
+#: includes/forms/parent-child.php:182
 msgid "Select where to save new styles:"
 msgstr ""
 
-#: includes/forms/parent-child.php:194
+#: includes/forms/parent-child.php:191
 msgid "Primary Stylesheet (style.css)"
 msgstr ""
 
-#: includes/forms/parent-child.php:197
+#: includes/forms/parent-child.php:194
 msgid ""
 "Save new custom styles directly to the Child Theme primary stylesheet, "
 "replacing the existing values. The primary stylesheet will load in the order "
 "set by the theme."
 msgstr ""
 
-#: includes/forms/parent-child.php:209
+#: includes/forms/parent-child.php:206
 msgid "Separate Stylesheet"
 msgstr ""
 
-#: includes/forms/parent-child.php:212
+#: includes/forms/parent-child.php:209
 msgid ""
 "Save new custom styles to a separate stylesheet and combine any existing "
 "child theme styles with the parent to form baseline. Select this option if "
@@ -970,75 +1053,75 @@ msgid ""
 "the primary stylesheet."
 msgstr ""
 
-#: includes/forms/parent-child.php:220
+#: includes/forms/parent-child.php:217
 msgid "Click to expand"
 msgstr ""
 
-#: includes/forms/parent-child.php:222
+#: includes/forms/parent-child.php:219
 msgid "Select Parent Theme stylesheet handling:"
 msgstr ""
 
-#: includes/forms/parent-child.php:236
+#: includes/forms/parent-child.php:233
 msgid "Use the WordPress style queue."
 msgstr ""
 
-#: includes/forms/parent-child.php:242
+#: includes/forms/parent-child.php:239
 msgid ""
 "Let the Configurator determine the appropriate actions and dependencies and "
 "update the functions file automatically."
 msgstr ""
 
-#: includes/forms/parent-child.php:248
+#: includes/forms/parent-child.php:245
 msgid "Use <code>@import</code> in the child theme stylesheet."
 msgstr ""
 
-#: includes/forms/parent-child.php:254
+#: includes/forms/parent-child.php:251
 msgid ""
 "Only use this option if the parent stylesheet cannot be loaded using the "
 "WordPress style queue. Using <code>@import</code> is not recommended."
 msgstr ""
 
-#: includes/forms/parent-child.php:260
+#: includes/forms/parent-child.php:257
 msgid "Do not add any parent stylesheet handling."
 msgstr ""
 
-#: includes/forms/parent-child.php:263
+#: includes/forms/parent-child.php:260
 msgid ""
 "Select this option if this theme already handles the parent theme stylesheet "
 "or if the parent theme's <code>style.css</code> file is not used for its "
 "appearance."
 msgstr ""
 
-#: includes/forms/parent-child.php:270
+#: includes/forms/parent-child.php:267
 msgid "Advanced handling options"
 msgstr ""
 
-#: includes/forms/parent-child.php:277
+#: includes/forms/parent-child.php:274
 msgid "Ignore parent theme stylesheets."
 msgstr ""
 
-#: includes/forms/parent-child.php:278
+#: includes/forms/parent-child.php:275
 msgid ""
 "Do not load or parse the parent theme styles. Only use this option if the "
-"Child Theme uses a Framework like Genesis and only uses child theme "
-"stylesheets for its appearance."
+"Child Theme uses a Framework like Genesis and uses <em>only child theme "
+"stylesheets</em> for its appearance."
 msgstr ""
 
-#: includes/forms/parent-child.php:288
+#: includes/forms/parent-child.php:285
 msgid "Repair the header template in the child theme."
 msgstr ""
 
-#: includes/forms/parent-child.php:289
+#: includes/forms/parent-child.php:286
 msgid ""
 "Let the Configurator (try to) resolve any stylesheet issues listed above. "
 "This can fix many, but not all, common problems."
 msgstr ""
 
-#: includes/forms/parent-child.php:299
+#: includes/forms/parent-child.php:296
 msgid "Remove stylesheet dependencies"
 msgstr ""
 
-#: includes/forms/parent-child.php:302
+#: includes/forms/parent-child.php:299
 msgid ""
 "By default, the order of stylesheets that load prior to the primary "
 "stylesheet is preserved by treating them as dependencies. In some cases, "
@@ -1046,88 +1129,88 @@ msgid ""
 "necessary, dependency can be removed for specific stylesheets below."
 msgstr ""
 
-#: includes/forms/parent-child.php:312
+#: includes/forms/parent-child.php:309
 msgid "Customize the Child Theme Name, Description, Author, Version, etc.:"
 msgstr ""
 
-#: includes/forms/parent-child.php:316
+#: includes/forms/parent-child.php:313
 msgid "Show/Hide Child Theme Attributes"
 msgstr ""
 
-#: includes/forms/parent-child.php:316
+#: includes/forms/parent-child.php:313
 msgid "Click to toggle form"
 msgstr ""
 
-#: includes/forms/parent-child.php:321
+#: includes/forms/parent-child.php:318
 msgid "Child Theme Name"
 msgstr ""
 
-#: includes/forms/parent-child.php:325
+#: includes/forms/parent-child.php:322
 msgid "Theme Name"
 msgstr ""
 
-#: includes/forms/parent-child.php:331 includes/forms/parent-child.php:335
+#: includes/forms/parent-child.php:328 includes/forms/parent-child.php:332
 msgid "Theme Website"
 msgstr ""
 
-#: includes/forms/parent-child.php:341 includes/forms/parent-child.php:345
+#: includes/forms/parent-child.php:338 includes/forms/parent-child.php:342
 msgid "Author"
 msgstr ""
 
-#: includes/forms/parent-child.php:351 includes/forms/parent-child.php:355
+#: includes/forms/parent-child.php:348 includes/forms/parent-child.php:352
 msgid "Author Website"
 msgstr ""
 
-#: includes/forms/parent-child.php:361
+#: includes/forms/parent-child.php:358
 msgid "Theme Description"
 msgstr ""
 
-#: includes/forms/parent-child.php:365
+#: includes/forms/parent-child.php:362
 msgid "Description"
 msgstr ""
 
-#: includes/forms/parent-child.php:371
+#: includes/forms/parent-child.php:368
 msgid "Theme Tags"
 msgstr ""
 
-#: includes/forms/parent-child.php:375
+#: includes/forms/parent-child.php:372
 msgid "Tags"
 msgstr ""
 
-#: includes/forms/parent-child.php:381 includes/forms/parent-child.php:385
+#: includes/forms/parent-child.php:378 includes/forms/parent-child.php:382
 msgid "Version"
 msgstr ""
 
-#: includes/forms/parent-child.php:394
+#: includes/forms/parent-child.php:391
 msgid ""
 "Copy Menus, Widgets and other Customizer Settings from the Parent Theme to "
 "the Child Theme:"
 msgstr ""
 
-#: includes/forms/parent-child.php:404
+#: includes/forms/parent-child.php:401
 msgid ""
 "This option replaces the Child Theme's existing Menus, Widgets and other "
 "Customizer Settings with those from the Parent Theme. You should only need "
 "to use this option the first time you configure a Child Theme."
 msgstr ""
 
-#: includes/forms/parent-child.php:415 includes/forms/parent-child.php:467
+#: includes/forms/parent-child.php:412 includes/forms/parent-child.php:464
 msgid "Click to run the Configurator:"
 msgstr ""
 
-#: includes/forms/parent-child.php:419
+#: includes/forms/parent-child.php:416
 msgid "Configure Child Theme"
 msgstr ""
 
-#: includes/forms/parent-child.php:441
+#: includes/forms/parent-child.php:438
 msgid "Parse Plugin stylesheets:"
 msgstr ""
 
-#: includes/forms/parent-child.php:446
+#: includes/forms/parent-child.php:443
 msgid "Select the plugin stylesheets you wish to customize below."
 msgstr ""
 
-#: includes/forms/parent-child.php:471
+#: includes/forms/parent-child.php:468
 msgid "Configure Plugin Styles"
 msgstr ""
 
@@ -1232,41 +1315,45 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: includes/forms/settings-errors.php:20
+#: includes/forms/settings-errors.php:16
+msgid "CTC encountered an error:"
+msgstr ""
+
+#: includes/forms/settings-errors.php:48
 msgid ""
 "Child Theme <strong>%s</strong> has been reset. Please configure it using "
 "the settings below."
 msgstr ""
 
-#: includes/forms/settings-errors.php:24
+#: includes/forms/settings-errors.php:54
 msgid "Update Key saved successfully."
 msgstr ""
 
-#: includes/forms/settings-errors.php:29
+#: includes/forms/settings-errors.php:61
 msgid "Child Theme files modified successfully."
 msgstr ""
 
-#: includes/forms/settings-errors.php:32
+#: includes/forms/settings-errors.php:67
 msgid "Child Theme <strong>%s</strong> has been generated successfully."
 msgstr ""
 
-#: includes/forms/settings-errors.php:36
+#: includes/forms/settings-errors.php:71
 msgid "IMPORTANT:"
 msgstr ""
 
-#: includes/forms/settings-errors.php:39
+#: includes/forms/settings-errors.php:74
 msgid "You must %sNetwork enable%s your child theme."
 msgstr ""
 
-#: includes/forms/settings-errors.php:42 includes/forms/themepreview.php:20
+#: includes/forms/settings-errors.php:77 includes/forms/themepreview.php:20
 msgid "Go to Themes"
 msgstr ""
 
-#: includes/forms/settings-errors.php:46
+#: includes/forms/settings-errors.php:81
 msgid "%sPreview your child theme%s before activating."
 msgstr ""
 
-#: includes/forms/settings-errors.php:49 includes/forms/themepreview.php:18
+#: includes/forms/settings-errors.php:84 includes/forms/themepreview.php:18
 msgid "Live Preview"
 msgstr ""
 
@@ -1283,7 +1370,7 @@ msgid "Property/ Value"
 msgstr ""
 
 #: includes/forms/tabs.php:22
-msgid "Web Fonts"
+msgid "Web Fonts & CSS"
 msgstr ""
 
 #: includes/forms/tabs.php:26
@@ -1319,7 +1406,7 @@ msgid "Not Network Enabled"
 msgstr ""
 
 #: includes/forms/webfonts.php:18
-msgid "Linked Stylesheets"
+msgid "Additional Linked Stylesheets"
 msgstr ""
 
 #: includes/forms/webfonts.php:20
@@ -1328,6 +1415,16 @@ msgid ""
 "Child Theme Configurator uses the <code>@import</code> keyword to identify "
 "them and convert them to <code>&lt;link&gt;</code> tags. <strong>Example:</"
 "strong>"
+msgstr ""
+
+#: includes/forms/webfonts.php:23
+msgid "RTL (Right-to-Left) Stylesheets"
+msgstr ""
+
+#: includes/forms/webfonts.php:25
+msgid ""
+"If RTL is not automatically loading in the child theme, you can link it "
+"here. <strong>Example:</strong>"
 msgstr ""
 
 #: includes/forms/zipform.php:6

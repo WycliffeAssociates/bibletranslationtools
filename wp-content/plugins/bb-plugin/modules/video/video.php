@@ -65,6 +65,8 @@ class FLVideoModule extends FLBuilderModule {
 
 			if ( $video ) {
 				$settings->data = $video;
+			} else {
+				$settings->data = null;
 			}
 		}
 
@@ -103,6 +105,7 @@ FLBuilder::register_module('FLVideoModule', array(
 						'type'          => 'video',
 						'label'         => __( 'Video (MP4)', 'fl-builder' ),
 						'help'          => __( 'A video in the MP4 format. Most modern browsers support this format.', 'fl-builder' ),
+						'show_remove'   => true,
 					),
 					'video_webm' => array(
 						'type'          => 'video',

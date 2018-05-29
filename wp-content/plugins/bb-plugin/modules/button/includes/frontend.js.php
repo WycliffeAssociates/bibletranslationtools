@@ -24,7 +24,7 @@
 		},
 		<?php endif; ?>
 		closeBtnInside: true,
-		tLoading: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>',
+		tLoading: '<i class="fas fa-spinner fa-spin fa-3x fa-fw"></i>',
 	});
 })(jQuery);
 <?php endif; ?>

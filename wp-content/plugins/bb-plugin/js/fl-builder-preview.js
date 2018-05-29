@@ -39,6 +39,37 @@
 	FLBuilderPreview._fontsList = {};
 
 	/**
+	 * Returns a formatted selector string for a preview.
+	 *
+	 * @since 2.1
+	 * @method getFormattedSelector
+	 * @param {String} selector A CSS selector string.
+	 * @return {String}
+	 */
+	FLBuilderPreview.getFormattedSelector = function( prefix, selector )
+	{
+		var formatted = '',
+			parts 	  = selector.split( ',' ),
+			i 	  	  = 0;
+
+		for ( ; i < parts.length; i++ ) {
+
+			if ( parts[ i ].indexOf( '{node}' ) > -1 ) {
+				formatted = parts[ i ].replace( '{node}', prefix );
+			}
+			else {
+				formatted += prefix + ' ' + parts[ i ];
+			}
+
+			if ( i != parts.length - 1 ) {
+				formatted += ', ';
+			}
+		}
+
+		return formatted;
+	};
+
+	/**
 	 * Prototype for new instances.
 	 *
 	 * @since 1.3.3
@@ -218,7 +249,7 @@
 		{
 			var form = $('.fl-builder-settings-lightbox .fl-builder-settings');
 
-			this._savedSettings = FLBuilder._getSettings( form );
+			this._savedSettings = FLBuilder._getSettingsForChangedCheck( this.nodeId, form );
 		},
 
 		/**
@@ -411,7 +442,7 @@
 		 */
 		_initResponsivePreviews: function()
 		{
-			FLBuilder.addHook( 'responsive-editing-switched', $.proxy( this._responsiveEditingSwitched, this ) );
+			FLBuilder.addHook( 'responsive-editing-switched.preview', $.proxy( this._responsiveEditingSwitched, this ) );
 		},
 
 		/**
@@ -422,7 +453,7 @@
 		 */
 		_destroyResponsivePreviews: function()
 		{
-			FLBuilder.removeHook( 'responsive-editing-switched' );
+			FLBuilder.removeHook( 'responsive-editing-switched.preview' );
 		},
 
 		/**
@@ -1846,6 +1877,8 @@
 					field.find('input[type=hidden]').on('change', callback);
 				break;
 
+				default:
+					field.on('change', callback);
 			}
 		},
 
@@ -1898,12 +1931,15 @@
 		 */
 		_previewText: function(preview, e)
 		{
-			var element = this.elements.node.find(preview.selector),
-				text    = $('<div>' + $(e.target).val() + '</div>');
+			var selector = this._getPreviewSelector( this.classes.node, preview.selector ),
+				element  = $( selector ),
+				text     = $('<div>' + $(e.target).val() + '</div>');
 
 			if(element.length > 0) {
 				text.find('script').remove();
 				element.html(text.html());
+			} else {
+				this.delayPreview(e);
 			}
 		},
 
@@ -1919,7 +1955,8 @@
 		 */
 		_previewTextEditor: function(preview, id, e)
 		{
-			var element  = this.elements.node.find(preview.selector),
+			var selector = this._getPreviewSelector( this.classes.node, preview.selector ),
+				element  = $( selector ),
 				editor   = typeof tinyMCE != 'undefined' ? tinyMCE.get(id) : null,
 				textarea = $('#' + id),
 				text     = '';
@@ -2181,7 +2218,7 @@
 				input    = $(e.target),
 				value    = input.val();
 
-			if(unit == '%') {
+			if('%' === unit && 'opacity' === property) {
 				value = parseInt(value)/100;
 			}
 			else if ( '' !== value ) {
@@ -2277,25 +2314,7 @@
 		 */
 		_getPreviewSelector: function( prefix, selector )
 		{
-			var formatted = '',
-				parts 	  = selector.split( ',' ),
-				i 	  	  = 0;
-
-			for ( ; i < parts.length; i++ ) {
-
-				if ( parts[ i ].indexOf( '{node}' ) > -1 ) {
-					formatted = parts[ i ].replace( '{node}', prefix );
-				}
-				else {
-					formatted += prefix + ' ' + parts[ i ];
-				}
-
-				if ( i != parts.length - 1 ) {
-					formatted += ', ';
-				}
-			}
-
-			return formatted;
+			return FLBuilderPreview.getFormattedSelector( prefix, selector );
 		}
 	};
 

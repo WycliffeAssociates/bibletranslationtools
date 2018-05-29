@@ -523,7 +523,7 @@
             data.queryResults = FLBuilder.Search.byQuery({
                 kind: "template",
                 type: "user",
-                content: ["module", "row"]
+                content: ["module", "column", "row"]
             });
 
             return data;

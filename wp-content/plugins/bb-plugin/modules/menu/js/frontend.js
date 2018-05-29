@@ -259,7 +259,7 @@
 
 						subMenuPos = $parent.is( '.sub-menu' ) ?
 									 $parent.offset().left - subMenuWidth:
-									 $link.offset().left - subMenuWidth;
+									 $link.offset().left - $link.width() - subMenuWidth;
 
 						if( subMenuPos <= 0 ) {
 							$link.addClass( 'fl-menu-submenu-right' );
@@ -269,7 +269,7 @@
 
 						subMenuPos = $parent.is( '.sub-menu' ) ?
 									 $parent.offset().left + $parent.width() + subMenuWidth :
-									 $link.offset().left + subMenuWidth;
+									 $link.offset().left + $link.width() + subMenuWidth;
 
 						if( subMenuPos > winWidth ) {
 							$link.addClass('fl-menu-submenu-right');
@@ -346,26 +346,14 @@
 					$menu.slideToggle();
 				} );
 
-				$menu.on( 'click', '.menu-item > a[href*="#"]', function(e){
+				// Hide active menu when click on anchor link ID that exists on a page.
+				$menu.on( 'click', '.menu-item > a[href*="#"]:not([href="#"])', function(e){
 					var $href = $(this).attr('href'),
-						$targetID = '';
-
-					if ( $href !== '#' ) {
 						$targetID = $href.split('#')[1];
 
-						if ( $('body').find('#'+  $targetID).length > 0 ) {
-							e.preventDefault();
-							$( this ).toggleClass( 'fl-active' );
-							$menu.slideToggle('fast', function(){
-								setTimeout(function(){
-									$('html, body').animate({
-								        scrollTop: $('#'+ $targetID).offset().top
-								    }, 1000, function() {
-								        window.location.hash = $targetID;
-								    });
-								}, 500);
-							});
-						}
+					if ( $('body').find('#'+  $targetID).length > 0 ) {
+						$( this ).toggleClass( 'fl-active' );
+						$menu.slideToggle();
 					}
 				});
 			}

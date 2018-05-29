@@ -3,20 +3,21 @@
 
 .fl-builder-admin {
 	position: relative;
+	padding: 10px 0 0;
 }
 
 /* Enabled/Disabled States
 ------------------------------------------------------ */
 
-.fl-builder-enabled .fl-builder-admin-tabs {
-	border: none;
-	margin: 10px 0 0;
-}
 .fl-builder-admin-ui {
 	display: none;
 }
 .fl-builder-enabled .fl-builder-admin-ui {
 	display: block;
+}
+.fl-builder-enabled .fl-builder-admin-tabs {
+	border: none;
+	margin: 0;
 }
 .fl-builder-enabled #postdivrich {
 	display: none;

@@ -36,8 +36,7 @@ final class FLBuilderServiceEmailAddress extends FLBuilderService {
 		// Make sure we have an email address.
 		if ( ! isset( $fields['email'] ) || empty( $fields['email'] ) ) {
 			$response['error'] = __( 'Error: You must provide an email address.', 'fl-builder' );
-		} // End if().
-		else {
+		} else {
 			$response['data'] = array(
 				'email' => $fields['email'],
 			);

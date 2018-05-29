@@ -138,7 +138,7 @@ body .ms-options-wrap > .ms-options > ul input[type="checkbox"] {
 	position: static;
 }
 
-/* TipTip 
+/* TipTip
 ------------------------------------------------------*/
 
 #tiptip_arrow_inner {
@@ -273,10 +273,10 @@ body .ms-options-wrap > .ms-options > ul input[type="checkbox"] {
 	.fl-settings-content .fl-settings-save .button-primary {
 		width: 100%;
 	}
-	
+
 	/* User Access
 	----------------------------------------------------------- */
-	
+
 	.fl-user-access-setting {
 		float: none;
 		width: 100%;

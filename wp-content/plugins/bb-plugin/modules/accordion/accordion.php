@@ -17,7 +17,7 @@ class FLAccordionModule extends FLBuilderModule {
 			'icon'				=> 'layout.svg',
 		));
 
-		$this->add_css( 'font-awesome' );
+		$this->add_css( 'font-awesome-5' );
 	}
 }
 

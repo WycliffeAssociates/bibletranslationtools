@@ -63,8 +63,7 @@ final class FLBuilderServiceDrip extends FLBuilderService {
 		// Make sure we have an API token.
 		if ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API token.', 'fl-builder' );
-		} // End if().
-		elseif ( ! isset( $fields['api_account_id'] ) || empty( $fields['api_account_id'] ) ) {
+		} elseif ( ! isset( $fields['api_account_id'] ) || empty( $fields['api_account_id'] ) ) {
 			$response['error'] = __( 'Error: You must provide an Account ID.', 'fl-builder' );
 		} // Try to connect and store the connection data.
 		else {
@@ -293,7 +292,7 @@ final class FLBuilderServiceDrip extends FLBuilderService {
 					$e->getMessage()
 				);
 			}
-		}// End if().
+		}
 
 		return $response;
 	}

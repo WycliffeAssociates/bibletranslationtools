@@ -118,8 +118,7 @@ class FLGalleryModule extends FLBuilderModule {
 					} else {
 						$data->src = $photo->sizes->full->url;
 					}
-				} // End if().
-				else {
+				} else {
 
 					if ( isset( $photo->sizes->thumbnail ) ) {
 						$data->src = $photo->sizes->thumbnail->url;
@@ -137,8 +136,8 @@ class FLGalleryModule extends FLBuilderModule {
 
 				// Push the photo data
 				$photos[ $id ] = $data;
-			}// End if().
-		}// End foreach().
+			}
+		}
 
 		return $photos;
 	}
@@ -204,9 +203,9 @@ class FLGalleryModule extends FLBuilderModule {
 
 					// Push the photo data.
 					array_push( $photos, $data );
-				}// End if().
-			}// End foreach().
-		}// End if().
+				}
+			}
+		}
 
 		return $photos;
 	}

@@ -111,14 +111,15 @@
             if ( this.isPublishingLayout() ) return false;
 
             if ( action.startsWith('render') ) {
-                if ( action.startsWith('render_new') ) { return true; }
+                if ( action.startsWith('render_new') ) return true;
                 return false;
             }
-            if ( action.startsWith('duplicate') ) { return false; }
-            if ( action.startsWith('refresh') ) { return false; } // Like refresh_revision_items
-            if ( 'save_ui_skin' == action ) { return false; }
-			if ( 'save_lightbox_position' == action ) { return false; }
-            if ( 'save_pinned_ui_position' == action ) { return false; }
+            if ( action.startsWith('duplicate') ) return false;
+            if ( action.startsWith('refresh') ) return false; // Like refresh_revision_items
+            if ( 'save_ui_skin' == action ) return false;
+			if ( 'save_lightbox_position' == action ) return false;
+            if ( 'save_pinned_ui_position' == action ) return false;
+            if ( 'fl_builder_notifications' == action ) return false;
 
             return true;
         },
@@ -175,7 +176,7 @@
          */
         resetStatusMessage: function() {
             if(this.layoutNeedsPublish) {
-                this.defaultIndicatorMessage = this.messages.edited + '<i class="fa fa-question-circle"></i>';
+                this.defaultIndicatorMessage = this.messages.edited + '<i class="fas fa-question-circle"></i>';
                 this.defaultTooltipMessage = this.messages.editedTooltip;
             } else {
                 this.defaultIndicatorMessage = "";

@@ -162,7 +162,7 @@ if ( $global_settings->responsive_enabled ) : ?>
 		@media ( max-width: <?php echo $module->get_media_breakpoint() ?>px ) {
 	<?php endif; ?>
 
-		<?php if ( (isset( $settings->mobile_full_width ) && in_array( $settings->mobile_full_width, array( 'yes', 'below' ) ) ) && (isset( $settings->mobile_toggle ) && in_array( $settings->mobile_toggle, array( 'hamburger', 'hamburger-label' ) ) ) ) : ?>
+		<?php if ( (isset( $settings->mobile_full_width ) && in_array( $settings->mobile_full_width, array( 'yes', 'below' ) ) ) && (isset( $settings->mobile_toggle ) && 'expanded' != $settings->mobile_toggle ) ) : ?>
 
 			<?php if ( 'yes' == $settings->mobile_full_width ) : ?>
 				.fl-node-<?php echo $id; ?> .fl-menu .menu {
@@ -251,6 +251,7 @@ if ( $global_settings->responsive_enabled ) : ?>
 						echo 'float: ' . $settings->menu_align . ';';
 					} elseif ( 'center' == $settings->menu_align ) {
 						echo 'display: inline-block;';
+						echo 'vertical-align: top;';
 					}
 					?>
 				}
@@ -281,7 +282,6 @@ if ( $global_settings->responsive_enabled ) : ?>
 			}
 
 			.fl-node-<?php echo $id; ?> .menu .fl-has-submenu.fl-menu-submenu-right .sub-menu{
-				top: 100%;
 				left: inherit;
 				right: 0;
 			}
@@ -366,6 +366,7 @@ else : ?>
 					echo 'float: ' . $settings->menu_align . ';';
 				} elseif ( 'center' == $settings->menu_align ) {
 					echo 'display: inline-block;';
+					echo 'vertical-align: top;';
 				}
 				?>
 			}

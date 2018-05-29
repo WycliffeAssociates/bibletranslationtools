@@ -39,7 +39,9 @@ final class FLBuilderRevisions {
 	 * @return array
 	 */
 	static public function get_config( $post_id ) {
-		$revisions    = wp_get_post_revisions( $post_id );
+		$revisions    = wp_get_post_revisions( $post_id, array(
+			'numberposts' => apply_filters( 'fl_builder_revisions_number', 25 ),
+		) );
 		$current_time = current_time( 'timestamp' );
 		$config       = array(
 			'posts'   	 => array(),

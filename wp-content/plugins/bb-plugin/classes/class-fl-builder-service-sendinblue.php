@@ -63,8 +63,7 @@ final class FLBuilderServiceSendinBlue extends FLBuilderService {
 		// Make sure we have an access key.
 		if ( ! isset( $fields['access_key'] ) || empty( $fields['access_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an Access Key.', 'fl-builder' );
-		} // End if().
-		else {
+		} else {
 
 			$api    = $this->get_api( $fields['access_key'] );
 			$result = $api->get_account();

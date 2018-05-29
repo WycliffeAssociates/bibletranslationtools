@@ -40,9 +40,10 @@ final class FLBuilderUserTemplatesAdminMenu {
 		$submenu[ $parent ] = array();
 		$submenu[ $parent ][100] = array( __( 'Templates', 'fl-builder' ), $cap, $list_url . 'layout' );
 		$submenu[ $parent ][200] = array( __( 'Saved Rows', 'fl-builder' ), $cap, $list_url . 'row' );
-		$submenu[ $parent ][300] = array( __( 'Saved Modules', 'fl-builder' ), $cap, $list_url . 'module' );
-		$submenu[ $parent ][400] = array( __( 'Categories', 'fl-builder' ), $cap, $cats_url );
-		$submenu[ $parent ][600] = array( __( 'Add New', 'fl-builder' ), $cap, 'fl-builder-add-new', '' );
+		$submenu[ $parent ][300] = array( __( 'Saved Columns', 'fl-builder' ), $cap, $list_url . 'column' );
+		$submenu[ $parent ][400] = array( __( 'Saved Modules', 'fl-builder' ), $cap, $list_url . 'module' );
+		$submenu[ $parent ][500] = array( __( 'Categories', 'fl-builder' ), $cap, $cats_url );
+		$submenu[ $parent ][700] = array( __( 'Add New', 'fl-builder' ), $cap, 'fl-builder-add-new', '' );
 
 		if ( current_user_can( $cap ) ) {
 			add_action( $add_new_hook, 'FLBuilderUserTemplatesAdminAdd::render' );

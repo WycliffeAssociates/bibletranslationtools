@@ -6,12 +6,21 @@ if ( FLBuilderSettingsConfig.attachments[ data.value ] ) {
 	photo = FLBuilderSettingsConfig.attachments[ data.value ];
 	photo.isAttachment = true;
 } else if ( ! _.isEmpty( data.value ) ) {
-	photo = {
-		id: data.value,
-		url: data.settings[ data.name + '_src' ],
-		filename: data.settings[ data.name + '_src' ].split( '/' ).pop(),
-		isAttachment: false
-	};
+	if ( data.settings[ data.name + '_src' ] ) {
+		photo = {
+			id: data.value,
+			url: data.settings[ data.name + '_src' ],
+			filename: data.settings[ data.name + '_src' ].split( '/' ).pop(),
+			isAttachment: false
+		};
+	} else {
+		photo = {
+			id: 0,
+			url: data.value,
+			filename: data.value.split( '/' ).pop(),
+			isAttachment: false
+		};
+	}
 }
 
 var className = data.field.className ? ' ' + data.field.className : '';

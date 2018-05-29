@@ -128,8 +128,24 @@ final class FLBuilderIcons {
 		$enabled_icons = FLBuilderModel::get_enabled_icons();
 		$core_sets = apply_filters( 'fl_builder_core_icon_sets', array(
 			'font-awesome' => array(
-				'name'	 => 'Font Awesome',
+				'name'	 => 'Font Awesome 4',
 				'prefix' => 'fa',
+			),
+			'font-awesome-5-solid' => array(
+				'name'	 => 'Font Awesome 5 Solid',
+				'prefix' => 'fas',
+			),
+			'font-awesome-5-regular' => array(
+				'name'	 => 'Font Awesome 5 Regular',
+				'prefix' => 'far',
+			),
+			'font-awesome-5-light' => array(
+				'name'	 => 'Font Awesome 5 Light (pro only)',
+				'prefix' => 'fal',
+			),
+			'font-awesome-5-brands' => array(
+				'name'	 => 'Font Awesome 5 Brands',
+				'prefix' => 'fab',
 			),
 			'foundation-icons' => array(
 				'name'	 => 'Foundation Icons',
@@ -140,6 +156,10 @@ final class FLBuilderIcons {
 				'prefix' => 'dashicons dashicons-before',
 			),
 		) );
+
+		if ( ! apply_filters( 'fl_enable_fa5_pro', false ) ) {
+			unset( $core_sets['font-awesome-5-light'] );
+		}
 
 		// Add the core sets.
 		foreach ( $core_sets as $set_key => $set_data ) {
@@ -160,7 +180,26 @@ final class FLBuilderIcons {
 		// Loop through core sets and add icons.
 		foreach ( self::$sets as $set_key => $set_data ) {
 			if ( 'core' == $set_data['type'] ) {
-				$config_path = apply_filters( 'fl_builder_core_icon_set_config', FL_BUILDER_DIR . 'json/' . $set_key . '.json', $set_data );
+
+				$key = $set_key;
+
+				if ( apply_filters( 'fl_enable_fa5_pro', false ) ) {
+					switch ( $set_key ) {
+						case 'font-awesome-5-light' :
+							$key = 'font-awesome-5-light-pro';
+							break;
+
+						case 'font-awesome-5-regular' :
+							$key = 'font-awesome-5-regular-pro';
+							break;
+
+						case 'font-awesome-5-solid' :
+							$key = 'font-awesome-5-solid-pro';
+							break;
+					}
+				}
+
+				$config_path = apply_filters( 'fl_builder_core_icon_set_config', FL_BUILDER_DIR . 'json/' . $key . '.json', $set_data );
 
 				$icons = json_decode( file_get_contents( $config_path ) );
 				self::$sets[ $set_key ]['icons'] = $icons;
@@ -233,8 +272,7 @@ final class FLBuilderIcons {
 						}
 					}
 				}
-			} // End if().
-			elseif ( fl_builder_filesystem()->file_exists( $folder . 'config.json' ) ) {
+			} elseif ( fl_builder_filesystem()->file_exists( $folder . 'config.json' ) ) {
 
 				$data  = json_decode( fl_builder_filesystem()->file_get_contents( $folder . 'config.json' ) );
 				$key   = basename( $folder );
@@ -275,7 +313,7 @@ final class FLBuilderIcons {
 					}
 				}
 			}
-		}// End foreach().
+		}
 	}
 
 	/**
@@ -287,7 +325,7 @@ final class FLBuilderIcons {
 	static public function enqueue_all_custom_icons_styles() {
 		$sets = self::get_sets();
 
-		foreach ( $sets as $key => $data ) {
+		foreach ( (array) $sets as $key => $data ) {
 
 			// Don't enqueue core icons.
 			if ( 'core' == $data['type'] ) {
@@ -357,18 +395,19 @@ final class FLBuilderIcons {
 		do_action( 'fl_builder_enqueue_styles_for_icon', $icon );
 
 		// Is this a core icon?
-		if ( stristr( $icon, 'fa-' ) ) {
+		if ( stristr( $icon, 'fa fa-' ) ) {
 			wp_enqueue_style( 'font-awesome' );
+		} elseif ( stristr( $icon, 'far fa-' ) || stristr( $icon, 'fas fa-' ) || stristr( $icon, 'fab fa-' ) || stristr( $icon, 'fal fa-' ) ) {
+			wp_enqueue_style( 'font-awesome-5' );
 		} elseif ( stristr( $icon, 'fi-' ) ) {
 			wp_enqueue_style( 'foundation-icons' );
 		} elseif ( stristr( $icon, 'dashicon' ) ) {
 			wp_enqueue_style( 'dashicons' );
-		} // End if().
-		else {
+		} else {
 
 			$sets = self::get_sets();
 
-			foreach ( $sets as $key => $data ) {
+			foreach ( (array) $sets as $key => $data ) {
 				if ( in_array( $icon, $data['icons'] ) ) {
 					self::enqueue_custom_styles_by_key( $key );
 				}

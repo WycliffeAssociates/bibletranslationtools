@@ -5,7 +5,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
     Class: ChildThemeConfiguratorUI
     Plugin URI: http://www.childthemeconfigurator.com/
     Description: Handles the plugin User Interface
-    Version: 2.2.9
+    Version: 2.3.0
     Author: Lilaea Media
     Author URI: http://www.lilaeamedia.com/
     Text Domain: chld_thm_cfg
@@ -29,7 +29,7 @@ class ChildThemeConfiguratorUI {
         add_action( 'chld_thm_cfg_before_tabs',         array( $this, 'render_current_theme' ), 5 );
         add_action( 'chld_thm_cfg_before_tabs',         array( $this, 'render_debug_toggle' ), 100 );
         add_action( 'chld_thm_cfg_file_form_buttons',   array( $this, 'render_file_form_buttons' ), 10, 1 );
-        add_action( 'chld_thm_cfg_admin_notices',                array( $this, 'get_colors' ) );
+        add_action( 'chld_thm_cfg_admin_notices',       array( $this, 'get_colors' ) );
         add_action( 'admin_enqueue_scripts',            array( $this, 'enqueue_scripts' ), 99 );
         add_filter( 'chld_thm_cfg_localize_array',      array( $this, 'filter_localize_array' ) );
         add_action( 'all_admin_notices',                array( $this, 'all_admin_notices' ) );
@@ -77,6 +77,7 @@ class ChildThemeConfiguratorUI {
             return TRUE;
         return ( !defined( 'CHLD_THM_CFG_PRO_VERSION' ) );
     }
+    
     function all_admin_notices(){
         do_action( 'chld_thm_cfg_admin_notices' );
     }
@@ -141,17 +142,18 @@ class ChildThemeConfiguratorUI {
          
         if ( $theme = $this->ctc()->css->get_prop( 'child' ) ):
             $themeuri   = trailingslashit( get_theme_root_uri() ) . trailingslashit( $theme );
-            $files = $this->ctc()->get_files( $theme, 'img' );
+            $themeroot  = trailingslashit( get_theme_root() ) . trailingslashit( $theme );
+            $files      = $this->ctc()->get_files( $theme, 'img' );
             
             $counter = 0;
             sort( $files );
             ob_start();
-            foreach ( $files as $file ): 
+            foreach ( $files as $file ):
+                $imagesize = getimagesize( $themeroot . $file ); // added 2.3.0
                 $templatefile = preg_replace( '/^images\//', '', $file );
                 include( CHLD_THM_CFG_DIR . '/includes/forms/image.php' );             
             endforeach;
-            $inputs = ob_get_contents();
-            ob_end_clean();
+            $inputs = ob_get_clean();
             if ( $counter ) include( CHLD_THM_CFG_DIR . '/includes/forms/images.php' );
         endif;
     }
@@ -176,8 +178,7 @@ class ChildThemeConfiguratorUI {
             if ( !is_readable( $file ) ) $file = $dir . 'en_US.php';
             ob_start();
             include( $file );
-            $help_raw = ob_get_contents();
-            ob_end_clean();
+            $help_raw = ob_get_clean();
             // parse raw html for tokens
             preg_match( $regex_sidebar, $help_raw, $sidebar );
             preg_match_all( $regex_tab, $help_raw, $tabs );
@@ -255,7 +256,7 @@ class ChildThemeConfiguratorUI {
         
         wp_enqueue_script( 'chld-thm-cfg-spectrum', CHLD_THM_CFG_URL . 'js/spectrum.min.js', array( 'jquery' ), CHLD_THM_CFG_VERSION, TRUE );
         wp_enqueue_script( 'chld-thm-cfg-ctcgrad', CHLD_THM_CFG_URL . 'js/ctcgrad.min.js', array( 'jquery' ), CHLD_THM_CFG_VERSION, TRUE );
-        wp_enqueue_script( 'chld-thm-cfg-admin', CHLD_THM_CFG_URL . 'js/chldthmcfg' . ( $this->ctc()->is_debug ? '' : '.min' ) . '.js',
+        wp_enqueue_script( 'chld-thm-cfg-admin', CHLD_THM_CFG_URL . 'js/chldthmcfg' . ( SCRIPT_DEBUG ? '' : '.min' ) . '.js',
         //wp_enqueue_script( 'chld-thm-cfg-admin', CHLD_THM_CFG_URL . 'js/chldthmcfg.js',
             array(
                 'jquery-ui-autocomplete', 
@@ -267,9 +268,10 @@ class ChildThemeConfiguratorUI {
         $localize_array = apply_filters( 'chld_thm_cfg_localize_script', array(
             'converted'                 => $this->css()->get_prop( 'converted' ),
             'ssl'                       => is_ssl(),
-            'homeurl'                   => home_url( '/' ) . '?ModPagespeed=off&ao_noptimize=1&preview_ctc=1',
+            'homeurl'                   => home_url( '/' ) . '?ModPagespeed=off&' . ( defined( 'WP_ROCKET_VERSION' ) ? '' : 'ao_noptimize=1&' ) . 'preview_ctc=1', // WP Rocket serves cached page when ao_nooptimize is present v2.3.0
             'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
             'theme_uri'                 => get_theme_root_uri(),
+            'theme_dir'                 => basename( get_theme_root_uri() ),
             'page'                      => CHLD_THM_CFG_MENU,
             'themes'                    => $this->ctc()->themes,
             'source'                    => apply_filters( 'chld_thm_cfg_source_uri', get_theme_root_uri() . '/' 
@@ -316,7 +318,8 @@ class ChildThemeConfiguratorUI {
             'anlz4_txt'                 => __( 'The theme "%s" could not be analyzed because the preview did not render correctly.', 'child-theme-configurator' ),
             'anlz5_txt'                 => sprintf( __( '<p>First, verify you can <a href="%s">preview your home page with the Customizer</a> and try analyzing again.</p><p>If that does not work, try temporarily disabling plugins that <strong>minify CSS</strong> or that <strong>force redirects between HTTP and HTTPS</strong>.</p>', 'child-theme-configurator' ), admin_url( '/customize.php' ) ), // . '?page=' . CHLD_THM_CFG_MENU ),
             'anlz6_txt'                 => __( 'Click to show/hide PHP debug output', 'child-theme-configurator' ),
-            'anlz7_txt'                 => __( "<p>Please contact this Theme's author and report the items inside the box above. You may or may not be able to use this Theme as a Child Theme while these conditions exist.</p><p>It is possible that this theme has specific requirements to work correctly as a child theme. Please make sure you are using the latest version of this theme and check your theme's documentation for more information.</p>", 'child-theme-configurator' ),
+            // php error description modified v2.3.0
+            'anlz7_txt'                 => __( '<p><strong>PLEASE NOTE:</strong></p><p><em>The analyzer reveals errors that may otherwise go undetected. Unless this is a fatal error, WordPress may appear to work correctly; however, PHP will continue to log the error until it is resolved. Please contact the author of any theme or plugin</em> <strong>mentioned above</strong> <em>and cut/paste the error from the text area.</em> <strong>Do not use a screen capture as it may cut off part of the error text.</strong> <em>Additional information about the error may also be available in the <a href="http://www.childthemeconfigurator.com/child-theme-faqs/" target="_blank">CTC documentation</a>.</em></p>', 'child-theme-configurator' ),
             'anlz8_txt'                 => __( 'Do Not Activate "%s"! A PHP FATAL ERROR has been detected.', 'child-theme-configurator' ),
             'anlz9_txt'                 => __( 'This theme loads stylesheets after the wp_styles queue.', 'child-theme-configurator' ),
             'anlz10_txt'                => __( '<p>This makes it difficult for plugins to override these styles. You can try to resolve this using the  "Repair header template" option (Step 6, "Additional handling options", below).</p>', 'child-theme-configurator' ),
@@ -343,6 +346,11 @@ class ChildThemeConfiguratorUI {
             'anlz31_txt'                => __( 'This child theme was configured using the CTC Pro "Genesis stylesheet handling" method.', 'child-theme-configurator' ),
             'anlz32_txt'                => __( '<p>This method has been replaced by the "Separate stylesheet" and "Ignore Parent Theme" options ( selected below ) for broader framework compatability.</p>', 'child-theme-configurator' ),
             'anlz33_txt'                => __( '<p>%1Click Here%2 to view the theme as viewed by the Analyzer.</p>', 'child-theme-configurator' ),
+            'anlzrtl_txt'               => __( 'This theme uses a RTL (right-to-left) stylesheet that is not being loaded in the child theme.', 'child-theme-configurator' ), // added 2.3.0
+            'anlzrtl2_txt'              => __( 'Use the Web Fonts tab to add a link to the parent RTL stylesheet. See the documentation for more information.</p>', 'child-theme-configurator' ), // added 2.3.0
+            'anlzcache1_txt'            => __( 'Both WP Rocket and Autoptimize plugins are enabled.', 'child-theme-configurator' ),
+            'anlzcache2_txt'            => __( 'The combination of these two plugins interferes with the Analysis results. Please temporarily deactivate one of them and Analyze again.', 'child-theme-configurator' ),
+            'anlzconfig_txt'            => __( '<p><strong>The WordPress configuration file has been modified incorrectly.</strong> Please see <a href="http://www.childthemeconfigurator.com/child-theme-faqs/#constants" target="_blank">this FAQ</a> for more information.</p>', 'child-theme-configurator' ),
         ) );
         wp_localize_script(
             'chld-thm-cfg-admin', 

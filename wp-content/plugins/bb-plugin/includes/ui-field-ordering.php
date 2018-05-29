@@ -27,7 +27,7 @@ var encodedValue = JSON.stringify( data.value );
 #>
 <div class="fl-ordering-field-options<# if ( data.field.className ) { #> {{data.field.className}}<# } #>">
 	<# for ( var i in data.value ) { #>
-	<div class="fl-ordering-field-option" data-key="{{data.value[ i ]}}">{{data.field.options[ data.value[ i ] ]}}<i class="fa fa-arrows"></i></div>
+	<div class="fl-ordering-field-option" data-key="{{data.value[ i ]}}">{{data.field.options[ data.value[ i ] ]}}<i class="fas fa-arrows-alt"></i></div>
 	<# } #>
 </div>
 <input type="hidden" name="{{data.name}}" value='{{{encodedValue}}}' />

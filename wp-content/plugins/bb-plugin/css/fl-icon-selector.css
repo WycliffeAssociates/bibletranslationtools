@@ -16,7 +16,7 @@
 }
 .fl-icons-filter select {
 	vertical-align: middle;
-	width: 160px;
+	width: 195px;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
@@ -27,7 +27,7 @@
 	margin: 0;
 	padding: 2px 10px;
 	background: white url("../img/svg/select-arrow-down-alt2.svg") no-repeat center right 10px !important;
-	flex: 1 1 160px;
+	flex: 1 1 195px;
 	border-radius:0px;
 }
 .fl-icons-filter input[type="text"] {

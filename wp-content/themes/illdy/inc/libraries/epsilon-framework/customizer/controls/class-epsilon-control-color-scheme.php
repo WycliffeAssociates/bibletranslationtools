@@ -19,7 +19,7 @@ class Epsilon_Control_Color_Scheme extends WP_Customize_Control {
 	/**
 	 * Choice array
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public $choices = array();
@@ -27,7 +27,7 @@ class Epsilon_Control_Color_Scheme extends WP_Customize_Control {
 	/**
 	 * Epsilon_Control_Color_Scheme constructor.
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 *
 	 * @param WP_Customize_Manager $manager
 	 * @param string               $id
@@ -65,7 +65,7 @@ class Epsilon_Control_Color_Scheme extends WP_Customize_Control {
 	/**
 	 * Arrange a new array of options using the values from database
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 */
 	public function get_selected_colors( $json ) {
 		$arr = $json['choices'][ $json['value'] ];
@@ -84,7 +84,7 @@ class Epsilon_Control_Color_Scheme extends WP_Customize_Control {
 	/**
 	 * Arrange array so we can handle it easier
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 */
 	public function get_choices() {
 		$arr = array();
@@ -99,7 +99,7 @@ class Epsilon_Control_Color_Scheme extends WP_Customize_Control {
 	/**
 	 * Display the control content
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 */
 	public function content_template() {
 		//@formatter:off ?>
@@ -122,8 +122,12 @@ class Epsilon_Control_Color_Scheme extends WP_Customize_Control {
 					<i class="dashicons dashicons-arrow-down"/>
 				</div>
 				<div class="epsilon-control-styles">
+					<# var i = 0; #>
 					<# _.each(data.selectedColors.colors, function(v, k) { #>
+						<# if ( i < 5 ){ #>
 						<a href="#" data-field-id="{{ k }}" style="background-color: {{ v }}"></a>
+						<# } #>
+					<# i++ #>
 					<# }); #>
 				</div>
 			</div>
@@ -134,8 +138,12 @@ class Epsilon_Control_Color_Scheme extends WP_Customize_Control {
 					<input type="hidden" value='{{{ el.encodedColors }}}'/>
 					<span class="epsilon-color-scheme-name"> {{{ el.name }}} </span>
 					<div class="epsilon-control-styles">
+						<# var i = 0 #>
 						<# _.each(el.colors, function(v, k) { #>
+							<# if ( i < 5 ){ #>
 							<a href="#" data-field-id="{{ k }}" style="background-color: {{ v }}"></a>
+							<# } #>
+						<# i++ #>
 						<# }); #>
 					</div>
 				</div>

@@ -2,7 +2,7 @@
  *  Script: chldthmcfg.js
  *  Plugin URI: http://www.childthemeconfigurator.com/
  *  Description: Handles jQuery, AJAX and other UI
- *  Version: 2.2.9
+ *  Version: 2.3.0
  *  Author: Lilaea Media
  *  Author URI: http://www.lilaeamedia.com/
  *  License: GPLv2
@@ -184,22 +184,50 @@
             $( panelid ).addClass( 'ctc-option-panel-active' );
         },
         
-        selector_input_toggle: function( obj ) {
-            //console.log( 'selector_input_toggle: ' + obj );
+        /**
+         * show or hide rewrite toggle on certain conditions
+         * added v2.3.0
+         */
+        maybe_show_rewrite: function(){
             var self = this,
-                origval;
-            if ( $( '#ctc_rewrite_selector' ).length ) {
-                origval = $( '#ctc_rewrite_selector_orig' ).val();
-                $( '#ctc_sel_ovrd_selector_selected' ).text( origval );
+                inputtype,
+                value;
+            $( '.ctc-rewrite-toggle' ).each( function( ndx, el ){
+                inputtype = $( el ).hasClass( 'rewrite-query' ) ? 'query' : 'selector';
+                value = $( '#ctc_sel_ovrd_' + inputtype + '_selected' ).text();
+                //console.log( 'maybe_show_rewrite inputtype: ' + inputtype + ' value: ' + value );
+                if ( value.match( /^[\s\u00A0]*$/ ) ){
+                    $( el ).hide();
+                } else {
+                    $( el ).text( self.getxt( 'rename' ) );
+                    $( el ).show();
+                }
+            } );
+        },
+        
+        /**
+         * toggle query/selector rename input
+         * modified v2.3.0
+         */
+        selector_input_toggle: function( obj ) {
+            //console.log( 'selector_input_toggle: ' + $( obj ).attr( 'id' ) );
+            var self = this,
+                origval,
+                inputtype = $( obj ).hasClass( 'rewrite-query' ) ? 'query' : 'selector',
+                input = 'ctc_rewrite_' + inputtype,
+                orig = 'ctc_sel_ovrd_' + inputtype + '_selected';
+            if ( $( '#' + input ).length ) {
+                origval = $( '#' + input + '_orig' ).val();
+                $( '#' + orig ).empty().text( origval );
                 $( obj ).text( self.getxt( 'rename' ) );
             } else {
-                origval = $( '#ctc_sel_ovrd_selector_selected' ).text();
-                $( '#ctc_sel_ovrd_selector_selected' ).html( 
-                    '<textarea id="ctc_rewrite_selector"' +
-                    ' name="ctc_rewrite_selector" autocomplete="off"></textarea>' +
-                    '<input id="ctc_rewrite_selector_orig" name="ctc_rewrite_selector_orig"' +
+                origval = $( '#' + orig ).text();
+                $( '#' + orig ).html( 
+                    '<textarea id="' + input + '"' +
+                    ' name="' + input + '" autocomplete="off"></textarea>' +
+                    '<input id="' + input + '_orig" name="' + input + '_orig"' +
                     ' type="hidden" value="' + self.escquo( origval ) + '"/>' );
-                $( '#ctc_rewrite_selector' ).val( origval );
+                $( '#' + input ).val( origval );
                 $( obj ).text( self.getxt( 'cancel' ) );
             }
         },
@@ -741,7 +769,15 @@
                     selectFirst: true,
                     autoFocus: true,
                     select: function( e, ui ) {
-                        self.set_query( ui.item.value );
+                        if ( $( '#ctc_rewrite_query' ).length ){
+                            // copy selected to rewrite input if active
+                            $( '#ctc_rewrite_query' ).val( ui.item.value );
+                            $( '#ctc_sel_ovrd_query' ).val( '' );
+                        } else {
+                            // otherwise set query
+                            self.set_query( ui.item.value );
+                            self.reset_qsid();
+                        }
                         return false;
                     },
                     focus: function( e ) { 
@@ -762,7 +798,14 @@
                     selectFirst: true,
                     autoFocus: true,
                     select: function( e, ui ) {
-                        self.set_selector( ui.item.value, ui.item.label );
+                        if ( $( '#ctc_rewrite_selector' ).length ){
+                            // copy selected to rewrite input if active
+                            $( '#ctc_rewrite_selector' ).val( ui.item.label );
+                            $( '#ctc_sel_ovrd_selector' ).val( '' );
+                        } else {
+                            // otherwise set selector
+                            self.set_selector( ui.item.value, ui.item.label );
+                        }
                         return false;
                     },
                     focus: function( e ) { 
@@ -966,6 +1009,18 @@
             self.scrolltop();
         },
         
+        /**
+         * reset all qsid inputs
+         * added v2.3.0
+         */
+        reset_qsid: function(){
+            //console.log( 'resetting all qsid inputs...' );
+            self.currqsid = null;
+            $( '#ctc_sel_ovrd_rule_inputs' ).empty();
+            $( '#ctc_sel_ovrd_new_rule,#input_row_load_order,#ctc_sel_ovrd_rule_inputs_container' ).hide().find( '.ctc-child-value' ).remove();
+            $( '.ctc-rewrite-toggle' ).hide();
+        },
+        
         set_selector: function( value, label ) {
             var self = this;
             label = null;
@@ -1003,6 +1058,7 @@
             self.reload = true;
             self.load_selector_values();  
         },
+        
         /**
          * Retrieve data from server and execute callback on completion
          */
@@ -1075,18 +1131,20 @@
             }
             $( '.save-icon' ).addClass( 'is-active' );
             // add rename selector value if it exists
-            $( '#ctc_sel_ovrd_selector_selected' )
-                .find( '#ctc_rewrite_selector' ).each( function() {
-                newsel = $( '#ctc_rewrite_selector' ).val();
-                origsel = $( '#ctc_rewrite_selector_orig' ).val();
-                if ( self.is_empty( newsel ) || !newsel.toString().match( /\w/ ) ) {
-                    newsel = origsel;
-                } else {
-                    postdata.ctc_rewrite_selector = newsel;
-                    self.reload = true;
+            $.each( [ 'query', 'selector' ], function( ndx, el ){
+                if ( $( '#ctc_rewrite_' + el ).length ){
+                    
+                    newsel = $( '#ctc_rewrite_' + el ).val();
+                    origsel = $( '#ctc_rewrite_' + el + '_orig' ).val();
+                    if ( self.is_empty( newsel ) || !newsel.toString().match( /\w/ ) ) {
+                        newsel = origsel;
+                    } else {
+                        postdata[ 'ctc_rewrite_' + el ] = newsel;
+                        self.reload = true;
+                    }
+                    $( '#ctc_sel_ovrd_' + el + '_selected' ).html( newsel );
                 }
                 $( '.ctc-rewrite-toggle' ).text( self.getxt( 'rename' ) );
-                $( '#ctc_sel_ovrd_selector_selected' ).html( newsel );
             } );
             // add wp ajax action to array
             //console.log( $( '#ctc_action' ).val() );
@@ -1222,11 +1280,11 @@
         update: {
             // render individual selector inputs on Query/Selector tab
             qsid: function( res ) {
-                //console.log( res );
                 var self = this,
                     id, html, val, empty;
                 self.currqsid = res.key;
                 self.currdata = res.data;
+                //console.log( 'update: ' + self.reload );
                 //console.log( 'update.qsid: ' + self.currqsid );
                 $( '#ctc_sel_ovrd_qsid' ).val( self.currqsid );
                 if ( self.is_empty( self.currdata.seq ) ) {
@@ -1241,7 +1299,9 @@
                 if ( self.is_empty( self.currdata.value ) ) {
                     //console.log( 'qsdata is empty' );
                     empty = true;
-                    $( '#ctc_sel_ovrd_rule_inputs' ).empty(); 
+                    $( '#ctc_sel_ovrd_rule_inputs' ).empty();
+                    // prune empty selectors after clearing data to prune
+                    self.load_selectors();
                 } else {
                     //console.log( 'qsdata NOT empty' );
                     empty = false;
@@ -1261,22 +1321,23 @@
                     //console.log( 'reload menus: ' + ( self.reload ? 'true' : 'false' ) );
                     if ( self.reload ) {
                         self.load_queries();
+                        self.load_selectors();
                         self.set_query( self.currdata.query );
                         self.load_rules();
                     }
                     $( '#ctc_sel_ovrd_selector_selected' ).text( self.currdata.selector );
-                    $( '.ctc-rewrite-toggle' ).text( self.getxt( 'rename' ) );
-                    $( '.ctc-rewrite-toggle' ).show();
-                    if ( !empty ){
-                        $( '#ctc_sel_ovrd_rule_header,' +
-                        '#ctc_sel_ovrd_new_rule,' +
-                        '#ctc_sel_ovrd_rule_inputs_container,' +
-                        '#ctc_sel_ovrd_rule_inputs' ).show();
+
+                    self.maybe_show_rewrite();
+                    if ( empty ){
+                        self.reset_qsid();
                     } else {
-                        $( '#ctc_sel_ovrd_rule_header,' +
+                        $( 
+                        '#ctc_sel_ovrd_rule_header,' +
                         '#ctc_sel_ovrd_new_rule,' +
                         '#ctc_sel_ovrd_rule_inputs_container,' +
-                        '#ctc_sel_ovrd_rule_inputs' ).hide();
+                        '#ctc_sel_ovrd_rule_inputs,' +
+                        '#input_row_load_order'
+                        ).fadeIn();
                     }
                     //self.scrolltop();
 //                }
@@ -1802,9 +1863,9 @@
             } );
         },
         parse_page: function( themetype, body ){
-
             var self        = this,
-                themepath   = window.ctcAjax.theme_uri.replace( /^https?:\/\//, '' ),
+                themepath   = window.ctcAjax.theme_dir,
+                //themepath   = window.ctcAjax.theme_uri.replace( /^https?:\/\//, '' ),
                 stylesheet  = ( 'child' === themetype ? $.chldthmcfg.currchild : $.chldthmcfg.currparnt ),
                 escaped     = self.escrgx( $.chldthmcfg.currparnt ) + ( 'child' === themetype ? '|' + self.escrgx( stylesheet ) : '' ),
                 regex_link  = new RegExp( "<link( rel=[\"']stylesheet[\"'] id=['\"]([^'\"]+?)['\"])?[^>]+?" +
@@ -1816,8 +1877,12 @@
                 queue,
                 csslink;
 
+            // console.log( 'parsing page: ' + themetype );
             if ( 'child' === themetype ) {
-                //console.log( body );
+                var parts = body.match( /^[\s\S]*?<head>([\s\S]*?)<\/head>/ );
+                if ( parts ){
+                    // console.log( parts[ 1 ] );
+                }
             }
             // retrieve enqueued stylesheet ids 
             if ( ( queue = body.match( /BEGIN WP QUEUE\n([\s\S]*?)\nEND WP QUEUE/ ) ) ) {
@@ -1837,31 +1902,47 @@
             }
             if ( body.match( /CHLD_THM_CFG_IGNORE_PARENT/ ) ) {
                 self.analysis[ themetype ].signals.thm_ignoreparnt = 1;
-                //console.log( 'thm_ignoreparnt' );
+                // console.log( 'signal: thm_ignoreparnt' );
             }
             if ( body.match( /IS_CTC_THEME/ ) ) {
                 self.analysis[ themetype ].signals.thm_is_ctc = 1;
-                //console.log( 'thm_is_ctc' );
+                // console.log( 'signal: thm_is_ctc' );
             }
 
             if ( body.match( /NO_CTC_STYLES/ ) ) {
                 self.analysis[ themetype ].signals.thm_no_styles = 1;
-                //console.log( 'thm_no_styles' );
+                // console.log( 'signal: thm_no_styles' );
             }
             if ( body.match( /HAS_CTC_IMPORT/ ) ) {
                 self.analysis[ themetype ].signals.thm_has_import = 1;
-                //console.log( 'thm_has_import' );
+                // console.log( 'signal: thm_has_import' );
+            }
+
+            if ( body.match( /HAS_WP_CACHE/ ) ) {
+                self.analysis[ themetype ].signals.thm_has_cache = 1;
+                // console.log( 'signal: thm_has_cache' );
+            }
+
+            if ( body.match( /HAS_WP_ROCKET/ ) ) {
+                self.analysis[ themetype ].signals.thm_has_wprocket = 1;
+                // console.log( 'signal: thm_has_wprocket' );
+            }
+
+            if ( body.match( /HAS_AUTOPTIMIZE/ ) ) {
+                self.analysis[ themetype ].signals.thm_has_autoptimize = 1;
+                // console.log( 'signal: thm_has_autoptimize' );
             }
 
             // remove comments to avoid flagging conditional stylesheets ( IE compatability, etc. )
             body = body.replace( /<!\-\-[\s\S]*?\-\->/g, '' );
-            //console.log( 'PARSE:' );
+            // console.log( 'PARSE: ' + regex_link );
             while ( ( msg = regex_err.exec( body ) ) ) {
                 var errstr = msg[ 0 ].replace( /<.*?>/g, '' );
                 self.phperr[ themetype ].push( errstr );
                 self.analysis[ themetype ].signals.err_php = 1;
                 if ( errstr.match( /Fatal error/i ) ) {
                     self.analysis[ themetype ].signals.err_fatal = 1;
+                    // console.log( 'signal: err_fatal' );
                 } 
                 //else if ( errstr.match( /(FileNotFoundException|Failed opening|failed to open stream)/i ) ) {
                     //analysis.signals.err_fnf = 1;
@@ -1873,72 +1954,89 @@
                     stylesheetpath  = csslink[ 4 ],
                     linktheme       = $.chldthmcfg.currparnt === stylesheettheme ? 'parnt' : 'child',
                     noid            = 0;
-                    //console.log( 'stylesheetid: ' + stylesheetid + ' stylesheetpath: ' + stylesheetpath );
+                    // console.log( 'stylesheetid: ' + stylesheetid + ' stylesheetpath: ' + stylesheetpath );
                     // flag stylesheet links that have no id or are not in wp_styles 
                 if ( '' === stylesheetid || -1 === $.inArray( stylesheetid, self.analysis[ themetype ].queue ) ) {
                     noid = 1;
-                    //console.log( 'no id for ' + stylesheetpath + '!' );
+                    // console.log( 'no id for ' + stylesheetpath + ' in ' + themetype + '!' );
                 } else if ( 0 === stylesheetid.indexOf( 'chld_thm_cfg' ) ) { // handle ctc-generated links
-                    // console.log( 'ctc link detected: ' + stylesheetid + ' themeloaded: ' + themeloaded );
-                    if ( stylesheetpath.match( /^ctc\-style([\-\.]min)?\.css$/ ) ) {
-                        //console.log( 'separate stylesheet detected' );
+                    // console.log( 'ctc link detected: ' + stylesheetid + ' in ' + themetype );
+                    if ( stylesheetpath.match( /^ctc\-style.*?\.css$/ ) ) {
+                        // console.log( 'separate stylesheet detected' );
                         themeloaded = 1;
                         self.analysis[ themetype ].signals.ctc_sep_loaded = 1; // flag that separate stylesheet has been detected
                     } else if ( stylesheetpath.match( /^ctc\-genesis([\-\.]min)?\.css$/ ) ) {
-                        //console.log( 'genesis stylesheet detected' );
+                        // console.log( 'genesis stylesheet detected' );
                         themeloaded = 1;
                         self.analysis[ themetype ].signals.ctc_gen_loaded = 1; // flag that genesis "parent" has been detected
-                    } else if ( stylesheetid.match( /$chld_thm_cfg_ext/ ) ) {
-                        self.analysis[ themetype ].signals.ctc_ext_loaded = 1; // flag that external stylesheet link detected
-                        self.analysis[ themetype ].deps[ themeloaded ].push( [ stylesheetid, stylesheetpath ] );
+                    } else if ( stylesheetid.match( /^chld_thm_cfg_ext/ ) ) {
+                        // console.log( 'external stylesheet detected' );
+                        // rtl test added v2.3.0
+                        if ( stylesheetpath.match( /rtl.*?\.css$/ ) ) {
+                            // console.log( 'flagging as RTL' );
+                            self.analysis[ themetype ].signals.thm_rtl = 1;
+                            // do not set dependency because all users may not use rtl
+                        } else {
+                            // console.log( 'adding external stylesheet dependency' );
+                            self.analysis[ themetype ].signals.ctc_ext_loaded = 1; // flag that external stylesheet link detected
+                            self.analysis[ themetype ].deps[ themeloaded ].push( [ stylesheetid, stylesheetpath ] );                            
+                        }
                     } else if ( 'chld_thm_cfg_child' === stylesheetid ) {
                         self.analysis[ themetype ].signals.ctc_child_loaded = 1; // flag that ctc child stylesheet link detected
                         self.analysis[ themetype ].deps[ themeloaded ].push( [ stylesheetid, stylesheetpath ] );
+                        // console.log( 'signal: ctc_child_loaded' );
                     } else if ( 'chld_thm_cfg_parent' === stylesheetid ) {
                         self.analysis[ themetype ].signals.ctc_parnt_loaded = 1; // flag that ctc parent stylesheet link detected
                         self.analysis[ themetype ].deps[ themeloaded ].push( [ stylesheetid, stylesheetpath ] );
+                        // console.log( 'signal: ctc_parnt_loaded' );
                         if ( themeloaded ){
-                            //console.log( 'parent link out of sequence' );
+                            // console.log( 'parent link out of sequence' );
                             self.analysis[ themetype ].signals.ctc_parnt_reorder = 1; // flag that ctc parent stylesheet link out of order
                         }
                     }
                     continue;
                 }
                 // flag main theme stylesheet link
-                if ( stylesheetpath.match( /^style([\-\.]min)?\.css$/ ) ) {
-                    //console.log( linktheme + ' theme stylesheet detected: ' + stylesheettheme + '/' + stylesheetpath ); 
+                if ( stylesheetpath.match( /^style.*?\.css$/ ) ) {
+                    // console.log( linktheme + ' theme stylesheet detected: ' + stylesheettheme + '/' + stylesheetpath ); 
                     themeloaded = 1; // flag that main theme stylesheet has been detected
                     // if main theme stylesheet link has no id then it is unregistered ( hard-wired )
                     if ( 'parnt' === linktheme ) {
                         if ( noid ) {
                             self.analysis[ themetype ].signals.thm_parnt_loaded = 'thm_unregistered';
+                            // console.log( 'signal: thm_parnt_loaded: thm_unregistered' );
                         } else {
                             self.analysis[ themetype ].signals.thm_parnt_loaded = stylesheetid;
+                            // console.log( 'signal: thm_parnt_loaded: ' + stylesheetid );
                             // check that parent stylesheet is loaded before child stylesheet
                             if ( 'child' === themetype && self.analysis[ themetype ].signals.thm_child_loaded ) {
                                 self.analysis[ themetype ].signals.ctc_parnt_reorder = 1;
+                                // console.log( 'signal: ctc_parnt_reorder' );
                             }
                         }
                     } else {
                         self.analysis[ themetype ].signals.thm_child_loaded = noid ? 'thm_unregistered' : stylesheetid;
+                        // console.log( 'signal: thm_child_loaded: ' + self.analysis[ themetype ].signals.thm_child_loaded );
                     }
                     if ( noid ) {
                         if ( testloaded ) {
                             self.analysis[ themetype ].signals.thm_past_wphead = 1;
                             self.analysis[ themetype ].deps[ themeloaded ].push( [ 'thm_past_wphead', stylesheetpath ] );
-                            //console.log( 'Unreachable theme stylesheet detected' );
+                            // console.log( 'signal: thm_past_wphead (Unreachable theme stylesheet detected ' + stylesheetpath );
                         } else {
                             self.analysis[ themetype ].signals.thm_unregistered = 1;
                             self.analysis[ themetype ].deps[ themeloaded ].push( [ 'thm_unregistered', stylesheetpath ] );
-                            //console.log( 'Unregistered theme stylesheet detected' );
+                            // console.log( 'signal: thm_unregistered (Unregistered theme stylesheet detected) ' + stylesheetpath );
                         }
                     } else {
                         self.analysis[ themetype ].deps[ themeloaded ].push( [ stylesheetid, stylesheetpath ] );
-                        //console.log( 'Theme stylesheet OK!' );
+                        // console.log( 'Theme stylesheet OK! ' + stylesheetid + ' ' + stylesheetpath );
                     }
 
+                } else if ( stylesheetpath.match( /rtl.*?\.css$/ ) ) {
+                    self.analysis[ themetype ].signals.thm_rtl = 1;
                 } else if ( 'ctc-test.css' === stylesheetpath ) { // flag test stylesheet link
-                    //console.log( 'end of queue reached' );
+                    // console.log( 'end of queue reached' );
                     testloaded = 1; // flag that test queue has been detected ( end of wp_head )
                 } else {
                     var err = null;
@@ -1949,7 +2047,7 @@
                     }
                     if ( testloaded ) {
                         if ( themeloaded ) {
-                            //console.log( 'Unreachable stylesheet detected!' + stylesheetpath );
+                            // console.log( 'Unreachable stylesheet detected!' + stylesheetpath );
                             err = 'css_past_wphead';
                         } else {
                             err = 'dep_past_wphead';
@@ -1969,6 +2067,8 @@
             if ( ! themeloaded ){
                 self.analysis[ themetype ].signals.thm_notheme = 1; // flag that no theme stylesheet has been detected
             }
+            // console.log( 'analysis of ' + themetype + ':' );
+            // console.log( self.analysis[ themetype ] );
         },
 
         /**
@@ -1987,13 +2087,15 @@
                 errnotice   = {
                     style:      'notice-warning',
                     headline:   $.chldthmcfg.getxt( 'anlz3', name ),
-                    errlist:    ''
+                    errlist:    '',
+                    msg:        $.chldthmcfg.getxt( 'anlz7' )
                 },
                 resubmit    = 0,
                 resubmitdata= {},
                 anlz,
                 debugtxt    = '',
-                dep_inputs;
+                dep_inputs,
+                errflags    = {};
 
             if ( self.analysis[ themetype ].signals.failure || 
                 ( self.analysis[ themetype ].signals.thm_noqueue && !self.phperr[ themetype ].length ) ) {
@@ -2010,9 +2112,11 @@
                 if ( self.phperr[ themetype ].length ) {
                     $.each( self.phperr[ themetype ], function( index, err ) {
                         if ( err.match( /Fatal error/i ) ) {
-                            errnotice.style    = 'error';
-                            errnotice.headline =  $.chldthmcfg.getxt( 'anlz8', name );
-                        } 
+                            errflags.fatal = 1;
+                        }
+                        if ( err.match( /Constant \w+ already defined in .+?wp-config.php/i ) ){
+                            errflags.config = 1;
+                        }
                         /*
                         if ( $.chldthmcfg.existing && err.match( /(FileNotFoundException|Failed opening|failed to open stream)/i ) ) {
                             //console.log( 'Probably using get_stylesheet_directory()' );
@@ -2021,173 +2125,198 @@
                         */
                         errnotice.errlist += err + "\n"; 
                     } );
+                    if ( errflags.fatal ){
+                        errnotice.style    = 'error';
+                        errnotice.headline =  $.chldthmcfg.getxt( 'anlz8', name );
+                    }
+                    if ( errflags.config ){
+                        errnotice.msg = $.chldthmcfg.getxt( 'anlzconfig', name ) + errnotice.msg;
+                    }
                     errnotice.msg = '<div style="background-color:#ffeebb;padding:6px">' +
                         '<div class="ctc-section-toggle" id="ctc_analysis_errs">' + 
                         $.chldthmcfg.getxt( 'anlz6' ) + '</div>' +
-                        '<div id="ctc_analysis_errs_content" style="display:none"><textarea>' + 
+                        '<div id="ctc_analysis_errs_content"><textarea>' + 
                         errnotice.errlist + '</textarea></div></div>' +
-                        $.chldthmcfg.getxt( 'anlz7' );
+                        errnotice.msg;
                     notice.notices.push( errnotice );
                 }
-                if ( self.analysis[ themetype ].signals.thm_past_wphead || self.analysis[ themetype ].signals.dep_past_wphead ) { 
-                    // || self.analysis[ themetype ].signals.css_past_wphead ){
+                // check for wp rocket + autoptimize combo & skip other analysis
+                if ( self.analysis[ themetype ].signals.thm_has_wprocket && self.analysis[ themetype ].signals.thm_has_autoptimize ){
                     notice.notices.push( {
-                        headline: $.chldthmcfg.getxt( 'anlz9' ),
+                        headline: $.chldthmcfg.getxt( 'anlzcache1' ),
                         style: 'notice-warning',
-                        msg: $.chldthmcfg.getxt( 'anlz10' )
+                        msg: $.chldthmcfg.getxt( 'anlzcache2' )
                     } );
-                    $( '#ctc_repairheader' ).prop( 'checked', true );
-                    $( '#ctc_repairheader_container' ).show();
-                }
-                if ( self.analysis[ themetype ].signals.thm_unregistered ) {
-                    if (
-                        !self.analysis[ themetype ].signals.ctc_child_loaded &&
-                        !self.analysis[ themetype ].signals.ctc_sep_loaded ){
-                    // test for stylesheet enqueue issues
+                } else if ( !self.analysis[ themetype ].signals.thm_noqueue ) { // !errflags.fatal && 
+                    if ( self.analysis[ themetype ].signals.thm_past_wphead || self.analysis[ themetype ].signals.dep_past_wphead ) { 
+                        // || self.analysis[ themetype ].signals.css_past_wphead ){
                         notice.notices.push( {
-                            headline: $.chldthmcfg.getxt( 'anlz11' ),
+                            headline: $.chldthmcfg.getxt( 'anlz9' ),
                             style: 'notice-warning',
-                            msg: $.chldthmcfg.getxt( 'anlz12' )
+                            msg: $.chldthmcfg.getxt( 'anlz10' )
                         } );
-                        $( '#ctc_repairheader_container' ).show();
                         $( '#ctc_repairheader' ).prop( 'checked', true );
+                        $( '#ctc_repairheader_container' ).show();
                     }
-                }
-                if ( 'child' === themetype ) {
-                    if ( self.analysis.child.signals.ctc_parnt_reorder ) {
-                        //console.log( 'reorder flag detected, resubmitting.' );
-                        resubmit = 1;
+                    if ( self.analysis[ themetype ].signals.thm_unregistered ) {
+                        if (
+                            !self.analysis[ themetype ].signals.ctc_child_loaded &&
+                            !self.analysis[ themetype ].signals.ctc_sep_loaded ){
+                        // test for stylesheet enqueue issues
+                            notice.notices.push( {
+                                headline: $.chldthmcfg.getxt( 'anlz11' ),
+                                style: 'notice-warning',
+                                msg: $.chldthmcfg.getxt( 'anlz12' )
+                            } );
+                            $( '#ctc_repairheader_container' ).show();
+                            $( '#ctc_repairheader' ).prop( 'checked', true );
+                        }
                     }
-                    if ( !self.analysis.child.signals.ctc_child_loaded &&
-                        !self.analysis.child.signals.ctc_sep_loaded &&
-                        !self.analysis.child.signals.thm_child_loaded ){
-                        notice.notices.push( {
-                            headline: $.chldthmcfg.getxt( 'anlz13' ),
-                            style: 'notice-warning',
-                            msg: $.chldthmcfg.getxt( 'anlz14' )
+                    if ( 'child' === themetype ) {
+                        if ( self.analysis.child.signals.ctc_parnt_reorder ) {
+                            // console.log( 'reorder flag detected, resubmitting.' );
+                            resubmit = 1;
+                        }
+                        if ( !self.analysis.child.signals.ctc_child_loaded &&
+                            !self.analysis.child.signals.ctc_sep_loaded &&
+                            !self.analysis.child.signals.thm_child_loaded ){
+                            notice.notices.push( {
+                                headline: $.chldthmcfg.getxt( 'anlz13' ),
+                                style: 'notice-warning',
+                                msg: $.chldthmcfg.getxt( 'anlz14' )
+                            } );
+                            resubmit = 1;
+                        }
+                        if ( self.analysis[ themetype ].signals.ctc_gen_loaded ) {
+                            notice.notices.push( {
+                                headline: $.chldthmcfg.getxt( 'anlz31' ),
+                                msg: $.chldthmcfg.getxt( 'anlz32' ),
+                                style: 'notice-warning'
+                            } );
+                        }
+                        if ( !self.analysis.parnt.signals.thm_no_styles &&
+                            !self.analysis.child.signals.ctc_gen_loaded &&
+                            !self.analysis.child.signals.thm_parnt_loaded &&
+                            !self.analysis.child.signals.ctc_parnt_loaded &&
+                            !self.analysis.child.signals.thm_ignoreparnt &&
+                            !self.analysis.child.signals.thm_has_import ){
+                            notice.notices.push( {
+                                headline: $.chldthmcfg.getxt( 'anlz15' ),
+                                style: 'notice-warning',
+                                msg: $.chldthmcfg.getxt( 'anlz16' )
+                            } );
+                            resubmit = 1;
+                        }
+                        if ( self.analysis.child.signals.thm_unregistered &&
+                            self.analysis.child.signals.thm_child_loaded &&
+                            'thm_unregistered' === self.analysis.child.signals.thm_child_loaded &&
+                            self.analysis.child.signals.ctc_child_loaded &&
+                            self.analysis.child.signals.ctc_parnt_loaded ) {
+                            notice.notices.push( {
+                                headline: $.chldthmcfg.getxt( 'anlz28' ),
+                                style: 'notice-warning',
+                                msg: $.chldthmcfg.getxt( 'anlz29' )
+                            } );
+                            $( '#ctc_repairheader_container' ).show();
+                            $( '#ctc_repairheader' ).prop( 'checked', true );
+                        }
+
+                        if ( !self.analysis.child.signals.thm_is_ctc &&
+                            !$( '#ctc_child_type_duplicate' ).is( ':checked' ) ) {
+                            notice.notices.push( {
+                                headline: $.chldthmcfg.getxt( 'anlz19' ),
+                                msg: $.chldthmcfg.getxt( 'anlz20' ),
+                                style: 'notice-warning'
+                            } );
+                        }
+                        if ( !self.analysis.child.signals.thm_rtl &&
+                            self.analysis.parnt.signals.thm_rtl ) {
+                            notice.notices.push( {
+                                headline: $.chldthmcfg.getxt( 'anlzrtl' ),
+                                msg: $.chldthmcfg.getxt( 'anlzrtl2' ),
+                                style: 'notice-warning'
+                            } );
+                        }
+
+                    }
+                    // automatically set form inputs based on current analysis
+                    if ( self.analysis[ themetype ].signals.ctc_sep_loaded || self.analysis[ themetype ].signals.ctc_gen_loaded ){
+                        //console.log( 'Separate stylesheet detected' );
+                        $( '#ctc_handling_separate' ).prop( 'checked', true );
+                    }
+                    if ( !notice.notices.length ) {
+                        notice.notices.push( { 
+                            headline: '' + ( 'child' === themetype ? $.chldthmcfg.getxt( 'anlz17' ) : $.chldthmcfg.getxt( 'anlz18' ) ) + '',
+                            style: 'updated',
+                            msg: ''
                         } );
-                        resubmit = 1;
                     }
-                    if ( self.analysis[ themetype ].signals.ctc_gen_loaded ) {
+
+                    if ( 'child' === themetype && self.analysis.child.signals.thm_has_import ) {
                         notice.notices.push( {
-                            headline: $.chldthmcfg.getxt( 'anlz31' ),
-                            msg: $.chldthmcfg.getxt( 'anlz32' ),
+                            headline: $.chldthmcfg.getxt( 'anlz21' ),
+                            msg: $.chldthmcfg.getxt( 'anlz22' ),
                             style: 'notice-warning'
                         } );
+                        //console.log( 'Import parent detected' );
+                        $( '#ctc_enqueue_import' ).prop( 'checked', true );
                     }
-                    if ( !self.analysis.parnt.signals.thm_no_styles &&
-                        !self.analysis.child.signals.ctc_gen_loaded &&
-                        !self.analysis.child.signals.thm_parnt_loaded &&
-                        !self.analysis.child.signals.ctc_parnt_loaded &&
-                        !self.analysis.child.signals.thm_ignoreparnt &&
-                        !self.analysis.child.signals.thm_has_import ){
-                        notice.notices.push( {
-                            headline: $.chldthmcfg.getxt( 'anlz15' ),
-                            style: 'notice-warning',
-                            msg: $.chldthmcfg.getxt( 'anlz16' )
+                    if ( self.analysis[ themetype ].signals.thm_ignoreparnt || self.analysis[ themetype ].signals.ctc_gen_loaded ){
+                        //console.log( 'Ignore parent detected' );
+                        $( '#ctc_ignoreparnt' ).prop( 'checked', true );
+                        if ( !$( '#ctc_enqueue_none' ).is( ':checked' ) ) {
+                            $( '#ctc_enqueue_none' ).prop( 'checked', true );
+                            resubmit = 1;
+                            resubmitdata.ctc_enqueue = 'none';
+                        }
+                    } else {
+                        $( '#ctc_ignoreparnt' ).prop( 'checked', false );
+                    }
+                    if ( !self.analysis[ themetype ].signals.ctc_sep_loaded && 
+                        !self.analysis[ themetype ].signals.ctc_gen_loaded && 
+                        !self.analysis[ themetype ].signals.ctc_child_loaded && 
+                        !self.analysis[ themetype ].signals.thm_unregistered && 
+                        !self.analysis[ themetype ].signals.thm_past_wphead && 
+                        self.analysis[ themetype ].deps[ 1 ].length ) {
+                        var sheets = '';
+                        $.each( self.analysis[ themetype ].deps[ 1 ], function( ndx, el ) {
+                            if ( el[ 1 ].match( /^style.*?\.css$/ ) ) { return; }
+                            sheets += '<li>' + el[ 1 ] + "</li>\n";
                         } );
-                        resubmit = 1;
-                    }
-                    if ( self.analysis.child.signals.thm_unregistered &&
-                        self.analysis.child.signals.thm_child_loaded &&
-                        'thm_unregistered' === self.analysis.child.signals.thm_child_loaded &&
-                        self.analysis.child.signals.ctc_child_loaded &&
-                        self.analysis.child.signals.ctc_parnt_loaded ) {
+                        if ( '' !== sheets ) {
+                        sheets = "<ul class='howto' style='padding-left:1em'>\n" + sheets + "</ul>\n";
                         notice.notices.push( {
-                            headline: $.chldthmcfg.getxt( 'anlz28' ),
-                            style: 'notice-warning',
-                            msg: $.chldthmcfg.getxt( 'anlz29' )
+                            headline: $.chldthmcfg.getxt( 'anlz23' ),
+                            msg: sheets + $.chldthmcfg.getxt( 'anlz24' ),
+                            style: 'updated'
                         } );
-                        $( '#ctc_repairheader_container' ).show();
-                        $( '#ctc_repairheader' ).prop( 'checked', true );
+                        }
                     }
-                    
-                    if ( !self.analysis.child.signals.thm_is_ctc &&
-                        !$( '#ctc_child_type_duplicate' ).is( ':checked' ) ) {
-                        notice.notices.push( {
-                            headline: $.chldthmcfg.getxt( 'anlz19' ),
-                            msg: $.chldthmcfg.getxt( 'anlz20' ),
-                            style: 'notice-warning'
-                        } );
-                    }
-                }
-                // automatically set form inputs based on current analysis
-                if ( self.analysis[ themetype ].signals.ctc_sep_loaded || self.analysis[ themetype ].signals.ctc_gen_loaded ){
-                    //console.log( 'Separate stylesheet detected' );
-                    $( '#ctc_handling_separate' ).prop( 'checked', true );
-                }
-                if ( !notice.notices.length ) {
-                    notice.notices.push( { 
-                        headline: '' + ( 'child' === themetype ? $.chldthmcfg.getxt( 'anlz17' ) : $.chldthmcfg.getxt( 'anlz18' ) ) + '',
-                        style: 'updated',
-                        msg: ''
-                    } );
-                }
-                
-                if ( 'child' === themetype && self.analysis.child.signals.thm_has_import ) {
-                    notice.notices.push( {
-                        headline: $.chldthmcfg.getxt( 'anlz21' ),
-                        msg: $.chldthmcfg.getxt( 'anlz22' ),
-                        style: 'notice-warning'
-                    } );
-                    //console.log( 'Import parent detected' );
-                    $( '#ctc_enqueue_import' ).prop( 'checked', true );
-                }
-                if ( self.analysis[ themetype ].signals.thm_ignoreparnt || self.analysis[ themetype ].signals.ctc_gen_loaded ){
-                    //console.log( 'Ignore parent detected' );
-                    $( '#ctc_ignoreparnt' ).prop( 'checked', true );
-                    if ( !$( '#ctc_enqueue_none' ).is( ':checked' ) ) {
+                    if ( 'child' === themetype && self.analysis[ themetype ].signals.thm_parnt_loaded ) {
+                        //if ( !$( '#ctc_enqueue_none' ).is( ':checked' ) ) {
+                            notice.notices.push( {
+                                headline: $.chldthmcfg.getxt( 'anlz25' ),
+                                msg: $.chldthmcfg.getxt( 'anlz26' ),
+                                style: 'updated'
+                            } );
+                        //}
                         $( '#ctc_enqueue_none' ).prop( 'checked', true );
                         resubmit = 1;
                         resubmitdata.ctc_enqueue = 'none';
                     }
-                } else {
-                    $( '#ctc_ignoreparnt' ).prop( 'checked', false );
-                }
-                if ( !self.analysis[ themetype ].signals.ctc_sep_loaded && 
-                    !self.analysis[ themetype ].signals.ctc_gen_loaded && 
-                    !self.analysis[ themetype ].signals.ctc_child_loaded && 
-                    !self.analysis[ themetype ].signals.thm_unregistered && 
-                    !self.analysis[ themetype ].signals.thm_past_wphead && 
-                    self.analysis[ themetype ].deps[ 1 ].length ) {
-                    var sheets = '';
-                    $.each( self.analysis[ themetype ].deps[ 1 ], function( ndx, el ) {
-                        if ( el[ 1 ].match( /^style([\-\.]min)?\.css$/ ) ) { return; }
-                        sheets += '<li>' + el[ 1 ] + "</li>\n";
-                    } );
-                    if ( '' !== sheets ) {
-                    sheets = "<ul class='howto' style='padding-left:1em'>\n" + sheets + "</ul>\n";
-                    notice.notices.push( {
-                        headline: $.chldthmcfg.getxt( 'anlz23' ),
-                        msg: sheets + $.chldthmcfg.getxt( 'anlz24' ),
-                        style: 'updated'
-                    } );
+                    // if no parent styles, no need to enqueue
+                    if ( self.analysis.parnt.signals.thm_no_styles ) {
+                        //if ( !$( '#ctc_enqueue_none' ).is( ':checked' ) ) {
+                            notice.notices.push( {
+                                headline: $.chldthmcfg.getxt( 'anlz27' ),
+                                msg: $.chldthmcfg.getxt( 'anlz26' ),
+                                style: 'updated'
+                            } );
+                        //}
+                        $( '#ctc_enqueue_none' ).prop( 'checked', true );
+                        resubmit = 1;
+                        resubmitdata.ctc_enqueue = 'none';
                     }
-                }
-                if ( 'child' === themetype && self.analysis[ themetype ].signals.thm_parnt_loaded ) {
-                    //if ( !$( '#ctc_enqueue_none' ).is( ':checked' ) ) {
-                        notice.notices.push( {
-                            headline: $.chldthmcfg.getxt( 'anlz25' ),
-                            msg: $.chldthmcfg.getxt( 'anlz26' ),
-                            style: 'updated'
-                        } );
-                    //}
-                    $( '#ctc_enqueue_none' ).prop( 'checked', true );
-                    resubmit = 1;
-                    resubmitdata.ctc_enqueue = 'none';
-                }
-                // if no parent styles, no need to enqueue
-                if ( self.analysis.parnt.signals.thm_no_styles ) {
-                    //if ( !$( '#ctc_enqueue_none' ).is( ':checked' ) ) {
-                        notice.notices.push( {
-                            headline: $.chldthmcfg.getxt( 'anlz27' ),
-                            msg: $.chldthmcfg.getxt( 'anlz26' ),
-                            style: 'updated'
-                        } );
-                    //}
-                    $( '#ctc_enqueue_none' ).prop( 'checked', true );
-                    resubmit = 1;
-                    resubmitdata.ctc_enqueue = 'none';
                 }
             }
             

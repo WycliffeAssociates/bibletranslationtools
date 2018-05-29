@@ -34,11 +34,12 @@ final class FLBuilderUserTemplatesAdminEdit {
 		global $pagenow;
 
 		$post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : null;
+		$args = $_GET;
 
 		if ( 'post-new.php' == $pagenow && 'fl-builder-template' == $post_type ) {
 
-			wp_redirect( admin_url( '/edit.php?post_type=fl-builder-template&page=fl-builder-add-new' ) );
-
+			$args['page'] = 'fl-builder-add-new';
+			wp_redirect( admin_url( '/edit.php?' . http_build_query( $args ) ) );
 			exit;
 		}
 	}
@@ -175,9 +176,7 @@ final class FLBuilderUserTemplatesAdminEdit {
 	 * @return bool
 	 */
 	static public function remove_builder_edit_ui( $render_ui ) {
-		$screen = get_current_screen();
-
-		return 'fl-builder-template' == $screen->post_type ? false : $render_ui;
+		return 'fl-builder-template' == FLBuilderAdminPosts::get_post_type() ? false : $render_ui;
 	}
 }
 

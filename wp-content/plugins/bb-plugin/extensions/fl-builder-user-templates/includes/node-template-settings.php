@@ -14,8 +14,8 @@ FLBuilder::register_settings_form('node_template', array(
 						),
 						'global'        => array(
 							'type'          => 'select',
-							'label'         => _x( 'Global', 'Whether this is a global row or module.', 'fl-builder' ),
-							'help'          => __( 'Global rows and modules can be added to multiple pages and edited in one place.', 'fl-builder' ),
+							'label'         => _x( 'Global', 'Whether this is a global row, column or module.', 'fl-builder' ),
+							'help'          => __( 'Global rows, cols and modules can be added to multiple pages and edited in one place.', 'fl-builder' ),
 							'default'       => '0',
 							'options'       => array(
 								'0'             => __( 'No', 'fl-builder' ),

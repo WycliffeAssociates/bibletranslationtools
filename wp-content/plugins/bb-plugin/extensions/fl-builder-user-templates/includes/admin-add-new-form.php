@@ -53,7 +53,7 @@
 			<tr class="fl-template-global-row">
 				<th>
 					<label for="fl-template[global]"><?php _e( 'Global', 'fl-builder' ); ?></label>
-					<i class="dashicons dashicons-editor-help" title="<?php esc_html_e( 'Global rows and modules can be added to multiple pages and edited in one place.', 'fl-builder' ); ?>"></i>
+					<i class="dashicons dashicons-editor-help" title="<?php esc_html_e( 'Global rows, cols and modules can be added to multiple pages and edited in one place.', 'fl-builder' ); ?>"></i>
 				</th>
 				<td>
 					<label>

@@ -17,6 +17,7 @@ final class FLBuilderUserTemplatesPostType {
 		/* Actions */
 		add_action( 'init', __CLASS__ . '::register' );
 		add_action( 'init', __CLASS__ . '::register_taxonomies' );
+		add_action( 'init', __CLASS__ . '::register_pointer' );
 	}
 
 	/**
@@ -29,13 +30,19 @@ final class FLBuilderUserTemplatesPostType {
 		$admin_access 	 = FLBuilderUserAccess::current_user_can( 'builder_admin' );
 		$can_edit 		 = FLBuilderUserAccess::current_user_can( 'unrestricted_editing' );
 		$can_edit_global = FLBuilderUserAccess::current_user_can( 'global_node_editing' );
+		$menu_name       = FLBuilderModel::get_branding();
+
+		// Use "Builder" for the menu name if we have custom branding.
+		if ( __( 'Beaver Builder', 'fl-builder' ) !== $menu_name ) {
+			$menu_name = __( 'Builder', 'fl-builder' );
+		}
 
 		$args = apply_filters( 'fl_builder_register_template_post_type_args', array(
 			'public'            => $admin_access && $can_edit ? true : false,
 			'labels'            => array(
 				'name'               => _x( 'Templates', 'Custom post type label.', 'fl-builder' ),
 				'singular_name'      => _x( 'Template', 'Custom post type label.', 'fl-builder' ),
-				'menu_name'          => _x( 'Builder', 'Custom post type label.', 'fl-builder' ),
+				'menu_name'          => $menu_name,
 				'name_admin_bar'     => _x( 'Template', 'Custom post type label.', 'fl-builder' ),
 				'add_new'            => _x( 'Add New', 'Custom post type label.', 'fl-builder' ),
 				'add_new_item'       => _x( 'Add New', 'Custom post type label.', 'fl-builder' ),
@@ -52,6 +59,7 @@ final class FLBuilderUserTemplatesPostType {
 				'title',
 				'revisions',
 				'page-attributes',
+				'thumbnail',
 			),
 			'taxonomies'		=> array(
 				'fl-builder-template-category'
@@ -104,6 +112,42 @@ final class FLBuilderUserTemplatesPostType {
 		) );
 
 		register_taxonomy( 'fl-builder-template-type', array( 'fl-builder-template' ), $args );
+	}
+
+	/**
+	 * Registers an admin pointer pointing out the changes
+	 * to the templates admin in 1.10.
+	 *
+	 * @since 1.10.3
+	 * @return void
+	 */
+	static public function register_pointer() {
+		$admin_access = FLBuilderUserAccess::current_user_can( 'builder_admin' );
+		$update_info  = get_site_option( '_fl_builder_update_info', false );
+
+		if ( ! $admin_access || ! is_array( $update_info ) ) {
+			return;
+		}
+		if ( ! version_compare( $update_info['from'], '1.10.3', '<' ) ) {
+			return;
+		}
+
+		FLBuilderAdminPointers::register_pointer( array(
+			'id'      => 'fl_builder_templates_menu_upgrade',
+			'target'  => 'li.menu-icon-fl-builder-template',
+			'cap'     => 'edit_posts',
+			'options' => array(
+				'content'  => wp_kses_post( sprintf(
+					'<h3>%s</h3><p style="margin:13px 0;">%s</p>',
+					__( 'Builder Admin Menu', 'fl-builder' ),
+					__( 'The Templates admin menu has been renamed to Builder and split into useful sections for working with templates, rows and modules.', 'fl-builder' )
+				) ),
+				'position' => array(
+					'edge'  => 'left',
+					'align' => 'left',
+				),
+			),
+		) );
 	}
 }
 

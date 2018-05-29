@@ -37,7 +37,7 @@ if ( ( 'media_library' == $settings->audio_type ) && (is_array( $settings->audio
 
 	</div>
 <?php
-}// End if().
+}
 
 if ( FLBuilderModel::is_builder_active() ) {
 	wp_underscore_playlist_templates();

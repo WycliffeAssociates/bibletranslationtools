@@ -19,7 +19,7 @@ $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'parent_child_options';
     if ( $this->ctc()->is_theme() ):  
     ?><a id="import_options" href="" 
                     class="nav-tab <?php $this->maybe_disable(); echo 'import_options' == $active_tab ? ' nav-tab-active' : ''; ?>">
-<?php _e( 'Web Fonts', 'child-theme-configurator' ); ?>
+<?php _e( 'Web Fonts & CSS', 'child-theme-configurator' ); ?>
 </a><?php 
     endif; ?><a id="view_parnt_options" href="" 
                     class="nav-tab <?php $this->maybe_disable(); echo 'view_parnt_options' == $active_tab ? ' nav-tab-active' : ''; ?>">

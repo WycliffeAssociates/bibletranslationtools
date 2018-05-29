@@ -8,7 +8,8 @@
 			pagination: '<?php echo $settings->pagination; ?>',
 			postSpacing: '<?php echo $settings->post_spacing; ?>',
 			postWidth: '<?php echo $settings->post_width; ?>',
-			matchHeight: <?php echo $settings->match_height; ?>
+			matchHeight: <?php echo $settings->match_height; ?>,
+			isRTL: <?php echo is_rtl() ? 'true' : 'false'; ?>
 		});
 	});
 

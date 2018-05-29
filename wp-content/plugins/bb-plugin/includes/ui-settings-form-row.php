@@ -15,9 +15,9 @@
 			<# var field = FLBuilderSettingsForms.renderField( data ); #>
 			{{{field}}}
 			<td class="fl-builder-field-actions">
-				<i class="fl-builder-field-move fa fa-arrows"></i>
-				<i class="fl-builder-field-copy fa fa-copy"></i>
-				<i class="fl-builder-field-delete fa fa-times"></i>
+				<i class="fl-builder-field-move fas fa-arrows-alt"></i>
+				<i class="fl-builder-field-copy far fa-copy"></i>
+				<i class="fl-builder-field-delete fas fa-times"></i>
 			</td>
 		</tr>
 		<# } #>

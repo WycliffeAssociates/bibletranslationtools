@@ -145,8 +145,9 @@ class FLBuilderUIContentPanel {
 		// Row Templates View
 		$templates = FLBuilderModel::get_row_templates_data();
 		$is_row_template = FLBuilderModel::is_post_user_template( 'row' );
+		$is_column_template = FLBuilderModel::is_post_user_template( 'column' );
 
-		if ( ! $is_row_template && isset( $templates['groups'] ) && ! empty( $templates['groups'] ) ) {
+		if ( ! $is_row_template && ! $is_column_template && isset( $templates['groups'] ) && ! empty( $templates['groups'] ) ) {
 
 			$data['views'][] = array(
 				'type' => 'separator',
@@ -186,7 +187,7 @@ class FLBuilderUIContentPanel {
 					);
 				}
 			}
-		}// End if().
+		}
 
 		return $data;
 	}
@@ -201,9 +202,10 @@ class FLBuilderUIContentPanel {
 	private static function get_templates_tab_data() {
 		$enabled = FLBuilderModel::get_enabled_templates();
 		$is_module_template = FLBuilderModel::is_post_user_template( 'module' );
+		$is_column_template = FLBuilderModel::is_post_user_template( 'column' );
 		$is_row_template = FLBuilderModel::is_post_user_template( 'row' );
 		$data = array(
-			'should_display' => ( ! $is_module_template && ! $is_row_template && 'disabled' !== $enabled ),
+			'should_display' => ( ! $is_module_template && ! $is_column_template && ! $is_row_template && 'disabled' !== $enabled ),
 			'views' => array(),
 		);
 
@@ -284,6 +286,13 @@ class FLBuilderUIContentPanel {
 		$module_templates = $static_modules['templates'];
 
 		foreach ( $module_templates as $template ) {
+			$data['template'][] = $template;
+		}
+
+		$static_columns = FLBuilderModel::get_column_templates_data();
+		$column_templates = $static_columns['templates'];
+
+		foreach ( $column_templates as $template ) {
 			$data['template'][] = $template;
 		}
 

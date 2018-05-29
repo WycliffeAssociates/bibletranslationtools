@@ -65,8 +65,7 @@ final class FLBuilderServiceActiveCampaign extends FLBuilderService {
 		// Make sure we have an API url.
 		if ( ! isset( $fields['api_url'] ) || empty( $fields['api_url'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API URL.', 'fl-builder' );
-		} // End if().
-		elseif ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
+		} elseif ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API key.', 'fl-builder' );
 		} // Try to connect and store the connection data.
 		else {
@@ -353,7 +352,7 @@ final class FLBuilderServiceActiveCampaign extends FLBuilderService {
 					$response['error'] = $result->error;
 				}
 			}
-		}// End if().
+		}
 
 		return $response;
 	}

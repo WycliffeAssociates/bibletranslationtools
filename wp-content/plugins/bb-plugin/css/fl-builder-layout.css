@@ -103,6 +103,7 @@
 .fl-row-bg-video .fl-bg-video video {
 	bottom: 0;
 	left: 0px;
+	max-width: none;
 	position: absolute;
 	right: 0;
 	top: 0px;
@@ -118,6 +119,8 @@
   	top: 50%;
   	left: 50%;
   	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%); /* IE 9 */
+	-webkit-transform: translate(-50%, -50%); /* Chrome, Safari, Opera */
 }
 .fl-bg-video-fallback {
 	background-position: 50% 50%;

@@ -35,6 +35,9 @@ if ( ! data.value || ! video ) {
 		<# } #>
 		<br />
 		<a class="fl-video-replace" href="javascript:void(0);" onclick="return false;"><?php _e( 'Replace Video', 'fl-builder' ); ?></a>
+		<# if ( data.field.show_remove ) { #>
+		<a class="fl-video-remove" href="javascript:void(0);" onclick="return false;"><?php _e( 'Remove Video', 'fl-builder' ); ?></a>
+		<# } #>
 		<div class="fl-clear"></div>
 	</div>
 	<input name="{{data.name}}" type="hidden" value='{{{data.value}}}' />

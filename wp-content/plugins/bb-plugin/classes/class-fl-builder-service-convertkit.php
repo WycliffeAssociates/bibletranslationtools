@@ -63,8 +63,7 @@ final class FLBuilderServiceConvertKit extends FLBuilderService {
 		// Make sure we have an API key.
 		if ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API key.', 'fl-builder' );
-		} // End if().
-		else {
+		} else {
 
 			$api = $this->get_api( $fields['api_key'] );
 

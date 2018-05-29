@@ -76,7 +76,8 @@
 				gutter              : parseInt(this.settings.postSpacing),
 				isFitWidth          : true,
 				itemSelector        : this.postClass,
-				transitionDuration  : 0
+				transitionDuration  : 0,
+				isRTL               : this.settings.isRTL
 			});
 
 			wrap.imagesLoaded( $.proxy( function() {
@@ -107,7 +108,8 @@
 		{
 			this.gallery = new FLBuilderGalleryGrid({
 				'wrapSelector' : this.wrapperClass,
-				'itemSelector' : '.fl-post-gallery-post'
+				'itemSelector' : '.fl-post-gallery-post',
+				'isRTL'        : this.settings.isRTL
 			});
 		},
 

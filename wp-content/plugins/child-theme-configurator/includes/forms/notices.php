@@ -111,6 +111,8 @@ if ( !defined( 'ABSPATH' ) ) exit;
       <?php _e( 'It is a good idea to save a Zip Archive of your Child Theme before using CTC for the first time. Click the "save backup" link ( see Step 2, below ) to export your themes.', 'child-theme-configurator' ); ?>
     </p>
   </div>
-  <?php endif; ?>
+  <?php endif;
+        break;
+ ?>
   <?php endswitch; ?>
 </div>

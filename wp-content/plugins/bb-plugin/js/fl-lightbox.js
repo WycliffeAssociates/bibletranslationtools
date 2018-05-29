@@ -40,10 +40,10 @@
 	FLLightbox.getResizableControlClass = function()
 	{
 		var resizable = $( '.fl-lightbox-resizable' ).eq( 0 ),
-			className = 'fa fa-window-maximize';
+			className = 'far fa-window-maximize';
 
 		if ( resizable.length && resizable.hasClass( 'fl-lightbox-width-full' ) ) {
-			className = 'fa fa-window-minimize';
+			className = 'far fa-window-minimize';
 		}
 
 		return className;
@@ -188,6 +188,14 @@
 		 */
 		open: function(content)
 		{
+			var lightbox = this._node.find( '.fl-lightbox' ),
+				isPinned = ( lightbox.closest( '.fl-builder-ui-pinned' ).length ),
+				settings = this._getPositionSettings();
+
+			if ( ! isPinned && settings ) {
+				lightbox.css( settings );
+			}
+
 			this._bind();
 			this._node.show();
 			this._visible = true;
@@ -674,7 +682,7 @@
 		_restorePosition: function()
 		{
 			var lightbox = this._node.find( '.fl-lightbox' ),
-				settings = FLBuilderConfig.userSettings.lightbox;
+				settings = this._getPositionSettings();
 
 			if ( settings ) {
 				lightbox.css( settings );
@@ -684,6 +692,38 @@
 					left : FLBuilderConfig.isRtl ? '-' + 25 : 25
 				} );
 			}
+		},
+
+		/**
+		 * Get the user settings for the lightbox position.
+		 *
+		 * Resize the height to 500px if the lightbox height is
+		 * taller than the window and the window is taller than
+		 * 546px (500px for lightbox min-height and 46px for the
+		 * builder bar height).
+		 *
+		 * @since 2.0
+		 * @access private
+		 * @method _getPositionSettings
+		 * @return {Object|Boolean}
+		 */
+		_getPositionSettings: function()
+		{
+			var settings = FLBuilderConfig.userSettings.lightbox;
+
+			if ( ! settings ) {
+				return false;
+			}
+
+			var winHeight = $( window ).height(),
+				height = parseInt( settings.height );
+
+			if ( height > winHeight && winHeight > 546 ) {
+				settings.height = winHeight - 50;
+				settings.top = 0;
+			}
+
+			return settings;
 		},
 	};
 

@@ -42,8 +42,7 @@ function fl_builder_wc_memberships_support() {
 				// check if user has access to restricted content
 				if ( ! current_user_can( 'wc_memberships_view_restricted_post_content', $post_id ) ) {
 					$do_render = false;
-				} // End if().
-				elseif ( ! current_user_can( 'wc_memberships_view_delayed_post_content', $post_id ) ) {
+				} elseif ( ! current_user_can( 'wc_memberships_view_delayed_post_content', $post_id ) ) {
 					$do_render = false;
 				}
 			}
@@ -274,9 +273,57 @@ function fl_autoptimize_filter_noptimize_filter( $args ) {
 add_filter( 'autoptimize_filter_noptimize', 'fl_autoptimize_filter_noptimize_filter' );
 
 /**
- * Plugin Enjoy Instagram loads its js and css on all frontend pages breaking the builder.
- * @since 2.0.1
+* Fixes an issue on search archives if one of the results contains same shortcode
+* as is currently trying to render.
+*
+* @since 1.10.9
+* @param bool $render Render shortcode.
+* @param array $attrs Shortcode attributes.
+* @param array $args Passed to FLBuilder::render_query
+* @return bool
+*/
+function fl_builder_insert_layout_render_search( $render, $attrs, $args ) {
+	global $post, $wp_query;
+
+	if ( is_search() && is_object( $post ) && is_array( $wp_query->posts ) ) {
+		foreach ( $wp_query->posts as $queried_post ) {
+			if ( $post->ID === $queried_post->ID ) {
+				preg_match( '#(?<=fl_builder_insert_layout).*[id|slug]=[\'"]?([0-9a-z-]+)#', $post->post_content, $matches );
+				if ( isset( $matches[1] ) ) {
+					return false;
+				}
+			}
+		}
+	}
+	return $render;
+}
+add_action( 'fl_builder_insert_layout_render', 'fl_builder_insert_layout_render_search', 10, 3 );
+
+/**
+* Fixes ajax issues with Event Espresso plugin when builder is open.
+* @since 2.1
+*/
+function fl_ee_suppress_notices() {
+	if ( FLBuilderModel::is_builder_active() ) {
+		add_filter( 'FHEE__EE_Front_Controller__display_errors', '__return_false' );
+	}
+}
+add_action( 'wp', 'fl_ee_suppress_notices' );
+
+/**
+ * Stops ee from outputting HTML into our ajax responses.
+ * @since 2.1
  */
+function fl_ee_before_ajax() {
+	add_filter( 'FHEE__EE_Front_Controller__display_errors', '__return_false' );
+}
+add_action( 'fl_ajax_before_call_action', 'fl_ee_before_ajax' );
+
+
+/**
+* Plugin Enjoy Instagram loads its js and css on all frontend pages breaking the builder.
+* @since 2.0.1
+*/
 add_action( 'template_redirect', 'fix_aggiungi_script_instafeed_owl', 1000 );
 function fix_aggiungi_script_instafeed_owl() {
 	if ( FLBuilderModel::is_builder_active() ) {
@@ -323,10 +370,87 @@ function fl_fix_nextgen_gallery() {
 		define( 'NGG_DISABLE_RESOURCE_MANAGER', true );
 	}
 }
+
+/**
+ * Fix Tasty Recipes compatibility issues with the builder.
+ * @since 2.0.6
+ */
 add_action( 'template_redirect', 'fl_fix_tasty_recipes' );
 function fl_fix_tasty_recipes() {
 	if ( FLBuilderModel::is_builder_active() ) {
 		remove_action( 'wp_enqueue_editor', array( 'Tasty_Recipes\Assets', 'action_wp_enqueue_editor' ) );
 		remove_action( 'media_buttons',     array( 'Tasty_Recipes\Editor', 'action_media_buttons' ) );
+	}
+}
+
+/**
+ * Dequeue GeneratePress fa5 js when builder is open.
+ * @since 2.1
+ */
+add_action( 'template_redirect', 'fl_fix_generatepress_fa5' );
+function fl_fix_generatepress_fa5() {
+	if ( FLBuilderModel::is_builder_active() ) {
+		add_filter( 'generate_fontawesome_essentials', '__return_true' );
+	}
+}
+
+/**
+ * Try to render Ninja Forms JS templates when rendering an AJAX layout
+ * in case the layout includes one of their shortcodes. This won't do
+ * anything if no templates need to be rendered.
+ * @since 2.1
+ */
+add_filter( 'fl_builder_ajax_layout_response', 'fl_render_ninja_forms_js' );
+function fl_render_ninja_forms_js( $response ) {
+	if ( class_exists( 'NF_Display_Render' ) ) {
+		ob_start();
+		NF_Display_Render::output_templates();
+		$response['html'] .= ob_get_clean();
+	}
+	return $response;
+}
+
+/**
+ * Reorder font awesome css.
+ * If font-awesome-4 and font-awesome-5 are both in the styles queue font-awesome-5
+ * must load first.
+ */
+function fl_builder_fa_fix() {
+
+	global $wp_styles;
+
+	$queue = $wp_styles->queue;
+
+	$fa4 = array_search( 'font-awesome',   $queue );
+	$fa5 = array_search( 'font-awesome-5', $queue );
+
+	if ( $fa4 && $fa5 && $fa4 < $fa5 ) {
+		wp_dequeue_style( 'font-awesome' );
+		wp_dequeue_style( 'font-awesome-5' );
+		wp_deregister_style( 'font-awesome' );
+		wp_enqueue_style( 'font-awesome', FLBuilder::$fa4_url, array( 'font-awesome-5' ) );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'fl_builder_fa_fix', 11 );
+
+/**
+ * Turn off Hummingbird minification
+ * @since 2.1
+ */
+add_action( 'template_redirect', 'fl_fix_hummingbird' );
+function fl_fix_hummingbird() {
+	if ( FLBuilderModel::is_builder_active() ) {
+		add_filter( 'wp_hummingbird_is_active_module_minify', '__return_false', 500 );
+	}
+}
+
+/**
+ * Fix Enjoy Instagram feed on website with WordPress Widget and Shortcode issues with the builder.
+ * @since 2.0.6
+ */
+add_action( 'template_redirect', 'fl_fix_enjoy_instagram' );
+function fl_fix_enjoy_instagram() {
+	if ( FLBuilderModel::is_builder_active() ) {
+		remove_action( 'wp_head', 'funzioni_in_head' );
 	}
 }

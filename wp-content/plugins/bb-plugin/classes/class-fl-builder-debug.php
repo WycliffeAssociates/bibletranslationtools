@@ -6,8 +6,7 @@ final class FL_Debug {
 
 	public static function init() {
 		if ( isset( $_GET['fldebug'] ) && get_option( 'fl_debug_mode', false ) === $_GET['fldebug'] ) {
-			self::prepare_tests();
-			self::display_tests();
+			add_action( 'init', array( 'FL_Debug', 'display_tests' ) );
 		}
 
 		if ( get_option( 'fl_debug_mode', false ) ) {
@@ -21,7 +20,9 @@ final class FL_Debug {
 		@error_reporting( E_ALL ); // @codingStandardsIgnoreLine
 	}
 
-	private static function display_tests() {
+	public static function display_tests() {
+
+		self::prepare_tests();
 
 		header( 'Content-Type:text/plain' );
 
@@ -178,7 +179,12 @@ final class FL_Debug {
 		);
 		self::register( 'wp_plugins', $args );
 
-		$plugins = self::get_plugins();
+		$defaults = array(
+			'active' => array(),
+			'deactive' => array(),
+		);
+
+		$plugins = wp_parse_args( self::get_plugins(), $defaults );
 		$args = array(
 			'name' => 'Active Plugins',
 			'data' => $plugins['active'],
@@ -304,7 +310,7 @@ final class FL_Debug {
 
 		$args = array(
 			'name' => 'Beaver Builder Path writable',
-			'data' => ( is_writable( $cache['path'] ) ) ? 'Yes' : 'No',
+			'data' => ( fl_builder_filesystem()->is_writable( $cache['path'] ) ) ? 'Yes' : 'No',
 		);
 		self::register( 'bb_cache_path_writable', $args );
 
@@ -319,7 +325,7 @@ final class FL_Debug {
 
 			$args = array(
 				'name' => 'Beaver Theme Path writable',
-				'data' => ( is_writable( $cache['path'] ) ) ? 'Yes' : 'No',
+				'data' => ( fl_builder_filesystem()->is_writable( $cache['path'] ) ) ? 'Yes' : 'No',
 			);
 			self::register( 'bb_theme_cache_path_writable', $args );
 		}
@@ -337,7 +343,7 @@ final class FL_Debug {
 			);
 			self::register( 'bb_sub_lite', $args );
 
-		} else {
+		} elseif ( class_exists( 'FLUpdater' ) ) {
 			$subscription = FLUpdater::get_subscription_info();
 			$args = array(
 				'name' => 'Beaver Builder License',
@@ -379,6 +385,38 @@ final class FL_Debug {
 			'data' => $_SERVER['SERVER_SOFTWARE'],
 		);
 		self::register( 'server', $args );
+
+		$args = array(
+			'name' => 'htaccess files',
+			'data' => self::divider(),
+		);
+		self::register( 'up_htaccess', $args );
+
+		// detect uploads folder .htaccess file and display it if found.
+		$uploads = wp_upload_dir( null, false );
+		$uploads_htaccess = trailingslashit( $uploads['basedir'] ) . '.htaccess';
+		$root_htaccess    = trailingslashit( ABSPATH ) . '.htaccess';
+
+		if ( file_exists( $root_htaccess ) ) {
+			ob_start();
+			readfile( $root_htaccess );
+			$htaccess = ob_get_clean();
+			$args = array(
+				'name' => $root_htaccess . "\n",
+				'data' => $htaccess,
+			);
+			self::register( 'up_htaccess_root', $args );
+		}
+		if ( file_exists( $uploads_htaccess ) ) {
+			ob_start();
+			readfile( $uploads_htaccess );
+			$htaccess = ob_get_clean();
+			$args = array(
+				'name' => $uploads_htaccess . "\n",
+				'data' => $htaccess,
+			);
+			self::register( 'up_htaccess_uploads', $args );
+		}
 	}
 }
 add_action( 'plugins_loaded', array( 'FL_Debug', 'init' ) );

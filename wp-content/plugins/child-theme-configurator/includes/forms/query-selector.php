@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
     <div class="ctc-input-row clearfix" id="input_row_query">
       <div class="ctc-input-cell"> <strong>
         <?php _e( '@media Query', 'child-theme-configurator' ); ?>
-        </strong> <?php _e( '( or "base" )', 'child-theme-configurator' ); ?></div>
+        </strong> <?php _e( '( or "base" )', 'child-theme-configurator' ); ?> <a href="#" class="ctc-rewrite-toggle rewrite-query"></a></div>
       <div class="ctc-input-cell" id="ctc_sel_ovrd_query_selected">&nbsp;</div>
       <div class="ctc-input-cell">
         <div class="ui-widget">
@@ -23,7 +23,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
     <div class="ctc-input-row clearfix" id="input_row_selector">
       <div class="ctc-input-cell"> <strong>
         <?php _e( 'Selector', 'child-theme-configurator' ); ?>
-        </strong> <a href="#" class="ctc-rewrite-toggle"></a></div>
+        </strong> <a href="#" class="ctc-rewrite-toggle rewrite-selector"></a></div>
       <div class="ctc-input-cell" id="ctc_sel_ovrd_selector_selected">&nbsp;</div>
       <div class="ctc-input-cell">
         <div class="ui-widget">
@@ -71,7 +71,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
           </div>
         </div>
       </div>
-      <div class="ctc-input-row clearfix" id="input_row_selector">
+      <div class="ctc-input-row clearfix" id="input_row_load_order">
         <div class="ctc-input-cell"> <strong>
           <?php _e( 'Order', 'child-theme-configurator' ); ?>
           </strong> </div>

@@ -63,8 +63,7 @@ final class FLBuilderServiceGetResponse extends FLBuilderService {
 		// Make sure we have an API key.
 		if ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API key.', 'fl-builder' );
-		} // End if().
-		else {
+		} else {
 
 			$api  = $this->get_api( $fields['api_key'] );
 			$ping = $api->ping();
@@ -95,7 +94,7 @@ final class FLBuilderServiceGetResponse extends FLBuilderService {
 			'class'         => 'fl-builder-service-connect-input',
 			'type'          => 'text',
 			'label'         => __( 'API Key', 'fl-builder' ),
-			'help'          => __( 'Your API key can be found in your GetResponse account under My Account > GetResponse API.', 'fl-builder' ),
+			'help'          => __( 'Your API key can be found in your GetResponse account under My Account > API & OAuth.', 'fl-builder' ),
 			'preview'       => array(
 				'type'          => 'none',
 			),
@@ -150,7 +149,8 @@ final class FLBuilderServiceGetResponse extends FLBuilderService {
 		);
 
 		foreach ( $lists as $id => $data ) {
-			$options[ $id ] = $data->name;
+			// @codingStandardsIgnoreLine
+			$options[ $data->campaignId ] = $data->name;
 		}
 
 		FLBuilder::render_settings_field( 'list_id', array(
@@ -198,20 +198,33 @@ final class FLBuilderServiceGetResponse extends FLBuilderService {
 					$name = $names[0];
 				}
 
+				$data = array(
+					'email' => $email,
+					'name'  => $name,
+					'campaign' => array(
+						'campaignId' => $settings->list_id,
+					),
+				);
+
 				// Check if email exists
-				$get_contact = $api->getContactsByEmail( $email );
+				$get_contact = $api->getContacts(array(
+					'query' => array(
+						'email' => $email,
+						'campaignId' => $settings->list_id,
+					),
+					'fields' => 'name, email',
+				));
 
 				// @codingStandardsIgnoreLine
 				if ( $contact = (array) $get_contact ) {
 					reset( $contact );
-					$contact_id = key( $contact );
+					$contact_id = $contact[0]->contactId;
 
-					$result = $api->setContactName( $contact_id, $name );
-					$api->setContactCampaign( $contact_id, $settings->list_id );
+					$result = $api->updateContact( $contact_id, $data );
 
 					// New contact
 				} else {
-					$result = $api->addContact( $settings->list_id, $name, $email );
+					$result = $api->addContact( $data );
 				}
 			} catch ( Exception $e ) {
 				$response['error'] = sprintf(
@@ -219,7 +232,7 @@ final class FLBuilderServiceGetResponse extends FLBuilderService {
 					$e->getMessage()
 				);
 			}
-		}// End if().
+		}
 
 		return $response;
 	}

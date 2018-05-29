@@ -214,7 +214,7 @@
 
 				// Cache the original settings.
 				if ( ! form.closest( '.fl-lightbox-wrap[data-parent]' ).length ) {
-					this.settings = FLBuilder._getSettings( form );
+					this.settings = FLBuilder._getSettingsForChangedCheck( this.config.nodeId, form );
 				}
 
 			}.bind( this ), 1 );
@@ -465,7 +465,7 @@
 
 			// Refresh cached settings only if it's the main form.
 			if ( ! lightbox.data( 'parent' ) ) {
-				this.settings = FLBuilder._getSettings( form );
+				this.settings = FLBuilder._getSettingsForChangedCheck( this.config.nodeId, form );
 
 				if ( FLBuilder.preview ) {
 					FLBuilder.preview._savedSettings = this.settings;

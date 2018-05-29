@@ -98,7 +98,7 @@ class FLBuilderImportParserRegex extends WXR_Parser_Regex {
 				if ( $in_post ) {
 					$post .= $importline;
 				}
-			}// End while().
+			}
 
 			$this->fclose( $fp );
 
@@ -113,7 +113,7 @@ class FLBuilderImportParserRegex extends WXR_Parser_Regex {
 					}
 				}
 			}
-		}// End if().
+		}
 
 		if ( ! $wxr_version ) {
 			return new WP_Error( 'WXR_parse_error', __( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'fl-builder' ) );

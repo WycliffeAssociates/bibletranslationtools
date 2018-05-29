@@ -65,8 +65,7 @@ final class FLBuilderServiceEnormail extends FLBuilderService {
 		// Make sure we have an API key.
 		if ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API key.', 'fl-builder' );
-		} // End if().
-		else {
+		} else {
 
 			$api = $this->get_api( $fields['api_key'] );
 
@@ -209,8 +208,7 @@ final class FLBuilderServiceEnormail extends FLBuilderService {
 			// Add if not exists
 			if ( -1 == $contact->code ) {
 				$result = $api->contacts->add( $settings->list_id, $name, $email );
-			} // End if().
-			else {
+			} else {
 				$result = $api->contacts->update( $settings->list_id, $name, $email );
 			}
 

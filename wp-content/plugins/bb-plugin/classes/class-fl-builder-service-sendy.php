@@ -72,8 +72,7 @@ final class FLBuilderServiceSendy extends FLBuilderService {
 		// Make sure we have the list ID.
 		if ( ! isset( $fields['list_id'] ) || empty( $fields['list_id'] ) ) {
 			$response['error'] = __( 'Error: You must provide a list ID.', 'fl-builder' );
-		} // End if().
-		else {
+		} else {
 
 			$api = $this->get_api( array(
 				'installation_url' => $fields['api_host'],

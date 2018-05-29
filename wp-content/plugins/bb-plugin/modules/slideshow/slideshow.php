@@ -115,7 +115,7 @@ class FLSlideshowModule extends FLBuilderModule {
 				// Push the photo data
 				$photos[ $id ] = $data;
 			}
-		}// End foreach().
+		}
 
 		return $photos;
 	}

@@ -65,7 +65,6 @@
 		 */
 		_bind: function()
 		{
-			FLBuilder.addHook( 'responsive-editing-switched', this._previewSpacingFields );
 			FLBuilder.addHook( 'settings-form-init', this._initSettingsForms );
 			FLBuilder.addHook( 'settings-lightbox-closed', this._clearPreview );
 
@@ -545,36 +544,6 @@
 						}
 					}
 				}
-			} );
-		},
-
-		/**
-		 * Callback for when the responsive preview changes
-		 * to live preview CSS for spacing fields.
-		 *
-		 * @since 1.9
-		 * @access private
-		 * @method _previewSpacingFields
-		 */
-		_previewSpacingFields: function()
-		{
-			var mode = FLBuilderResponsiveEditing._mode,
-				form = $( '.fl-builder-settings' );
-
-			if ( 0 === form.length || undefined === form.attr( 'data-node' ) ) {
-				return;
-			}
-
-			form.find( '.fl-field' ).has( '.fl-field-responsive-setting' ).each( function() {
-
-				var fields  = FLBuilderResponsiveEditing._getFields( this, 'input' ),
-					preview = fields.responsive.closest( '.fl-field' ).data( 'preview' );
-
-				if ( 'refresh' == preview.type ) {
-					return;
-				}
-
-				fields[ mode ].trigger( 'keyup' );
 			} );
 		},
 	};

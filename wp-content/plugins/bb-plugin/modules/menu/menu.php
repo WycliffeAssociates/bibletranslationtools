@@ -108,7 +108,7 @@ class FLMenuModule extends FLBuilderModule {
 			$classes = (array) $menu_item->classes;
 
 			// Setup classes for current menu item.
-			if ( $menu_item->ID == self::$fl_builder_page_id ) {
+			if ( $menu_item->ID == self::$fl_builder_page_id || self::$fl_builder_page_id == $menu_item->object_id ) {
 				$parent_items[ $menu_item->object_id ] = $menu_item->menu_item_parent;
 
 				if ( ! in_array( 'current-menu-item', $classes ) ) {
@@ -241,7 +241,7 @@ FLBuilder::register_module('FLMenuModule', array(
 								'fields'		=> array( 'mobile_full_width', 'mobile_breakpoint' ),
 							),
 							'text'	=> array(
-								'fields'		=> array( 'mobile_breakpoint' ),
+								'fields'		=> array( 'mobile_full_width', 'mobile_breakpoint' ),
 							),
 						),
 					),

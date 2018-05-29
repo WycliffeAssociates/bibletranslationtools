@@ -351,7 +351,7 @@ class FLPostSliderModule extends FLBuilderModule {
 			// if gradient isn't selected, set the background with default values
 			$bg = 'background-color: #' . $this->settings->text_bg_color . ';';
 			$bg .= 'background-color: ' . $color_start . ';';
-		}// End if().
+		}
 
 		echo $bg;
 	}

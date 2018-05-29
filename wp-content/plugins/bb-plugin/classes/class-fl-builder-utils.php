@@ -174,6 +174,40 @@ final class FLBuilderUtils {
 		if ( isset( $yt_matches[1] ) ) {
 			$video_data['type'] 	= 'youtube';
 			$video_data['video_id'] = $yt_matches[1];
+
+			parse_str( parse_url( $url, PHP_URL_QUERY ), $yt_params );
+			if ( ! empty( $yt_params ) ) {
+
+				// If start time is specified, make sure to convert it into seconds.
+				if ( isset( $yt_params['t'] ) ) {
+					$minutes = 0;
+					$seconds = 0;
+					$time_in_seconds = 0;
+
+					// Check for minutes.
+					if ( strpos( $yt_params['t'], 'm' ) !== false ) {
+						$start_mins = preg_split( '([0-9]+[s])', $yt_params['t'] );
+						if ( $start_mins ) {
+							$minutes = (int) substr( $start_mins[0], 0, -1 ) * 60;
+						}
+					}
+
+					if ( strpos( $yt_params['t'], 's' ) !== false ) {
+						$start_secs = preg_split( '([0-9]+[m])', $yt_params['t'] );
+
+						if ( $start_secs ) {
+							$seconds = substr( $start_secs[1], 0, -1 );
+						}
+					}
+
+					$time_in_seconds = $minutes + $seconds;
+					if ( $time_in_seconds > 0 ) {
+						$yt_params['t'] = $time_in_seconds;
+					}
+				}
+
+				$video_data['params'] = $yt_params;
+			}
 		} elseif ( isset( $vm_matches[1] ) ) {
 			$video_data['type'] 	= 'vimeo';
 			$video_data['video_id'] = $vm_matches[1];

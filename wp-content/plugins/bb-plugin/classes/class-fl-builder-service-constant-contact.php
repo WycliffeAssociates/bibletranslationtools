@@ -45,8 +45,7 @@ final class FLBuilderServiceConstantContact extends FLBuilderService {
 		// Make sure we have an API key.
 		if ( ! isset( $fields['api_key'] ) || empty( $fields['api_key'] ) ) {
 			$response['error'] = __( 'Error: You must provide an API key.', 'fl-builder' );
-		} // End if().
-		elseif ( ! isset( $fields['access_token'] ) || empty( $fields['access_token'] ) ) {
+		} elseif ( ! isset( $fields['access_token'] ) || empty( $fields['access_token'] ) ) {
 			$response['error'] = __( 'Error: You must provide an access token.', 'fl-builder' );
 		} // Try to connect and store the connection data.
 		else {
@@ -237,8 +236,7 @@ final class FLBuilderServiceConstantContact extends FLBuilderService {
 				if ( isset( $res->error_key ) ) {
 					$response['error'] = sprintf( __( 'There was an error subscribing to Constant Contact. %s', 'fl-builder' ), $res->error_key );
 				}
-			} // End if().
-			else {
+			} else {
 				// @codingStandardsIgnoreLine
 				$args                                         = $data = array();
 				$data['email_addresses']                      = array();
@@ -271,7 +269,7 @@ final class FLBuilderServiceConstantContact extends FLBuilderService {
 					$response['error'] = sprintf( __( 'There was an error subscribing to Constant Contact. %s', 'fl-builder' ), $create->error_key );
 				}
 			}
-		}// End if().
+		}
 
 		return $response;
 	}

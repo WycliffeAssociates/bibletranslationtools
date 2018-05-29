@@ -155,7 +155,7 @@ final class FLBuilderAdminSettings {
 		$item_data = apply_filters( 'fl_builder_admin_settings_nav_items', array(
 			'welcome' => array(
 				'title' 	=> __( 'Welcome', 'fl-builder' ),
-				'show'		=> FLBuilderModel::get_branding() == __( 'Page Builder', 'fl-builder' ) && ( is_network_admin() || ! self::multisite_support() ),
+				'show'		=> ! FLBuilderModel::is_white_labeled() && ( is_network_admin() || ! self::multisite_support() ),
 				'priority'	=> 50,
 			),
 			'license' => array(
@@ -219,7 +219,7 @@ final class FLBuilderAdminSettings {
 	 */
 	static public function render_forms() {
 		// Welcome
-		if ( FLBuilderModel::get_branding() == __( 'Page Builder', 'fl-builder' ) && ( is_network_admin() || ! self::multisite_support() ) ) {
+		if ( ! FLBuilderModel::is_white_labeled() && ( is_network_admin() || ! self::multisite_support() ) ) {
 			self::render_form( 'welcome' );
 		}
 
@@ -421,6 +421,12 @@ final class FLBuilderAdminSettings {
 				$enabled_icons = array_map( 'sanitize_text_field', $_POST['fl-enabled-icons'] );
 			}
 
+			// we cant have fa4 and fa5 active at same time.
+			if ( in_array( 'font-awesome', $enabled_icons ) && (bool) array_intersect( array( 'font-awesome-5-brands', 'font-awesome-5-regular', 'font-awesome-5-solid' ), $enabled_icons ) ) {
+				self::add_error( __( 'Use either Font Awesome 4 or Font Awesome 5. They are not compatible. Modules already in use will continue to use Font Awesome 4 regardless of your choice here.', 'fl-builder' ) );
+				return;
+			}
+
 			// Update the enabled sets.
 			self::update_enabled_icons( $enabled_icons );
 
@@ -507,11 +513,11 @@ final class FLBuilderAdminSettings {
 					$key = FLBuilderIcons::get_key_from_path( $new_path );
 					$enabled_icons[] = $key;
 				}
-			}// End if().
+			}
 
 			// Update the enabled sets again in case they have changed.
 			self::update_enabled_icons( $enabled_icons );
-		}// End if().
+		}
 	}
 
 	/**

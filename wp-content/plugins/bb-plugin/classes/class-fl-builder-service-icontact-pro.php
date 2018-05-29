@@ -75,8 +75,7 @@ final class FLBuilderServiceIContactPro extends FLBuilderService {
 		// Make sure we have a username.
 		if ( ! isset( $fields['username'] ) || empty( $fields['username'] ) ) {
 			$response['error'] = __( 'Error: You must provide a username.', 'fl-builder' );
-		} // End if().
-		elseif ( ! isset( $fields['app_id'] ) || empty( $fields['app_id'] ) ) {
+		} elseif ( ! isset( $fields['app_id'] ) || empty( $fields['app_id'] ) ) {
 			$response['error'] = __( 'Error: You must provide an app ID.', 'fl-builder' );
 		} // Make sure we have an app password.
 		elseif ( ! isset( $fields['app_password'] ) || empty( $fields['app_password'] ) ) {
@@ -312,7 +311,7 @@ final class FLBuilderServiceIContactPro extends FLBuilderService {
 				$errors = $api->getErrors();
 				$response['error'] = sprintf( __( 'There was an error subscribing to iContact Pro. %s', 'fl-builder' ), $errors[0] );
 			}
-		}// End if().
+		}
 
 		return $response;
 	}

@@ -8,7 +8,7 @@ function fl_welcome_utm( $campaign ) {
 	);
 }
 
-$blog_post_url     = FLBuilderModel::get_store_url( 'beaver-builder-2-0-hoover', fl_welcome_utm( 'settings-welcome-blog-post' ) );
+$blog_post_url     = FLBuilderModel::get_store_url( 'beaver-builder-2-1-redridge', fl_welcome_utm( 'settings-welcome-blog-post' ) );
 $change_logs_url   = FLBuilderModel::get_store_url( 'change-logs', fl_welcome_utm( 'settings-welcome-change-logs' ) );
 $upgrade_url       = FLBuilderModel::get_upgrade_url( fl_welcome_utm( 'settings-welcome-upgrade' ) );
 $support_url       = FLBuilderModel::get_store_url( 'beaver-builder-support', fl_welcome_utm( 'settings-welcome-support' ) );
@@ -58,7 +58,7 @@ $fb_url            = 'https://www.facebook.com/groups/beaverbuilders/';
 			</div>
 
 			<div class="fl-welcome-col">
-				<img class="fl-welcome-img" src="<?php echo FL_BUILDER_URL; ?>img/screenshot-getting-started.jpg" alt="">
+				<img class="fl-welcome-img" src="<?php echo FL_BUILDER_URL; ?>img/screenshot-getting-started.png" alt="">
 			</div>
 
 		</div>
@@ -69,16 +69,15 @@ $fb_url            = 'https://www.facebook.com/groups/beaverbuilders/';
 
 			<div class="fl-welcome-col">
 
-				<h4><?php _e( 'What\'s New in Beaver Builder 2.0 Hoover', 'fl-builder' ); ?></h4>
+				<h4><?php printf( __( 'What\'s New in Beaver Builder %s', 'fl-builder' ), '2.1 "Redridge"' ); ?></h4>
 
-				<p><?php _e( 'We’re thrilled to announce Beaver Builder 2.0, Hoover. Beaver Builder 2.0 looks better, feels better, it\'s faster, and we\'re introducing new customization options and tons of workflow improvements.', 'fl-builder' ); ?></p>
+				<p><?php _e( 'We\'re thrilled to announce Beaver Builder 2.1 "Redridge". Beaver Builder 2.1 brings Gutenberg support and a major enhancement to the building experience with inline editing.', 'fl-builder' ); ?></p>
 
 				<ul>
-					<li><?php _e( 'A sleek and modern visual refresh.', 'fl-builder' ); ?></li>
-					<li><?php _e( 'A centralized main menu.', 'fl-builder' ); ?></li>
-					<li><?php _e( 'Keyboard shortcuts.', 'fl-builder' ); ?></li>
-					<li><?php _e( 'Major performance improvements.', 'fl-builder' ); ?></li>
-					<li><?php _e( 'Customizable and dockable settings panels.', 'fl-builder' ); ?></li>
+					<li><?php _e( 'Keep up with news & updates in the notification center.', 'fl-builder' ); ?></li>
+					<li><?php _e( 'Edit text directly on-page with inline editing.', 'fl-builder' ); ?></li>
+					<li><?php _e( 'Initial support for Gutenberg blocks and transitioning between editors has been added.', 'fl-builder' ); ?></li>
+					<li><?php _e( 'Prevent clients from accessing Page Builder by user role.', 'fl-builder' ); ?></li>
 				</ul>
 
 				<p><?php printf( __( 'There\'s a whole lot more, too! Read about everything else on our <a href="%1$s" target="_blank">update post</a> or <a href="%2$s" target="_blank">change logs</a>.', 'fl-builder' ), $blog_post_url, $change_logs_url ); ?></p>

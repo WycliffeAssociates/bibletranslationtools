@@ -76,5 +76,9 @@
 	.fl-node-<?php echo $id ?> .fl-number-bar{
 		width: 0;
 		background-color: #<?php echo $settings->bar_color ?>;
+		<?php if ( empty( $settings->number ) ) : ?>
+		padding-left: 0px;
+		padding-right: 0px;
+		<?php endif; ?>
 	}
 <?php endif; ?>

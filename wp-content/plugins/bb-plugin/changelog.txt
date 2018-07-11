@@ -1,17 +1,102 @@
+<h4>2.1.3.4 - 06/25/2018</h4>
+<p><strong>Hot Fix</strong></p>
+<ul>
+	<li>Removed the Chrome parallax fix as the issue is now fixed in Chrome beta and canary.</li>
+</ul>
+
+<h4>2.1.3.3 - 06/20/2018</h4>
+<p><strong>Hot Fix</strong></p>
+<ul>
+	<li>Tweaked Chrome fix CSS as it broke editing modules inside a parllax row. Sorry.</li>
+</ul>
+
+<h4>2.1.3.2 - 06/20/2018</h4>
+<p><strong>Hot Fix</strong></p>
+<ul>
+	<li>Fixed a Chrome issue with parallax and overlay backgrounds.</li>
+	<li>Fixed a Google Font enqueue issue.</li>
+</ul>
+
+<h4>2.1.3.1 - 06/19/2018</h4>
+<p><strong>Hot Fix</strong></p>
+<ul>
+	<li>Fixed PHP error if using php 5.2.</li>
+</ul>
+
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>Better support for translating global rows using WPML.</li>
+	<li>Added thumbnail support for saved rows/modules/columns in the saved tab.</li>
+	<li>Saved columns now supported in the exporter.</li>
+	<li>Added no follow field to Icon module.</li>
+	<li>Number Counter module will now accept 0%.</li>
+	<li>Added mobile alignment options to the Button module.</li>
+	<li>Added the ability for Post Carousel module to advance by definable number of slides.</li>
+	<li>Slideshow and Testimonials modules will now accept float values for transitions.</li>
+	<li>New filter <code>fl_builder_render_module_html_content</code>.</li>
+	<li>New filter <code>fl_get_wp_editor_args</code>.</li>
+	<li>New filter <code>fl_builder_importer_pcre</code>.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed unstyled flash of content when AJAX layout renders on slower connections.</li>
+	<li>Fixed issue where column and row resize settings were opening the module settings.</li>
+	<li>Fixed module category order not always being respected in the builder UI.</li>
+	<li>Fixed responsive editing mode not scrolling to the active node when switched.</li>
+	<li>Fixed missing icon is Tabs module when responsive.</li>
+	<li>Added logic that resets color picker when clicking an empty color field.</li>
+	<li>If nodes are hidden using the visibility setting they shouldn’t show after you publish out of the builder.</li>
+	<li>Fixed MailChimp Subscribe with multiple last names.</li>
+	<li>Fixed compatibility issue with Fusion Builder by namespacing the color picker code to FLBuilderColor.</li>
+	<li>Fixed more icon issues when fa4 and fa5 css are both loaded in a page.</li>
+	<li>Fixed an issue where the combining of Google fonts could result in 2 calls to the font css.</li>
+	<li>Fixed loop delays in Row’s Youtube background.</li>
+	<li>Fixed shortcodes with single quotes around attrs breaking in nested form fields.</li>
+	<li>Fixed color issue with code highlighting when using the dark UI mode.</li>
+	<li>Fixed a PHP undefined var in Gallery module when using SmugMug.</li>
+	<li>Fixed video content autoplay no longer working on Chrome and Safari.</li>
+	<li>Fixed tinymce dropdowns being hidden when settings are very narrow.</li>
+	<li>Fixed Gberg block validation issues by converting return to RawHTML</li>
+</ul>
+
+<h4>2.1.2.4 - 05/31/2018</h4>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed module settings opening when clicking the column icon.</li>
+</ul>
+
+<h4>2.1.2.3 - 05/31/2018</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>Show warning message if plugin is installed in wrong folder as it breaks auto-updates.</li>
+	<li>Allow users to <em>Save With Errors</em> in the CSS/HTML code editor.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed adjacent module settings opening when highlighting text with inline editing.</li>
+	<li>Fixed incorrect text showing after inline editing.</li>
+	<li>Fixed inline editing performance issues.</li>
+	<li>Fixed Contact Form Module field connections.</li>
+	<li>Fixed pinned content panel covering 2px of the content area.</li>
+	<li>Fixed UI lightboxes appearing in wrong positions.</li>
+	<li>Added link to change logs from wp-admin plugins page.</li>
+	<li>Fixed color picker position in responsive editing mode.</li>
+</ul>
+
 <h4>2.1.2.2 - 05/17/2018</h4>
-<strong>Bug Fixes</strong>
+<p><strong>Bug Fixes</strong></p>
 <ul>
 	<li>Reverted menu accessibility code added in 2.1.2.</li>
 </ul>
 
 <h4>2.1.2.1 - 05/16/2018</h4>
-<strong>Bug Fixes</strong>
+<p><strong>Bug Fixes</strong></p>
 <ul>
 	<li>Fixed a JS error preventing settings from opening.</li>
 </ul>
 
 <h4>2.1.2 - 05/16/2018</h4>
-<strong>Enhancements</strong>
+<p><strong>Enhancements</strong></p>
 <ul>
 	<li>Updated Font Awesome 5 icons</li>
 	<li>Added support for new WP 4.9.6 Privacy Page and data exporter.</li>
@@ -24,7 +109,7 @@
 	<li>Hide overlays when right clicked so the underlying node can be inspected.</li>
 	<li>Remove panel caret when less than 500px</li>
 </ul>
-<strong>Bug Fixes</strong>
+<p><strong>Bug Fixes</strong></p>
 <ul>
 	<li>Fixed a compatibility issues with Enjoy Plugin for Instagram and MailerLite plugin</li>
 	<li>Fixed gap underneath menu items on Themer menu module</li>

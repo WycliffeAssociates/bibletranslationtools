@@ -31,12 +31,18 @@ final class FLBuilderPrivacy {
 		$data = array();
 
 		$user = get_user_by( 'email', $email );
-		$meta = get_user_meta( $user->ID, 'fl_builder_user_settings', true );
+		$meta = (array) get_user_meta( $user->ID, 'fl_builder_user_settings', true );
 
-		$result = (array) self::array_flatten( $meta );
+		$result = self::array_flatten( $meta );
 
 		foreach ( $result as $key => $setting ) {
+
+			if ( ! $key ) {
+				continue;
+			}
+
 			if ( ! is_array( $setting ) ) {
+
 				if ( '' == $setting ) {
 					$setting = 'false';
 				}
@@ -45,6 +51,13 @@ final class FLBuilderPrivacy {
 				'value' => $setting,
 				);
 			}
+		}
+
+		if ( empty( $data ) ) {
+			return array(
+				'data' => array(),
+				'done' => true,
+			);
 		}
 
 		$export_items[] = array(

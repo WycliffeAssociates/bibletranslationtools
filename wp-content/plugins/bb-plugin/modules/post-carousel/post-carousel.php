@@ -193,6 +193,13 @@ FLBuilder::register_module('FLPostCarouselModule', array(
 						'default'       => '10',
 						'size'          => '4',
 					),
+
+					'move_slides' => array(
+						'type'          => 'text',
+						'label'         => __( 'Number of slides to move at a time', 'fl-builder' ),
+						'default'       => '1',
+						'size'          => '2',
+					),
 				),
 			),
 			'controls'       => array(

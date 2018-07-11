@@ -101,6 +101,7 @@ FLBuilder::render_module_css('button', $id . ' .fl-pricing-table-column-' . $i ,
 	'text_color'        => $pricing_column->btn_text_color,
 	'text_hover_color'  => $pricing_column->btn_text_hover_color,
 	'width'             => $pricing_column->btn_width,
+	'mobile_align'      => $pricing_column->btn_mobile_align,
 ));
 ?>
 

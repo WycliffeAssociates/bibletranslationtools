@@ -495,7 +495,7 @@ FLBuilder::register_module('FLCalloutModule', array(
 							),
 							'button'        => array(
 								'fields'        => array( 'cta_text', 'btn_icon', 'btn_icon_position', 'btn_icon_animation' ),
-								'sections'      => array( 'btn_style', 'btn_colors', 'btn_structure' ),
+								'sections'      => array( 'btn_style', 'btn_colors', 'btn_structure', 'btn_responsive_style' ),
 							),
 						),
 					),
@@ -660,6 +660,24 @@ FLBuilder::register_module('FLCalloutModule', array(
 						'maxlength'     => '3',
 						'size'          => '4',
 						'description'   => 'px',
+					),
+				),
+			),
+			'btn_responsive_style' 	=> array(
+				'title'         		=> __( 'Responsive Button Style', 'fl-builder' ),
+				'fields'        		=> array(
+					'btn_mobile_align' => array(
+						'type'          => 'select',
+						'label'         => __( 'Alignment', 'fl-builder' ),
+						'default'       => 'center',
+						'options'       => array(
+							'center'        => __( 'Center', 'fl-builder' ),
+							'left'          => __( 'Left', 'fl-builder' ),
+							'right'         => __( 'Right', 'fl-builder' ),
+						),
+						'preview'       => array(
+							'type'          => 'none',
+						),
 					),
 				),
 			),

@@ -598,8 +598,8 @@
 				<div id="fl-builder-blocks-{{slug}}" class="fl-builder-blocks-section">
 					<span class="fl-builder-blocks-section-title">{{title}}</span>
 					<div class="fl-builder-blocks-section-content fl-builder-modules">
-						<# for( var i in modules) {
-							var module 	= modules[i],
+						<# for( var k in modules) {
+							var module 	= modules[ k ],
 								type 	= module.isWidget ? 'widget' : module.slug,
 								alias 	= module.isAlias ? ' data-alias="' + module.alias + '"' : '',
 								widget 	= module.isWidget ? ' data-widget="' + module.class + '"' : '';

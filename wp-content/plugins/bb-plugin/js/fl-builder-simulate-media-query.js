@@ -393,6 +393,11 @@
 				head.append( style );
 				style.html( styles );
 				sheet.element.remove();
+
+				if ( this.callback ) {
+					this.callback();
+					this.callback = null;
+				}
 			}
 		},
 

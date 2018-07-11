@@ -266,14 +266,11 @@ final class FLBuilderServiceMailChimp extends FLBuilderService {
 
 				// Name
 				if ( $name ) {
-
 					$names = explode( ' ', $name );
 
 					if ( isset( $names[0] ) ) {
 						$data['FNAME'] = $names[0];
-					}
-					if ( isset( $names[1] ) ) {
-						$data['LNAME'] = $names[1];
+						$data['LNAME'] = ltrim( str_replace( $names[0], '', $name ) );
 					}
 				}
 

@@ -192,6 +192,7 @@ class FLGalleryModule extends FLBuilderModule {
 
 					// Photo data object.
 					$data = new stdClass();
+					$data->id = $item->guid;
 					$data->alt = $item->title;
 					$data->caption = $item->title;
 					$data->description = $item->title;

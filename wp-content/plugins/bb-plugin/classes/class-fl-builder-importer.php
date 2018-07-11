@@ -89,7 +89,7 @@ class FLBuilderImportParserRegex extends WXR_Parser_Regex {
 				if ( false !== strpos( $importline, '</item>' ) ) {
 					$in_post = false;
 
-					$this->set_pcre_limit( '23001337' );
+					$this->set_pcre_limit( apply_filters( 'fl_builder_importer_pcre', '23001337' ) );
 					$this->posts[] = $this->process_post( $post );
 					$this->set_pcre_limit( 'default' );
 
@@ -137,20 +137,23 @@ class FLBuilderImportParserRegex extends WXR_Parser_Regex {
 	 * @param string $value
 	 */
 	function set_pcre_limit( $value ) {
-		$default_backtrack_limit = @ini_get( 'pcre.backtrack_limit' ); // @codingStandardsIgnoreLine
-		$default_recursion_limit = @ini_get( 'pcre.recursion_limit' ); // @codingStandardsIgnoreLine
+
+		if ( ! isset( $this->default_backtrack_limit ) ) {
+			$this->default_backtrack_limit = @ini_get( 'pcre.backtrack_limit' ); // @codingStandardsIgnoreLine
+			$this->default_recursion_limit = @ini_get( 'pcre.recursion_limit' ); // @codingStandardsIgnoreLine
+		}
 
 		if ( 'default' != $value ) {
 			@ini_set( 'pcre.backtrack_limit', $value ); // @codingStandardsIgnoreLine
 			@ini_set( 'pcre.recursion_limit', $value ); // @codingStandardsIgnoreLine
 		} else {
 			// Reset limit back to default.
-			if ( is_numeric( $default_backtrack_limit ) ) {
-				@ini_set( 'pcre.backtrack_limit', $default_backtrack_limit ); // @codingStandardsIgnoreLine
+			if ( is_numeric( $this->default_backtrack_limit ) ) {
+				@ini_set( 'pcre.backtrack_limit', $this->default_backtrack_limit ); // @codingStandardsIgnoreLine
 			}
 
-			if ( is_numeric( $default_recursion_limit ) ) {
-				@ini_set( 'pcre.recursion_limit', $default_recursion_limit ); // @codingStandardsIgnoreLine
+			if ( is_numeric( $this->default_recursion_limit ) ) {
+				@ini_set( 'pcre.recursion_limit', $this->default_recursion_limit ); // @codingStandardsIgnoreLine
 			}
 		}
 	}

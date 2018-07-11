@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bb-plugin\n"
 "Report-Msgid-Bugs-To: hello@wpbeaverbuilder.com\n"
-"POT-Creation-Date: 2018-05-16 22:53:58+00:00\n"
+"POT-Creation-Date: 2018-06-14 16:55:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,7 +39,7 @@ msgstr ""
 
 #: classes/class-fl-builder-admin-settings.php:172
 #: classes/class-fl-builder-ui-content-panel.php:32
-#: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:59
+#: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:75
 #: includes/global-settings.php:93
 msgid "Modules"
 msgstr ""
@@ -55,7 +55,7 @@ msgstr ""
 
 #: classes/class-fl-builder-admin-settings.php:187
 #: modules/icon-group/icon-group.php:28
-#: modules/post-carousel/post-carousel.php:313
+#: modules/post-carousel/post-carousel.php:320
 #: modules/post-grid/post-grid.php:809
 msgid "Icons"
 msgstr ""
@@ -94,44 +94,51 @@ msgstr ""
 msgid "Add your %1$s on %2$s to spread the love."
 msgstr ""
 
-#: classes/class-fl-builder-admin.php:42
+#: classes/class-fl-builder-admin.php:43
 msgid ""
 "The <strong>Page Builder</strong> plugin requires WordPress version 3.5 or "
 "greater. Please update WordPress before activating the plugin."
 msgstr ""
 
-#: classes/class-fl-builder-admin.php:58
+#: classes/class-fl-builder-admin.php:59
 msgid ""
 "This version of the <strong>Page Builder</strong> plugin is not compatible "
 "with WordPress Multisite. <a%s>Please upgrade</a> to the Multisite version "
 "of this plugin."
 msgstr ""
 
-#: classes/class-fl-builder-admin.php:139
+#: classes/class-fl-builder-admin.php:101
+msgid ""
+"Install Error! We detected that Beaver Builder appears to be installed in a "
+"folder called <kbd>%s</kbd>.<br />For automatic updates to work the plugin "
+"must be installed in the folder <kbd>bb-plugin</kbd>."
+msgstr ""
+
+#: classes/class-fl-builder-admin.php:158
 msgid "Page Builder activated! <a%s>Click here</a> to enable remote updates."
 msgstr ""
 
-#: classes/class-fl-builder-admin.php:142
+#: classes/class-fl-builder-admin.php:161
 msgid "Page Builder activated! <a%s>Click here</a> to get started."
 msgstr ""
 
-#: classes/class-fl-builder-fonts.php:50 classes/class-fl-builder-fonts.php:74
-#: classes/class-fl-builder-fonts.php:102 includes/column-settings.php:369
+#: classes/class-fl-builder-fonts.php:51 classes/class-fl-builder-fonts.php:75
+#: classes/class-fl-builder-fonts.php:103 includes/column-settings.php:369
 #: includes/column-settings.php:397 includes/column-settings.php:426
 #: includes/row-settings.php:60 modules/callout/callout.php:277
 #: modules/content-slider/content-slider.php:542 modules/cta/cta.php:172
 #: modules/heading/heading.php:132 modules/heading/heading.php:155
 #: modules/heading/heading.php:177 modules/heading/heading.php:204
 #: modules/heading/heading.php:234 modules/heading/heading.php:257
-#: modules/heading/heading.php:278 modules/icon/icon.php:156
-#: modules/menu/menu.php:291 modules/post-carousel/post-carousel.php:383
+#: modules/heading/heading.php:278 modules/icon/icon.php:168
+#: modules/menu/menu.php:291 modules/post-carousel/post-carousel.php:390
 #: modules/post-grid/post-grid.php:421 modules/post-grid/post-grid.php:525
 #: modules/post-slider/post-slider.php:554
 #: modules/post-slider/post-slider.php:631
 msgid "Default"
 msgstr ""
 
-#: classes/class-fl-builder-fonts.php:103
+#: classes/class-fl-builder-fonts.php:104
 msgid "Regular"
 msgstr ""
 
@@ -159,7 +166,7 @@ msgid ""
 "Please <a href=\"%s\">deactivate one</a> before continuing."
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2846
+#: classes/class-fl-builder-model.php:2865
 #: classes/class-fl-builder-module.php:351 modules/audio/audio.php:20
 #: modules/button/button.php:15 modules/heading/heading.php:15
 #: modules/html/html.php:15 modules/photo/photo.php:26
@@ -168,7 +175,7 @@ msgstr ""
 msgid "Basic"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2847
+#: classes/class-fl-builder-model.php:2866
 #: modules/content-slider/content-slider.php:15 modules/gallery/gallery.php:15
 #: modules/icon/icon.php:15 modules/icon-group/icon-group.php:15
 #: modules/map/map.php:15 modules/slideshow/slideshow.php:15
@@ -176,20 +183,20 @@ msgstr ""
 msgid "Media"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2848 modules/callout/callout.php:15
+#: classes/class-fl-builder-model.php:2867 modules/callout/callout.php:15
 #: modules/contact-form/contact-form.php:15 modules/cta/cta.php:15
 #: modules/menu/menu.php:20 modules/social-buttons/social-buttons.php:15
 #: modules/subscribe-form/subscribe-form.php:19
 msgid "Actions"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2849
+#: classes/class-fl-builder-model.php:2868
 #: extensions/fl-builder-core-templates-admin/includes/admin-core-templates.php:8
 #: modules/accordion/accordion.php:15 modules/countdown/countdown.php:147
-#: modules/cta/cta.php:113 modules/gallery/gallery.php:226
-#: modules/menu/menu.php:169 modules/numbers/numbers.php:96
+#: modules/cta/cta.php:113 modules/gallery/gallery.php:227
+#: modules/menu/menu.php:169 modules/numbers/numbers.php:100
 #: modules/post-carousel/post-carousel.php:132
-#: modules/post-carousel/post-carousel.php:230
+#: modules/post-carousel/post-carousel.php:237
 #: modules/post-grid/post-grid.php:312 modules/post-grid/post-grid.php:319
 #: modules/post-slider/post-slider.php:461
 #: modules/pricing-table/pricing-table.php:15 modules/sidebar/sidebar.php:15
@@ -199,85 +206,85 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2850 modules/countdown/countdown.php:15
+#: classes/class-fl-builder-model.php:2869 modules/countdown/countdown.php:15
 #: modules/numbers/numbers.php:15
 msgid "Info"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2851
+#: classes/class-fl-builder-model.php:2870
 #: modules/post-carousel/post-carousel.php:15
-#: modules/post-carousel/post-carousel.php:233
+#: modules/post-carousel/post-carousel.php:240
 #: modules/post-grid/post-grid.php:13 modules/post-grid/post-grid.php:15
 #: modules/post-grid/post-grid.php:348 modules/post-grid/post-grid.php:654
 #: modules/post-slider/post-slider.php:20
 msgid "Posts"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2852
+#: classes/class-fl-builder-model.php:2871
 #: classes/class-fl-builder-module.php:353 includes/column-settings.php:318
 #: includes/module-settings.php:6 includes/row-settings.php:585
 #: modules/content-slider/content-slider.php:333
 msgid "Advanced"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2853
-#: classes/class-fl-builder-model.php:2869
+#: classes/class-fl-builder-model.php:2872
+#: classes/class-fl-builder-model.php:2888
 msgid "Other"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2870
-#: classes/class-fl-builder-model.php:3005
-#: classes/class-fl-builder-model.php:3425
+#: classes/class-fl-builder-model.php:2889
+#: classes/class-fl-builder-model.php:3024
+#: classes/class-fl-builder-model.php:3444
 #: extensions/fl-builder-user-templates/includes/admin-add-new-form.php:42
-#: includes/admin-settings-modules.php:32 includes/ui-js-config.php:202
+#: includes/admin-settings-modules.php:32 includes/ui-js-config.php:204
 #: modules/widget/widget.php:15 modules/widget/widget.php:16
 msgid "WordPress Widgets"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3463
+#: classes/class-fl-builder-model.php:3482
 msgid "1 Column"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3468
+#: classes/class-fl-builder-model.php:3487
 msgid "2 Columns"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3473
+#: classes/class-fl-builder-model.php:3492
 msgid "3 Columns"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3478
+#: classes/class-fl-builder-model.php:3497
 msgid "4 Columns"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3483
+#: classes/class-fl-builder-model.php:3502
 msgid "5 Columns"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3488
+#: classes/class-fl-builder-model.php:3507
 msgid "6 Columns"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3493
+#: classes/class-fl-builder-model.php:3512
 msgid "Left Sidebar"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3498
+#: classes/class-fl-builder-model.php:3517
 msgid "Right Sidebar"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3503
+#: classes/class-fl-builder-model.php:3522
 msgid "Left & Right Sidebar"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:4525
-#: classes/class-fl-builder-model.php:4563
-#: classes/class-fl-builder-model.php:4632
-#: classes/class-fl-builder-model.php:5823 includes/ui-js-config.php:184
+#: classes/class-fl-builder-model.php:4544
+#: classes/class-fl-builder-model.php:4582
+#: classes/class-fl-builder-model.php:4651
+#: classes/class-fl-builder-model.php:5838 includes/ui-js-config.php:186
 msgid "Uncategorized"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5778
+#: classes/class-fl-builder-model.php:5793
 #: extensions/fl-builder-core-templates-admin/includes/core-template-settings.php:20
 #: extensions/fl-builder-user-templates/includes/node-template-settings.php:6
 #: extensions/fl-builder-user-templates/includes/user-template-settings.php:7
@@ -287,30 +294,30 @@ msgstr ""
 #: modules/content-slider/content-slider.php:224
 #: modules/content-slider/content-slider.php:405
 #: modules/countdown/countdown.php:80 modules/cta/cta.php:69
-#: modules/gallery/gallery.php:219 modules/heading/heading.php:27
+#: modules/gallery/gallery.php:220 modules/heading/heading.php:27
 #: modules/html/html.php:27 modules/icon/icon.php:28
 #: modules/icon-group/icon-group.php:130 modules/map/map.php:27
-#: modules/menu/menu.php:161 modules/numbers/numbers.php:89
+#: modules/menu/menu.php:161 modules/numbers/numbers.php:93
 #: modules/photo/photo.php:432 modules/pricing-table/pricing-table.php:135
 #: modules/rich-text/rich-text.php:27 modules/separator/separator.php:28
 #: modules/sidebar/sidebar.php:28 modules/slideshow/slideshow.php:249
 #: modules/social-buttons/social-buttons.php:61
 #: modules/subscribe-form/subscribe-form.php:155 modules/tabs/tabs.php:78
 #: modules/testimonials/testimonials.php:40
-#: modules/testimonials/testimonials.php:221 modules/video/video.php:82
+#: modules/testimonials/testimonials.php:221 modules/video/video.php:102
 #: modules/widget/widget.php:80 modules/woocommerce/woocommerce.php:48
 msgid "General"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5779 includes/ui-js-config.php:212
+#: classes/class-fl-builder-model.php:5794 includes/ui-js-config.php:214
 msgid "Landing Pages"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5780 includes/ui-js-config.php:215
+#: classes/class-fl-builder-model.php:5795 includes/ui-js-config.php:217
 msgid "Content Pages"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5995
+#: classes/class-fl-builder-model.php:6010
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates-post-type.php:36
 #: extensions/fl-builder-white-label/classes/class-fl-builder-white-label.php:137
 msgid "Beaver Builder"
@@ -328,7 +335,7 @@ msgstr ""
 msgid "Beaver Builder Plugin"
 msgstr ""
 
-#: classes/class-fl-builder-privacy.php:77
+#: classes/class-fl-builder-privacy.php:90
 msgid ""
 "<p>In terms of GDPR, Beaver Builder products do not collect any personal "
 "information from your users. However some modules such as videos and maps "
@@ -683,7 +690,7 @@ msgid "Subscribe Form Signup"
 msgstr ""
 
 #: classes/class-fl-builder-service-email-address.php:117
-#: modules/contact-form/includes/frontend.php:21
+#: modules/contact-form/includes/frontend.php:24
 msgid "Email"
 msgstr ""
 
@@ -985,7 +992,7 @@ msgid ""
 "connected."
 msgstr ""
 
-#: classes/class-fl-builder-service-mailchimp.php:336
+#: classes/class-fl-builder-service-mailchimp.php:333
 msgid "There was an error subscribing to MailChimp. %s"
 msgstr ""
 
@@ -1265,6 +1272,7 @@ msgid "Standard Modules"
 msgstr ""
 
 #: classes/class-fl-builder-ui-content-panel.php:138
+#: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:59
 #: modules/post-grid/post-grid.php:322 modules/post-grid/post-grid.php:369
 #: modules/woocommerce/woocommerce.php:103
 #: modules/woocommerce/woocommerce.php:174
@@ -1272,22 +1280,22 @@ msgid "Columns"
 msgstr ""
 
 #: classes/class-fl-builder-ui-settings-forms.php:451
-#: includes/ui-js-config.php:156 modules/post-slider/post-slider.php:492
+#: includes/ui-js-config.php:158 modules/post-slider/post-slider.php:492
 msgid "Thumbnail"
 msgstr ""
 
 #: classes/class-fl-builder-ui-settings-forms.php:452
-#: includes/ui-js-config.php:107 modules/pricing-table/pricing-table.php:113
+#: includes/ui-js-config.php:109 modules/pricing-table/pricing-table.php:113
 msgid "Medium"
 msgstr ""
 
 #: classes/class-fl-builder-ui-settings-forms.php:453
-#: includes/ui-js-config.php:105 modules/pricing-table/pricing-table.php:112
+#: includes/ui-js-config.php:107 modules/pricing-table/pricing-table.php:112
 msgid "Large"
 msgstr ""
 
 #: classes/class-fl-builder-ui-settings-forms.php:454
-#: includes/ui-field-photo-sizes.php:8 includes/ui-js-config.php:100
+#: includes/ui-field-photo-sizes.php:8 includes/ui-js-config.php:102
 msgid "Full Size"
 msgstr ""
 
@@ -1414,7 +1422,7 @@ msgstr ""
 
 #: classes/class-fl-builder.php:969
 #: extensions/fl-builder-user-templates/includes/user-template-settings.php:4
-#: includes/ui-js-config.php:141
+#: includes/ui-js-config.php:143
 msgid "Save Template"
 msgstr ""
 
@@ -1431,7 +1439,7 @@ msgid "Layout CSS & Javascript"
 msgstr ""
 
 #: classes/class-fl-builder.php:1001 includes/global-settings.php:4
-#: includes/ui-js-config.php:92
+#: includes/ui-js-config.php:94
 msgid "Global Settings"
 msgstr ""
 
@@ -1451,7 +1459,7 @@ msgstr ""
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: classes/class-fl-builder.php:1071 includes/ui-js-config.php:106
+#: classes/class-fl-builder.php:1071 includes/ui-js-config.php:108
 msgid "Manage Templates"
 msgstr ""
 
@@ -1469,7 +1477,7 @@ msgstr ""
 
 #: classes/class-fl-builder.php:1131
 #: extensions/fl-builder-white-label/includes/admin-settings-help-button.php:59
-#: includes/ui-js-config.php:181
+#: includes/ui-js-config.php:183
 msgid "Contact Support"
 msgstr ""
 
@@ -1481,17 +1489,17 @@ msgstr ""
 msgid "Buy Now"
 msgstr ""
 
-#: classes/class-fl-builder.php:1327 includes/ui-js-config.php:87
+#: classes/class-fl-builder.php:1327 includes/ui-js-config.php:89
 #: includes/ui-js-templates.php:278
 msgid "Done"
 msgstr ""
 
-#: classes/class-fl-builder.php:3022
+#: classes/class-fl-builder.php:3064
 msgid "The uploaded file is not a valid %s extension."
 msgstr ""
 
 #: extensions/fl-builder-core-templates-admin/classes/class-fl-builder-core-templates-admin.php:70
-#: includes/ui-js-config.php:135
+#: includes/ui-js-config.php:137
 msgid "Save Core Template"
 msgstr ""
 
@@ -1504,7 +1512,7 @@ msgid "Edit Template"
 msgstr ""
 
 #: extensions/fl-builder-core-templates-admin/includes/admin-core-templates-edit.php:12
-#: modules/callout/callout.php:300 modules/post-carousel/post-carousel.php:279
+#: modules/callout/callout.php:300 modules/post-carousel/post-carousel.php:286
 #: modules/post-grid/post-grid.php:434 modules/post-slider/post-slider.php:488
 msgid "Image"
 msgstr ""
@@ -1541,15 +1549,15 @@ msgstr ""
 #: modules/content-slider/content-slider.php:673
 #: modules/content-slider/content-slider.php:731
 #: modules/countdown/countdown.php:333 modules/cta/cta.php:288
-#: modules/icon/icon.php:118 modules/icon-group/icon-group.php:81
-#: modules/menu/menu.php:214 modules/menu/menu.php:302
-#: modules/menu/menu.php:511 modules/photo/photo.php:561
-#: modules/post-carousel/post-carousel.php:154
+#: modules/icon/icon.php:67 modules/icon/icon.php:130
+#: modules/icon-group/icon-group.php:81 modules/menu/menu.php:214
+#: modules/menu/menu.php:302 modules/menu/menu.php:511
+#: modules/photo/photo.php:561 modules/post-carousel/post-carousel.php:154
 #: modules/post-carousel/post-carousel.php:170
-#: modules/post-carousel/post-carousel.php:206
-#: modules/post-carousel/post-carousel.php:215
-#: modules/post-carousel/post-carousel.php:256
-#: modules/post-carousel/post-carousel.php:321
+#: modules/post-carousel/post-carousel.php:213
+#: modules/post-carousel/post-carousel.php:222
+#: modules/post-carousel/post-carousel.php:263
+#: modules/post-carousel/post-carousel.php:328
 #: modules/post-grid/post-grid.php:356 modules/post-grid/post-grid.php:817
 #: modules/post-slider/post-slider.php:385
 #: modules/post-slider/post-slider.php:401
@@ -1571,8 +1579,8 @@ msgstr ""
 #: modules/social-buttons/social-buttons.php:126
 #: modules/testimonials/testimonials.php:95
 #: modules/testimonials/testimonials.php:145
-#: modules/testimonials/testimonials.php:175 modules/video/video.php:128
-#: modules/video/video.php:140
+#: modules/testimonials/testimonials.php:175 modules/video/video.php:148
+#: modules/video/video.php:160
 msgid "No"
 msgstr ""
 
@@ -1598,15 +1606,15 @@ msgstr ""
 #: modules/content-slider/content-slider.php:674
 #: modules/content-slider/content-slider.php:730
 #: modules/countdown/countdown.php:334 modules/cta/cta.php:287
-#: modules/icon/icon.php:119 modules/icon-group/icon-group.php:82
-#: modules/menu/menu.php:213 modules/menu/menu.php:303
-#: modules/menu/menu.php:512 modules/photo/photo.php:560
-#: modules/post-carousel/post-carousel.php:155
+#: modules/icon/icon.php:68 modules/icon/icon.php:131
+#: modules/icon-group/icon-group.php:82 modules/menu/menu.php:213
+#: modules/menu/menu.php:303 modules/menu/menu.php:512
+#: modules/photo/photo.php:560 modules/post-carousel/post-carousel.php:155
 #: modules/post-carousel/post-carousel.php:171
-#: modules/post-carousel/post-carousel.php:207
-#: modules/post-carousel/post-carousel.php:216
-#: modules/post-carousel/post-carousel.php:257
-#: modules/post-carousel/post-carousel.php:320
+#: modules/post-carousel/post-carousel.php:214
+#: modules/post-carousel/post-carousel.php:223
+#: modules/post-carousel/post-carousel.php:264
+#: modules/post-carousel/post-carousel.php:327
 #: modules/post-grid/post-grid.php:355 modules/post-grid/post-grid.php:816
 #: modules/post-slider/post-slider.php:386
 #: modules/post-slider/post-slider.php:402
@@ -1628,8 +1636,8 @@ msgstr ""
 #: modules/social-buttons/social-buttons.php:125
 #: modules/testimonials/testimonials.php:96
 #: modules/testimonials/testimonials.php:146
-#: modules/testimonials/testimonials.php:176 modules/video/video.php:129
-#: modules/video/video.php:141
+#: modules/testimonials/testimonials.php:176 modules/video/video.php:149
+#: modules/video/video.php:161
 msgid "Yes"
 msgstr ""
 
@@ -1686,7 +1694,7 @@ msgid "Delete"
 msgstr ""
 
 #: extensions/fl-builder-core-templates-admin/includes/admin-core-templates.php:73
-#: includes/ui-js-config.php:83
+#: includes/ui-js-config.php:85
 msgid "Do you really want to delete this template?"
 msgstr ""
 
@@ -1749,6 +1757,7 @@ msgstr ""
 #: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:32
 #: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:48
 #: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:64
+#: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:80
 #: includes/admin-settings-js-config.php:13
 msgid "Select All"
 msgstr ""
@@ -1766,10 +1775,14 @@ msgid "No Rows Found"
 msgstr ""
 
 #: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:62
+msgid "No Columns Found"
+msgstr ""
+
+#: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:78
 msgid "No Modules Found"
 msgstr ""
 
-#: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:74
+#: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:90
 msgid "Export Template Data"
 msgstr ""
 
@@ -1821,7 +1834,7 @@ msgid "Add"
 msgstr ""
 
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates-admin-add.php:70
-#: includes/ui-js-config.php:204
+#: includes/ui-js-config.php:206
 msgid "Template"
 msgstr ""
 
@@ -1847,14 +1860,14 @@ msgstr ""
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates-admin-list.php:103
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates-admin-menu.php:43
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates.php:248
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:79
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:85
 msgid "Saved Columns"
 msgstr ""
 
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates-admin-list.php:105
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates-admin-menu.php:44
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates.php:210
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:115
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:127
 msgid "Saved Modules"
 msgstr ""
 
@@ -1914,7 +1927,7 @@ msgstr ""
 
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates.php:354
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates.php:358
-#: includes/ui-js-config.php:189
+#: includes/ui-js-config.php:191
 msgid "Saved"
 msgstr ""
 
@@ -1930,7 +1943,7 @@ msgid "Title"
 msgstr ""
 
 #: extensions/fl-builder-user-templates/includes/admin-add-new-form.php:36
-#: includes/ui-js-config.php:108 includes/ui-js-config.php:205
+#: includes/ui-js-config.php:110 includes/ui-js-config.php:207
 msgid "Module"
 msgstr ""
 
@@ -1981,28 +1994,28 @@ msgid "Save Template Settings"
 msgstr ""
 
 #: extensions/fl-builder-user-templates/includes/ui-js-templates.php:45
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:251
-#: includes/ui-js-config.php:116
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:269
+#: includes/ui-js-config.php:118
 msgid "No saved rows found."
 msgstr ""
 
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:82
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:205
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:88
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:223
 msgid "No saved columns found."
 msgstr ""
 
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:118
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:159
-#: includes/ui-js-config.php:117
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:130
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:177
+#: includes/ui-js-config.php:119
 msgid "No saved modules found."
 msgstr ""
 
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:348
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:366
 msgid "Save New Template"
 msgstr ""
 
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:349
-#: includes/ui-js-config.php:136
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:367
+#: includes/ui-js-config.php:138
 msgid "Save"
 msgstr ""
 
@@ -2521,13 +2534,13 @@ msgstr ""
 #: modules/content-slider/content-slider.php:823
 #: modules/countdown/countdown.php:140 modules/cta/cta.php:106
 #: modules/cta/cta.php:336 modules/heading/heading.php:72
-#: modules/icon/icon.php:82 modules/icon-group/icon-group.php:45
+#: modules/icon/icon.php:94 modules/icon-group/icon-group.php:45
 #: modules/icon-group/icon-group.php:157 modules/menu/menu.php:281
-#: modules/numbers/numbers.php:212 modules/post-carousel/post-carousel.php:427
+#: modules/numbers/numbers.php:216 modules/post-carousel/post-carousel.php:434
 #: modules/post-grid/post-grid.php:651 modules/post-slider/post-slider.php:608
 #: modules/pricing-table/pricing-table.php:73
 #: modules/pricing-table/pricing-table.php:287
-#: modules/pricing-table/pricing-table.php:392
+#: modules/pricing-table/pricing-table.php:410
 #: modules/separator/separator.php:107
 #: modules/subscribe-form/subscribe-form.php:348 modules/tabs/tabs.php:46
 msgid "Style"
@@ -2537,7 +2550,7 @@ msgstr ""
 msgid "Column Width"
 msgstr ""
 
-#: includes/column-settings.php:25 modules/post-carousel/post-carousel.php:253
+#: includes/column-settings.php:25 modules/post-carousel/post-carousel.php:260
 msgid "Equalize Column Heights"
 msgstr ""
 
@@ -2561,14 +2574,17 @@ msgstr ""
 
 #: includes/column-settings.php:47 includes/column-settings.php:182
 #: includes/row-settings.php:79 includes/row-settings.php:208
-#: modules/button/button.php:362 modules/callout/callout.php:245
+#: modules/button/button.php:362 modules/button/button.php:401
+#: modules/callout/callout.php:245 modules/callout/callout.php:674
 #: modules/contact-form/contact-form.php:527
+#: modules/contact-form/contact-form.php:565
 #: modules/content-slider/content-slider.php:571 modules/cta/cta.php:131
 #: modules/heading/heading.php:93 modules/heading/heading.php:222
-#: modules/icon/icon.php:141 modules/icon/icon.php:171
+#: modules/icon/icon.php:153 modules/icon/icon.php:183
 #: modules/icon-group/icon-group.php:112 modules/menu/menu.php:293
 #: modules/photo/photo.php:484 modules/post-grid/post-grid.php:423
 #: modules/pricing-table/pricing-table.php:356
+#: modules/pricing-table/pricing-table.php:397
 #: modules/social-buttons/social-buttons.php:97
 msgid "Center"
 msgstr ""
@@ -2586,7 +2602,7 @@ msgstr ""
 #: modules/callout/callout.php:504
 #: modules/content-slider/content-slider.php:474
 #: modules/content-slider/content-slider.php:764 modules/cta/cta.php:87
-#: modules/cta/cta.php:226 modules/icon/icon.php:65 modules/menu/menu.php:371
+#: modules/cta/cta.php:226 modules/icon/icon.php:77 modules/menu/menu.php:371
 #: modules/post-grid/post-grid.php:712 modules/post-slider/post-slider.php:651
 msgid "Text"
 msgstr ""
@@ -2594,20 +2610,20 @@ msgstr ""
 #: includes/column-settings.php:61 includes/column-settings.php:124
 #: includes/column-settings.php:281 includes/row-settings.php:466
 #: includes/row-settings.php:548 modules/callout/callout.php:388
-#: modules/content-slider/content-slider.php:428 modules/icon/icon.php:89
+#: modules/content-slider/content-slider.php:428 modules/icon/icon.php:101
 #: modules/icon-group/icon-group.php:52 modules/icon-group/icon-group.php:164
 #: modules/separator/separator.php:35
 msgid "Color"
 msgstr ""
 
 #: includes/column-settings.php:69 includes/row-settings.php:101
-#: modules/menu/menu.php:375 modules/post-carousel/post-carousel.php:439
+#: modules/menu/menu.php:375 modules/post-carousel/post-carousel.php:446
 #: modules/post-grid/post-grid.php:755 modules/post-slider/post-slider.php:728
 msgid "Link Color"
 msgstr ""
 
 #: includes/column-settings.php:77 includes/row-settings.php:109
-#: modules/menu/menu.php:393 modules/post-carousel/post-carousel.php:444
+#: modules/menu/menu.php:393 modules/post-carousel/post-carousel.php:451
 #: modules/post-grid/post-grid.php:760 modules/post-slider/post-slider.php:744
 msgid "Link Hover Color"
 msgstr ""
@@ -2626,7 +2642,7 @@ msgstr ""
 #: modules/callout/callout.php:542 modules/contact-form/contact-form.php:423
 #: modules/content-slider/content-slider.php:455
 #: modules/content-slider/content-slider.php:796 modules/cta/cta.php:202
-#: modules/cta/cta.php:301 modules/icon/icon.php:102
+#: modules/cta/cta.php:301 modules/icon/icon.php:114
 #: modules/icon-group/icon-group.php:65 modules/icon-group/icon-group.php:177
 #: modules/post-grid/post-grid.php:937
 #: modules/pricing-table/pricing-table.php:258
@@ -2861,7 +2877,7 @@ msgstr ""
 #: modules/heading/heading.php:133 modules/heading/heading.php:156
 #: modules/heading/heading.php:178 modules/heading/heading.php:205
 #: modules/heading/heading.php:235 modules/heading/heading.php:258
-#: modules/heading/heading.php:279 modules/icon/icon.php:157
+#: modules/heading/heading.php:279 modules/icon/icon.php:169
 #: modules/post-slider/post-slider.php:632 modules/separator/separator.php:78
 #: modules/social-buttons/social-buttons.php:71
 msgid "Custom"
@@ -2913,7 +2929,7 @@ msgid "Logged In User"
 msgstr ""
 
 #: includes/column-settings.php:445 includes/module-settings.php:59
-#: includes/row-settings.php:653 modules/gallery/gallery.php:290
+#: includes/row-settings.php:653 modules/gallery/gallery.php:291
 #: modules/photo/photo.php:498
 msgid "Never"
 msgstr ""
@@ -3068,7 +3084,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: includes/layout-settings.php:4 includes/ui-js-config.php:93
+#: includes/layout-settings.php:4 includes/ui-js-config.php:95
 msgid "Layout CSS / Javascript"
 msgstr ""
 
@@ -3115,7 +3131,7 @@ msgid ""
 "multiple classes with spaces."
 msgstr ""
 
-#: includes/row-settings.php:7 includes/ui-js-config.php:133
+#: includes/row-settings.php:7 includes/ui-js-config.php:135
 #: includes/ui-js-templates.php:11
 msgid "Row Settings"
 msgstr ""
@@ -3156,9 +3172,9 @@ msgstr ""
 
 #: includes/row-settings.php:89 modules/button/button.php:234
 #: modules/cta/cta.php:192 modules/heading/heading.php:75
-#: modules/icon/icon.php:85 modules/icon-group/icon-group.php:48
-#: modules/icon-group/icon-group.php:160 modules/numbers/numbers.php:215
-#: modules/post-carousel/post-carousel.php:430
+#: modules/icon/icon.php:97 modules/icon-group/icon-group.php:48
+#: modules/icon-group/icon-group.php:160 modules/numbers/numbers.php:219
+#: modules/post-carousel/post-carousel.php:437
 #: modules/post-slider/post-slider.php:709
 msgid "Colors"
 msgstr ""
@@ -3170,7 +3186,7 @@ msgstr ""
 #: modules/content-slider/content-slider.php:939
 #: modules/countdown/countdown.php:181 modules/cta/cta.php:196
 #: modules/cta/cta.php:316 modules/heading/heading.php:80
-#: modules/numbers/numbers.php:219 modules/post-carousel/post-carousel.php:434
+#: modules/numbers/numbers.php:223 modules/post-carousel/post-carousel.php:441
 #: modules/post-grid/post-grid.php:952 modules/post-slider/post-slider.php:713
 #: modules/pricing-table/pricing-table.php:270
 #: modules/subscribe-form/subscribe-form.php:328
@@ -3182,15 +3198,15 @@ msgid "Background Video"
 msgstr ""
 
 #: includes/row-settings.php:250 includes/row-settings.php:344
-#: includes/ui-loop-settings.php:27 modules/gallery/gallery.php:240
+#: includes/ui-loop-settings.php:27 modules/gallery/gallery.php:241
 #: modules/slideshow/slideshow.php:256
 msgid "Source"
 msgstr ""
 
 #: includes/row-settings.php:253 includes/row-settings.php:347
-#: modules/audio/audio.php:83 modules/gallery/gallery.php:243
+#: modules/audio/audio.php:83 modules/gallery/gallery.php:244
 #: modules/photo/photo.php:442 modules/slideshow/slideshow.php:259
-#: modules/video/video.php:92
+#: modules/video/video.php:112
 msgid "Media Library"
 msgstr ""
 
@@ -3198,7 +3214,7 @@ msgstr ""
 msgid "YouTube or Vimeo"
 msgstr ""
 
-#: includes/row-settings.php:274 modules/video/video.php:106
+#: includes/row-settings.php:274 modules/video/video.php:126
 msgid "Video (MP4)"
 msgstr ""
 
@@ -3208,7 +3224,7 @@ msgid ""
 "browsers support this format."
 msgstr ""
 
-#: includes/row-settings.php:282 modules/video/video.php:112
+#: includes/row-settings.php:282 modules/video/video.php:132
 msgid "Video (WebM)"
 msgstr ""
 
@@ -3258,7 +3274,7 @@ msgstr ""
 msgid "Background Slideshow"
 msgstr ""
 
-#: includes/row-settings.php:350 modules/gallery/gallery.php:246
+#: includes/row-settings.php:350 modules/gallery/gallery.php:247
 #: modules/slideshow/slideshow.php:262
 msgid ""
 "Pull images from the WordPress media library or a gallery on your SmugMug "
@@ -3266,12 +3282,12 @@ msgid ""
 "accessed by using the get a link function in your SmugMug gallery."
 msgstr ""
 
-#: includes/row-settings.php:365 modules/gallery/gallery.php:258
+#: includes/row-settings.php:365 modules/gallery/gallery.php:259
 #: modules/slideshow/slideshow.php:274
 msgid "Photos"
 msgstr ""
 
-#: includes/row-settings.php:373 modules/gallery/gallery.php:263
+#: includes/row-settings.php:373 modules/gallery/gallery.php:264
 #: modules/slideshow/slideshow.php:279
 msgid "Feed URL"
 msgstr ""
@@ -3294,7 +3310,7 @@ msgid "Transition"
 msgstr ""
 
 #: includes/row-settings.php:395 modules/content-slider/content-slider.php:286
-#: modules/post-carousel/post-carousel.php:265
+#: modules/post-carousel/post-carousel.php:272
 #: modules/post-grid/post-grid.php:773 modules/post-slider/post-slider.php:410
 #: modules/slideshow/slideshow.php:390
 #: modules/testimonials/testimonials.php:114
@@ -3417,7 +3433,7 @@ msgstr ""
 msgid "Submit changes for review and exit"
 msgstr ""
 
-#: includes/ui-bar.php:12 includes/ui-js-config.php:147
+#: includes/ui-bar.php:12 includes/ui-js-config.php:149
 msgid "Submit for Review"
 msgstr ""
 
@@ -3438,33 +3454,39 @@ msgid "Apply"
 msgstr ""
 
 #: includes/ui-field-dimension.php:41 modules/button/button.php:364
-#: modules/callout/callout.php:247 modules/contact-form/contact-form.php:528
+#: modules/button/button.php:403 modules/callout/callout.php:247
+#: modules/callout/callout.php:676 modules/contact-form/contact-form.php:528
+#: modules/contact-form/contact-form.php:567
 #: modules/content-slider/content-slider.php:572
 #: modules/content-slider/content-slider.php:614
 #: modules/content-slider/content-slider.php:651 modules/cta/cta.php:132
 #: modules/heading/heading.php:94 modules/heading/heading.php:223
-#: modules/icon/icon.php:143 modules/icon/icon.php:172
+#: modules/icon/icon.php:155 modules/icon/icon.php:184
 #: modules/icon-group/icon-group.php:114 modules/menu/menu.php:294
 #: modules/photo/photo.php:485 modules/post-grid/post-grid.php:424
 #: modules/post-grid/post-grid.php:459 modules/post-slider/post-slider.php:660
 #: modules/post-slider/post-slider.php:679
 #: modules/pricing-table/pricing-table.php:357
+#: modules/pricing-table/pricing-table.php:399
 #: modules/social-buttons/social-buttons.php:99
 msgid "Right"
 msgstr ""
 
 #: includes/ui-field-dimension.php:61 modules/button/button.php:363
-#: modules/callout/callout.php:246 modules/contact-form/contact-form.php:526
+#: modules/button/button.php:402 modules/callout/callout.php:246
+#: modules/callout/callout.php:675 modules/contact-form/contact-form.php:526
+#: modules/contact-form/contact-form.php:566
 #: modules/content-slider/content-slider.php:570
 #: modules/content-slider/content-slider.php:606
 #: modules/content-slider/content-slider.php:643 modules/cta/cta.php:130
 #: modules/heading/heading.php:92 modules/heading/heading.php:221
-#: modules/icon/icon.php:142 modules/icon/icon.php:170
+#: modules/icon/icon.php:154 modules/icon/icon.php:182
 #: modules/icon-group/icon-group.php:113 modules/menu/menu.php:292
 #: modules/photo/photo.php:483 modules/post-grid/post-grid.php:422
 #: modules/post-grid/post-grid.php:457 modules/post-slider/post-slider.php:659
 #: modules/post-slider/post-slider.php:678
 #: modules/pricing-table/pricing-table.php:355
+#: modules/pricing-table/pricing-table.php:398
 #: modules/social-buttons/social-buttons.php:98
 msgid "Left"
 msgstr ""
@@ -3474,7 +3496,7 @@ msgid "Replace"
 msgstr ""
 
 #: includes/ui-field-icon.php:7 includes/ui-field-photo.php:55
-#: includes/ui-js-config.php:128 includes/ui-js-templates.php:27
+#: includes/ui-js-config.php:130 includes/ui-js-templates.php:27
 #: includes/ui-js-templates.php:73 includes/ui-js-templates.php:165
 msgid "Remove"
 msgstr ""
@@ -3491,7 +3513,7 @@ msgstr ""
 msgid "Start typing..."
 msgstr ""
 
-#: includes/ui-field-multiple-audios.php:34 includes/ui-js-config.php:142
+#: includes/ui-field-multiple-audios.php:34 includes/ui-js-config.php:144
 msgid "Select Audio"
 msgstr ""
 
@@ -3515,11 +3537,11 @@ msgstr ""
 msgid "Add Photos"
 msgstr ""
 
-#: includes/ui-field-photo.php:36 includes/ui-js-config.php:143
+#: includes/ui-field-photo.php:36 includes/ui-js-config.php:145
 msgid "Select Photo"
 msgstr ""
 
-#: includes/ui-field-video.php:23 includes/ui-js-config.php:145
+#: includes/ui-field-video.php:23 includes/ui-js-config.php:147
 msgid "Select Video"
 msgstr ""
 
@@ -3574,91 +3596,99 @@ msgid "Color Picker"
 msgstr ""
 
 #: includes/ui-js-config.php:73
-msgid "Please fix all code errors before saving."
+msgid "This code has errors. We recommend you fix them before saving."
 msgstr ""
 
 #: includes/ui-js-config.php:74
-msgid "Column"
+msgid "Fix Errors"
 msgstr ""
 
 #: includes/ui-js-config.php:75
+msgid "Save With Errors"
+msgstr ""
+
+#: includes/ui-js-config.php:76
+msgid "Column"
+msgstr ""
+
+#: includes/ui-js-config.php:77
 msgid ""
 "Please select either a background layout or content layout before "
 "submitting."
 msgstr ""
 
-#: includes/ui-js-config.php:76
+#: includes/ui-js-config.php:78
 msgid "Error! Please enter a date that is in the future."
 msgstr ""
 
-#: includes/ui-js-config.php:77
+#: includes/ui-js-config.php:79
 msgid "Remove Account"
 msgstr ""
 
-#: includes/ui-js-config.php:78
+#: includes/ui-js-config.php:80
 msgid ""
 "Are you sure you want to remove this account? Other modules that are "
 "connected to it will be affected."
 msgstr ""
 
-#: includes/ui-js-config.php:79
+#: includes/ui-js-config.php:81
 msgid "Do you really want to delete this column?"
 msgstr ""
 
-#: includes/ui-js-config.php:80
+#: includes/ui-js-config.php:82
 msgid "Do you really want to delete this item?"
 msgstr ""
 
-#: includes/ui-js-config.php:81
+#: includes/ui-js-config.php:83
 msgid "Do you really want to delete this module?"
 msgstr ""
 
-#: includes/ui-js-config.php:82
+#: includes/ui-js-config.php:84
 msgid "Do you really want to delete this row?"
 msgstr ""
 
-#: includes/ui-js-config.php:84
+#: includes/ui-js-config.php:86
 msgid ""
 "WARNING! You are about to delete a global template that may be linked to "
 "other pages. Do you really want to delete this template and unlink it?"
 msgstr ""
 
-#: includes/ui-js-config.php:85
+#: includes/ui-js-config.php:87
 msgid "Discard Changes and Exit"
 msgstr ""
 
-#: includes/ui-js-config.php:86
+#: includes/ui-js-config.php:88
 msgid ""
 "Do you really want to discard these changes? All of your changes that are "
 "not published will be lost."
 msgstr ""
 
-#: includes/ui-js-config.php:88
+#: includes/ui-js-config.php:90
 msgid "Save Changes and Exit"
 msgstr ""
 
-#: includes/ui-js-config.php:89 includes/ui-js-templates.php:13
+#: includes/ui-js-config.php:91 includes/ui-js-templates.php:13
 #: includes/ui-js-templates.php:48 includes/ui-js-templates.php:138
 msgid "Duplicate"
 msgstr ""
 
-#: includes/ui-js-config.php:94
+#: includes/ui-js-config.php:96
 msgid "Drop a row layout or module to get started!"
 msgstr ""
 
-#: includes/ui-js-config.php:95
+#: includes/ui-js-config.php:97
 msgid "Error! Please enter a valid day."
 msgstr ""
 
-#: includes/ui-js-config.php:96
+#: includes/ui-js-config.php:98
 msgid "Error! Please enter a valid month."
 msgstr ""
 
-#: includes/ui-js-config.php:97
+#: includes/ui-js-config.php:99
 msgid "Error! Please enter a valid year."
 msgstr ""
 
-#: includes/ui-js-config.php:98
+#: includes/ui-js-config.php:100
 msgid ""
 "Beaver Builder caught the following JavaScript error. If Beaver Builder is "
 "not functioning as expected the cause is most likely this error. Please "
@@ -3667,358 +3697,358 @@ msgid ""
 "plugin."
 msgstr ""
 
-#: includes/ui-js-config.php:99
+#: includes/ui-js-config.php:101
 msgid "Field Loading..."
 msgstr ""
 
-#: includes/ui-js-config.php:101
+#: includes/ui-js-config.php:103
 msgid "Get Help"
 msgstr ""
 
-#: includes/ui-js-config.php:103
+#: includes/ui-js-config.php:105
 msgid "\"{message}\" on line {line} of {file}."
 msgstr ""
 
-#: includes/ui-js-config.php:104
+#: includes/ui-js-config.php:106
 msgid "Insert"
 msgstr ""
 
-#: includes/ui-js-config.php:109
+#: includes/ui-js-config.php:111
 msgid "Module Saved!"
 msgstr ""
 
-#: includes/ui-js-config.php:110 includes/ui-js-templates.php:9
+#: includes/ui-js-config.php:112 includes/ui-js-templates.php:9
 #: includes/ui-js-templates.php:46 includes/ui-js-templates.php:134
 msgid "Move"
 msgstr ""
 
-#: includes/ui-js-config.php:111
+#: includes/ui-js-config.php:113
 msgid "New Column"
 msgstr ""
 
-#: includes/ui-js-config.php:112
+#: includes/ui-js-config.php:114
 msgid "New Row"
 msgstr ""
 
-#: includes/ui-js-config.php:113
+#: includes/ui-js-config.php:115
 msgid "Please enter a color first."
 msgstr ""
 
-#: includes/ui-js-config.php:114
+#: includes/ui-js-config.php:116
 msgid "Add a color preset first."
 msgstr ""
 
-#: includes/ui-js-config.php:115
+#: includes/ui-js-config.php:117
 msgid "No results found."
 msgstr ""
 
-#: includes/ui-js-config.php:118 includes/ui-js-templates.php:249
+#: includes/ui-js-config.php:120 includes/ui-js-templates.php:249
 msgid "OK"
 msgstr ""
 
-#: includes/ui-js-config.php:119 modules/photo/photo.php:520
+#: includes/ui-js-config.php:121 modules/photo/photo.php:520
 msgid "Photo Page"
 msgstr ""
 
-#: includes/ui-js-config.php:120
+#: includes/ui-js-config.php:122
 msgid "Photo Selected"
 msgstr ""
 
-#: includes/ui-js-config.php:121
+#: includes/ui-js-config.php:123
 msgid "%d Photo Selected"
 msgstr ""
 
-#: includes/ui-js-config.php:122
+#: includes/ui-js-config.php:124
 msgid "Photos Selected"
 msgstr ""
 
-#: includes/ui-js-config.php:123
+#: includes/ui-js-config.php:125
 msgid "%d Photos Selected"
 msgstr ""
 
-#: includes/ui-js-config.php:124
+#: includes/ui-js-config.php:126
 msgid "Paste color here..."
 msgstr ""
 
-#: includes/ui-js-config.php:125
+#: includes/ui-js-config.php:127
 #: modules/subscribe-form/includes/frontend.php:37
 msgid "Please Wait..."
 msgstr ""
 
-#: includes/ui-js-config.php:127
+#: includes/ui-js-config.php:129
 msgid "Publish Changes"
 msgstr ""
 
-#: includes/ui-js-config.php:129
+#: includes/ui-js-config.php:131
 msgid "Are you sure?"
 msgstr ""
 
-#: includes/ui-js-config.php:132 includes/ui-js-config.php:206
+#: includes/ui-js-config.php:134 includes/ui-js-config.php:208
 msgid "Row"
 msgstr ""
 
-#: includes/ui-js-config.php:134
+#: includes/ui-js-config.php:136
 msgid "Row Saved!"
 msgstr ""
 
-#: includes/ui-js-config.php:137
+#: includes/ui-js-config.php:139
 msgid "Save As..."
 msgstr ""
 
-#: includes/ui-js-config.php:138
+#: includes/ui-js-config.php:140
 msgid "Save Column"
 msgstr ""
 
-#: includes/ui-js-config.php:139
+#: includes/ui-js-config.php:141
 msgid "Save Module"
 msgstr ""
 
-#: includes/ui-js-config.php:140
+#: includes/ui-js-config.php:142
 msgid "Save Row"
 msgstr ""
 
-#: includes/ui-js-config.php:144
+#: includes/ui-js-config.php:146
 msgid "Select Photos"
 msgstr ""
 
-#: includes/ui-js-config.php:146
+#: includes/ui-js-config.php:148
 msgid "These settings have errors. Please correct them before continuing."
 msgstr ""
 
-#: includes/ui-js-config.php:148
+#: includes/ui-js-config.php:150
 msgid "Please select an account before saving."
 msgstr ""
 
-#: includes/ui-js-config.php:149
+#: includes/ui-js-config.php:151
 msgid "Please connect an account before saving."
 msgstr ""
 
-#: includes/ui-js-config.php:150
+#: includes/ui-js-config.php:152
 msgid "Please select a list before saving."
 msgstr ""
 
-#: includes/ui-js-config.php:151
+#: includes/ui-js-config.php:153
 msgid "Please enter at least one tag before saving."
 msgstr ""
 
-#: includes/ui-js-config.php:152
+#: includes/ui-js-config.php:154
 msgid "Take a Tour"
 msgstr ""
 
-#: includes/ui-js-config.php:153
+#: includes/ui-js-config.php:155
 msgid "Append New Layout"
 msgstr ""
 
-#: includes/ui-js-config.php:154
+#: includes/ui-js-config.php:156
 msgid "Replace Existing Layout"
 msgstr ""
 
-#: includes/ui-js-config.php:155
+#: includes/ui-js-config.php:157
 msgid "Template Saved!"
 msgstr ""
 
-#: includes/ui-js-config.php:157
+#: includes/ui-js-config.php:159
 msgid "Next"
 msgstr ""
 
-#: includes/ui-js-config.php:158 modules/pricing-table/pricing-table.php:198
+#: includes/ui-js-config.php:160 modules/pricing-table/pricing-table.php:198
 msgid "Get Started"
 msgstr ""
 
-#: includes/ui-js-config.php:159
+#: includes/ui-js-config.php:161
 msgid "Choose a Template"
 msgstr ""
 
-#: includes/ui-js-config.php:160
+#: includes/ui-js-config.php:162
 msgid ""
 "Get started by choosing a layout template to customize, or build a page "
 "from scratch by selecting the blank layout template."
 msgstr ""
 
-#: includes/ui-js-config.php:161
+#: includes/ui-js-config.php:163
 msgid "Add Rows"
 msgstr ""
 
-#: includes/ui-js-config.php:162
+#: includes/ui-js-config.php:164
 msgid ""
 "Add multi-column rows, adjust spacing, add backgrounds and more by dragging "
 "and dropping row layouts onto the page."
 msgstr ""
 
-#: includes/ui-js-config.php:163
+#: includes/ui-js-config.php:165
 msgid "Add Content"
 msgstr ""
 
-#: includes/ui-js-config.php:164
+#: includes/ui-js-config.php:166
 msgid ""
 "Add new content by dragging and dropping modules or widgets into your row "
 "layouts or to create a new row layout."
 msgstr ""
 
-#: includes/ui-js-config.php:165
+#: includes/ui-js-config.php:167
 msgid "Edit Content"
 msgstr ""
 
-#: includes/ui-js-config.php:166
+#: includes/ui-js-config.php:168
 msgid ""
 "Move your mouse over rows, columns or modules to edit and interact with "
 "them."
 msgstr ""
 
-#: includes/ui-js-config.php:167
+#: includes/ui-js-config.php:169
 msgid ""
 "Use the action buttons to perform actions such as moving, editing, "
 "duplicating or deleting rows, columns and modules."
 msgstr ""
 
-#: includes/ui-js-config.php:168
+#: includes/ui-js-config.php:170
 msgid "Add More Content"
 msgstr ""
 
-#: includes/ui-js-config.php:169
+#: includes/ui-js-config.php:171
 msgid ""
 "Use the Add Content button to open the content panel and add new row "
 "layouts, modules or widgets."
 msgstr ""
 
-#: includes/ui-js-config.php:170
+#: includes/ui-js-config.php:172
 msgid "Change Templates"
 msgstr ""
 
-#: includes/ui-js-config.php:171
+#: includes/ui-js-config.php:173
 msgid ""
 "Use the Templates button to pick a new template or append one to your "
 "layout. Appending will insert a new template at the end of your existing "
 "page content."
 msgstr ""
 
-#: includes/ui-js-config.php:172
+#: includes/ui-js-config.php:174
 msgid "Helpful Tools"
 msgstr ""
 
-#: includes/ui-js-config.php:173
+#: includes/ui-js-config.php:175
 msgid ""
 "The Tools button lets you save a template, duplicate a layout, edit the "
 "settings for a layout or edit the global settings."
 msgstr ""
 
-#: includes/ui-js-config.php:174
+#: includes/ui-js-config.php:176
 msgid "Publish Your Changes"
 msgstr ""
 
-#: includes/ui-js-config.php:175
+#: includes/ui-js-config.php:177
 msgid ""
 "Once you're finished, click the Done button to publish your changes, save a "
 "draft or revert back to the last published state."
 msgstr ""
 
-#: includes/ui-js-config.php:176
+#: includes/ui-js-config.php:178
 msgid "Let's Get Building!"
 msgstr ""
 
-#: includes/ui-js-config.php:177
+#: includes/ui-js-config.php:179
 msgid ""
 "Now that you know the basics, you're ready to start building! If at any "
 "time you need help, click the help icon in the upper right corner to access "
 "the help menu. Happy building!"
 msgstr ""
 
-#: includes/ui-js-config.php:178
+#: includes/ui-js-config.php:180
 msgid ""
 "The settings you are currently editing will not be saved if you navigate "
 "away from this page."
 msgstr ""
 
-#: includes/ui-js-config.php:179
+#: includes/ui-js-config.php:181
 msgid "View the Knowledge Base"
 msgstr ""
 
-#: includes/ui-js-config.php:180
+#: includes/ui-js-config.php:182
 msgid "This field is required."
 msgstr ""
 
-#: includes/ui-js-config.php:182
+#: includes/ui-js-config.php:184
 msgid "Watch the Video"
 msgstr ""
 
-#: includes/ui-js-config.php:183 includes/ui-js-templates.php:265
+#: includes/ui-js-config.php:185 includes/ui-js-templates.php:265
 msgid ""
 "Welcome! It looks like this might be your first time using the builder. "
 "Would you like to take a tour?"
 msgstr ""
 
-#: includes/ui-js-config.php:185 includes/ui-js-templates.php:267
+#: includes/ui-js-config.php:187 includes/ui-js-templates.php:267
 msgid "Yes Please!"
 msgstr ""
 
-#: includes/ui-js-config.php:187
+#: includes/ui-js-config.php:189
 msgid "Saving..."
 msgstr ""
 
-#: includes/ui-js-config.php:188
+#: includes/ui-js-config.php:190
 msgid "The layout is currently being saved"
 msgstr ""
 
-#: includes/ui-js-config.php:190
+#: includes/ui-js-config.php:192
 msgid "The layout is saved"
 msgstr ""
 
-#: includes/ui-js-config.php:191
+#: includes/ui-js-config.php:193
 msgid "Edited"
 msgstr ""
 
-#: includes/ui-js-config.php:192
+#: includes/ui-js-config.php:194
 msgid "This layout has unpublished changes"
 msgstr ""
 
-#: includes/ui-js-config.php:193
+#: includes/ui-js-config.php:195
 msgid ""
 "This layout has unpublished changes. If you discard this draft all of your "
 "previously unpublished changes will be lost."
 msgstr ""
 
-#: includes/ui-js-config.php:194
+#: includes/ui-js-config.php:196
 msgid "Ok, got it!"
 msgstr ""
 
-#: includes/ui-js-config.php:195
+#: includes/ui-js-config.php:197
 msgid "Nothing new to publish"
 msgstr ""
 
-#: includes/ui-js-config.php:196
+#: includes/ui-js-config.php:198
 msgid "Publishing Changes"
 msgstr ""
 
-#: includes/ui-js-config.php:197
+#: includes/ui-js-config.php:199
 msgid "Changes being published"
 msgstr ""
 
-#: includes/ui-js-config.php:198
+#: includes/ui-js-config.php:200
 msgid "No new changes to save"
 msgstr ""
 
-#: includes/ui-js-config.php:199
+#: includes/ui-js-config.php:201
 msgid "Your changes are saved"
 msgstr ""
 
-#: includes/ui-js-config.php:207
+#: includes/ui-js-config.php:209
 msgid "Column Group"
 msgstr ""
 
-#: includes/ui-js-config.php:208
+#: includes/ui-js-config.php:210
 #: modules/widget/includes/settings-general.php:38 modules/widget/widget.php:13
 msgid "Widget"
 msgstr ""
 
-#: includes/ui-js-config.php:219
+#: includes/ui-js-config.php:221
 msgid "Notifications"
 msgstr ""
 
-#: includes/ui-js-config.php:220
+#: includes/ui-js-config.php:222
 msgid "Loading..."
 msgstr ""
 
-#: includes/ui-js-config.php:221
+#: includes/ui-js-config.php:223
 msgid "No Notifications."
 msgstr ""
 
@@ -4149,7 +4179,7 @@ msgstr ""
 msgid "Order By"
 msgstr ""
 
-#: includes/ui-loop-settings.php:72 modules/post-carousel/post-carousel.php:357
+#: includes/ui-loop-settings.php:72 modules/post-carousel/post-carousel.php:364
 #: modules/post-grid/post-grid.php:499 modules/post-slider/post-slider.php:528
 msgid "Author"
 msgstr ""
@@ -4159,7 +4189,7 @@ msgid "Comment Count"
 msgstr ""
 
 #: includes/ui-loop-settings.php:74 modules/countdown/countdown.php:83
-#: modules/post-carousel/post-carousel.php:366
+#: modules/post-carousel/post-carousel.php:373
 #: modules/post-grid/post-grid.php:508 modules/post-slider/post-slider.php:537
 #: modules/woocommerce/woocommerce.php:191
 msgid "Date"
@@ -4368,9 +4398,9 @@ msgid "Label"
 msgstr ""
 
 #: modules/accordion/accordion.php:135
-#: modules/post-carousel/post-carousel.php:397
-#: modules/post-carousel/post-carousel.php:401
-#: modules/post-carousel/post-carousel.php:498
+#: modules/post-carousel/post-carousel.php:404
+#: modules/post-carousel/post-carousel.php:408
+#: modules/post-carousel/post-carousel.php:505
 #: modules/post-grid/post-grid.php:600 modules/post-grid/post-grid.php:604
 #: modules/post-grid/post-grid.php:856 modules/post-slider/post-slider.php:577
 #: modules/post-slider/post-slider.php:581
@@ -4407,22 +4437,22 @@ msgstr ""
 #: modules/audio/audio.php:118 modules/content-slider/content-slider.php:241
 #: modules/post-carousel/post-carousel.php:151
 #: modules/post-slider/post-slider.php:382 modules/slideshow/slideshow.php:369
-#: modules/testimonials/testimonials.php:92 modules/video/video.php:125
+#: modules/testimonials/testimonials.php:92 modules/video/video.php:145
 msgid "Auto Play"
 msgstr ""
 
 #: modules/audio/audio.php:130 modules/content-slider/content-slider.php:273
 #: modules/post-carousel/post-carousel.php:167
-#: modules/post-slider/post-slider.php:398 modules/video/video.php:137
+#: modules/post-slider/post-slider.php:398 modules/video/video.php:157
 msgid "Loop"
 msgstr ""
 
-#: modules/audio/audio.php:149 modules/contact-form/contact-form.php:614
+#: modules/audio/audio.php:149 modules/contact-form/contact-form.php:632
 #: modules/subscribe-form/subscribe-form.php:488
 msgid "Light"
 msgstr ""
 
-#: modules/audio/audio.php:150 modules/contact-form/contact-form.php:615
+#: modules/audio/audio.php:150 modules/contact-form/contact-form.php:633
 #: modules/subscribe-form/subscribe-form.php:489
 msgid "Dark"
 msgstr ""
@@ -4517,12 +4547,12 @@ msgstr ""
 msgid "Fade In On Hover"
 msgstr ""
 
-#: modules/button/button.php:129 modules/gallery/gallery.php:298
+#: modules/button/button.php:129 modules/gallery/gallery.php:299
 #: modules/slideshow/slideshow.php:331
 msgid "Click Action"
 msgstr ""
 
-#: modules/button/button.php:133 modules/gallery/gallery.php:302
+#: modules/button/button.php:133 modules/gallery/gallery.php:303
 #: modules/photo/photo.php:518
 msgid "Lightbox"
 msgstr ""
@@ -4585,7 +4615,7 @@ msgstr ""
 #: modules/button/button.php:244 modules/callout/callout.php:406
 #: modules/callout/callout.php:548 modules/contact-form/contact-form.php:429
 #: modules/content-slider/content-slider.php:802 modules/cta/cta.php:307
-#: modules/icon/icon.php:107 modules/icon-group/icon-group.php:70
+#: modules/icon/icon.php:119 modules/icon-group/icon-group.php:70
 #: modules/icon-group/icon-group.php:182 modules/post-grid/post-grid.php:943
 #: modules/pricing-table/pricing-table.php:264
 #: modules/subscribe-form/subscribe-form.php:319
@@ -4612,7 +4642,7 @@ msgstr ""
 #: modules/button/button.php:277 modules/callout/callout.php:414
 #: modules/callout/callout.php:581 modules/contact-form/contact-form.php:462
 #: modules/content-slider/content-slider.php:827 modules/cta/cta.php:340
-#: modules/icon/icon.php:115 modules/icon-group/icon-group.php:78
+#: modules/icon/icon.php:127 modules/icon-group/icon-group.php:78
 #: modules/pricing-table/pricing-table.php:291
 #: modules/subscribe-form/subscribe-form.php:352
 msgid "Gradient"
@@ -4669,7 +4699,7 @@ msgstr ""
 
 #: modules/button/button.php:328 modules/callout/callout.php:238
 #: modules/cta/cta.php:109 modules/heading/heading.php:85
-#: modules/icon/icon.php:125 modules/icon-group/icon-group.php:88
+#: modules/icon/icon.php:137 modules/icon-group/icon-group.php:88
 #: modules/subscribe-form/subscribe-form.php:166
 msgid "Structure"
 msgstr ""
@@ -4678,11 +4708,14 @@ msgstr ""
 msgid "Custom Width"
 msgstr ""
 
-#: modules/button/button.php:359 modules/contact-form/contact-form.php:523
-#: modules/cta/cta.php:127 modules/heading/heading.php:89
-#: modules/heading/heading.php:201 modules/icon/icon.php:138
-#: modules/icon/icon.php:153 modules/icon-group/icon-group.php:109
-#: modules/photo/photo.php:480 modules/pricing-table/pricing-table.php:352
+#: modules/button/button.php:359 modules/button/button.php:398
+#: modules/callout/callout.php:671 modules/contact-form/contact-form.php:523
+#: modules/contact-form/contact-form.php:562 modules/cta/cta.php:127
+#: modules/heading/heading.php:89 modules/heading/heading.php:201
+#: modules/icon/icon.php:150 modules/icon/icon.php:165
+#: modules/icon-group/icon-group.php:109 modules/photo/photo.php:480
+#: modules/pricing-table/pricing-table.php:352
+#: modules/pricing-table/pricing-table.php:394
 #: modules/social-buttons/social-buttons.php:94
 msgid "Alignment"
 msgstr ""
@@ -4703,6 +4736,10 @@ msgstr ""
 #: modules/pricing-table/pricing-table.php:381
 #: modules/subscribe-form/subscribe-form.php:422
 msgid "Round Corners"
+msgstr ""
+
+#: modules/button/button.php:394 modules/menu/menu.php:250
+msgid "Responsive Style"
 msgstr ""
 
 #: modules/callout/callout.php:13
@@ -4759,33 +4796,33 @@ msgid "Image Type"
 msgstr ""
 
 #: modules/callout/callout.php:337 modules/photo/photo.php:467
-#: modules/post-carousel/post-carousel.php:298
+#: modules/post-carousel/post-carousel.php:305
 #: modules/post-slider/post-slider.php:510 modules/slideshow/slideshow.php:308
 msgid "Crop"
 msgstr ""
 
 #: modules/callout/callout.php:341 modules/photo/photo.php:471
-#: modules/post-carousel/post-carousel.php:302
+#: modules/post-carousel/post-carousel.php:309
 #: modules/post-slider/post-slider.php:514
 msgid "Landscape"
 msgstr ""
 
 #: modules/callout/callout.php:342 modules/photo/photo.php:472
-#: modules/post-carousel/post-carousel.php:303
+#: modules/post-carousel/post-carousel.php:310
 #: modules/post-slider/post-slider.php:515
 msgid "Panorama"
 msgstr ""
 
 #: modules/callout/callout.php:343 modules/photo/photo.php:473
-#: modules/post-carousel/post-carousel.php:304
+#: modules/post-carousel/post-carousel.php:311
 #: modules/post-slider/post-slider.php:516
 msgid "Portrait"
 msgstr ""
 
 #: modules/callout/callout.php:344
 #: modules/content-slider/content-slider.php:384 modules/photo/photo.php:474
-#: modules/post-carousel/post-carousel.php:305
-#: modules/post-carousel/post-carousel.php:484
+#: modules/post-carousel/post-carousel.php:312
+#: modules/post-carousel/post-carousel.php:491
 #: modules/post-slider/post-slider.php:517
 #: modules/post-slider/post-slider.php:799
 msgid "Square"
@@ -4793,8 +4830,8 @@ msgstr ""
 
 #: modules/callout/callout.php:345
 #: modules/content-slider/content-slider.php:383 modules/photo/photo.php:475
-#: modules/post-carousel/post-carousel.php:306
-#: modules/post-carousel/post-carousel.php:483
+#: modules/post-carousel/post-carousel.php:313
+#: modules/post-carousel/post-carousel.php:490
 #: modules/post-slider/post-slider.php:518
 #: modules/post-slider/post-slider.php:798
 msgid "Circle"
@@ -4828,7 +4865,7 @@ msgstr ""
 msgid "Icon Colors"
 msgstr ""
 
-#: modules/callout/callout.php:393 modules/icon/icon.php:94
+#: modules/callout/callout.php:393 modules/icon/icon.php:106
 #: modules/icon-group/icon-group.php:57 modules/icon-group/icon-group.php:169
 msgid "Hover Color"
 msgstr ""
@@ -4837,9 +4874,9 @@ msgstr ""
 msgid "Icon Structure"
 msgstr ""
 
-#: modules/callout/callout.php:428 modules/icon/icon.php:129
+#: modules/callout/callout.php:428 modules/icon/icon.php:141
 #: modules/icon-group/icon-group.php:92
-#: modules/post-carousel/post-carousel.php:293
+#: modules/post-carousel/post-carousel.php:300
 #: modules/post-slider/post-slider.php:505
 msgid "Size"
 msgstr ""
@@ -4860,7 +4897,7 @@ msgstr ""
 msgid "Call to Action"
 msgstr ""
 
-#: modules/callout/callout.php:505 modules/post-carousel/post-carousel.php:420
+#: modules/callout/callout.php:505 modules/post-carousel/post-carousel.php:427
 #: modules/post-grid/post-grid.php:644 modules/post-slider/post-slider.php:600
 msgid "Read More"
 msgstr ""
@@ -4904,6 +4941,11 @@ msgstr ""
 msgid "Button Width"
 msgstr ""
 
+#: modules/callout/callout.php:667 modules/contact-form/contact-form.php:558
+#: modules/pricing-table/pricing-table.php:390
+msgid "Responsive Button Style"
+msgstr ""
+
 #: modules/contact-form/contact-form.php:13
 msgid "Contact Form"
 msgstr ""
@@ -4917,12 +4959,12 @@ msgid "Contact Form Submission"
 msgstr ""
 
 #: modules/contact-form/contact-form.php:102
-#: modules/contact-form/includes/frontend.php:94
+#: modules/contact-form/includes/frontend.php:97
 msgid "Message failed. Please try again."
 msgstr ""
 
 #: modules/contact-form/contact-form.php:131
-#: modules/contact-form/includes/frontend.php:49
+#: modules/contact-form/includes/frontend.php:52
 #: modules/subscribe-form/includes/frontend.php:25
 #: modules/subscribe-form/includes/frontend.php:74
 #: modules/subscribe-form/subscribe-form.php:100
@@ -4964,12 +5006,12 @@ msgstr ""
 #: modules/contact-form/contact-form.php:262
 #: modules/contact-form/contact-form.php:281
 #: modules/contact-form/contact-form.php:305
-#: modules/contact-form/contact-form.php:570
-#: modules/post-carousel/post-carousel.php:282
-#: modules/post-carousel/post-carousel.php:360
-#: modules/post-carousel/post-carousel.php:369
-#: modules/post-carousel/post-carousel.php:404
-#: modules/post-carousel/post-carousel.php:413
+#: modules/contact-form/contact-form.php:588
+#: modules/post-carousel/post-carousel.php:289
+#: modules/post-carousel/post-carousel.php:367
+#: modules/post-carousel/post-carousel.php:376
+#: modules/post-carousel/post-carousel.php:411
+#: modules/post-carousel/post-carousel.php:420
 #: modules/post-grid/post-grid.php:437 modules/post-grid/post-grid.php:502
 #: modules/post-grid/post-grid.php:511 modules/post-grid/post-grid.php:541
 #: modules/post-grid/post-grid.php:550 modules/post-grid/post-grid.php:569
@@ -4991,12 +5033,12 @@ msgstr ""
 #: modules/contact-form/contact-form.php:263
 #: modules/contact-form/contact-form.php:282
 #: modules/contact-form/contact-form.php:306
-#: modules/contact-form/contact-form.php:571
-#: modules/post-carousel/post-carousel.php:283
-#: modules/post-carousel/post-carousel.php:361
-#: modules/post-carousel/post-carousel.php:370
-#: modules/post-carousel/post-carousel.php:405
-#: modules/post-carousel/post-carousel.php:414
+#: modules/contact-form/contact-form.php:589
+#: modules/post-carousel/post-carousel.php:290
+#: modules/post-carousel/post-carousel.php:368
+#: modules/post-carousel/post-carousel.php:377
+#: modules/post-carousel/post-carousel.php:412
+#: modules/post-carousel/post-carousel.php:421
 #: modules/post-grid/post-grid.php:438 modules/post-grid/post-grid.php:503
 #: modules/post-grid/post-grid.php:512 modules/post-grid/post-grid.php:542
 #: modules/post-grid/post-grid.php:551 modules/post-grid/post-grid.php:570
@@ -5030,7 +5072,7 @@ msgid "Subject Field Placeholder"
 msgstr ""
 
 #: modules/contact-form/contact-form.php:249
-#: modules/contact-form/includes/frontend.php:13
+#: modules/contact-form/includes/frontend.php:16
 msgid "Subject"
 msgstr ""
 
@@ -5138,92 +5180,92 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-#: modules/contact-form/contact-form.php:560
+#: modules/contact-form/contact-form.php:578
 #: modules/subscribe-form/subscribe-form.php:434
 msgid "reCAPTCHA"
 msgstr ""
 
-#: modules/contact-form/contact-form.php:578
+#: modules/contact-form/contact-form.php:596
 #: modules/subscribe-form/subscribe-form.php:452
 msgid "If you want to show this field, please provide valid Site and Secret Keys."
 msgstr ""
 
-#: modules/contact-form/contact-form.php:582
+#: modules/contact-form/contact-form.php:600
 #: modules/subscribe-form/subscribe-form.php:456
 msgid "Site Key"
 msgstr ""
 
-#: modules/contact-form/contact-form.php:590
+#: modules/contact-form/contact-form.php:608
 #: modules/subscribe-form/subscribe-form.php:464
 msgid "Secret Key"
 msgstr ""
 
-#: modules/contact-form/contact-form.php:598
+#: modules/contact-form/contact-form.php:616
 #: modules/subscribe-form/subscribe-form.php:472
 msgid "Validate Type"
 msgstr ""
 
-#: modules/contact-form/contact-form.php:601
+#: modules/contact-form/contact-form.php:619
 #: modules/subscribe-form/subscribe-form.php:475
 msgid "\"I'm not a robot\" checkbox"
 msgstr ""
 
-#: modules/contact-form/contact-form.php:602
+#: modules/contact-form/contact-form.php:620
 #: modules/subscribe-form/subscribe-form.php:476
 msgid "Invisible"
 msgstr ""
 
-#: modules/contact-form/contact-form.php:604
+#: modules/contact-form/contact-form.php:622
 msgid ""
 "Validate users with checkbox or in the background.<br />Note: Checkbox and "
 "Invisible types use seperate API keys."
 msgstr ""
 
-#: modules/contact-form/contact-form.php:611
+#: modules/contact-form/contact-form.php:629
 #: modules/subscribe-form/subscribe-form.php:485
 msgid "Theme"
 msgstr ""
 
-#: modules/contact-form/contact-form.php:624
+#: modules/contact-form/contact-form.php:642
 msgid "Please register keys for your website at the <a%s>Google Admin Console</a>."
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:6
+#: modules/contact-form/includes/frontend.php:9
 #: modules/subscribe-form/includes/frontend.php:6
 msgid "Please enter your name."
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:14
+#: modules/contact-form/includes/frontend.php:17
 msgid "Please enter a subject."
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:22
+#: modules/contact-form/includes/frontend.php:25
 msgid "Please enter a valid email."
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:29
+#: modules/contact-form/includes/frontend.php:32
 msgid "Phone"
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:30
+#: modules/contact-form/includes/frontend.php:33
 msgid "Please enter a valid phone number."
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:36
+#: modules/contact-form/includes/frontend.php:39
 msgid "Your Message"
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:37
+#: modules/contact-form/includes/frontend.php:40
 msgid "Please enter a message."
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:57
+#: modules/contact-form/includes/frontend.php:60
 #: modules/subscribe-form/includes/frontend.php:31
 #: modules/subscribe-form/includes/frontend.php:80
 msgid "Please check the captcha to verify you are not a robot."
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:91
+#: modules/contact-form/includes/frontend.php:94
 msgid "Message Sent!"
 msgstr ""
 
@@ -5250,14 +5292,14 @@ msgid "Show Play/Pause"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:309
-#: modules/post-carousel/post-carousel.php:212
+#: modules/post-carousel/post-carousel.php:219
 #: modules/post-slider/post-slider.php:443
 #: modules/testimonials/testimonials.php:142
 msgid "Show Arrows"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:323
-#: modules/post-carousel/post-carousel.php:203
+#: modules/post-carousel/post-carousel.php:210
 #: modules/post-slider/post-slider.php:434
 #: modules/testimonials/testimonials.php:172
 msgid "Show Dots"
@@ -5284,19 +5326,19 @@ msgid "Styles"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:374
-#: modules/post-carousel/post-carousel.php:474
+#: modules/post-carousel/post-carousel.php:481
 #: modules/post-slider/post-slider.php:789
 msgid "Arrows Background Color"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:380
-#: modules/post-carousel/post-carousel.php:480
+#: modules/post-carousel/post-carousel.php:487
 #: modules/post-slider/post-slider.php:795
 msgid "Arrows Background Style"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:389
-#: modules/post-carousel/post-carousel.php:489
+#: modules/post-carousel/post-carousel.php:496
 #: modules/post-slider/post-slider.php:804
 msgid "Arrows Color"
 msgstr ""
@@ -5379,19 +5421,19 @@ msgstr ""
 
 #: modules/content-slider/content-slider.php:679
 #: modules/content-slider/content-slider.php:945
-#: modules/post-carousel/post-carousel.php:449
+#: modules/post-carousel/post-carousel.php:456
 #: modules/post-slider/post-slider.php:750
 msgid "Text Background Color"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:680
-#: modules/post-carousel/post-carousel.php:451
+#: modules/post-carousel/post-carousel.php:458
 #: modules/post-grid/post-grid.php:795 modules/post-slider/post-slider.php:751
 msgid "The color applies to the overlay behind text over the background selections."
 msgstr ""
 
 #: modules/content-slider/content-slider.php:685
-#: modules/post-carousel/post-carousel.php:461
+#: modules/post-carousel/post-carousel.php:468
 #: modules/post-slider/post-slider.php:757
 msgid "Text Background Opacity"
 msgstr ""
@@ -5484,11 +5526,11 @@ msgstr ""
 msgid "Numbers and Text"
 msgstr ""
 
-#: modules/countdown/countdown.php:171 modules/numbers/numbers.php:229
+#: modules/countdown/countdown.php:171 modules/numbers/numbers.php:233
 msgid "Number Color"
 msgstr ""
 
-#: modules/countdown/countdown.php:191 modules/numbers/numbers.php:239
+#: modules/countdown/countdown.php:191 modules/numbers/numbers.php:243
 msgid "Number Size"
 msgstr ""
 
@@ -5557,19 +5599,19 @@ msgstr ""
 msgid "Circle Styles"
 msgstr ""
 
-#: modules/countdown/countdown.php:376 modules/numbers/numbers.php:258
+#: modules/countdown/countdown.php:376 modules/numbers/numbers.php:262
 msgid "Circle Size"
 msgstr ""
 
-#: modules/countdown/countdown.php:410 modules/numbers/numbers.php:282
+#: modules/countdown/countdown.php:410 modules/numbers/numbers.php:286
 msgid "Circle Stroke Size"
 msgstr ""
 
-#: modules/countdown/countdown.php:424 modules/numbers/numbers.php:296
+#: modules/countdown/countdown.php:424 modules/numbers/numbers.php:300
 msgid "Circle Foreground Color"
 msgstr ""
 
-#: modules/countdown/countdown.php:435 modules/numbers/numbers.php:307
+#: modules/countdown/countdown.php:435 modules/numbers/numbers.php:311
 msgid "Circle Background Color"
 msgstr ""
 
@@ -5635,42 +5677,42 @@ msgstr ""
 msgid "Display multiple photos in a gallery view."
 msgstr ""
 
-#: modules/gallery/gallery.php:229
+#: modules/gallery/gallery.php:230
 msgid "Collage"
 msgstr ""
 
-#: modules/gallery/gallery.php:268
+#: modules/gallery/gallery.php:269
 msgid "Photo Size"
 msgstr ""
 
-#: modules/gallery/gallery.php:278
+#: modules/gallery/gallery.php:279
 msgid "Photo Spacing"
 msgstr ""
 
-#: modules/gallery/gallery.php:287
+#: modules/gallery/gallery.php:288
 msgid "Show Captions"
 msgstr ""
 
-#: modules/gallery/gallery.php:291 modules/photo/photo.php:499
+#: modules/gallery/gallery.php:292 modules/photo/photo.php:499
 msgid "On Hover"
 msgstr ""
 
-#: modules/gallery/gallery.php:292 modules/photo/photo.php:500
+#: modules/gallery/gallery.php:293 modules/photo/photo.php:500
 msgid "Below Photo"
 msgstr ""
 
-#: modules/gallery/gallery.php:294
+#: modules/gallery/gallery.php:295
 msgid ""
 "The caption pulls from whatever text you put in the caption area in the "
 "media manager for each image. The caption is also pulled directly from "
 "SmugMug if you have captions set in your gallery."
 msgstr ""
 
-#: modules/gallery/gallery.php:303
+#: modules/gallery/gallery.php:304
 msgid "Photo Link"
 msgstr ""
 
-#: modules/gallery/gallery.php:316
+#: modules/gallery/gallery.php:317
 msgid "Lightbox Photo Size"
 msgstr ""
 
@@ -5706,11 +5748,11 @@ msgstr ""
 msgid "Custom Letter Spacing"
 msgstr ""
 
-#: modules/heading/heading.php:197 modules/icon/icon.php:149
+#: modules/heading/heading.php:197 modules/icon/icon.php:161
 msgid "Mobile Structure"
 msgstr ""
 
-#: modules/heading/heading.php:218 modules/icon/icon.php:167
+#: modules/heading/heading.php:218 modules/icon/icon.php:179
 msgid "Custom Alignment"
 msgstr ""
 
@@ -5720,6 +5762,10 @@ msgstr ""
 
 #: modules/icon/icon.php:14
 msgid "Display an icon and optional title."
+msgstr ""
+
+#: modules/icon/icon.php:64
+msgid "Link - No Follow?"
 msgstr ""
 
 #: modules/icon-group/icon-group.php:13
@@ -5818,10 +5864,6 @@ msgstr ""
 msgid "Menu Button"
 msgstr ""
 
-#: modules/menu/menu.php:250
-msgid "Responsive Style"
-msgstr ""
-
 #: modules/menu/menu.php:254
 msgid "Below Row"
 msgstr ""
@@ -5918,125 +5960,125 @@ msgstr ""
 msgid "Renders an animated number counter."
 msgstr ""
 
-#: modules/numbers/numbers.php:99
+#: modules/numbers/numbers.php:103
 msgid "Only Numbers"
 msgstr ""
 
-#: modules/numbers/numbers.php:100
+#: modules/numbers/numbers.php:104
 msgid "Circle Counter"
 msgstr ""
 
-#: modules/numbers/numbers.php:101
+#: modules/numbers/numbers.php:105
 msgid "Bars Counter"
 msgstr ""
 
-#: modules/numbers/numbers.php:115
+#: modules/numbers/numbers.php:119
 msgid "Number Type"
 msgstr ""
 
-#: modules/numbers/numbers.php:118
+#: modules/numbers/numbers.php:122
 msgid "Percent"
 msgstr ""
 
-#: modules/numbers/numbers.php:119
+#: modules/numbers/numbers.php:123
 msgid "Standard"
 msgstr ""
 
-#: modules/numbers/numbers.php:129
+#: modules/numbers/numbers.php:133
 msgid "Number"
 msgstr ""
 
-#: modules/numbers/numbers.php:141
+#: modules/numbers/numbers.php:145
 msgid "Total"
 msgstr ""
 
-#: modules/numbers/numbers.php:143
+#: modules/numbers/numbers.php:147
 msgid ""
 "The total number of units for this counter. For example, if the Number is "
 "set to 250 and the Total is set to 500, the counter will animate to 50%."
 msgstr ""
 
-#: modules/numbers/numbers.php:147
+#: modules/numbers/numbers.php:151
 msgid "Number Position"
 msgstr ""
 
-#: modules/numbers/numbers.php:149
+#: modules/numbers/numbers.php:153
 msgid "Where to display the number in relation to the bar."
 msgstr ""
 
-#: modules/numbers/numbers.php:151
+#: modules/numbers/numbers.php:155
 msgid "Inside Bar"
 msgstr ""
 
-#: modules/numbers/numbers.php:152
+#: modules/numbers/numbers.php:156
 msgid "Above Bar"
 msgstr ""
 
-#: modules/numbers/numbers.php:153
+#: modules/numbers/numbers.php:157
 msgid "Below Bar"
 msgstr ""
 
-#: modules/numbers/numbers.php:158
+#: modules/numbers/numbers.php:162
 msgid "Text Before Number"
 msgstr ""
 
-#: modules/numbers/numbers.php:160
+#: modules/numbers/numbers.php:164
 msgid "Text to appear above the number. Leave it empty for none."
 msgstr ""
 
-#: modules/numbers/numbers.php:169
+#: modules/numbers/numbers.php:173
 msgid "Text After Number"
 msgstr ""
 
-#: modules/numbers/numbers.php:171
+#: modules/numbers/numbers.php:175
 msgid "Text to appear after the number. Leave it empty for none."
 msgstr ""
 
-#: modules/numbers/numbers.php:180
+#: modules/numbers/numbers.php:184
 msgid "Number Prefix"
 msgstr ""
 
-#: modules/numbers/numbers.php:182
+#: modules/numbers/numbers.php:186
 msgid "For example, if your number is US$ 10, your prefix would be \"US$ \"."
 msgstr ""
 
-#: modules/numbers/numbers.php:186
+#: modules/numbers/numbers.php:190
 msgid "Number Suffix"
 msgstr ""
 
-#: modules/numbers/numbers.php:188
+#: modules/numbers/numbers.php:192
 msgid "For example, if your number is 10%, your suffix would be \"%\"."
 msgstr ""
 
-#: modules/numbers/numbers.php:192
+#: modules/numbers/numbers.php:196
 msgid "Animation Speed"
 msgstr ""
 
-#: modules/numbers/numbers.php:196 modules/numbers/numbers.php:205
+#: modules/numbers/numbers.php:200 modules/numbers/numbers.php:209
 msgid "second(s)"
 msgstr ""
 
-#: modules/numbers/numbers.php:197
+#: modules/numbers/numbers.php:201
 msgid "Number of seconds to complete the animation."
 msgstr ""
 
-#: modules/numbers/numbers.php:201
+#: modules/numbers/numbers.php:205
 msgid "Animation Delay"
 msgstr ""
 
-#: modules/numbers/numbers.php:254
+#: modules/numbers/numbers.php:258
 msgid "Circle Bar Styles"
 msgstr ""
 
-#: modules/numbers/numbers.php:319
+#: modules/numbers/numbers.php:323
 msgid "Bar Styles"
 msgstr ""
 
-#: modules/numbers/numbers.php:323
+#: modules/numbers/numbers.php:327
 msgid "Bar Foreground Color"
 msgstr ""
 
-#: modules/numbers/numbers.php:334
+#: modules/numbers/numbers.php:338
 msgid "Bar Background Color"
 msgstr ""
 
@@ -6125,99 +6167,103 @@ msgid "Number of Posts"
 msgstr ""
 
 #: modules/post-carousel/post-carousel.php:199
+msgid "Number of slides to move at a time"
+msgstr ""
+
+#: modules/post-carousel/post-carousel.php:206
 #: modules/post-slider/post-slider.php:430
 msgid "Slider Controls"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:237
+#: modules/post-carousel/post-carousel.php:244
 msgid "Post Max Width"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:245
+#: modules/post-carousel/post-carousel.php:252
 #: modules/post-grid/post-grid.php:380 modules/post-grid/post-grid.php:388
 msgid "Post Spacing"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:262
+#: modules/post-carousel/post-carousel.php:269
 msgid "Post Hover Transition"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:266
+#: modules/post-carousel/post-carousel.php:273
 #: modules/post-grid/post-grid.php:774
 msgid "Slide Up"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:267
+#: modules/post-carousel/post-carousel.php:274
 #: modules/post-grid/post-grid.php:775
 msgid "Slide Down"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:268
+#: modules/post-carousel/post-carousel.php:275
 #: modules/post-grid/post-grid.php:776
 msgid "Scale Up"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:269
+#: modules/post-carousel/post-carousel.php:276
 #: modules/post-grid/post-grid.php:777
 msgid "Scale Down"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:275
+#: modules/post-carousel/post-carousel.php:282
 #: modules/post-grid/post-grid.php:430 modules/post-slider/post-slider.php:484
 msgid "Featured Image"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:317
+#: modules/post-carousel/post-carousel.php:324
 #: modules/post-grid/post-grid.php:813
 msgid "Use Icon for Posts"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:331
+#: modules/post-carousel/post-carousel.php:338
 #: modules/post-grid/post-grid.php:827
 msgid "Post Icon"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:335
+#: modules/post-carousel/post-carousel.php:342
 #: modules/post-grid/post-grid.php:831
 msgid "Post Icon Position"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:338
+#: modules/post-carousel/post-carousel.php:345
 #: modules/post-grid/post-grid.php:834
 msgid "Above Text"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:339
+#: modules/post-carousel/post-carousel.php:346
 #: modules/post-grid/post-grid.php:835
 msgid "Below Text"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:344
+#: modules/post-carousel/post-carousel.php:351
 #: modules/post-grid/post-grid.php:840
 msgid "Post Icon Size"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:353
+#: modules/post-carousel/post-carousel.php:360
 #: modules/post-grid/post-grid.php:495 modules/post-slider/post-slider.php:524
 msgid "Post Info"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:380
+#: modules/post-carousel/post-carousel.php:387
 #: modules/post-grid/post-grid.php:522 modules/post-slider/post-slider.php:551
 msgid "Date Format"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:410
+#: modules/post-carousel/post-carousel.php:417
 #: modules/post-grid/post-grid.php:629 modules/post-slider/post-slider.php:590
 msgid "More Link"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:419
+#: modules/post-carousel/post-carousel.php:426
 #: modules/post-grid/post-grid.php:643 modules/post-slider/post-slider.php:599
 msgid "More Link Text"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:456
+#: modules/post-carousel/post-carousel.php:463
 #: modules/post-grid/post-grid.php:848
 msgid "Post Icon Color"
 msgstr ""
@@ -6548,23 +6594,23 @@ msgstr ""
 msgid "Button URL"
 msgstr ""
 
-#: modules/pricing-table/pricing-table.php:399
+#: modules/pricing-table/pricing-table.php:417
 msgid "Box Border"
 msgstr ""
 
-#: modules/pricing-table/pricing-table.php:404
+#: modules/pricing-table/pricing-table.php:422
 msgid "Box Foreground"
 msgstr ""
 
-#: modules/pricing-table/pricing-table.php:410
+#: modules/pricing-table/pricing-table.php:428
 msgid "Accent Color"
 msgstr ""
 
-#: modules/pricing-table/pricing-table.php:415
+#: modules/pricing-table/pricing-table.php:433
 msgid "Accent Text Color"
 msgstr ""
 
-#: modules/pricing-table/pricing-table.php:419
+#: modules/pricing-table/pricing-table.php:437
 msgid "Box Top Margin"
 msgstr ""
 
@@ -6885,19 +6931,19 @@ msgstr ""
 msgid "Render a WordPress or embedable video."
 msgstr ""
 
-#: modules/video/video.php:89
+#: modules/video/video.php:109
 msgid "Video Type"
 msgstr ""
 
-#: modules/video/video.php:93
+#: modules/video/video.php:113
 msgid "Embed"
 msgstr ""
 
-#: modules/video/video.php:107
+#: modules/video/video.php:127
 msgid "A video in the MP4 format. Most modern browsers support this format."
 msgstr ""
 
-#: modules/video/video.php:113
+#: modules/video/video.php:133
 msgid ""
 "A video in the WebM format to use as fallback. This format is required to "
 "support browsers such as FireFox and Opera."
@@ -7090,31 +7136,36 @@ msgctxt "%s stands for custom branded \"Page Builder\" name."
 msgid "Launch %s"
 msgstr ""
 
-#: classes/class-fl-builder-admin.php:185
+#: classes/class-fl-builder-admin.php:204
 msgctxt "Plugin action link label."
 msgid "Upgrade"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2666
+#: classes/class-fl-builder-admin.php:213
+msgctxt "Plugin action link label."
+msgid "Change Log"
+msgstr ""
+
+#: classes/class-fl-builder-model.php:2685
 msgctxt "%s stands for the module filename"
 msgid ""
 "A module with the filename %s.php already exists! Please namespace your "
 "module filenames to ensure compatibility with Beaver Builder."
 msgstr ""
 
-#: classes/class-fl-builder-model.php:2693
+#: classes/class-fl-builder-model.php:2712
 msgctxt "%s stands for the module alias key"
 msgid ""
 "The module alias %s already exists! Please namespace your module aliases to "
 "ensure compatibility with Beaver Builder."
 msgstr ""
 
-#: classes/class-fl-builder-model.php:3899
+#: classes/class-fl-builder-model.php:3918
 msgctxt "%s stands for post/page title."
 msgid "Copy of %s"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:4580
+#: classes/class-fl-builder-model.php:4599
 msgctxt "Default user template category."
 msgid "Uncategorized"
 msgstr ""
@@ -7421,7 +7472,7 @@ msgctxt "Template name."
 msgid "Name"
 msgstr ""
 
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:297
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:315
 msgctxt "Template name."
 msgid "Blank"
 msgstr ""
@@ -7576,13 +7627,13 @@ msgstr ""
 
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates.php:447
 #: extensions/fl-builder-user-templates/includes/ui-js-templates.php:7
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:57
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:94
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:130
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:178
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:224
-#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:269
-#: includes/ui-js-config.php:102
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:63
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:106
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:148
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:196
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:242
+#: extensions/fl-builder-user-templates/includes/ui-js-templates.php:287
+#: includes/ui-js-config.php:104
 msgctxt "Indicator for global node templates."
 msgid "Global"
 msgstr ""
@@ -7831,27 +7882,27 @@ msgctxt "%s is the preset hex color code."
 msgid "%s is already a saved preset."
 msgstr ""
 
-#: includes/ui-js-config.php:126
+#: includes/ui-js-config.php:128
 msgctxt "%s is the preset hex color code."
 msgid "%s added to presets!"
 msgstr ""
 
-#: includes/ui-js-config.php:90
+#: includes/ui-js-config.php:92
 msgctxt "Duplicate page/post action label."
 msgid "Duplicate Layout"
 msgstr ""
 
-#: includes/ui-js-config.php:91
+#: includes/ui-js-config.php:93
 msgctxt "%s stands for form field label."
 msgid "Edit %s"
 msgstr ""
 
-#: includes/ui-js-config.php:130
+#: includes/ui-js-config.php:132
 msgctxt "%s is a time diff such as 1 day or 2 weeks."
 msgid "%s ago"
 msgstr ""
 
-#: includes/ui-js-config.php:131
+#: includes/ui-js-config.php:133
 msgctxt "%s is the author name."
 msgid "By %s"
 msgstr ""
@@ -7917,7 +7968,7 @@ msgid "None"
 msgstr ""
 
 #: modules/callout/callout.php:340 modules/photo/photo.php:470
-#: modules/post-carousel/post-carousel.php:301
+#: modules/post-carousel/post-carousel.php:308
 #: modules/post-slider/post-slider.php:513
 msgctxt "Photo Crop."
 msgid "None"
@@ -7929,7 +7980,7 @@ msgctxt "Call to action."
 msgid "None"
 msgstr ""
 
-#: modules/contact-form/includes/frontend.php:5
+#: modules/contact-form/includes/frontend.php:8
 msgctxt "Contact form field label."
 msgid "Name"
 msgstr ""
@@ -7957,27 +8008,27 @@ msgctxt "Module settings form tab. Display on mobile devices."
 msgid "Mobile"
 msgstr ""
 
-#: modules/gallery/gallery.php:230
+#: modules/gallery/gallery.php:231
 msgctxt "Gallery layout: thumbnails."
 msgid "Thumbs"
 msgstr ""
 
-#: modules/gallery/gallery.php:271
+#: modules/gallery/gallery.php:272
 msgctxt "Photo size."
 msgid "Small"
 msgstr ""
 
-#: modules/gallery/gallery.php:272
+#: modules/gallery/gallery.php:273
 msgctxt "Photo size."
 msgid "Medium"
 msgstr ""
 
-#: modules/gallery/gallery.php:273
+#: modules/gallery/gallery.php:274
 msgctxt "Photo size."
 msgid "Large"
 msgstr ""
 
-#: modules/gallery/gallery.php:301
+#: modules/gallery/gallery.php:302
 msgctxt "Click action."
 msgid "None"
 msgstr ""
@@ -8066,7 +8117,7 @@ msgctxt "First and last name."
 msgid "Name"
 msgstr ""
 
-#: modules/video/video.php:121
+#: modules/video/video.php:141
 msgctxt "Video preview/fallback image."
 msgid "Poster"
 msgstr ""

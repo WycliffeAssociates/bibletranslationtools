@@ -44,10 +44,14 @@ class FLNumbersModule extends FLBuilderModule {
 
 		$html = '<div class="svg-container">';
 		$html .= '<svg class="svg" viewBox="0 0 ' . $width . ' ' . $width . '" version="1.1" preserveAspectRatio="xMinYMin meet">
-			<circle class="fl-bar-bg" r="' . $radius . '" cx="' . $pos . '" cy="' . $pos . '" fill="transparent" stroke-dasharray="' . $dash . '" stroke-dashoffset="0"></circle>
-			<circle class="fl-bar" r="' . $radius . '" cx="' . $pos . '" cy="' . $pos . '" fill="transparent" stroke-dasharray="' . $dash . '" stroke-dashoffset="' . $dash . '" transform="rotate(-90 ' . $pos . ' ' . $pos . ')"></circle>
-		</svg>';
-		$html .= '</div>';
+					<circle class="fl-bar-bg" r="' . $radius . '" cx="' . $pos . '" cy="' . $pos . '" fill="transparent" stroke-dasharray="' . $dash . '" stroke-dashoffset="0"></circle>
+					';
+
+		if ( 0 != $this->settings->number ) {
+			$html .= '<circle class="fl-bar" r="' . $radius . '" cx="' . $pos . '" cy="' . $pos . '" fill="transparent" stroke-dasharray="' . $dash . '" stroke-dashoffset="' . $dash . '" transform="rotate(-90 ' . $pos . ' ' . $pos . ')" data-bbtest="sample-lang"></circle>';
+		}
+
+		$html .= '</svg></div>';
 
 		echo $html;
 	}

@@ -19708,7 +19708,6 @@ var InlineEditor = function (_Component) {
 
 			if (FLBuilder) {
 				// Setup actions
-				FLBuilder.addHook('init', setupEditables);
 				FLBuilder.addHook('settingsConfigLoaded', setupEditables);
 				FLBuilder.addHook('restartEditingSession', setupEditables);
 
@@ -19763,7 +19762,7 @@ var InlineEditor = function (_Component) {
 
 			module.append(overlay);
 			module.addClass('fl-editable');
-			module.on('mouseup', this.onModuleMouseup.bind(this));
+			module.delegate('.fl-block-overlay', 'click', this.onModuleOverlayClick.bind(this));
 			module.on('mouseleave', this.onModuleMouseleave.bind(this));
 
 			var _loop = function _loop(key) {
@@ -19798,14 +19797,11 @@ var InlineEditor = function (_Component) {
 					init_instance_callback: function init_instance_callback(editor) {
 						_this3.onEditorInit(editor);
 						/**
-       * If the editable's HTML doesn't match the value of the related settings then
-       * we can assume that this editable has dynamic content such as shortcodes or
-       * embeds that needs to be replaced on focus and rendered on blur.
+       * TinyMCE can change the editable's HTML which changes the visual
+       * appearance. To prevent this from happening, we reinsert the original
+       * HTML after the editable has been initialized.
        */
-						if (!_this3.matchHTML(editableHTML, _this3.getFieldHTML(data.field, settings))) {
-							editable.html(editableHTML);
-							editable.addClass('fl-editable-has-dynamic-content');
-						}
+						editable.html(editableHTML);
 					}
 				});
 			};
@@ -19849,7 +19845,7 @@ var InlineEditor = function (_Component) {
 			var extras = jQuery('.wplink-autocomplete, .ui-helper-hidden-accessible');
 
 			editables.removeAttr('contenteditable');
-			modules.off('mouseup');
+			modules.undelegate('.fl-block-overlay', 'click');
 			modules.off('mouseleave');
 			modules.removeClass('fl-editable');
 			overlays.remove();
@@ -19903,7 +19899,7 @@ var InlineEditor = function (_Component) {
 	}, {
 		key: 'getEditorEventVars',
 		value: function getEditorEventVars(target) {
-			var editable = jQuery(target);
+			var editable = jQuery(target).closest('.mce-content-body');
 			var editor = tinymce.get(editable.attr('id'));
 			var field = editable.data('field');
 			var module = editable.closest('.fl-module');
@@ -19918,8 +19914,8 @@ var InlineEditor = function (_Component) {
 			editor.on('keyup', this.onEditorChange.bind(this));
 			editor.on('undo', this.onEditorChange.bind(this));
 			editor.on('redo', this.onEditorChange.bind(this));
-			editor.on('blur', this.onEditorBlur.bind(this));
 			editor.on('focus', this.onEditorFocus.bind(this));
+			editor.on('blur', this.onEditorBlur.bind(this));
 			editor.on('mousedown', this.onEditorMousedown.bind(this));
 		}
 	}, {
@@ -19953,8 +19949,8 @@ var InlineEditor = function (_Component) {
 			}
 		}
 	}, {
-		key: 'onEditorBlur',
-		value: function onEditorBlur(e) {
+		key: 'onEditorFocus',
+		value: function onEditorFocus(e) {
 			var _getEditorEventVars2 = this.getEditorEventVars(e.target.bodyElement),
 			    editable = _getEditorEventVars2.editable,
 			    editor = _getEditorEventVars2.editor,
@@ -19963,32 +19959,18 @@ var InlineEditor = function (_Component) {
 			    nodeId = _getEditorEventVars2.nodeId;
 
 			var overlay = module.find('.fl-inline-editor');
-			var settings = FLBuilderSettingsConfig.nodes[nodeId];
-			var isClean = !field ? false : this.matchHTML(editor.getContent(), this.getFieldHTML(field, settings));
+			var settingHTML = this.getSettingHTML(nodeId, field);
 
-			overlay.removeClass('fl-inline-editor-no-toolbar');
-
-			if (isClean && editable.hasClass('fl-editable-editing-dynamic-content')) {
-				editable.removeClass('fl-editable-editing-dynamic-content');
-				editable.addClass('fl-editable-has-dynamic-content');
-				editable.css('min-height', '');
-				editable.html(editable.data('original'));
+			if (!this.matchHTML(editor.getContent(), settingHTML)) {
+				editable.data('original', {
+					settingHTML: settingHTML,
+					editableHTML: editable.html()
+				});
+				editable.css('min-height', editable.height());
+				editor.setContent(settingHTML);
+				editor.selection.select(editor.getBody(), true);
+				editor.selection.collapse(false);
 			}
-		}
-	}, {
-		key: 'onEditorFocus',
-		value: function onEditorFocus(e) {
-			var _getEditorEventVars3 = this.getEditorEventVars(e.target.bodyElement),
-			    editable = _getEditorEventVars3.editable,
-			    editor = _getEditorEventVars3.editor,
-			    module = _getEditorEventVars3.module,
-			    field = _getEditorEventVars3.field,
-			    nodeId = _getEditorEventVars3.nodeId;
-
-			var overlay = module.find('.fl-inline-editor');
-			var settings = FLBuilderSettingsConfig.nodes[nodeId];
-
-			this.showEditorOverlay(module);
 
 			if (editor.settings.toolbar) {
 				overlay.removeClass('fl-inline-editor-no-toolbar');
@@ -19996,14 +19978,27 @@ var InlineEditor = function (_Component) {
 				overlay.addClass('fl-inline-editor-no-toolbar');
 			}
 
-			if (editable.hasClass('fl-editable-has-dynamic-content')) {
-				editable.removeClass('fl-editable-has-dynamic-content');
-				editable.addClass('fl-editable-editing-dynamic-content');
-				editable.css('min-height', editable.height());
-				editable.data('original', editable.html());
-				editor.setContent(wp.editor.autop(settings[field.name]));
-				editor.selection.select(editor.getBody(), true);
-				editor.selection.collapse(false);
+			module.addClass('fl-editable-focused');
+			this.showEditorOverlay(module);
+			this.showModuleSettings(module);
+		}
+	}, {
+		key: 'onEditorBlur',
+		value: function onEditorBlur(e) {
+			var _getEditorEventVars3 = this.getEditorEventVars(e.target.bodyElement),
+			    editable = _getEditorEventVars3.editable,
+			    editor = _getEditorEventVars3.editor,
+			    module = _getEditorEventVars3.module;
+
+			var overlay = module.find('.fl-inline-editor');
+			var original = editable.data('original');
+
+			overlay.removeClass('fl-inline-editor-no-toolbar');
+			module.removeClass('fl-editable-focused');
+
+			if (original && this.matchHTML(editor.getContent(), original.settingHTML)) {
+				editable.html(original.editableHTML);
+				editable.css('min-height', '');
 			}
 		}
 	}, {
@@ -20015,24 +20010,25 @@ var InlineEditor = function (_Component) {
 			this.showEditorOverlay(module);
 		}
 	}, {
-		key: 'onModuleMouseup',
-		value: function onModuleMouseup(e) {
-			var module = jQuery(e.currentTarget);
-			var editorId = module.find('.mce-content-body').first().attr('id');
-			var overlay = jQuery(e.target).closest('.fl-module-overlay');
-
-			if (!overlay.length) {
-				if (editorId && !module.find('.mce-edit-focus').length) {
-					tinymce.get(editorId).focus();
-				}
-				this.showModuleSettings(module);
-			}
-		}
-	}, {
 		key: 'onEditorDrop',
 		value: function onEditorDrop(e) {
 			e.preventDefault();
 			return false;
+		}
+	}, {
+		key: 'onModuleOverlayClick',
+		value: function onModuleOverlayClick(e) {
+			var actions = jQuery(e.target).closest('.fl-block-overlay-actions');
+			var module = jQuery(e.currentTarget).closest('.fl-module');
+			var editorId = module.find('.mce-content-body').first().attr('id');
+
+			if (actions.length || FLBuilder._colResizing) {
+				return;
+			}
+			if (editorId) {
+				tinymce.get(editorId).focus();
+				module.addClass('fl-editable-focused');
+			}
 		}
 	}, {
 		key: 'onModuleMouseleave',
@@ -20047,8 +20043,16 @@ var InlineEditor = function (_Component) {
 	}, {
 		key: 'showEditorOverlay',
 		value: function showEditorOverlay(module) {
-			module.find('.fl-inline-editor').show();
+			var overlay = module.find('.fl-inline-editor');
 			this.hideNodeOverlays();
+			this.hideEditorOverlays();
+			overlay.show();
+
+			var active = jQuery('.fl-inline-editor-active-toolbar');
+			active.removeClass('fl-inline-editor-active-toolbar');
+
+			var toolbar = overlay.find('> .mce-panel:visible');
+			toolbar.addClass('fl-inline-editor-active-toolbar');
 		}
 	}, {
 		key: 'hideEditorOverlays',
@@ -20079,9 +20083,23 @@ var InlineEditor = function (_Component) {
 			}
 		}
 	}, {
-		key: 'getFieldHTML',
-		value: function getFieldHTML(field, settings) {
-			var html = settings[field.name];
+		key: 'getSettingValue',
+		value: function getSettingValue(nodeId, name) {
+			var form = jQuery('.fl-builder-settings[data-node="' + nodeId + '"]');
+			var settings = {};
+
+			if (form.length) {
+				settings = FLBuilder._getSettings(form);
+			} else {
+				settings = FLBuilderSettingsConfig.nodes[nodeId];
+			}
+
+			return settings[name];
+		}
+	}, {
+		key: 'getSettingHTML',
+		value: function getSettingHTML(nodeId, field) {
+			var html = this.getSettingValue(nodeId, field.name);
 
 			if ('editor' === field.type && '' !== html) {
 				return wp.editor.autop(html);

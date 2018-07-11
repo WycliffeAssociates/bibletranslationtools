@@ -183,3 +183,20 @@ if ( isset( $settings->click_action ) && 'lightbox' == $settings->click_action )
 	<?php endif; ?>
 
 <?php endif; ?>
+
+<?php
+
+/**
+ * Responsive enabled
+ */
+if ( $global_settings->responsive_enabled ) :
+
+	// Responsive styles
+	?>
+	@media ( max-width: <?php echo $global_settings->responsive_breakpoint ?>px ) {
+		.fl-node-<?php echo $id; ?> .fl-button-wrap {
+			text-align: <?php echo isset( $settings->mobile_align ) ? $settings->mobile_align : 'center'; ?>;
+		}
+	}
+
+<?php endif; ?>

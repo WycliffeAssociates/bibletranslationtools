@@ -31,8 +31,8 @@
 			$module->render_button();
 
 			?>
-		</div> 
-	</div> 
+		</div>
+	</div>
 	<?php
 
 	// Image right

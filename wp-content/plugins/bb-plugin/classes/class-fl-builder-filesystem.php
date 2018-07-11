@@ -133,12 +133,14 @@ class FL_Filesystem {
 		if ( ! $wp_filesystem || 'direct' != $wp_filesystem->method ) {
 			require_once ABSPATH . '/wp-admin/includes/file.php';
 
+			$context = apply_filters( 'request_filesystem_credentials_context', false );
+
 			add_filter( 'filesystem_method',              array( $this, 'filesystem_method' ) );
 			add_filter( 'request_filesystem_credentials', array( $this, 'request_filesystem_credentials' ) );
 
-			$creds = request_filesystem_credentials( site_url(), '', true, false, null );
+			$creds = request_filesystem_credentials( site_url(), '', true, $context, null );
 
-			WP_Filesystem( $creds );
+			WP_Filesystem( $creds, $context );
 
 			remove_filter( 'filesystem_method',              array( $this, 'filesystem_method' ) );
 			remove_filter( 'request_filesystem_credentials', array( $this, 'FLBuilderUtils::request_filesystem_credentials' ) );

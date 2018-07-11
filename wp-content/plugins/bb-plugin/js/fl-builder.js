@@ -832,6 +832,17 @@
 		},
 
 		/**
+		 * Rebind events when restarting the edit session
+		 * @since 2.1.2.3
+		 * @access private
+		 */
+		_rebindEvents: function() {
+			$('a').on('click', FLBuilder._preventDefault);
+			$('.fl-page-nav .nav a').on('click', FLBuilder._headerLinkClicked);
+			$('body').delegate('.fl-builder-content a', 'click', FLBuilder._preventDefault);
+		},
+
+		/**
 		 * Binds the events for overlays that appear when
 		 * mousing over a row, column or module.
 		 *
@@ -5160,6 +5171,10 @@
 		 */
 		_showModuleSettings: function( data, callback )
 		{
+			if ( ! FLBuilderSettingsConfig.modules ) {
+				return;
+			}
+
 			var config   = FLBuilderSettingsConfig.modules[ data.type ],
 				settings = data.settings ? data.settings : FLBuilderSettingsConfig.nodes[ data.nodeId ],
 				head 	 = $( 'head' ),
@@ -6174,7 +6189,7 @@
 			// Loop through the form data.
 			for ( i = 0; i < data.length; i++ ) {
 
-				value = data[ i ].value.replace( /\r/gm, '' );
+				value = data[ i ].value.replace( /\r/gm, '' ).replace( /&#39;/g, "'" );
 
 				// Don't save text editor textareas.
 				if ( data[ i ].name.indexOf( 'flrich' ) > -1 ) {
@@ -6728,7 +6743,7 @@
 				asHtmlID                    : field.attr('name'),
 				selectedItemProp            : 'name',
 				searchObjProps              : 'name',
-				minChars                    : 3,
+				minChars                    : 2,
 				keyDelay                    : 1000,
 				fadeOut                     : false,
 				usePlaceholder              : true,
@@ -6868,7 +6883,19 @@
 		 */
 		_showCodeFieldError: function( e ) {
 			e.stopImmediatePropagation();
-			FLBuilder.alert( FLBuilderStrings.codeError );
+			FLBuilder.confirm( {
+			    message: FLBuilderStrings.codeError,
+			    cancel: function(){
+					var saveBtn = $( '.fl-builder-settings:visible .fl-builder-settings-save' );
+					saveBtn.removeClass( 'fl-builder-settings-error' );
+					saveBtn.off( 'click', FLBuilder._showCodeFieldError );
+					saveBtn.trigger( 'click' );
+				},
+			    strings: {
+			        ok: FLBuilderStrings.codeErrorFix,
+			        cancel: FLBuilderStrings.codeErrorIgnore
+			    }
+			} );
 		},
 
 		/* Multiple Fields

@@ -523,6 +523,7 @@
             FLBuilder._initTemplateSelector();
             FLBuilder._bindOverlayEvents();
             FLBuilder._highlightEmptyCols();
+			FLBuilder._rebindEvents();
 
             $('html').addClass('fl-builder-edit').removeClass('fl-builder-show-admin-bar');
             $('body').addClass('fl-builder-edit');
@@ -576,6 +577,7 @@
         */
         show: function() {
 	        if ( ! $( 'html' ).hasClass( 'fl-builder-edit' ) ) {
+				FLBuilder._rebindEvents();
 	            FLBuilder._bindOverlayEvents();
 	            this.showMainToolbar();
 	            FLBuilderResponsiveEditing._switchTo('default');

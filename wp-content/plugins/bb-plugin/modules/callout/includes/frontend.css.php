@@ -21,6 +21,7 @@ if ( 'button' == $settings->cta_type ) {
 		'text_color'        => $settings->btn_text_color,
 		'text_hover_color'  => $settings->btn_text_hover_color,
 		'width'             => $settings->btn_width,
+		'mobile_align'      => $settings->btn_mobile_align,
 	));
 }
 

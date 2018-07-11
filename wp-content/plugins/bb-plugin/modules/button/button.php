@@ -390,6 +390,24 @@ FLBuilder::register_module('FLButtonModule', array(
 					),
 				),
 			),
+			'responsive_style' 	=> array(
+				'title'         		=> __( 'Responsive Style', 'fl-builder' ),
+				'fields'        		=> array(
+					'mobile_align' => array(
+						'type'          => 'select',
+						'label'         => __( 'Alignment', 'fl-builder' ),
+						'default'       => 'center',
+						'options'       => array(
+							'center'        => __( 'Center', 'fl-builder' ),
+							'left'          => __( 'Left', 'fl-builder' ),
+							'right'         => __( 'Right', 'fl-builder' ),
+						),
+						'preview'       => array(
+							'type'          => 'none',
+						),
+					),
+				),
+			),
 		),
 	),
 ));

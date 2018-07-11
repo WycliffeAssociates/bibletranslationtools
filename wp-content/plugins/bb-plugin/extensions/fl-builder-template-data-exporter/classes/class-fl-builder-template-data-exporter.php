@@ -107,6 +107,7 @@ final class FLBuilderTemplateDataExporter {
 		$layouts = self::get_ui_data();
 		$rows    = self::get_ui_data( 'row' );
 		$modules = self::get_ui_data( 'module' );
+		$columns = self::get_ui_data( 'column' );
 
 		include FL_BUILDER_TEMPLATE_DATA_EXPORTER_DIR . 'includes/template-data-exporter.php';
 	}
@@ -141,6 +142,10 @@ final class FLBuilderTemplateDataExporter {
 		}
 		if ( isset( $_POST['fl-builder-export-module'] ) && is_array( $_POST['fl-builder-export-module'] ) ) {
 			$templates['module'] = self::get_template_export_data( $_POST['fl-builder-export-module'] );
+		}
+
+		if ( isset( $_POST['fl-builder-export-column'] ) && is_array( $_POST['fl-builder-export-column'] ) ) {
+			$templates['column'] = self::get_template_export_data( $_POST['fl-builder-export-column'] );
 		}
 
 		header( 'X-Robots-Tag: noindex, nofollow', true );

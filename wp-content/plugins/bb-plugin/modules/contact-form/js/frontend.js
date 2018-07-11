@@ -74,6 +74,7 @@
 				email_regex 	= /\S+@\S+\.\S+/,
 				isValid	  		= true,
 				postId      	= theForm.closest( '.fl-builder-content' ).data( 'post-id' ),
+				layoutId      	= theForm.find( 'input[name=fl-layout-id]' ).val(),
 				templateId		= theForm.data( 'template-id' ),
 				templateNodeId	= theForm.data( 'template-node-id' ),
 				nodeId      	= theForm.closest( '.fl-module' ).data( 'node' );
@@ -184,6 +185,7 @@
 					message				: message.val(),
 					terms_checked		: termsCheckbox.is(':checked') ? '1' : '0',
 					post_id 			: postId,
+					layout_id			: layoutId,
 					template_id 		: templateId,
 					template_node_id 	: templateNodeId,
 					node_id 			: nodeId

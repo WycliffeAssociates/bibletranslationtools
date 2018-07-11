@@ -21,6 +21,7 @@ FLBuilder::render_module_css('button', $id, array(
 	'width'             => $settings->btn_width,
 	'align'				=> $settings->btn_align,
 	'icon_animation'	=> $settings->btn_icon_animation,
+	'mobile_align'      => $settings->btn_mobile_align,
 ));
 ?>
 

@@ -386,6 +386,24 @@ FLBuilder::register_settings_form('pricing_column_form', array(
 						),
 					),
 				),
+				'btn_responsive_style' 	=> array(
+					'title'         		=> __( 'Responsive Button Style', 'fl-builder' ),
+					'fields'        		=> array(
+						'btn_mobile_align' => array(
+							'type'          => 'select',
+							'label'         => __( 'Alignment', 'fl-builder' ),
+							'default'       => 'center',
+							'options'       => array(
+								'center'        => __( 'Center', 'fl-builder' ),
+								'left'          => __( 'Left', 'fl-builder' ),
+								'right'         => __( 'Right', 'fl-builder' ),
+							),
+							'preview'       => array(
+								'type'          => 'none',
+							),
+						),
+					),
+				),
 			),
 		),
 		'style'      => array(

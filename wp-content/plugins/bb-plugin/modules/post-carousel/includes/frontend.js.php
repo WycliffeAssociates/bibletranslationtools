@@ -44,7 +44,11 @@
 				controls: false,
 				autoHover: true,
 				slideMargin: <?php echo $space_between ?>,
+				<?php if ( isset( $settings->move_slides ) ) : ?>
+				moveSlides: <?php echo $settings->move_slides ?>,
+				<?php else : ?>
 				moveSlides: 1,
+				<?php endif; ?>
 				onSlideBefore: function(ele, oldIndex, newIndex) {
 					$('.fl-node-<?php echo $id; ?> .fl-post-carousel-navigation a').addClass('disabled');
 					$('.fl-node-<?php echo $id; ?> .bx-controls .bx-pager-link').addClass('disabled');

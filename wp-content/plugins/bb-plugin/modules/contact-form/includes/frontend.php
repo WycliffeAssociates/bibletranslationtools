@@ -1,5 +1,8 @@
 <form class="fl-contact-form" <?php if ( isset( $module->template_id ) ) { echo 'data-template-id="' . $module->template_id . '" data-template-node-id="' . $module->template_node_id . '"';} ?>>
 
+	<?php global $post; ?>
+	<input type="hidden" name="fl-layout-id" value="<?php echo $post->ID; ?>" />
+
 	<?php if ( 'show' == $settings->name_toggle ) : ?>
 	<div class="fl-input-group fl-name">
 		<label for="fl-name"><?php _ex( 'Name', 'Contact form field label.', 'fl-builder' );?></label>

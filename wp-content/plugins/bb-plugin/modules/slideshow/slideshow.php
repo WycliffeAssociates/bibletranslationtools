@@ -378,7 +378,7 @@ FLBuilder::register_module('FLSlideshowModule', array(
 						'label'         => __( 'Speed', 'fl-builder' ),
 						'default'       => '3',
 						'size'          => '5',
-						'sanitize'		=> 'absint',
+						'sanitize'			=> 'FLBuilderUtils::sanitize_non_negative_number',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' ),
 					),
 					'transition'     => array(
@@ -404,7 +404,7 @@ FLBuilder::register_module('FLSlideshowModule', array(
 						'label'         => __( 'Transition Speed', 'fl-builder' ),
 						'default'       => '1',
 						'size'          => '5',
-						'sanitize'		=> 'absint',
+						'sanitize'			=> 'FLBuilderUtils::sanitize_non_negative_number',
 						'description'   => _x( 'seconds', 'Value unit for form field of time in seconds. Such as: "5 seconds"', 'fl-builder' ),
 					),
 					'randomize'     => array(

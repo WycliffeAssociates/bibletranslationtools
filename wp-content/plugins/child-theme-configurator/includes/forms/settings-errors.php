@@ -1,9 +1,9 @@
 <?php
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
-if ( $this->errors || isset( $_GET[ 'error' ] ) ):
+if ( isset( $_GET[ 'error' ] ) || count( $this->ctc()->errors )  ):
     include_once( CHLD_THM_CFG_DIR . '/includes/forms/errorstrings.php' );
-    $errors = ( array )$this->errors;
+    $errors = $this->ctc()->errors;
 
     if ( isset( $_GET[ 'error' ] ) )
         $errors = array_merge( $errors,

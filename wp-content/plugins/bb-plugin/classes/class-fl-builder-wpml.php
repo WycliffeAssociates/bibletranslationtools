@@ -16,8 +16,9 @@ final class FLBuilderWPML {
 			return;
 		}
 
-		add_filter( 'fl_get_wp_widgets_exclude', 		__CLASS__ . '::filter_wp_widgets_exclude' );
-		add_filter( 'fl_builder_node_template_post_id', __CLASS__ . '::filter_node_template_post_id' );
+		add_filter( 'fl_get_wp_widgets_exclude', 			__CLASS__ . '::filter_wp_widgets_exclude' );
+		add_filter( 'fl_builder_node_template_post_id', 	__CLASS__ . '::filter_node_template_post_id' );
+		add_filter( 'fl_builder_parent_template_node_id', 	__CLASS__ . '::filter_parent_template_node_id', 10, 3 );
 	}
 
 	/**
@@ -55,6 +56,26 @@ final class FLBuilderWPML {
 		}
 
 		return $post_id;
+	}
+
+	/**
+	 * Returns the translated root node ID for a node template. This makes
+	 * it so the translated version of a global node will render.
+	 *
+	 * @since 2.1.3
+	 * @param string template_node_id
+	 * @param object $parent
+	 * @param array $layout_data
+	 * @return string
+	 */
+	static public function filter_parent_template_node_id( $template_node_id, $parent, $layout_data ) {
+		$root = FLBuilderModel::get_node_template_root( $parent->type, $layout_data );
+
+		if ( $root && isset( $root->template_node_id ) && ! empty( $root->template_node_id ) ) {
+			$template_node_id = $root->template_node_id;
+		}
+
+		return $template_node_id;
 	}
 }
 

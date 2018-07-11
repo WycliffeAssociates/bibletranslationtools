@@ -133,7 +133,7 @@ var ConvertToBuilderButton = function (_Component) {
 				React.createElement(
 					Button,
 					{
-						className: 'components-menu-items__button',
+						className: 'components-menu-item__button',
 						onClick: this.convertToBuilder.bind(this)
 					},
 					strings.convert
@@ -232,6 +232,7 @@ var _wp$data = wp.data,
     withSelect = _wp$data.withSelect;
 var _wp$element = wp.element,
     Component = _wp$element.Component,
+    RawHTML = _wp$element.RawHTML,
     compose = _wp$element.compose;
 
 /**
@@ -447,6 +448,7 @@ if (builder.access && builder.unrestricted || builder.enabled) {
 		useOnce: true,
 		supports: {
 			customClassName: false,
+			className: false,
 			html: false
 		},
 		attributes: {
@@ -459,7 +461,11 @@ if (builder.access && builder.unrestricted || builder.enabled) {
 		save: function save(_ref) {
 			var attributes = _ref.attributes;
 
-			return attributes.content;
+			return React.createElement(
+				RawHTML,
+				null,
+				attributes.content
+			);
 		}
 	});
 }

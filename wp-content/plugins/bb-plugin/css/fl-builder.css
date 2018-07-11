@@ -107,6 +107,17 @@ html.fl-builder-show-admin-bar #wpadminbar {
 }
 /* @endgroup Loading */
 
+/* @group Visibility Rules
+------------------------------------------------------ */
+
+.fl-node-hidden {
+	display: none;
+}
+.fl-builder-edit .fl-node-hidden {
+	display: block;
+}
+/* @endgroupVisibility Rules */
+
 /* @group Responsive Utilities
 ------------------------------------------------------ */
 
@@ -1306,19 +1317,21 @@ body.fl-builder-draggable-is-dragging .fl-builder--panel-arrow {
 .fl-builder-block.fl-builder-block-col-group {
 	height:84px;
 }
-.fl-builder-block.fl-builder-block-saved-row.fl-builder-block-has-thumbnail,
-.fl-builder-block.fl-builder-block-saved-column.fl-builder-block-has-thumbnail,
-.fl-builder-block.fl-builder-block-saved-module.fl-builder-block-has-thumbnail,
-.fl-builder-block.fl-builder-block-row-template.fl-builder-block-has-thumbnail,
-.fl-builder-block.fl-builder-block-module-template.fl-builder-block-has-thumbnail  {
-	padding:10px;
+.fl-builder-block.fl-builder-block-has-thumbnail  {
+	height:auto !important;
+	padding:10px !important;
 }
-.fl-builder-block.fl-builder-block-saved-row.fl-builder-block-has-thumbnail,
-.fl-builder-block.fl-builder-block-saved-column.fl-builder-block-has-thumbnail,
-.fl-builder-block.fl-builder-block-saved-module.fl-builder-block-has-thumbnail,
-.fl-builder-block.fl-builder-block-row-template.fl-builder-block-has-thumbnail,
-.fl-builder-block.fl-builder-block-module-template.fl-builder-block-has-thumbnail  {
-	height:auto;
+.fl-builder-block.fl-builder-block-has-thumbnail:hover  {
+	padding:0 !important;
+}
+.fl-builder-block.fl-builder-block-has-thumbnail .fl-builder-block-content  {
+	position: relative !important;
+}
+.fl-builder-block.fl-builder-block-has-thumbnail:hover .fl-builder-block-content  {
+	padding: 10px !important;
+}
+.fl-builder-block.fl-builder-block-has-thumbnail .fl-builder-block-details {
+	margin: 0 10px 4px !important;
 }
 .fl-builder-block:hover {
 	overflow:visible;
@@ -1343,14 +1356,6 @@ body.fl-builder-draggable-is-dragging .fl-builder--panel-arrow {
 .fl-builder-block-module:hover .fl-builder-block-content {
 	width:auto; /* modules allow auto width to show long titles */
 	min-width:100%;
-}
-
-.fl-builder-block.fl-builder-block-saved-row.fl-builder-block-has-thumbnail .fl-builder-block-content,
-.fl-builder-block.fl-builder-block-saved-column.fl-builder-block-has-thumbnail .fl-builder-block-content,
-.fl-builder-block.fl-builder-block-saved-module.fl-builder-block-has-thumbnail .fl-builder-block-content,
-.fl-builder-block.fl-builder-block-row-template.fl-builder-block-has-thumbnail .fl-builder-block-content,
-.fl-builder-block.fl-builder-block-module-template.fl-builder-block-has-thumbnail .fl-builder-block-content  {
-	position: relative;
 }
 
 .fl-builder-block .fl-builder-block-content .fl-builder-block-visual {
@@ -3071,7 +3076,9 @@ form.fl-builder-settings {
 }
 .fl-lightbox-width-slim .fl-form-table th {
 	display: block;
+	position: relative;
 	padding: 10px 0 0 12px !important;
+	width: auto !important;
 }
 .fl-lightbox-width-slim .fl-form-table td {
 	display: block;
@@ -3110,10 +3117,13 @@ form.fl-builder-settings {
 
 /* Slim - TinyMCE */
 .fl-lightbox-width-slim .mce-menubtn.mce-fixed-width button {
-	width: 28px !important;
+	width: 72px !important;
 }
-.fl-lightbox-width-slim .mce-btn[aria-label="Fullscreen"],
-.fl-lightbox-width-slim .mce-btn[aria-label="Blockquote"] {
+.fl-lightbox-width-micro .mce-menubtn.mce-fixed-width button {
+	width: 38px !important;
+}
+.fl-lightbox-width-micro .mce-btn[aria-label="Fullscreen"],
+.fl-lightbox-width-micro .mce-btn[aria-label="Blockquote"] {
 	display: none;
 }
 
@@ -4056,6 +4066,9 @@ span.select2-container.select2-container--open {
 	display: inline-block;
 	position: relative;
 }
+.fl-lightbox-width-slim .fl-help-tooltip {
+	position: static;
+}
 .fl-help-tooltip-icon {
 	color: #999 !important;
 	cursor: pointer;
@@ -4065,6 +4078,7 @@ span.select2-container.select2-container--open {
 	vertical-align: middle;
 }
 .fl-help-tooltip-text {
+	box-sizing: border-box;
 	background: #fff;
 	border: 1px solid #ccc;
 	box-shadow: 0 0 5px #ccc;
@@ -4081,8 +4095,9 @@ span.select2-container.select2-container--open {
 	border-radius: 4px;
 }
 .fl-lightbox-width-slim .fl-help-tooltip-text {
-	top:26px;
-	left:-30px;
+	top:30px;
+	left:0;
+	width: 100%;
 }
 
 /* Multiples */

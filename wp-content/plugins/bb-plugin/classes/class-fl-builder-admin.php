@@ -21,6 +21,7 @@ final class FLBuilderAdmin {
 
 		// Actions
 		add_action( 'admin_init',                            __CLASS__ . '::show_activate_notice' );
+		add_action( 'admin_init',                            __CLASS__ . '::sanity_checks' );
 
 		// Filters
 		add_filter( 'plugin_action_links_' . $basename,      __CLASS__ . '::render_plugin_action_links' );
@@ -84,6 +85,24 @@ final class FLBuilderAdmin {
 		deactivate_plugins( FLBuilderModel::plugin_basename(), false, is_network_admin() );
 
 		die( $message );
+	}
+
+	/**
+	 * @since 2.1.3
+	 */
+	static public function sanity_checks() {
+
+		if ( true !== FL_BUILDER_LITE ) {
+			// fetch the plugin install folder this should be bb-plugin
+			$folder = rtrim( FLBuilderModel::plugin_basename(), '/fl-builder.php' );
+
+			if ( 'bb-plugin' != $folder ) {
+
+				$error = sprintf( __( 'Install Error! We detected that Beaver Builder appears to be installed in a folder called <kbd>%s</kbd>.<br />For automatic updates to work the plugin must be installed in the folder <kbd>bb-plugin</kbd>.', 'fl-builder' ), $folder );
+				FLBuilderAdminSettings::add_error( $error );
+			}
+		}
+
 	}
 
 	/**
@@ -183,6 +202,15 @@ final class FLBuilderAdmin {
 				'utm_campaign' => 'plugins-admin-upgrade',
 			) );
 			$actions[] = '<a href="' . $url . '" style="color:#3db634;" target="_blank">' . _x( 'Upgrade', 'Plugin action link label.', 'fl-builder' ) . '</a>';
+		}
+
+		if ( ! FLBuilderModel::is_white_labeled() ) {
+			$url = FLBuilderModel::get_store_url( 'change-logs', array(
+				'utm_medium' => 'bb-pro',
+				'utm_source' => 'plugins-admin-page',
+				'utm_campaign' => 'plugins-admin-changelog',
+			) );
+			$actions[] = '<a href="' . $url . '" target="_blank">' . _x( 'Change Log', 'Plugin action link label.', 'fl-builder' ) . '</a>';
 		}
 
 		return $actions;

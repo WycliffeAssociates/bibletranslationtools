@@ -47,5 +47,11 @@ data-enable-audio="<?php echo $row->settings->bg_video_audio; ?>"
 <?php endif; ?>
 <?php endif; ?>>
 <div class="fl-bg-video-player"></div>
+<?php if ( $row->settings->bg_video_audio ) : ?>
+<div class="fl-bg-video-audio"><span>
+	<i class="fas fl-audio-control fa-volume-off"></i>
+	<i class="fas fa-times"></i>
+</span></div>
+<?php endif; ?>
 </div>
 <?php } ?>

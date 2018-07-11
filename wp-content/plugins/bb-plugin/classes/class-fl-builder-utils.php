@@ -195,8 +195,13 @@ final class FLBuilderUtils {
 					if ( strpos( $yt_params['t'], 's' ) !== false ) {
 						$start_secs = preg_split( '([0-9]+[m])', $yt_params['t'] );
 
-						if ( $start_secs ) {
+						// Triggered when: &t=1m2s
+						if ( isset( $start_secs[1] ) ) {
 							$seconds = substr( $start_secs[1], 0, -1 );
+
+							// Triggered when: &t=1s
+						} elseif ( isset( $start_secs[0] ) && ! empty( $start_secs[0] ) ) {
+							$seconds = substr( $start_secs[0], 0, -1 );
 						}
 					}
 
@@ -247,6 +252,19 @@ final class FLBuilderUtils {
 		}
 
 		return 0;
+	}
+
+	/**
+	 * Sanitize a value for js
+	 * @since 2.1.3
+	 */
+	static public function sanitize_non_negative_number( $value ) {
+
+		if ( is_numeric( $value ) && floatval( $value ) >= 0 ) {
+			return $value;
+		}
+
+		 return 0;
 	}
 
 }

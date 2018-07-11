@@ -1119,14 +1119,19 @@ final class FLBuilderModel {
 	static public function get_child_nodes( $parent_id, $status = null ) {
 		$parent           = is_object( $parent_id ) ? $parent_id : self::get_node( $parent_id );
 		$template_post_id = self::is_node_global( $parent );
+		$template_node_id = null;
 		$status           = $template_post_id && ! self::is_post_node_template() ? 'published' : $status;
 		$data             = self::get_layout_data( $status, $template_post_id );
 		$nodes            = array();
 
+		if ( $template_post_id ) {
+			$template_node_id = apply_filters( 'fl_builder_parent_template_node_id', $parent->template_node_id, $parent, $data );
+		}
+
 		if ( is_object( $parent ) ) {
 			foreach ( $data as $node_id => $node ) {
 				if ( ( isset( $node->parent ) && $node->parent == $parent->node )
-					|| ( $template_post_id && $parent->template_node_id == $node->parent ) ) {
+					|| ( $template_node_id && $template_node_id == $node->parent ) ) {
 					$nodes[ $node_id ] = $node;
 				}
 			}
@@ -1898,6 +1903,11 @@ final class FLBuilderModel {
 			$row->settings->ss_photo_data = new StdClass();
 		}
 
+		// This class does not exist in Lite version.
+		if ( ! class_exists( 'FLSlideshowModule' ) ) {
+			return false;
+		}
+
 		// Hijack the slideshow module to get the source.
 		$ss								= new FLSlideshowModule();
 		$ss->settings					= new StdClass();
@@ -2618,18 +2628,27 @@ final class FLBuilderModel {
 	 * @return void
 	 */
 	static public function load_modules() {
-		$path			= FL_BUILDER_DIR . 'modules/';
-		$dir			= dir( $path );
-		$module_path	= '';
+		$paths = glob( FL_BUILDER_DIR . 'modules/*' );
+		$module_path = '';
 
-		while ( false !== ( $entry = $dir->read() ) ) { // @codingStandardsIgnoreLine
+		// Make sure we have an array.
+		if ( ! is_array( $paths ) ) {
+			return;
+		}
 
-			if ( ! is_dir( $path . $entry ) || '.' == $entry || '..' == $entry ) {
+		// Load all found modules.
+		foreach ( $paths as $path ) {
+
+			// Make sure we have a directory.
+			if ( ! is_dir( $path ) ) {
 				continue;
 			}
 
+			// Get the module slug.
+			$slug = basename( $path );
+
 			// Paths to check.
-			$module_path	= $entry . '/' . $entry . '.php';
+			$module_path	= $slug . '/' . $slug . '.php';
 			$child_path		= get_stylesheet_directory() . '/fl-builder/modules/' . $module_path;
 			$theme_path		= get_template_directory() . '/fl-builder/modules/' . $module_path;
 			$builder_path	= FL_BUILDER_DIR . 'modules/' . $module_path;
@@ -4870,10 +4889,6 @@ final class FLBuilderModel {
 		global $wp_the_query;
 
 		$is_visible = true;
-
-		if ( self::is_builder_active() && self::get_post_id() == $wp_the_query->post->ID ) {
-			return $is_visible;
-		}
 
 		if ( isset( $node->settings->visibility_display ) && ('' != $node->settings->visibility_display) ) {
 

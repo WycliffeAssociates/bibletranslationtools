@@ -202,41 +202,55 @@
 			// Load the new CSS.
 			if ( this._loader )  {
 
-				// Set the loader's error event.
-				this._loader.on( 'error', $.proxy( this._loadNewCSSComplete, this ) );
+				// Load CSS using modern methods or fallback to the old way.
+				if ( 'onload' in document.createElement( 'link' ) ) {
+					this._newCss.on( 'load', $.proxy( this._finish, this ) );
+					this._addNewCSS();
+				} else {
+					this._loader.on( 'error', $.proxy( this._loadNewCSSFallbackComplete, this ) );
+					this._body.append( this._loader );
+				}
 
-				// Add the loader to the body.
-				this._body.append( this._loader );
-			}
-			// We don't have new CSS, finish the render.
-			else {
+			} else {
+				// We don't have new CSS, finish the render.
 				this._finish();
 			}
 		},
 
 		/**
-		 * Removes the loader, adds the new CSS once it has loaded,
+		 * Removes the fallback loader, adds the new CSS once it has loaded,
 		 * and sets a quick timeout to finish the render.
 		 *
 		 * @since 1.7
 		 * @access private
-		 * @method _loadNewCSSComplete
+		 * @method _loadNewCSSFallbackComplete
 		 */
-		_loadNewCSSComplete: function()
+		_loadNewCSSFallbackComplete: function()
 		{
 			// Remove the loader.
 			this._loader.remove();
 
 			// Add the new layout css.
-			if ( this._oldCss.length > 0 ) {
-				this._oldCss.after( this._newCss );
-			}
-			else {
-				this._head.append( this._newCss );
-			}
+			this._addNewCSS();
 
 			// Set a quick timeout to ensure the css has taken effect.
 			setTimeout( $.proxy( this._finish, this ), 250 );
+		},
+
+		/**
+		 * Adds the new CSS once it has been loaded.
+		 *
+		 * @since 2.2
+		 * @access private
+		 * @method _addNewCSS
+		 */
+		_addNewCSS: function()
+		{
+			if ( this._oldCss.length > 0 ) {
+				this._oldCss.after( this._newCss );
+			} else {
+				this._head.append( this._newCss );
+			}
 		},
 
 		/**

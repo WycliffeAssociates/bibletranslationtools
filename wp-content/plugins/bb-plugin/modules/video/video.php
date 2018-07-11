@@ -23,6 +23,8 @@ class FLVideoModule extends FLBuilderModule {
 		));
 
 		$this->add_js( 'jquery-fitvids' );
+
+		add_filter( 'wp_video_shortcode', __CLASS__ . '::mute_video', 10, 4 );
 	}
 
 	/**
@@ -71,6 +73,24 @@ class FLVideoModule extends FLBuilderModule {
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * Temporary fix for autoplay in Chrome & Safari. Video shortcode doesn't support `muted` parameter.
+	 * Bug report: https://core.trac.wordpress.org/ticket/42718.
+	 *
+	 * @since 2.1.3
+	 * @param string $output  Video shortcode HTML output.
+	 * @param array  $atts    Array of video shortcode attributes.
+	 * @param string $video   Video file.
+	 * @param int    $post_id Post ID.
+	 * @return string
+	 */
+	static public function mute_video( $output, $atts, $video, $post_id ) {
+		if ( false !== strpos( $output, 'autoplay="1"' ) && FLBuilderModel::get_post_id() == $post_id ) {
+			$output = str_replace( '<video', '<video muted', $output );
+		}
+		return $output;
 	}
 }
 

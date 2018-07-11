@@ -245,7 +245,7 @@
 		 */
 		pinPanel: function( position ) {
 			var panel 	= $( '.fl-builder--content-library-panel' ),
-				width   = panel.width(),
+				width   = panel.outerWidth(),
 				body  	= $( 'body' ),
 				preview = $( '.fl-responsive-preview, .fl-responsive-preview-mask' ),
 				content = $( FLBuilder._contentClass ).parentsUntil( 'body' ).last();
@@ -650,7 +650,7 @@
 				lightbox = $( '.fl-lightbox-resizable:visible' ),
 				data  	 = {
 					pinned: {
-						width  	 : panel.width(),
+						width  	 : panel.outerWidth(),
 						position : null
 					}
 				};
@@ -692,9 +692,9 @@
 				settings = FLBuilderConfig.userSettings.pinned;
 
 			if ( settings && settings.position ) {
-				panel.width( settings.width );
+				panel.css( 'width', settings.width + 'px' );
 				this.pin( settings.position, false );
-				panel.width( settings.width );
+				panel.css( 'width', settings.width + 'px' );
 			}
 		},
 	};

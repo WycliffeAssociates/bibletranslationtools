@@ -6,7 +6,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
     Class: ChildThemeConfiguratorAdmin
     Plugin URI: http://www.childthemeconfigurator.com/
     Description: Main Controller Class
-    Version: 2.3.0
+    Version: 2.3.0.4
     Author: Lilaea Media
     Author URI: http://www.lilaeamedia.com/
     Text Domain: child-theme-configurator
@@ -1152,8 +1152,8 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
         if ( 'screenshot' == $file ):
             foreach ( array_keys( $this->imgmimes ) as $extreg ): 
                 foreach( explode( '|', $extreg ) as $ext )
-                    if ( !( $parent_file = $this->css->is_file_ok( $this->css->get_parent_source( 'screenshot.' . $ext ) ) ) ) 
-                        continue;
+                    if ( ( $parent_file = $this->css->is_file_ok( $this->css->get_parent_source( 'screenshot.' . $ext ) ) ) ) 
+                        break;
                 if ( $parent_file ):
                     $parent_file = $this->fspath( $parent_file );
                     break;
@@ -1236,18 +1236,27 @@ defined( 'CHLD_THM_CFG_IGNORE_PARENT' ) or define( 'CHLD_THM_CFG_IGNORE_PARENT',
                             $this->debug( 'scanning ' . $file_verified . '... ', __FUNCTION__, __CLASS__ );
                             // read 2k at a time and bail if code detected
                             $template = FALSE;
+                            $size = 0;
                             if ( $handle = fopen( $file_verified, "rb") ):
-                            while ( !feof( $handle ) ) {
-                                $contents = fread($handle, 2048);
-                                if ( preg_match( "/\w+\s*\(/", $contents ) ):
-                                    $template = TRUE;
-                                    if ( preg_match( "/(function \w+?|require(_once)?)\s*\(/", $contents ) ):
-                                        $template = FALSE;
+                                while ( !feof( $handle ) ):
+                                    $size++;
+                                    if ( $size > 10 ) // if larger than 20k this ain't a template
                                         break;
+                                    $contents = fread($handle, 2048);
+                                    if ( preg_match( "/\w+\s*\(/", $contents ) ):
+                                        $template = TRUE;
+                                        // remove scripts so they don't cause false positives - v.2.3.0.4
+                                        $contents = preg_replace( "%<script>.+?</script>%s", '', $contents );
+                                        $contents = preg_replace( "%(^.+?</script>|<script>.+$)%s", '', $contents );
+                                        // if contents contain functions or requires this is not a template
+                                        if ( preg_match( "/(function \w+?|require(_once)?)\s*\(/", $contents ) ):
+                                            $this->debug( 'disqualifying code found in chunk ' . $size, __FUNCTION__, __CLASS__ );
+                                            $template = FALSE;
+                                            break;
+                                        endif;
                                     endif;
-                                endif;
-                            }
-                            fclose( $handle );
+                                endwhile;
+                                fclose( $handle );
                             endif;
                             if ( $template )
                                 $this->files[ $theme ][ 'template' ][] = $file;

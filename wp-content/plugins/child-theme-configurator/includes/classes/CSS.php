@@ -6,7 +6,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
     Class: ChildThemeConfiguratorCSS
     Plugin URI: http://www.childthemeconfigurator.com/
     Description: Handles all CSS input, output, parsing, normalization and storage
-    Version: 2.3.0
+    Version: 2.3.0.4
     Author: Lilaea Media
     Author URI: http://www.lilaeamedia.com/
     Text Domain: chld_thm_cfg
@@ -167,7 +167,7 @@ class ChildThemeConfiguratorCSS {
         $this->parnt            = '';
         $this->ignoreparnt      = 0;
         $this->qpriority        = 10;
-        $this->version          = '2.3.0';
+        $this->version          = '2.3.0.4';
         
         // do not set enqueue, not being set is used to flag old versions
 
@@ -1484,8 +1484,10 @@ class ChildThemeConfiguratorCSS {
             if ( $gradient = $this->decode_gradient( $value ) ):
                 // standard gradient
                 foreach( array( 'moz', 'webkit', 'o', 'ms' ) as $prefix ):
-                    $rule_output[ 'background-image: -' . $prefix . '-' . 'linear-gradient(' . $gradient[ 'origin' ] . ', ' 
-                        . $gradient[ 'color1' ] . ', ' . $gradient[ 'color2' ] . ')' . $importantstr ] = $this->sortstr( $rule, $rulevalid++ );
+                    // build key before dereferencing array - v.2.3.0.3
+                    $propkey = 'background-image: -' . $prefix . '-' . 'linear-gradient(' . $gradient[ 'origin' ] . ', ' 
+                        . $gradient[ 'color1' ] . ', ' . $gradient[ 'color2' ] . ')' . $importantstr;
+                    $rule_output[ $propkey ] = $this->sortstr( $rule, $rulevalid++ );
                 endforeach;
                 // W3C standard gradient
                 // rotate origin 90 degrees
@@ -1501,8 +1503,10 @@ class ChildThemeConfiguratorCSS {
                     endforeach;
                     $org = 'to ' . implode( ' ', $dirs );
                 endif;
-                $rule_output[ 'background-image: linear-gradient(' . $org . ', ' 
-                    . $gradient[ 'color1' ] . ', ' . $gradient[ 'color2' ] . ')' . $importantstr ] = $this->sortstr( $rule, $rulevalid );
+                // build key before dereferencing array - v.2.3.0.3
+                $propkey = 'background-image: linear-gradient(' . $org . ', ' 
+                    . $gradient[ 'color1' ] . ', ' . $gradient[ 'color2' ] . ')' . $importantstr;
+                $rule_output[ $propkey ] = $this->sortstr( $rule, $rulevalid );
                 
                 // legacy webkit gradient - we'll add if there is demand
                 // '-webkit-gradient(linear,' .$origin . ', ' . $color1 . ', '. $color2 . ')';

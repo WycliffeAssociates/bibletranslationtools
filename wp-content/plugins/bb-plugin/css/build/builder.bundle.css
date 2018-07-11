@@ -1,22 +1,28 @@
 .fl-editable {
   position: relative;
   -webkit-user-select: text; }
-  .fl-editable.fl-module {
-    cursor: pointer; }
-  .fl-editable .fl-block-overlay {
-    pointer-events: none; }
-  .fl-editable .fl-block-overlay-actions,
-  .fl-editable .fl-block-col-resize {
-    pointer-events: auto; }
   .fl-editable .mce-content-body {
     cursor: text; }
     .fl-editable .mce-content-body * {
       cursor: text; }
+  .fl-editable .mce-content-body:not(.mce-edit-focus):empty {
+    height: 0; }
   .fl-editable .mce-content-body:not(.mce-edit-focus) [data-mce-selected] {
     background: none; }
-  .fl-editable .mce-edit-body,
+  .fl-editable .mce-content-body,
+  .fl-editable .mce-content-body:focus,
   .fl-editable .mce-edit-focus {
     outline: none !important; }
+
+.fl-editable-focused.fl-module {
+  cursor: pointer; }
+
+.fl-editable-focused .fl-block-overlay {
+  pointer-events: none; }
+
+.fl-editable-focused .fl-block-overlay-actions,
+.fl-editable-focused .fl-block-col-resize {
+  pointer-events: auto; }
 
 .fl-inline-editor {
   border: 2px solid #00A0D2;
@@ -36,6 +42,8 @@
     top: 4px; }
     .fl-inline-editor.fl-inline-editor-no-toolbar > .mce-tinymce {
       display: none; }
+  .fl-inline-editor > .mce-tinymce.fl-inline-editor-active-toolbar {
+    display: block !important; }
   .fl-inline-editor > .mce-tinymce {
     background: transparent;
     border: none !important;

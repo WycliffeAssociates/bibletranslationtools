@@ -19,7 +19,8 @@ final class FLBuilderFonts {
 	 * @return void
 	 */
 	static public function init() {
-		add_action( 'wp_enqueue_scripts', __CLASS__ . '::combine_google_fonts', 99 );
+		add_action( 'wp_enqueue_scripts', __CLASS__ . '::combine_google_fonts', 10000 );
+		add_action( 'wp_enqueue_scripts', __CLASS__ . '::enqueue_google_fonts', 9999 );
 	}
 
 	/**
@@ -203,6 +204,13 @@ final class FLBuilderFonts {
 	 * @return void
 	 */
 	static public function enqueue_styles() {
+		return false;
+	}
+
+	/**
+	 * @since 2.1.3
+	 */
+	static public function enqueue_google_fonts() {
 		$google_fonts_domain = apply_filters( 'fl_builder_google_fonts_domain', '//fonts.googleapis.com/' );
 		$google_url = $google_fonts_domain . 'css?family=';
 
@@ -313,9 +321,9 @@ final class FLBuilderFonts {
 											'weights'	=> $weights,
 										);
 
-										// Remove enqueued google font style, so we would only have one HTTP request.
-										wp_dequeue_style( $handle );
 									}
+									// Remove enqueued google font style, so we would only have one HTTP request.
+									wp_dequeue_style( $handle );
 								}
 							}
 						}

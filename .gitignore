@@ -2,6 +2,7 @@ local.config.php
 
 wp-content/repository/
 wp-content/plugins/
+wp-content/cache/
 
 *.DS_Store
 

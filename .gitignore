@@ -1,4 +1,8 @@
 local.config.php
+
+wp-content/repository/
+wp-content/plugins/
+
 *.DS_Store
 
 *.swp

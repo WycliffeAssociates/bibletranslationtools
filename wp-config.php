@@ -74,6 +74,10 @@ define('DB_CHARSET', 'utf8');
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
 
+/** SSL settings */
+define('MYSQL_CLIENT_FLAGS', MYSQL_CLIENT_SSL);
+define( 'MYSQL_SSL_CA', getenv('MYSQL_SSL_CA'));
+
 /**#@+
  * Authentication Unique Keys and Salts.
  *

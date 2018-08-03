@@ -170,10 +170,13 @@ var TranslationsPage = (function(window, $) {
       this.createResourceFilterEls().forEach(function(item) {
           resource_filter.add(item);
       });
+      var filterLangs = this.filterLangs;
+      resource_filter.onchange = function() {
+          filterLangs(list, filter, resource_filter)
+      }
 
       var list = create('ul', 'lang-list', 'lang-list');
 
-      var filterLangs = this.filterLangs;
       filter.onkeyup = function() {
           filterLangs(list, filter, resource_filter)
       }
@@ -198,7 +201,12 @@ var TranslationsPage = (function(window, $) {
             item = items[i];
             langText = item.innerText.toUpperCase();
             if (langText.indexOf(searchText) > -1) {
-                item.style.display = "";
+                if (resource_filter[resource_filter.selectedIndex].value === "all") {
+                    item.style.display = "";
+                } else {
+                    //TODO
+                    item.style.display = "none";
+                }
             } else {
                 item.style.display = "none";
             }

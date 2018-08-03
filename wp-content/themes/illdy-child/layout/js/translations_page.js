@@ -173,18 +173,9 @@ var TranslationsPage = (function(window, $) {
 
       var list = create('ul', 'lang-list', 'lang-list');
 
+      var filterLangs = this.filterLangs;
       filter.onkeyup = function() {
-            searchText = filter.value.toUpperCase();
-            items = list.getElementsByTagName('li');
-            for (i = 0; i < items.length; i++) {
-                item = items[i];
-                langText = item.innerText.toUpperCase();
-                if (langText.indexOf(searchText) > -1) {
-                    item.style.display = "";
-                } else {
-                    item.style.display = "none";
-                }
-            }
+          filterLangs(list, filter, resource_filter)
       }
 
       var container = create('div', 'lang-list-container sticky');
@@ -200,6 +191,20 @@ var TranslationsPage = (function(window, $) {
       return container;
     };
 
+    this.filterLangs = function(list, filter, resource_filter) {
+        var searchText = filter.value.toUpperCase();
+        items = list.getElementsByTagName('li');
+        for (i = 0; i < items.length; i++) {
+            item = items[i];
+            langText = item.innerText.toUpperCase();
+            if (langText.indexOf(searchText) > -1) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
+            }
+        }
+    }
+
     this.createResourceFilterEls = function() {
         subjects = [];
         items = [];
@@ -207,7 +212,7 @@ var TranslationsPage = (function(window, $) {
         var all = create("option");
         all.value = "all";
         all.innerHTML = "All Texts and Resources";
-        
+
         this.list.forEach(function(language) {
             if (language.contents) {
                 language.contents.forEach(function(content) {

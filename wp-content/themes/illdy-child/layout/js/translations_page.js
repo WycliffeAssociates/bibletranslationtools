@@ -171,14 +171,15 @@ var TranslationsPage = (function(window, $) {
           resource_filter.add(item);
       });
       var filterLangs = this.filterLangs;
+      var translationsData = this.list;
       resource_filter.onchange = function() {
-          filterLangs(list, filter, resource_filter)
+          filterLangs(list, filter, resource_filter, translationsData);
       }
 
       var list = create('ul', 'lang-list', 'lang-list');
 
       filter.onkeyup = function() {
-          filterLangs(list, filter, resource_filter)
+          filterLangs(list, filter, resource_filter, translationsData);
       }
 
       var container = create('div', 'lang-list-container sticky');
@@ -194,22 +195,35 @@ var TranslationsPage = (function(window, $) {
       return container;
     };
 
-    this.filterLangs = function(list, filter, resource_filter) {
+    this.filterLangs = function(list, filter, resource_filter, translationsData) {
         var searchText = filter.value.toUpperCase();
         items = list.getElementsByTagName('li');
         for (i = 0; i < items.length; i++) {
             item = items[i];
             langText = item.innerText.toUpperCase();
+            var displayItem = false;
+            // Check for name match
             if (langText.indexOf(searchText) > -1) {
-                if (resource_filter[resource_filter.selectedIndex].value === "all") {
-                    item.style.display = "";
+                // Check for resource match
+                var resource_filter_value = resource_filter[resource_filter.selectedIndex].value.toLowerCase();
+                if (resource_filter_value === "all") {
+                    displayItem = true;
                 } else {
-                    //TODO
-                    item.style.display = "none";
+                    var selectedLanguage = translationsData.filter(function(lang) {
+                      return lang.code === item.dataset.code;
+                    })[0];
+                    if (selectedLanguage.contents) {
+                        for (j = 0; j < selectedLanguage.contents.length; j++) {
+                            var content = selectedLanguage.contents[j];
+                            if (content.subject && content.subject.toLowerCase() == resource_filter_value) {
+                                displayItem = true;
+                                break;
+                            }
+                        }
+                    }
                 }
-            } else {
-                item.style.display = "none";
             }
+            item.style.display = displayItem ? "" : "none";
         }
     }
 

@@ -387,6 +387,13 @@ ul {
     border: 1px solid #ddd; /* Add a grey border */
     margin: auto;
 }
+#translations-container .lang-list-resource-filter {
+    width: 90%;
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin: auto;
+}
 #translations-container .lang-list-title {
 	margin-top: 0;
         margin-bottom: 15px;

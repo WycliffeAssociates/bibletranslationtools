@@ -137,7 +137,8 @@ var TranslationsPage = (function(window, $) {
           code: lang.code,
           name: lang.name,
           englishName: lang.englishName,
-          direction: lang.direction
+          direction: lang.direction,
+          contents: lang.contents
         };
       });
       this.render();
@@ -165,6 +166,11 @@ var TranslationsPage = (function(window, $) {
       filter.setAttribute('type', 'text');
       filter.setAttribute('placeholder', 'Search languages or codes...');
 
+      var resource_filter = create('select', 'lang-list-resource-filter', 'lang-list-resource-filter');
+      this.createResourceFilterEls().forEach(function(item) {
+          resource_filter.add(item);
+      });
+
       var list = create('ul', 'lang-list', 'lang-list');
 
       filter.onkeyup = function() {
@@ -184,6 +190,7 @@ var TranslationsPage = (function(window, $) {
       var container = create('div', 'lang-list-container sticky');
       container.appendChild(title);
       container.appendChild(filter);
+      container.appendChild(resource_filter);
       container.appendChild(list);
 
       this.createListItemEls().forEach(function(item) {
@@ -192,6 +199,37 @@ var TranslationsPage = (function(window, $) {
 
       return container;
     };
+
+    this.createResourceFilterEls = function() {
+        subjects = [];
+        items = [];
+        /* "All resources" is first and selected by default */
+        var all = create("option");
+        all.value = "all";
+        all.innerHTML = "All Texts and Resources";
+        
+        this.list.forEach(function(language) {
+            if (language.contents) {
+                language.contents.forEach(function(content) {
+                    if (!content.subject || content.subject.trim() === "") {
+                        return;
+                    }
+                    if (!subjects.includes(content.subject.toLowerCase())) {
+                        subjects.push(content.subject.toLowerCase());
+                        var item = create("option");
+                        item.value = content.subject;
+                        item.innerHTML = content.subject;
+                        items.push(item);
+                    }
+                });
+            }
+        });
+
+        items.sort(function(a,b){return a.value > b.value ? 1 : -1});
+        items.unshift(all);
+
+        return items;
+    }
 
     this.createListItemEls = function() {
       return this.list.map((function(lang) {

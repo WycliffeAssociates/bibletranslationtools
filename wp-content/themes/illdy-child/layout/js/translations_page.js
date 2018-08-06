@@ -82,14 +82,20 @@ var TranslationsPage = (function(window, $) {
       // Give sidebar the list of languges
       this.sidebar.setList(this.translationsData);
 
-      // Pre-select a language if there's something in the query string
-      // TODO: Look for the 'lang' parameter on the query string specifically
+      // Process search string
       var searchString = window.location.search;
       if (searchString) {
-        var langSearch = searchString.split('=')[1];
-        // Will trigger sidebar.render();
-        this.sidebar.setSelected(langSearch);
-        return;
+
+        // Pre-select a language if there's something in the query string
+        var langRegex = new RegExp("\\Wlang=([^&]+)");
+        var result = langRegex.exec(searchString);
+        if (result && result.length >= 2) {
+            var langSearch = result[1];
+            // Will trigger sidebar.render();
+            this.sidebar.setSelected(langSearch);
+            return;
+        }
+
       }
 
       // Default to English resources. Will trigger sidebar.render();
@@ -502,5 +508,3 @@ var TranslationsPage = (function(window, $) {
   return TranslationsPage;
 
 })(window, jQuery);
-
-console.log(WPURL);

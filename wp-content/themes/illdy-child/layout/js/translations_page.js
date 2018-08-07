@@ -82,6 +82,9 @@ var TranslationsPage = (function(window, $) {
       // Give sidebar the list of languges
       this.sidebar.setList(this.translationsData);
 
+      // Default to English resources. Will trigger sidebar.render();
+      this.sidebar.setSelected('en');
+
       // Process search string
       var searchString = window.location.search;
       if (searchString) {
@@ -93,9 +96,6 @@ var TranslationsPage = (function(window, $) {
             var langSearch = result[1];
             // Will trigger sidebar.render();
             this.sidebar.setSelected(langSearch);
-        } else {
-            // Default to English resources. Will trigger sidebar.render();
-            this.sidebar.setSelected('en');
         }
 
         // Pre-select a resource if given
@@ -107,9 +107,7 @@ var TranslationsPage = (function(window, $) {
             resourceSearch = resourceSearch.replace(/%20/g, " ");
             this.sidebar.setSelectedResource(resourceSearch);
         }
-
       }
-
     };
 
     this.handleFailedInit = function(err) {

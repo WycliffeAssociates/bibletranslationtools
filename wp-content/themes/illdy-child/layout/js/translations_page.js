@@ -181,7 +181,7 @@ var TranslationsPage = (function(window, $) {
         for (var i = 0; i < options.length; i++) {
             if (options[i].value === selected) {
                 resourceFilter.value = selected;
-                resourceFilter.onchange();
+                resourceFilter.onclick();
                 return;
             }
         }
@@ -202,7 +202,7 @@ var TranslationsPage = (function(window, $) {
       });
       var filterLangs = this.filterLangs;
       var translationsData = this.list;
-      resource_filter.onchange = function() {
+      resource_filter.onclick = function() {
           filterLangs(list, filter, resource_filter, translationsData);
       }
 
@@ -227,10 +227,10 @@ var TranslationsPage = (function(window, $) {
 
     this.filterLangs = function(list, filter, resource_filter, translationsData) {
         var searchText = filter.value.toUpperCase();
-        items = list.getElementsByTagName('li');
+        var items = list.getElementsByTagName('li');
         for (i = 0; i < items.length; i++) {
-            item = items[i];
-            langText = item.innerText.toUpperCase();
+            var item = items[i];
+            var langText = item.innerText.toUpperCase();
             var displayItem = false;
             // Check for name match
             if (langText.indexOf(searchText) > -1) {
@@ -271,7 +271,7 @@ var TranslationsPage = (function(window, $) {
                     if (!content.subject || content.subject.trim() === "") {
                         return;
                     }
-                    if (!subjects.includes(content.subject.toLowerCase())) {
+                    if (subjects.indexOf(content.subject.toLowerCase()) === -1) {
                         subjects.push(content.subject.toLowerCase());
                         var item = create("option");
                         item.value = content.subject;

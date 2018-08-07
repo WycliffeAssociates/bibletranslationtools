@@ -86,20 +86,30 @@ var TranslationsPage = (function(window, $) {
       var searchString = window.location.search;
       if (searchString) {
 
-        // Pre-select a language if there's something in the query string
+        // Pre-select a language if given
         var langRegex = new RegExp("\\Wlang=([^&]+)");
         var result = langRegex.exec(searchString);
         if (result && result.length >= 2) {
             var langSearch = result[1];
             // Will trigger sidebar.render();
             this.sidebar.setSelected(langSearch);
-            return;
+        } else {
+            // Default to English resources. Will trigger sidebar.render();
+            this.sidebar.setSelected('en');
+        }
+
+        // Pre-select a resource if given
+        var resourceRegex = new RegExp("\\Wresource=([^&]+)");
+        var result = resourceRegex.exec(searchString);
+        if (result && result.length >= 2) {
+            var resourceSearch = result[1];
+            resourceSearch = resourceSearch.replace(/\+/g, " ");
+            resourceSearch = resourceSearch.replace(/%20/g, " ");
+            this.sidebar.setSelectedResource(resourceSearch);
         }
 
       }
 
-      // Default to English resources. Will trigger sidebar.render();
-      this.sidebar.setSelected('en');
     };
 
     this.handleFailedInit = function(err) {
@@ -163,6 +173,22 @@ var TranslationsPage = (function(window, $) {
         $('#lang-selector-' + selected).addClass('active');
       }
     };
+
+    this.setSelectedResource = function(selected) {
+        //TODO THis doesn't seem to work, maybe the element doesn't
+        //exist yet?  Maybe remove this function and set this.selectedResource and then
+        //read it on create
+        var resourceFilter = $("#lang-list-resource-filter")[0];
+        var options = resourceFilter.options;
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].value === selected) {
+                resourceFilter.value = selected;
+                resourceFilter.onchange();
+                return;
+            }
+        }
+        console.warn("WARNING: Invalid resource type: " + selected);
+    }
 
     this.createListEl = function() {
       var title = create('h5', 'lang-list-title');

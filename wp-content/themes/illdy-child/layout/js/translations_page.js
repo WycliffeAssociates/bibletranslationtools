@@ -173,9 +173,6 @@ var TranslationsPage = (function(window, $) {
     };
 
     this.setSelectedResource = function(selected) {
-        //TODO THis doesn't seem to work, maybe the element doesn't
-        //exist yet?  Maybe remove this function and set this.selectedResource and then
-        //read it on create
         var resourceFilter = $("#lang-list-resource-filter")[0];
         var options = resourceFilter.options;
         for (var i = 0; i < options.length; i++) {

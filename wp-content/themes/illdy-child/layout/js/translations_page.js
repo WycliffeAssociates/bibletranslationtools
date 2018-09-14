@@ -105,6 +105,7 @@ var TranslationsPage = (function(window, $) {
             var resourceSearch = result[1];
             resourceSearch = resourceSearch.replace(/\+/g, " ");
             resourceSearch = resourceSearch.replace(/%20/g, " ");
+            resourceSearch = resourceSearch.replace(/%27/g, "'");
             this.sidebar.setSelectedResource(resourceSearch);
         }
       }

@@ -234,7 +234,7 @@ var TranslationsPage = (function(window, $) {
             if (langText.indexOf(searchText) > -1) {
                 // Check for resource match
                 var resource_filter_value = resource_filter[resource_filter.selectedIndex].value.toLowerCase();
-                if (resource_filter_value === "all") {
+                if (resource_filter_value === 'all') {
                     displayItem = true;
                 } else {
                     var selectedLanguage = translationsData.filter(function(lang) {

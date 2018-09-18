@@ -82,18 +82,33 @@ var TranslationsPage = (function(window, $) {
       // Give sidebar the list of languges
       this.sidebar.setList(this.translationsData);
 
-      // Pre-select a language if there's something in the query string
-      // TODO: Look for the 'lang' parameter on the query string specifically
-      var searchString = window.location.search;
-      if (searchString) {
-        var langSearch = searchString.split('=')[1];
-        // Will trigger sidebar.render();
-        this.sidebar.setSelected(langSearch);
-        return;
-      }
-
       // Default to English resources. Will trigger sidebar.render();
       this.sidebar.setSelected('en');
+
+      // Process search string
+      var searchString = window.location.search;
+      if (searchString) {
+
+        // Pre-select a language if given
+        var langRegex = new RegExp("\\Wlang=([^&]+)");
+        var result = langRegex.exec(searchString);
+        if (result && result.length >= 2) {
+            var langSearch = result[1];
+            // Will trigger sidebar.render();
+            this.sidebar.setSelected(langSearch);
+        }
+
+        // Pre-select a resource if given
+        var resourceRegex = new RegExp("\\Wresource=([^&]+)");
+        var result = resourceRegex.exec(searchString);
+        if (result && result.length >= 2) {
+            var resourceSearch = result[1];
+            resourceSearch = resourceSearch.replace(/\+/g, " ");
+            resourceSearch = resourceSearch.replace(/%20/g, " ");
+            resourceSearch = resourceSearch.replace(/%27/g, "'");
+            this.sidebar.setSelectedResource(resourceSearch);
+        }
+      }
     };
 
     this.handleFailedInit = function(err) {
@@ -137,7 +152,8 @@ var TranslationsPage = (function(window, $) {
           code: lang.code,
           name: lang.name,
           englishName: lang.englishName,
-          direction: lang.direction
+          direction: lang.direction,
+          contents: lang.contents
         };
       });
       this.render();
@@ -157,6 +173,19 @@ var TranslationsPage = (function(window, $) {
       }
     };
 
+    this.setSelectedResource = function(selected) {
+        var resourceFilter = $("#lang-list-resource-filter")[0];
+        var options = resourceFilter.options;
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].value === selected) {
+                resourceFilter.value = selected;
+                resourceFilter.onclick();
+                return;
+            }
+        }
+        console.warn("WARNING: Invalid resource type: " + selected);
+    }
+
     this.createListEl = function() {
       var title = create('h5', 'lang-list-title');
       title.innerText = 'Languages';
@@ -165,25 +194,26 @@ var TranslationsPage = (function(window, $) {
       filter.setAttribute('type', 'text');
       filter.setAttribute('placeholder', 'Search languages or codes...');
 
+      var resource_filter = create('select', 'lang-list-resource-filter', 'lang-list-resource-filter');
+      this.createResourceFilterEls().forEach(function(item) {
+          resource_filter.add(item);
+      });
+      var filterLangs = this.filterLangs;
+      var translationsData = this.list;
+      resource_filter.onclick = function() {
+          filterLangs(list, filter, resource_filter, translationsData);
+      }
+
       var list = create('ul', 'lang-list', 'lang-list');
 
       filter.onkeyup = function() {
-            searchText = filter.value.toUpperCase();
-            items = list.getElementsByTagName('li');
-            for (i = 0; i < items.length; i++) {
-                item = items[i];
-                langText = item.innerText.toUpperCase();
-                if (langText.indexOf(searchText) > -1) {
-                    item.style.display = "";
-                } else {
-                    item.style.display = "none";
-                }
-            }
+          filterLangs(list, filter, resource_filter, translationsData);
       }
 
       var container = create('div', 'lang-list-container sticky');
       container.appendChild(title);
       container.appendChild(filter);
+      container.appendChild(resource_filter);
       container.appendChild(list);
 
       this.createListItemEls().forEach(function(item) {
@@ -192,6 +222,69 @@ var TranslationsPage = (function(window, $) {
 
       return container;
     };
+
+    this.filterLangs = function(list, filter, resource_filter, translationsData) {
+        var searchText = filter.value.toUpperCase();
+        var items = list.getElementsByTagName('li');
+        for (i = 0; i < items.length; i++) {
+            var item = items[i];
+            var langText = item.innerText.toUpperCase();
+            var displayItem = false;
+            // Check for name match
+            if (langText.indexOf(searchText) > -1) {
+                // Check for resource match
+                var resource_filter_value = resource_filter[resource_filter.selectedIndex].value.toLowerCase();
+                if (resource_filter_value === 'all') {
+                    displayItem = true;
+                } else {
+                    var selectedLanguage = translationsData.filter(function(lang) {
+                      return lang.code === item.dataset.code;
+                    })[0];
+                    if (selectedLanguage.contents) {
+                        for (j = 0; j < selectedLanguage.contents.length; j++) {
+                            var content = selectedLanguage.contents[j];
+                            if (content.subject && content.subject.toLowerCase() == resource_filter_value) {
+                                displayItem = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            item.style.display = displayItem ? "" : "none";
+        }
+    }
+
+    this.createResourceFilterEls = function() {
+        subjects = [];
+        items = [];
+        /* "All resources" is first and selected by default */
+        var all = create("option");
+        all.value = "all";
+        all.innerHTML = "All Texts and Resources";
+
+        this.list.forEach(function(language) {
+            if (language.contents) {
+                language.contents.forEach(function(content) {
+                    if (!content.subject || content.subject.trim() === "") {
+                        return;
+                    }
+                    if (subjects.indexOf(content.subject.toLowerCase()) === -1) {
+                        subjects.push(content.subject.toLowerCase());
+                        var item = create("option");
+                        item.value = content.subject;
+                        item.innerHTML = content.subject;
+                        items.push(item);
+                    }
+                });
+            }
+        });
+
+        items.sort(function(a,b){return a.value > b.value ? 1 : -1});
+        items.unshift(all);
+
+        return items;
+    }
 
     this.createListItemEls = function() {
       return this.list.map((function(lang) {
@@ -259,10 +352,10 @@ var TranslationsPage = (function(window, $) {
 
       var subcontents = this.createSubcontents(content.subcontents);
       var contentSubject = content.subject && content.subject.toLowerCase();
-      if (contentSubject && (contentSubject === 'bible' || 
-                             contentSubject === 'bible stories' || 
-                             contentSubject === "translator notes" || 
-                             contentSubject === "bible translation comprehension questions" ||
+      if (contentSubject && (contentSubject === 'bible' ||
+                             contentSubject === 'bible stories' ||
+                             contentSubject === "translation notes" ||
+                             contentSubject === "translation questions" ||
                              contentSubject === "reference" )) {
         container.appendChild(this.createAccordion(subcontents));
       } else {
@@ -437,5 +530,3 @@ var TranslationsPage = (function(window, $) {
   return TranslationsPage;
 
 })(window, jQuery);
-
-console.log(WPURL);

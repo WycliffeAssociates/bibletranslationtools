@@ -451,8 +451,8 @@ ul {
 	margin-bottom: 3rem;
 }
 #translations-container .content-list {
-	display: flex;
-	flex-direction: column;
+	/* display: flex; */
+	/* flex-direction: column; */
 }
 #translations-container .content-list > * {
 	order: 10;

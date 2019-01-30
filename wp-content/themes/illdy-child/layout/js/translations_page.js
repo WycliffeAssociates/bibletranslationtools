@@ -422,7 +422,9 @@ var TranslationsPage = (function(window, $) {
           var linkEl = create('a', className);
           linkEl.innerText = link.format;
           if (link.format === 'zip') {
-            linkEl.innerText += ' (' + link.zipContent + ')';
+            if (link.zipContent) {
+              linkEl.innerText += ' (' + link.zipContent + ')';
+            }
           }
           if (link.quality) {
             var qualitySpan = create('i', 'quality');

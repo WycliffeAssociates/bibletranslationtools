@@ -422,7 +422,9 @@ var TranslationsPage = (function(window, $) {
           var linkEl = create('a', className);
           linkEl.innerText = link.format;
           if (link.format === 'zip') {
-            linkEl.innerText += ' (' + link.zipContent + ')';
+            if (link.zipContent) {
+              linkEl.innerText += ' (' + link.zipContent + ')';
+            }
           }
           if (link.quality) {
             var qualitySpan = create('i', 'quality');
@@ -463,6 +465,7 @@ var TranslationsPage = (function(window, $) {
         'bible-ot': create('div', 'ot-subcontent-container'),
         'bible-nt': create('div', 'nt-subcontent-container'),
         'obs': create('div', 'obs-subcontent-container'),
+        'topics': create('div', 'topics-subcontent-container'),
         'other': create('div', 'other-subcontent-container'),
       };
 
@@ -495,6 +498,12 @@ var TranslationsPage = (function(window, $) {
         obsContainerTitle.innerText = 'Chapters';
         accordion.appendChild(obsContainerTitle);
         accordion.appendChild(containers['obs']);
+      }
+      if (containers['topics'].childNodes.length) {
+        var topicsContainerTitle = create('h5', 'topics-subcontent-title');
+        topicsContainerTitle.innerText = 'Topics';
+        accordion.appendChild(topicsContainerTitle);
+        accordion.appendChild(containers['topics']);
       }
       if (containers['other'].childNodes.length) {
         var otherContainerTitle = create('h5', 'other-subcontent-title');

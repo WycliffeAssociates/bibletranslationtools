@@ -1,0 +1,688 @@
+/*
+Theme Name: Illdy Child
+Theme URI: http://example.com/twenty-fifteen-child/
+Template: illdy
+Author: Vicky Leong
+Author URI: http://vickyleong.com
+Description: Illdy Child Theme
+Tags: light,dark,two-columns,right-sidebar,responsive-layout,accessibility-ready
+Version: 1.0.0.1499975045
+Updated: 2017-07-13 19:44:05
+
+*/
+
+/********
+*
+* GENERIC
+*
+********/
+
+/* Make anything in page body that overflows horizontally to be hidden */
+.container {
+	/* Without display: table, overflow: hidden will break position: sticky of */
+	/* the lang-list */
+	display: table;
+	overflow-x: hidden;
+}
+/* Container was simply too small on that screen size */
+@media (min-width: 768px) and (max-width: 992px) {
+	.container {
+		width: 100%;
+	}
+}
+ul {
+	padding-left: 0;
+}
+/* Removes bullets from list */
+.markup-format ul li {
+	list-style-type: none;
+}
+.markup-format a {
+	text-decoration: none;
+}
+/* Make internal pages to have smaller banner */
+#header .bottom-header.blog {
+	padding: 60px 0;
+}
+/* Reduce the space between blog post body and footer */
+#blog .blog-post {
+	margin-bottom: 0;
+}
+/* Hides blog post title. We already have a big o'l title on the header */
+#blog .blog-post .blog-post-title {
+	display: none;
+}
+/* Removes the space above the first title in a section */
+.blog-post-entry .so-panel.panel-first-child .textwidget h3:first-child,
+.blog-post-entry .so-panel.panel-first-child .textwidget h4:first-child {
+	margin-top: 0;
+}
+/* Adds more spacing to the bottom of post's body */
+.blog-post-entry .panel-layout {
+	padding-bottom: 6rem;
+}
+/* Used for anything that wants to have a basic card material drop shadow */
+.card {
+	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
+	transition: box-shadow 100ms ease-in-out;
+}
+.card:hover {
+	box-shadow: 0px 3px 22px -3px rgba(0,0,0,0.5);
+}
+/* It's being used in the sidebar of resources page, but can be used elsewhere */
+.sticky {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+}
+.sticky::before,
+.sticky::after {
+	content: '';
+	display: table;
+}
+.btn.btn-primary {
+	border: none;
+	background: none;
+	background-color: #81A83E;
+	color: #FFF;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+.btn.btn-default {
+	border: 2px solid #81A83E;
+	background: none;
+	background-color: rgba(255, 255, 255, 0.5);
+	color: #81A83E;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+.round-corner-lg .fl-row-content-wrap {
+	border-radius: 12px;
+}
+.round-corner-md .fl-row-content-wrap {
+	border-radius: 9px;
+}
+.round-corner-sm .fl-row-content-wrap {
+	border-radius: 6px;
+}
+.round-corner-xs .fl-row-content-wrap {
+	border-radius: 3px;
+}
+.round-corner-xxs .fl-row-content-wrap {
+	border-radius: 2px;
+}
+
+/***********
+*
+* NAVIGATION
+*
+***********/
+
+.responsive-menu .menu-item {
+	background-color: black;
+	list-style-type: none;
+}
+.responsive-menu .menu-item a {
+	color: white;
+}
+
+/* Makes the responsive menu on top of everything else */
+.responsive-menu.active {
+	position: relative;
+	z-index: 999;
+	/* Make sure responsive menu is not displayed when the screen is resized to wider screen */
+	/* Had to use !important because there is an inline style of "display: block;" :( */
+	display: none !important;
+}
+@media only screen and (max-width: 992px) {
+	.responsive-menu {
+		position: absolute;
+		padding-left: 2rem;
+		padding-right: 2rem;
+		background-color: transparent;
+	}
+	.responsive-menu.active {
+		position: absolute;
+		/* Had to use !important to override the previous !important :( */
+		display: block !important;
+	}
+	.responsive-menu > ul {
+		border-top: 1px solid white;
+	}
+	.responsive-menu .page_item {
+		width: auto;
+		flex: 1 1 auto;
+		list-style: none;
+		font-weight: 700;
+	}
+	.responsive-menu .page_item a {
+		background-color: black;
+		color: white;
+		text-transform: uppercase;
+		font-size: 115%;
+		border-bottom: none;
+	}
+	.responsive-menu .children {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		background-color: #333;
+	}
+	.responsive-menu .children .page_item {
+		flex: 0 0 auto;
+	}
+	.responsive-menu .children .page_item a {
+		background-color: #333;
+		text-transform: none;
+		font-size: 100%;
+	}
+}
+/* Makes the child menu to be on top of the hero title */
+#header .top-header {
+	z-index: 999;
+	position: relative;
+}
+/* Allow child/sub pages to be hidden on top menu, but appear when their parent is hovered over */
+#header .top-header .page_item_has_children::after {
+	content: '+';
+	margin-left: 0.5rem;
+}
+#header .top-header .page_item_has_children:hover::after {
+	content: '-';
+	padding: 0 0.17rem;
+}
+#header .top-header .page_item_has_children .children {
+	position: absolute;
+  right: 0;
+  width: auto;
+  flex-direction: column;
+	border-top: 1px solid white;
+	display: none;
+}
+#header .top-header .page_item_has_children:hover .children {
+	display: flex;
+}
+#header .top-header .page_item_has_children .children .page_item a {
+	color: white;
+	white-space: nowrap;
+}
+#header .top-header .page_item_has_children .children .page_item a:hover {
+	color: #F1D204;
+}
+#header .top-header .header-navigation ul.children li {
+	margin-left: 0;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	background-color: rgba(0, 0, 0, 0.85);
+}
+
+/**************
+*
+* HEADER/FOOTER
+*
+**************/
+
+/* Adds color overlay on the header */
+#header {
+	position: relative;
+}
+#header::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+#header::before {
+	background-color: rgba(0, 0, 0, 0.8);
+}
+.visit-other-pages {
+	margin-top: 5rem;
+}
+.visit-other-pages .fl-row-content-wrap {
+	border-radius: 12px;
+}
+.visit-other-pages h3 {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.visit-other-pages .btn {
+	width: 100%;
+}
+@media only screen and (max-width: 768px) {
+	.visit-other-pages h3 {
+		text-align: center;
+	}
+}
+
+/**************************
+*
+*	ILLDY FRONT-PAGE SECTIONS
+*
+**************************/
+
+/****************
+* Counter Section
+****************/
+
+/* Adds color overlay on the counter section */
+#counter::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(200, 200, 20, 0.8);
+}
+
+/*****************
+* Services Section
+*****************/
+
+/* Tweaks styling for services section */
+#services.front-page-section {
+	padding: 75px 0;
+}
+#services.front-page-section .widget_illdy_service {
+	/* Equalize service widgets spacing */
+	margin-top: 0;
+	margin-bottom: 3rem;
+}
+#services.front-page-section .section-content .service .service-icon {
+	/* Enlarges the service icon for a better balance */
+	font-size: 5rem;
+}
+#services.front-page-section .service-link {
+	/* Makes the link more distinguishable and pronounced */
+	line-height: 2.6;
+	font-size: 85%;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #337ab7;
+}
+#services.front-page-section .service-link::after {
+	/* Adds right-angled quote after the link text */
+	content: '\00BB';
+	margin-left: 0.5rem;
+}
+@media only screen and (min-width: 768px) {
+	/* Aligns service widgets content to the left on wider screen */
+	#services .service {
+		text-align: left;
+	}
+	/* Makes service icon and title be on the same line */
+	#services .section-content .service .service-icon,
+	#services .section-content .service .service-title {
+		display: inline-block;
+		width: auto;
+	}
+	/* Adjusts spacing between the icon, title, and the paragraph */
+	#services .section-content .service .service-title {
+		margin-left: 2rem;
+		margin-bottom: 0;
+	}
+}
+
+/*****************
+* Projects Section
+*****************/
+
+/* Center the images of projects in projects section */
+.widget_illdy_project .project {
+	background-size: cover;
+	background-position: center;
+}
+
+/**********
+*
+* MAST PAGE
+*
+**********/
+
+/* Remove spacing between MAST phase steps */
+.mast-phase .sow-features-feature .textwidget p {
+	margin: 0;
+}
+
+/******************
+*
+* TRANSLATIONS PAGE
+*
+******************/
+
+#translations-container {
+	display: flex;
+	flex-direction: row;
+}
+#translations-container .sidebar {
+	flex: 0 0 300px;
+	padding-left: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	border-left: none;
+}
+#translations-container .lang-list-container {
+	border-right: 1px solid #DDD;
+	max-height: calc(100vh);
+	display: flex;
+	flex-direction: column;
+}
+#translations-container .lang-list {
+	overflow-y: auto;
+        height: 100vh; /* Needed for IE to render scrollbar in lang list */
+        margin-top: 1rem;
+}
+#translations-container .lang-list-filter {
+    background-image: url('layout/images/magnifying-glass-24x24.png');
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 90%;
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin: auto;
+}
+#translations-container .lang-list-title {
+	margin-top: 0;
+        margin-bottom: 15px;
+}
+#translations-container .lang-selector {
+	padding-left: 1rem;
+	padding-right: 1.5rem;
+	display: flex;
+	flex-direction: row;
+	cursor: pointer;
+}
+#translations-container .lang-list li::before {
+	display: none;
+}
+#translations-container .lang-selector:hover,
+#translations-container .lang-selector.active {
+	background-color: #E2C504;
+	color: white;
+}
+#translations-container .lang-code {
+	flex: 1 1 auto;
+	text-align: right;
+	color: #AAA;
+	font-style: italic;
+	pointer-events: none;
+}
+#translations-container .lang-selector:hover .lang-code,
+#translations-container .lang-selector.active .lang-code {
+	color: white;
+}
+#translations-container .sidebar-toggle {
+	width: 100%;
+	height: 7.7rem;
+	position: sticky;
+	top: 0;
+	background-color: #AAA;
+	color: white;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+#translations-container .main-content {
+	flex: 1 1 auto;
+}
+#translations-container .main-content > * {
+	padding-left: 1.5rem
+}
+#translations-container .lang-title {
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+	background-color: #EEE;
+}
+#translations-container .content {
+	margin-bottom: 3rem;
+}
+#translations-container .content-list {
+	display: flex;
+	flex-direction: column;
+}
+#translations-container .content-list > * {
+	order: 10;
+}
+#translations-container .content.ulb {
+	order: 1;
+}
+#translations-container .content.udb {
+	order: 2;
+}
+#translations-container .content-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+#translations-container .content-title {
+	flex: 1 1 auto;
+	margin-bottom: 0;
+}
+#translations-container .content-checking-level {
+	flex: 0 0 auto;
+	width: 48px;
+	height: 48px;
+}
+#translations-container .content-links {
+	margin-bottom: 1.25rem;
+}
+#translations-container .content-link,
+#translations-container .subcontent-link {
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+	text-transform: none;
+}
+#translations-container .content-link:last-of-type,
+#translations-container .subcontent-link:last-of-type {
+	margin-right: 0;
+}
+#translations-container .subcontent {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+#translations-container .subcontent-title {
+	flex: 1 1 auto;
+	margin: 1rem 0;
+}
+#translations-container .subcontent-links {
+	flex: 0 0 auto;
+}
+@media only screen and (max-width: 767px) {
+	.container {
+		width: 100%;
+	}
+	#translations-container {
+		position: relative;
+		left: 0;
+		transition: left 250ms ease-in-out;
+	}
+	#translations-container.opened {
+		left: calc(300px + 1.5rem);
+	}
+	#translations-container .sidebar {
+		margin-left: calc(-300px - 1.5rem);
+	}
+	#translations-container .sidebar-gutter {
+		flex: 0 0 3rem;
+	}
+	#translations-container .sidebar-toggle {
+		display: flex;
+	}
+}
+
+/*
+* ACCORDION in translations page
+*/
+
+#translations-container .ui-accordion .ui-accordion-header {
+  background-color: #EEE;
+  border: none;
+  font-size: 100%;
+  font-weight: bold;
+	color: initial;
+}
+#translations-container .ui-accordion .ui-accordion-content {
+  padding: 0;
+  border: none;
+  padding-top: 0.5rem;
+}
+#translations-container .ui-icon {
+	background-size: cover;
+}
+#translations-container .ui-accordion .expand-resource {
+	background-image: url('./layout/images/chevron-down.png');
+}
+#translations-container .ui-accordion .collapse-resource {
+	background-image: url('./layout/images/chevron-up.png');
+}
+
+/***************
+*
+* PROCESSES PAGE
+*
+***************/
+
+.process h3 {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.process p {
+	margin-top: 0;
+	margin-bottom: 1rem;
+}
+@media only screen and (max-width: 768px) {
+	/* Aligns to the center on smaller screen */
+	.process {
+		text-align: center;
+		margin-bottom: 5rem;
+	}
+	/* Makes process image smaller on processes page */
+	.process-image > .fl-col-content {
+		padding-top: 180px;
+		padding-bottom: 180px;
+	}
+	/* Slightly widens the process paragraph */
+	.fl-col-small {
+		max-width: 480px;
+	}
+}
+
+/***************
+*
+* RESOURCES PAGE
+*
+***************/
+
+.looking-for-translations .fl-row-content-wrap {
+	border-radius: 12px;
+}
+/* Aligns the "See translations" button to the right */
+.looking-for-translations-button-container {
+	text-align: right;
+}
+@media only screen and (max-width: 768px) {
+	/* Aligns the text and the button to the center on smaller screen */
+	.looking-for-translations-button-container,
+	.looking-for-translations-text-container {
+		text-align: center;
+	}
+	/* Adds needed spacing between the button and the container when things stack */
+	.looking-for-translations-button-container {
+		padding-bottom: 4rem;
+	}
+}
+/* Minimizes the space between the title and paragraph of the intro */
+.resources-intro h3 {
+	margin-bottom: 1rem;
+}
+.resources-intro p {
+	margin-top: 0;
+}
+/* Forces the image size of the resource list item */
+.resources-list img {
+	width: 128px;
+	height: 128px;
+}
+/* Minimizes the space between the resource title and paragraph */
+.resources-list h5 {
+	margin-bottom: 1rem;
+}
+.resources-list p {
+	margin-top: 0;
+}
+
+/**********
+*
+* MAST PAGE
+*
+**********/
+
+.mast-overview-container p {
+	margin-top: 1rem;
+}
+.download-instructions-container a.btn {
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+}
+@media only screen and (max-width: 992px) {
+	.step-description-container .fl-col-content {
+		padding-left: 20px;
+	}
+}
+.step-description-container h3 {
+	margin-bottom: 1rem;
+}
+.step-description-container p {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+/**********
+*
+* SAIL PAGE
+*
+**********/
+
+@media only screen and (max-width: 768px) {
+	.section,
+	.section-last-row {
+		margin-bottom: 80px;
+	}
+
+	.process-step-two-cols .fl-row-content-wrap {
+		margin-bottom: 0;
+	}
+
+	.center-on-collapse .fl-module-content .fl-heading,
+	.center-on-collapse .fl-module-rich-text .fl-rich-text {
+		text-align: center;
+	}
+
+	.fl-row.sail-the-tool .fl-heading  {
+		margin-top: 20px !important;
+	}
+}
+
+/* Emboldens the number of people who are deaf and blind */
+.deaf-and-blind-counter .fl-number {
+	font-weight: 900;
+}
+/* Fits the number to smaller screens */
+@media only screen and (max-width: 560px) {
+	.deaf-and-blind-counter .fl-number-int {
+		font-size: 75%;
+	}
+}
+@media only screen and (max-width: 400px) {
+	.deaf-and-blind-counter .fl-number-int {
+		font-size: 55%;
+	}
+}

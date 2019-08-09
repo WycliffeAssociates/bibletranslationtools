@@ -50,6 +50,8 @@ if ( ( is_single() || is_page() || is_archive() ) && get_theme_mod( 'illdy_archi
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="manifest" href="https://bibleineverylanguage.org/site.webmanifest">
+	<link rel="mask-icon" href="https://cdn.bibleineverylanguage.org/safari-pinned-tab.svg" color="#5bbad5">
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

@@ -17,6 +17,10 @@
  *
  * @package WordPress
  */
+ 
+define( 'WPMS_ON', true ); //Added for WP Mail SMTP
+define( 'WPMS_SMTP_PASS', 't-6pre5PAjat' ); // SMTP Password
+define('WP_CACHE', true); // Added by WP Rocket
 
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( __FILE__ ) . '/' );
@@ -75,7 +79,7 @@ define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 
 /** SSL settings */
-define('MYSQL_CLIENT_FLAGS', MYSQL_CLIENT_SSL);
+define( 'MYSQL_CLIENT_FLAGS', MYSQLI_CLIENT_SSL | MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT );
 define( 'MYSQL_SSL_CA', getenv('MYSQL_SSL_CA'));
 
 /**#@+
@@ -87,14 +91,14 @@ define( 'MYSQL_SSL_CA', getenv('MYSQL_SSL_CA'));
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         'put your unique phrase here');
-define('SECURE_AUTH_KEY',  'put your unique phrase here');
-define('LOGGED_IN_KEY',    'put your unique phrase here');
-define('NONCE_KEY',        'put your unique phrase here');
-define('AUTH_SALT',        'put your unique phrase here');
-define('SECURE_AUTH_SALT', 'put your unique phrase here');
-define('LOGGED_IN_SALT',   'put your unique phrase here');
-define('NONCE_SALT',       'put your unique phrase here');
+define('AUTH_KEY',         '|5*60W;*yLbX4+Nauh6pPrAQuf{,QZ,lDix_19Ne#Y^<]&@f/FtRoKAv&s<k-EY ');
+define('SECURE_AUTH_KEY',  '@WrrwG5*>6*q4EzVsApEo5. A V9yA?^nY{A_xr&+WxLveaA>2[Dcf8Sd}N!o:3@');
+define('LOGGED_IN_KEY',    '%J </Jg}aAtTvr_B|!q`GaQN;Pfg=:Sc|*ilm{s.:@fdG]8v8(*1l0}SNhRxM954');
+define('NONCE_KEY',        'cBh+c3|AbGkn*mQ^*){-u#+.?-b*(Up[y`D|HH~a%/ ;)2=Ng<V(m)U<<feVLu8Q');
+define('AUTH_SALT',        ']i} 4k{@-`Pd[Qz0-uT TE/DSxz22wG||%XE6D5C8lv@<6//.}s~Wj?tm0Po^_*a');
+define('SECURE_AUTH_SALT', 'J;>.oEIc_|J2vkA^sE.dz4dTqgFXhm{O@*C#wbA_-C&L%.}FkVKZBjD+*iI[]h+g');
+define('LOGGED_IN_SALT',   '^F7@JE]XF1CKa/_)i]g#eA.,cTU$q[3CTm8CpV,4V+zOz-, :{1}4#8I`?)0-_IZ');
+define('NONCE_SALT',       '%vhaiZ}-aGJa^B=vL0(RKoDa,kP/qZf+2Enh$6A7:}uC<0NXQ?%*Y^3B<Au{L+T>');
 
 /**#@-*/
 
@@ -124,9 +128,9 @@ define('WP_DEBUG', $debug);
 /* That's all, stop editing! Happy blogging. */
 
 //Relative URLs for swapping across app service deployment slots
-define('WP_HOME', 'http://'. filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING));
-define('WP_SITEURL', 'http://'. filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING));
-define('WP_CONTENT_URL', '/wp-content');
+define('WP_HOME', 'https://'. filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING));
+define('WP_SITEURL', 'https://'. filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING));
+define('WP_CONTENT_URL', 'https://'. filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING) . '/wp-content');
 define('DOMAIN_CURRENT_SITE', filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING));
 
 

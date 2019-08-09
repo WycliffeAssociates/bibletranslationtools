@@ -157,13 +157,13 @@
     background: #fff;
     background: rgba(255, 255, 255, .65);
     text-align: left;
-    padding-right: 105px;
+    padding-right: 155px;
 }
 
-.plugin_box .action_bar.active {
+/*.plugin_box .action_bar.active {
     background: #23282d;
     color: #FFF;
-}
+}*/
 
 .plugin_box .action_button {
     position: absolute;
@@ -174,8 +174,12 @@
     border: 1px solid rgba(0, 0, 0, .1);
 }
 
+.about-wrap .three-col .plugin_box.col .action_button a {
+    margin-top:0;
+}
+
 .plugin_box .action_button.active {
-    background: #2c2e2f;
+    /*background: #2c2e2f;*/
     bottom: 0;
     right: -1px;
     padding: 9px 10px 9px;

@@ -29,7 +29,7 @@ add_thickbox();
 			<span class="version"><?php echo esc_html__( 'Version:', 'epsilon-framework' ); ?><?php echo esc_html( $info['info']->version ); ?></span>
 			<span class="separator">|</span> <?php echo wp_kses_post( $info['info']->author ); ?>
 			<div class="action_bar <?php echo ( 'install' !== $info['needs'] && $info['active'] ) ? 'active' : ''; ?>">
-				<span class="plugin_name"><?php echo ( 'install' !== $info['needs'] && $info['active'] ) ? 'Active: ' : ''; ?><?php echo esc_html( $info['info']->name ); ?></span>
+				<span class="plugin_name"><?php echo esc_html( $info['info']->name ); ?></span>
 			</div>
 			<span class="plugin-card-<?php echo esc_attr( $plugin ); ?> action_button <?php echo ( 'install' !== $info['needs'] && $info['active'] ) ? 'active' : ''; ?>">
 				<a data-slug="<?php echo esc_attr( $plugin ); ?>" class="<?php echo esc_attr( $info['class'] ); ?>" href="<?php echo esc_url( $info['url'] ); ?>"> <?php echo esc_attr( $info['label'] ); ?> </a>

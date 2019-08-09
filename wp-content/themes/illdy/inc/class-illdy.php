@@ -4,21 +4,27 @@
 class Illdy {
 
 	public $recommended_plugins = array(
-		'kiwi-social-share'         => array(
+		'fancybox-for-wordpress' => array(
 			'recommended' => true,
 		),
-		'contact-form-7'            => array(
-			'recommended' => false,
-		),
-		'simple-custom-post-order'  => array(
-			'recommended' => false,
-		),
-		'fancybox-for-wordpress'    => array(
-			'recommended' => false,
+		'simple-custom-post-order' => array(
+			'recommended' => true,
 		),
 		'colorlib-login-customizer' => array(
-			'recommended' => false,
+			'recommended' => true,
 		),
+		'colorlib-coming-soon-maintenance' => array(
+			'recommended' => true,
+		),
+		'colorlib-404-customizer' => array(
+			'recommended' => true,
+		),
+		'modula-best-grid-gallery' => array(
+			'recommended' => true,
+		),
+        'contact-form-7'            => array(
+            'recommended' => false,
+        ),
 	);
 
 	public $recommended_actions;

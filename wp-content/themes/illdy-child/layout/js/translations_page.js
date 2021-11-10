@@ -225,10 +225,20 @@ var TranslationsPage = (function(window, $) {
 
     this.filterLangs = function(list, filter, resource_filter, translationsData) {
         var searchText = filter.value.toUpperCase();
+
+        // "Normalize" search string for searching by replacing accented characters with plain ones
+        // Adapted from: https://stackoverflow.com/a/37511463
+        searchText = searchText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
         var items = list.getElementsByTagName('li');
         for (i = 0; i < items.length; i++) {
             var item = items[i];
             var langText = item.innerText.toUpperCase();
+
+            // "Normalize" language names for searching by replacing accented characters with plain ones
+            // Adapted from: https://stackoverflow.com/a/37511463
+            langText = langText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
             var displayItem = false;
             // Check for name match
             if (langText.indexOf(searchText) > -1) {

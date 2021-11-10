@@ -15,7 +15,7 @@ var TranslationsPage = (function(window, $) {
     this.sidebarGutter;
     this.mainContent;
     this.mainContentRoot;
-    this.dataUrl = '/wp-content/themes/illdy-child/data/translations.json';
+    this.dataUrl = '/wp-content/themes/bb-theme-child/data/translations.json';
 
     this.init = function(rootId) {
       // Get container
@@ -398,7 +398,7 @@ var TranslationsPage = (function(window, $) {
       checkingLevelIcon.setAttribute('title', titleMapping[checkingLevel]);
       checkingLevelIcon.setAttribute('data-toggle', 'tooltip');
       checkingLevelIcon.setAttribute('data-placement', 'left');
-      $(checkingLevelIcon).tooltip();
+      // $(checkingLevelIcon).tooltip();
       return checkingLevelIcon;
     };
 

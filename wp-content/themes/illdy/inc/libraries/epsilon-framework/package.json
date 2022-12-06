@@ -16,7 +16,7 @@
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-uglify": "^0.10.1",
-    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-watch": "^1.1.0",
     "load-grunt-tasks": "^3.3.0",
     "ts-loader": "^2.0.3",
     "typescript": "^2.3.2",
